@@ -14,16 +14,16 @@ import org.springframework.data.annotation.CreatedDate;
 @Entity
 public class Bid {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private int bidPrice;
-  private boolean isSuccess;
-  @CreatedDate
-  private LocalDateTime bidTime;
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Member bidder;
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Sale sale;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private int bidPrice;
+    private boolean isSuccess;
+    @CreatedDate
+    private LocalDateTime bidTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member bidder;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sale sale;
 }
 

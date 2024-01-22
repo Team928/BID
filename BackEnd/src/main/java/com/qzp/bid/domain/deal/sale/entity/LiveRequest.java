@@ -8,9 +8,9 @@ import jakarta.persistence.Id;
 @Entity
 public class LiveRequest {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private long saleId;
-  private long memberId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private long saleId;
+    private long memberId;
 }

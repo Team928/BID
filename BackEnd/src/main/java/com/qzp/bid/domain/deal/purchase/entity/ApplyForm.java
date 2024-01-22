@@ -8,11 +8,11 @@ import jakarta.persistence.Id;
 @Entity
 public class ApplyForm {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private long sellerId;
-  private int offerPrice;
-  private String image;
-  private String content;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private long sellerId;
+    private int offerPrice;
+    private String image;
+    private String content;
 }

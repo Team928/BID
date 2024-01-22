@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @DiscriminatorValue("sale")
 public class Sale extends Deal {
 
-  private int immediatePrice;
-  private Bid highestBid;
-  private int startPrice;
-  private LocalDateTime startTime;
-  private LocalDateTime endTime;
-  private DealStatus status;
-  private int liveRequestCount;
+    private int immediatePrice;
+    private Bid highestBid;
+    private int startPrice;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private DealStatus status;
+    private int liveRequestCount;
 }
