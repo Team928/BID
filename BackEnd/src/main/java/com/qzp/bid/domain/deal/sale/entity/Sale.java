@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Sale extends Deal {
 
     private int immediatePrice;
-    @OneToOne(fetch = FetchType.LAZY,optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     private Bid highestBid;
     private int startPrice;
     private LocalDateTime startTime;

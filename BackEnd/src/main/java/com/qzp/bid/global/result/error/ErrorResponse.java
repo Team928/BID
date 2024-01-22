@@ -1,16 +1,15 @@
 package com.qzp.bid.global.result.error;
 
+import jakarta.validation.ConstraintViolation;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import jakarta.validation.ConstraintViolation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,7 +35,8 @@ public class ErrorResponse {
         return new ErrorResponse(code, FieldError.of(bindingResult));
     }
 
-    public static ErrorResponse of(final ErrorCode code, final Set<ConstraintViolation<?>> constraintViolations) {
+    public static ErrorResponse of(final ErrorCode code,
+        final Set<ConstraintViolation<?>> constraintViolations) {
         return new ErrorResponse(code, FieldError.of(constraintViolations));
     }
 
@@ -61,6 +61,7 @@ public class ErrorResponse {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class FieldError {
+
         private String field;
         private String value;
         private String reason;
@@ -71,7 +72,8 @@ public class ErrorResponse {
             this.reason = reason;
         }
 
-        public static List<FieldError> of(final String field, final String value, final String reason) {
+        public static List<FieldError> of(final String field, final String value,
+            final String reason) {
             final List<FieldError> fieldErrors = new ArrayList<>();
             fieldErrors.add(new FieldError(field, value, reason));
             return fieldErrors;
@@ -80,24 +82,25 @@ public class ErrorResponse {
         private static List<FieldError> of(final BindingResult bindingResult) {
             final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
             return fieldErrors.stream()
-                    .map(error -> new FieldError(
-                            error.getField(),
-                            error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
-                            error.getDefaultMessage()))
-                    .collect(Collectors.toList());
+                .map(error -> new FieldError(
+                    error.getField(),
+                    error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
+                    error.getDefaultMessage()))
+                .collect(Collectors.toList());
         }
 
         private static List<FieldError> of(final Set<ConstraintViolation<?>> constraintViolations) {
             final List<ConstraintViolation<?>> lists = new ArrayList<>(constraintViolations);
             return lists.stream()
-                    .map(error -> {
-                        final String invalidValue =
-                                error.getInvalidValue() == null ? "" : error.getInvalidValue().toString();
-                        final int index = error.getPropertyPath().toString().indexOf(".");
-                        final String propertyPath = error.getPropertyPath().toString().substring(index + 1);
-                        return new FieldError(propertyPath, invalidValue, error.getMessage());
-                    })
-                    .collect(Collectors.toList());
+                .map(error -> {
+                    final String invalidValue =
+                        error.getInvalidValue() == null ? "" : error.getInvalidValue().toString();
+                    final int index = error.getPropertyPath().toString().indexOf(".");
+                    final String propertyPath = error.getPropertyPath().toString()
+                        .substring(index + 1);
+                    return new FieldError(propertyPath, invalidValue, error.getMessage());
+                })
+                .collect(Collectors.toList());
         }
     }
 }

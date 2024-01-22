@@ -2,10 +2,9 @@ package com.qzp.bid.global.result.error.exception;
 
 import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.ErrorResponse;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class BusinessException extends RuntimeException {
