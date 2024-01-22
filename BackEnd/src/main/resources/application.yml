@@ -22,3 +22,19 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+
+
+springdoc: #swagger
+  packages-to-scan: com.qzp.bid
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /bid-ui.html            # Swagger UI 경로 => localhost:8000/bid-ui.html
+    tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+    operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+  api-docs:
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true
