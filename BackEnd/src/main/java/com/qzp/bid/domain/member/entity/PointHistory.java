@@ -10,11 +10,11 @@ import org.springframework.data.annotation.CreatedDate;
 @Entity
 public class PointHistory {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private PointStatus status;
-  @CreatedDate
-  private LocalDateTime time;
-  private int amount;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private PointStatus status;
+    @CreatedDate
+    private LocalDateTime time;
+    private int amount;
 }

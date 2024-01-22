@@ -16,21 +16,21 @@ import org.springframework.data.annotation.CreatedDate;
 @Entity
 public class Member {
 
-  @OneToMany
-  List<PointHistory> pointHistory = new ArrayList<>();
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private String email;
-  private String nickname;
-  @CreatedDate
-  private LocalDateTime createTime;
-  @ElementCollection(fetch = FetchType.LAZY)
-  private List<String> area;
-  private double score;
-  private long point;
-  private long holdingPoint;
-  @ElementCollection(fetch = FetchType.LAZY)
-  private Set<Role> role;
-  private String profileImage;
+    @OneToMany
+    List<PointHistory> pointHistory = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private String email;
+    private String nickname;
+    @CreatedDate
+    private LocalDateTime createTime;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> area;
+    private double score;
+    private long point;
+    private long holdingPoint;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<Role> role;
+    private String profileImage;
 }

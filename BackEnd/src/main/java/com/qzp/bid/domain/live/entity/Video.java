@@ -10,13 +10,13 @@ import org.springframework.data.annotation.CreatedDate;
 @Entity
 public class Video {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private String path;
-  private String name;
-  private String runTime;
-  @CreatedDate
-  private String createTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private String path;
+    private String name;
+    private String runTime;
+    @CreatedDate
+    private String createTime;
 
 }

@@ -8,10 +8,10 @@ import jakarta.persistence.Id;
 @Entity
 public class ReverseAuctionResult {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private int winningBid;
-  private long purchaseId;
-  private long sellerId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private int winningBid;
+    private long purchaseId;
+    private long sellerId;
 }

@@ -13,11 +13,11 @@ import java.util.List;
 @DiscriminatorValue("purchase")
 public class Purchase extends Deal {
 
-  private LocalDateTime startTime;
-  private int minPrice;
-  private int maxPrice;
-  private int memberLimit;
-  private DealStatus status;
-  @OneToMany
-  private List<ApplyForm> applyForms = new ArrayList<>();
+    private LocalDateTime startTime;
+    private int minPrice;
+    private int maxPrice;
+    private int memberLimit;
+    private DealStatus status;
+    @OneToMany
+    private List<ApplyForm> applyForms = new ArrayList<>();
 }

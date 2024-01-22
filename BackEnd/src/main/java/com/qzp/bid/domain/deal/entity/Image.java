@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @Entity
 public class Image {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  private String imageName;
-  private String imagePath;
-  private LocalDateTime createTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private String imageName;
+    private String imagePath;
+    private LocalDateTime createTime;
 }
