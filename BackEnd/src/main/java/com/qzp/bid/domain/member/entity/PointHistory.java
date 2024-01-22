@@ -11,7 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 public class PointHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private PointStatus status;
     @CreatedDate

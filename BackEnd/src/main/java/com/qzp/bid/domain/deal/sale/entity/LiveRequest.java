@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 public class LiveRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long saleId;
     private long memberId;

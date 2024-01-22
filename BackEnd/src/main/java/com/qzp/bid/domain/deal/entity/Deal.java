@@ -24,7 +24,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 public abstract class Deal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @CreatedDate
     private LocalDateTime createTime;

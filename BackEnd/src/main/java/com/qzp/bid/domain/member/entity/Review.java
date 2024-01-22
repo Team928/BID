@@ -11,7 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     @CreatedDate
     LocalDateTime createTime;

@@ -19,7 +19,7 @@ public class Member {
     @OneToMany
     List<PointHistory> pointHistory = new ArrayList<>();
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String email;
     private String nickname;

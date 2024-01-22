@@ -15,7 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 public class Bid {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int bidPrice;
     private boolean isSuccess;
