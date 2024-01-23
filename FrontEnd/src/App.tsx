@@ -1,5 +1,5 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ChatPage from '@/pages/chat/ChatPage';
+import ChatRoomPage from '@/pages/chat/room/ChatRoomPage';
 import HomePage from '@/pages/home/HomePage';
 import LoginPage from '@/pages/login/LoginPage';
 import NotifyPage from '@/pages/notify/NotifyPage';
@@ -8,7 +8,8 @@ import ScrapPage from '@/pages/scrap/ScrapPage';
 import SearchPage from '@/pages/search/SearchPage';
 import SignupPage from '@/pages/signup/SignupPage';
 import WritePage from '@/pages/write/WritePage';
-import ChatRoomPage from '@/pages/chat/room/ChatRoomPage';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import LivePage from './pages/live/LivePage';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: '/write',
     element: <WritePage />,
+  },
+  {
+    path: '/live',
+    element: <LivePage />,
   },
 ]);
 function App() {
