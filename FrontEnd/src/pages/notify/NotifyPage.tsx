@@ -1,8 +1,12 @@
 import Header, { IHeaderInfo } from '@/components/@common/header';
 import NotifyItem, { IItem } from '@/components/notify/NotifyItem';
 import { icons } from '@/constants/icons';
+import { useLocation } from 'react-router-dom';
 
 const NotifyPage = () => {
+  const location = useLocation();
+  const prev = location.state.prev;
+
   // #TODO 실제 데이터로 추후에 수정해야함
   const notifyList: IItem[] = [
     {
@@ -37,6 +41,7 @@ const NotifyPage = () => {
     center: '알림',
     right_1: null,
     right_2: null,
+    prev: prev,
   };
 
   return (
