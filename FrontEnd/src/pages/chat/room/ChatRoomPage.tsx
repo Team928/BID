@@ -1,14 +1,14 @@
 // 미완성
 
+import Header, { IHeaderInfo } from "@/components/@common/header";
 import ChatLogs from "@/components/chat/ChatLogs";
 import MessageInput from "@/components/chat/MessageInput";
-import UserNameInput from "@/components/chat/UserNameInput";
+import { icons } from "@/constants/icons";
 import React, { useEffect, useRef, useState } from "react";
 
 
 const ChatRoomPage: React.FC = () => {
 
-  const [userNameInput, setUserNameInput] = useState("");
     const [userName, setUserName] = useState("");
     const [message, setMessage] = useState("");
     const [chatLogs, setChatLogs] = useState<string[]>([]);
@@ -51,39 +51,34 @@ const ChatRoomPage: React.FC = () => {
                 setMessage("");
             }
         };
+
+        // TODO: 실제 채팅방 참여 유저로 변경해야함
+        const info: IHeaderInfo = {
+            left: icons.BACK,
+            center: '중고짱좋아',
+            right_1: null,
+            right_2: null,
+          }
         return (
-          <div>
-              <h1>임시</h1>
-              <ChatLogs logs={chatLogs} />
-              {!userName ? (
-                  <form
-                  onSubmit={(e) => {
-                      e.preventDefault();
-                      if(userNameInput) {
-                          setUserName(userNameInput);
-                      }
-                  }}
-                  >
-                      <UserNameInput
-                          userNameInput={userNameInput}
-                          setUserNameInput={setUserNameInput}
-                          setUserName={setUserName} 
-                      />
-                  </form>
-              ) : (
-                  <form
-                  onSubmit={(e) => {
-                      e.preventDefault();
-                      sendMessage();
-                  }}
-                  >
-                      <MessageInput 
-                          message={message}
-                          setMessage={setMessage}
-                          sendMessage={() => sendMessage()}
-                      />
-                  </form>
-              )}
+            <div className="w-full h-screen">
+                <Header info={info} />
+                <div className="pt-12 pb-20">
+                    <ChatLogs />
+                    </div>
+                    <div>
+                        <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            sendMessage();
+                        }}>
+                            <MessageInput 
+                                message={message}
+                                setMessage={setMessage}
+                                sendMessage={() => sendMessage()}
+                            />
+                        </form>
+                    </div>
+                
           </div>
       );
     };
