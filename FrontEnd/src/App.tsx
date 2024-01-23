@@ -8,6 +8,7 @@ import ScrapPage from '@/pages/scrap/ScrapPage';
 import SearchPage from '@/pages/search/SearchPage';
 import SignupPage from '@/pages/signup/SignupPage';
 import WritePage from '@/pages/write/WritePage';
+import ChatRoomPage from '@/pages/chat/room/ChatRoomPage';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/chat',
     element: <ChatPage />,
+  },
+  {
+    path: '/chat/room',
+    element: <ChatRoomPage />,
   },
   {
     path: '/login',
