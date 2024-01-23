@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const APPLICATION_SERVER_URL = import.meta.env.NODE_ENV === 'production' ? '' : 'https://demos.openvidu.io/';
+const APPLICATION_SERVER_URL = import.meta.env.VITE_NODE_ENV === 'production' ? '' : 'https://demos.openvidu.io/';
 
 export const getToken = async (mySessionId: string) => {
   const sessionId = await createSession(mySessionId);
@@ -28,4 +28,3 @@ export const createToken = async (sessionId: string) => {
   );
   return response.data; // 토큰
 };
-
