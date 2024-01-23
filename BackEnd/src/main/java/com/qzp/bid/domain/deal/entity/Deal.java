@@ -1,9 +1,13 @@
 package com.qzp.bid.domain.deal.entity;
 
+import com.qzp.bid.domain.deal.dto.DealReq;
 import com.qzp.bid.domain.member.entity.Member;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,12 +19,23 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public abstract class Deal {
 
     @Id
@@ -34,9 +49,17 @@ public abstract class Deal {
     private String content;
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
+    @Enumerated(EnumType.STRING)
     private Category category;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> area = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY)
     private List<Image> images = new ArrayList<>();
+
+    public Deal(DealReq dealReq) {
+        this.title = dealReq.getTitle();
+        this.content = dealReq.getContent();
+        this.category = Category.valueOf(dealReq.getCategory().toUpperCase());
+        this.area = dealReq.getArea();
+    }
 }
