@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SaleController {
 
-    private final SaleService saleService;
+  private final SaleService saleService;
 
-    @PostMapping(value = "")
-    public ResponseEntity<ResultResponse> createGuestbook(@RequestBody SaleReq saleReq) {
-        saleService.createGuestbook(saleReq);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ResultResponse.of(ResultCode.CREATE_SALE_SUCCESS));
-    }
+  @PostMapping
+  public ResponseEntity<ResultResponse> createSale(@RequestBody SaleReq saleReq) {
+    saleService.createSale(saleReq);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ResultResponse.of(ResultCode.CREATE_SALE_SUCCESS));
+  }
 }

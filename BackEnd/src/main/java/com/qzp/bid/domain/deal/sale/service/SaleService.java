@@ -4,5 +4,5 @@ import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 
 public interface SaleService {
 
-    void createGuestbook(SaleReq saleReq);
+  void createSale(SaleReq saleReq);
 }
