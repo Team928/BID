@@ -1,35 +1,27 @@
 import { changeEngToKr } from '@/utils/changeCategorie';
 
-export interface ISaleSimpleRes {
-  id: number;
-  title: string;
-  categories: string;
-  startTime: string;
-  images: string;
-}
-
-const Hot = () => {
+const Live = () => {
   return (
     <>
-      <div className="py-4">
+      <div className="py-4 border-b border-[#D9D9D9]">
         <div className="px-BID_P">
-          <p className="font-bold text-lg">실시간 핫 경매</p>
-          <p className="text-sm text-BID_BLACK">조회, 관심, 입찰 급상승</p>
+          <p className="font-bold">라이브 진행 중</p>
+          <p className="text-xs text-BID_BLACK">현재 라이브가 진행중입니다</p>
         </div>
-        <div className="pl-4 py-4 flex flex-nowrap overflow-x-auto">
+        <div className="pl-4 py-4 flex flex-nowrap overflow-x-auto gap-2">
           {list.map(item => {
             return (
-              <div key={item.salePostSimpleRes.id} className="w-36 text-xs flex flex-col gap-2">
-                <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl"></div>
+              <div key={item.salePostSimpleRes.id} className="w-44 text-xs flex flex-col gap-1">
+                <div className="w-44 h-32 bg-BID_LIGHT_GRAY relative">
+                  <div className="absolute top-3 left-3 text-center bg-[#FF0000] pr-[0.4rem] pl-1 rounded-sm">
+                    <p className="text-white text-sm font-bold italic">LIVE</p>
+                  </div>
+                </div>
                 <div className="px-1 flex flex-col gap-1">
                   <p className=" text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(item.salePostSimpleRes.categories)}</p>
-                  <p className=" w-32 truncate whitespace-normal leading-4 line-clamp-2">
+                  <p className=" w-44 truncate whitespace-normal leading-4 line-clamp-2">
                     {item.salePostSimpleRes.title}
                   </p>
-                  <div className="">
-                    <p className="font-bold text-sm">{item.bid}원</p>
-                    <p className="text-BID_SUB_GRAY">현재 입찰가</p>
-                  </div>
                 </div>
               </div>
             );
@@ -40,7 +32,7 @@ const Hot = () => {
   );
 };
 
-export default Hot;
+export default Live;
 
 const list = [
   {
