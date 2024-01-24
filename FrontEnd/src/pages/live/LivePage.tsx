@@ -1,4 +1,5 @@
 import CameraBox from '@/components/live/CameraBox';
+import LiveOptionTab from '@/components/live/LiveOptionTab';
 import { getToken } from '@/service/live';
 import { Device, OpenVidu, Publisher, Session, Subscriber } from 'openvidu-browser';
 import { ChangeEvent, Component } from 'react';
@@ -198,30 +199,30 @@ class LivePage extends Component<{}, ISessionInfo> {
     });
   }
 
-  // handleToggle(type: string) {
-  //   if (this.state.publisher) {
-  //     switch (type) {
-  //       case 'camera':
-  //         this.setState({ onCamera: !this.state.onCamera }, () => {
-  //           console.log(this.state.publisher);
-  //           this.state.publisher?.publishVideo(this.state.onCamera);
-  //         });
-  //         break;
+  handleToggle(type: string) {
+    if (this.state.publisher) {
+      switch (type) {
+        case 'camera':
+          this.setState({ onCamera: !this.state.onCamera }, () => {
+            console.log(this.state.publisher);
+            this.state.publisher?.publishVideo(this.state.onCamera);
+          });
+          break;
 
-  //       case 'speaker':
-  //         this.setState({ onSpeak: !this.state.onSpeak }, () => {
-  //           this.state.subscribers.forEach(s => s.subscribeToAudio(this.state.onSpeak));
-  //         });
-  //         break;
+        case 'speaker':
+          this.setState({ onSpeak: !this.state.onSpeak }, () => {
+            this.state.subscribers.forEach(s => s.subscribeToAudio(this.state.onSpeak));
+          });
+          break;
 
-  //       case 'mike':
-  //         this.setState({ onMike: !this.state.onMike }, () => {
-  //           this.state.publisher?.publishAudio(this.state.onMike);
-  //         });
-  //         break;
-  //     }
-  //   }
-  // }
+        case 'mike':
+          this.setState({ onMike: !this.state.onMike }, () => {
+            this.state.publisher?.publishAudio(this.state.onMike);
+          });
+          break;
+      }
+    }
+  }
 
   render() {
     const mySessionId = this.state.mySessionId;
@@ -262,14 +263,12 @@ class LivePage extends Component<{}, ISessionInfo> {
               </form>
             </div>
           </div>
-        ) : null}
-
-        {/* 라이브 방 입장 */}
-        {this.state.session !== undefined ? (
-          <div>
+        ) : (
+          // 라이브 방송 중
+          <div className="bg-black/80 w-screen h-screen relative">
             <div>
               <div>{mySessionId}</div>
-              <input onClick={this.leaveSession} value="Leave session" />
+              <button onClick={this.leaveSession} value="Leave session" />
             </div>
 
             {/* 전체 사람 띄우기 */}
@@ -291,8 +290,9 @@ class LivePage extends Component<{}, ISessionInfo> {
                   </div>
                 ))}
             </div>
+            <LiveOptionTab />
           </div>
-        ) : null}
+        )}
       </div>
     );
   }
