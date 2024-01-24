@@ -1,5 +1,5 @@
 package com.qzp.bid.domain.deal.entity;
 
 public enum Category {
-    FASSION, BEAUTY, CHILD, LIVING, DIGITAL, SPORTS, BOOK, TOY, PET, ETC
+    ALL, FASSION, BEAUTY, CHILD, LIVING, DIGITAL, BOOK, TOY, PET, ETC
 }
