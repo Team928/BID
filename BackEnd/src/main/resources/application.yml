@@ -40,3 +40,10 @@ springdoc: #swagger
       enabled: true
   cache:
     disabled: true
+
+#따로 뺄 예정
+jwt:
+  header: Authorization
+  secret: 926D96C90030DD58429D2751AC1BDBBC
+  token-validity-time: 86400
+  token-refresh-time: 30000
