@@ -1,6 +1,8 @@
 package com.qzp.bid.domain.deal.sale.service;
 
+import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
+import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
 import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
@@ -39,13 +41,19 @@ public class SaleServiceImpl implements SaleService {
     public void updateSale(Long saleId, SaleUpdateReq saleUpdateReq) { // TODO: 권한조회 추가 필요
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
-        if(!sale.getStatus().equals(DealStatus.BEFORE))
+        if (!sale.getStatus().equals(DealStatus.BEFORE)) {
             throw new BusinessException(ErrorCode.UPDATE_SALE_FAIL);
+        }
         sale.setImmediatePrice(saleUpdateReq.getImmediatePrice());
     }
 
     @Override
     public void deleteSale(Long saleId) { // TODO: 권한검사,삭제 시 BID처리 수정 필요
         saleRepository.deleteById(saleId);
+    }
+
+    @Override
+    public SaleListPage getSales(SearchParam searchParam) {
+        return saleRepository.getSaleListPageBySearchParam(searchParam);
     }
 }
