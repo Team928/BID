@@ -27,6 +27,9 @@ export default {
         modalOn: 'modalOn 0.5s ease-in-out',
         modalOff: 'modalOff 0.5s ease-in',
       },
+      padding: {
+        BID_P: '1rem',
+      },
     },
   },
   plugins: [],
