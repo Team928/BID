@@ -17,7 +17,8 @@ public enum ErrorCode {
     FORBIDDEN_ERROR(403, "작업을 수행하기 위한 권한이 없습니다."),
 
     // sale
-    GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다.");
+    GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다."),
+    UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),;
 
 
     private final int status;
