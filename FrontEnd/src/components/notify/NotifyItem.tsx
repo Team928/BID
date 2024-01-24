@@ -12,7 +12,7 @@ const NotifyItem = (props: { item: IItem }) => {
 
   return (
     <div className="flex gap-4 px-6 py-3 border-b border-[#D9D9D9]">
-      <div>
+      <div className="cursor-pointer">
         <AiOutlineNotification size={'1.8rem'} color="#545454" />
       </div>
       <div className="flex flex-col gap-1">
