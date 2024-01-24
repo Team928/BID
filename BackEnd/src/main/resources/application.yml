@@ -5,10 +5,12 @@ spring:
     group:
       local:
         - db-local
+        - oauth2
       server:
         - db-server
     include:
       - db
+      - oauth2
   datasource:
     driver-class-name: ${db.driver}
     url: ${db.url}
