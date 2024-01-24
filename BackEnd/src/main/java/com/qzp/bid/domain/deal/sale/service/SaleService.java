@@ -10,4 +10,6 @@ public interface SaleService {
     SaleRes getSale(Long saleId);
 
     void updateSale(Long saleId, int immediatePrice);
+
+    void deleteSale(Long saleId);
 }

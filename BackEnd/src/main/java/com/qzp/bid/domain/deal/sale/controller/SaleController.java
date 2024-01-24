@@ -1,6 +1,5 @@
 package com.qzp.bid.domain.deal.sale.controller;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
 import com.qzp.bid.domain.deal.sale.service.SaleService;
@@ -9,6 +8,7 @@ import com.qzp.bid.global.result.ResultResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,5 +41,11 @@ public class SaleController {
     public ResponseEntity<ResultResponse> updateSale(@PathVariable Long saleId, @RequestBody int immediatePrice) {
         saleService.updateSale(saleId, immediatePrice);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_SALE_SUCCESS));
+    }
+
+    @DeleteMapping("/{saleId}")
+    public ResponseEntity<ResultResponse> deleteSale(@PathVariable Long saleId) {
+        saleService.deleteSale(saleId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_SALE_SUCCESS));
     }
 }

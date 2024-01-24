@@ -42,4 +42,9 @@ public class SaleServiceImpl implements SaleService {
             throw new BusinessException(ErrorCode.UPDATE_SALE_FAIL);
         sale.setImmediatePrice(immediatePrice);
     }
+
+    @Override
+    public void deleteSale(Long saleId) { // TODO: 권한검사,삭제 시 BID처리 수정 필요
+        saleRepository.deleteById(saleId);
+    }
 }
