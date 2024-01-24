@@ -9,6 +9,9 @@ export default {
         BID_LIGHT_GRAY: '#F4F4F4',
         BID_SUB_GRAY: '#ABABAB',
       },
+      padding: {
+        BID_P: '1rem',
+      },
     },
   },
   plugins: [],
