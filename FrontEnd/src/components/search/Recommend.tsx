@@ -8,7 +8,7 @@ const Recommend = () => {
     '뉴발란스996',
   ];
   return (
-    <div className="pt-8">
+    <div className="py-4">
       <p className="font-bold text-xl">추천검색어</p>
       <div className="flex flex-wrap pt-5 gap-4 text-sm">
         {suggestionKeyword.map((item, index) => {

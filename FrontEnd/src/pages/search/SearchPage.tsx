@@ -19,7 +19,7 @@ const SearchPage = () => {
           className="p-3 outline-none border w-full rounded-lg bg-[#F4F4F4]"
         ></input>
         <div onClick={() => navigate(prev)} className="pl-4">
-          <p className="font-bold w-8">취소</p>
+          <p className="cursor-pointer font-bold w-8">취소</p>
         </div>
       </div>
       <div className="pt-16 px-6">

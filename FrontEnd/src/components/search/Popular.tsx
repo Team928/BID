@@ -22,7 +22,7 @@ const Popular = () => {
     '칼하트',
   ];
   return (
-    <div className="pt-8">
+    <div className="py-4">
       <div className="flex justify-between">
         <p className="font-bold text-xl">인기검색어</p>
         <p className="text-[#ABABAB]">01.23 10:00 기준</p>

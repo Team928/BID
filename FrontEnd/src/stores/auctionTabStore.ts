@@ -6,7 +6,7 @@ interface ITab {
 }
 
 const useTabStore = create<ITab>(set => ({
-  tab: 'buy',
+  tab: 'sale',
   setTab: newTab => set({ tab: newTab }),
 }));
 
