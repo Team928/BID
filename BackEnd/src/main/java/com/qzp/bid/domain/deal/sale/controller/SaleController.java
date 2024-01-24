@@ -2,6 +2,7 @@ package com.qzp.bid.domain.deal.sale.controller;
 
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
+import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
 import com.qzp.bid.domain.deal.sale.service.SaleService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
@@ -38,8 +39,8 @@ public class SaleController {
     }
 
     @PatchMapping("/{saleId}")
-    public ResponseEntity<ResultResponse> updateSale(@PathVariable Long saleId, @RequestBody int immediatePrice) {
-        saleService.updateSale(saleId, immediatePrice);
+    public ResponseEntity<ResultResponse> updateSale(@PathVariable Long saleId, @RequestBody SaleUpdateReq saleUpdateReq) {
+        saleService.updateSale(saleId, saleUpdateReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_SALE_SUCCESS));
     }
 

@@ -3,6 +3,7 @@ package com.qzp.bid.domain.deal.sale.service;
 import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
+import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.global.result.error.ErrorCode;
@@ -35,12 +36,12 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public void updateSale(Long saleId, int immediatePrice) { // TODO: 권한조회 추가 필요
+    public void updateSale(Long saleId, SaleUpdateReq saleUpdateReq) { // TODO: 권한조회 추가 필요
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
         if(!sale.getStatus().equals(DealStatus.BEFORE))
             throw new BusinessException(ErrorCode.UPDATE_SALE_FAIL);
-        sale.setImmediatePrice(immediatePrice);
+        sale.setImmediatePrice(saleUpdateReq.getImmediatePrice());
     }
 
     @Override

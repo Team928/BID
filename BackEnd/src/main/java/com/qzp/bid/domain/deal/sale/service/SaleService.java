@@ -2,6 +2,7 @@ package com.qzp.bid.domain.deal.sale.service;
 
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
+import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
 
 public interface SaleService {
 
@@ -9,7 +10,7 @@ public interface SaleService {
 
     SaleRes getSale(Long saleId);
 
-    void updateSale(Long saleId, int immediatePrice);
+    void updateSale(Long saleId, SaleUpdateReq saleUpdateReq);
 
     void deleteSale(Long saleId);
 }
