@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.deal.dto;
 
+import com.qzp.bid.domain.deal.entity.Category;
 import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class DealRes {
     private String title;
     private String content;
     private String writer;
-    private String category;
+    private Category category;
     private List<String> area;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
@@ -27,7 +28,7 @@ public class DealRes {
         this.title = sale.getTitle();
         this.content = sale.getContent();
         //this.writer = sale.getWriter().toString(); // TODO: member 추가 후 수정 필요
-        this.category = String.valueOf(sale.getCategory());
+        this.category = sale.getCategory();
         this.area = sale.getArea();
         this.createTime = sale.getCreateTime();
         this.updateTime = sale.getUpdateTime();
