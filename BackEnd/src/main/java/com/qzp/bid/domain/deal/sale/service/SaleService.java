@@ -8,4 +8,6 @@ public interface SaleService {
     void createSale(SaleReq saleReq);
 
     SaleRes getSale(Long saleId);
+
+    void deleteSale(Long saleId);
 }

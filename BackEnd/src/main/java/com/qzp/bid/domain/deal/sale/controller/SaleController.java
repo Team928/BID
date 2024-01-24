@@ -8,6 +8,7 @@ import com.qzp.bid.global.result.ResultResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +34,11 @@ public class SaleController {
     public ResponseEntity<ResultResponse> getSale(@PathVariable Long saleId) {
         SaleRes saleRes = saleService.getSale(saleId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_SALE_SUCCESS, saleRes));
+    }
+
+    @DeleteMapping("/{saleId}")
+    public ResponseEntity<ResultResponse> deleteSale(@PathVariable Long saleId) {
+        saleService.deleteSale(saleId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_SALE_SUCCESS));
     }
 }
