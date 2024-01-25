@@ -3,7 +3,7 @@ import { changeEngToKr } from '@/utils/changeCategorie';
 const Live = () => {
   return (
     <>
-      <div className="py-4 border-b border-[#D9D9D9]">
+      <div className="pt-4 border-b border-[#D9D9D9]">
         <div className="px-BID_P">
           <p className="font-bold">라이브 진행 중</p>
           <p className="text-xs text-BID_BLACK">현재 라이브가 진행중입니다</p>
