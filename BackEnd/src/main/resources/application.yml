@@ -6,11 +6,13 @@ spring:
       local:
         - db-local
         - oauth2
+        - app
       server:
         - db-server
     include:
       - db
       - oauth2
+      - app
   datasource:
     driver-class-name: ${db.driver}
     url: ${db.url}
@@ -41,9 +43,8 @@ springdoc: #swagger
   cache:
     disabled: true
 
-#따로 뺄 예정
 jwt:
   header: Authorization
-  secret: 926D96C90030DD58429D2751AC1BDBBC
-  token-validity-time: 86400
+  secret: ${auth.tokenSecret}
+  token-validity-time: ${auth.tokenExpirationMsec}
   token-refresh-time: 30000

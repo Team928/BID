@@ -37,13 +37,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String oauthClientName = userRequest.getClientRegistration().getClientName(); // client 이름
 
-        try {
-            System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
-            log.info(oauthClientName);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
         String email = null;
 
         //네이버 응답 형식
@@ -59,7 +52,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 
         Member member = null;
         if (oauthClientName.equals("naver")) {
-            System.out.println("naver...");
 
             Map<String, String> responseMap = (Map<String, String>) oAuth2User.getAttributes()
                 .get("response");
