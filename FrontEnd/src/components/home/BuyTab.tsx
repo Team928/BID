@@ -1,5 +1,13 @@
+import BuySoon from './buy/BuySoon';
+import Latest from './buy/Latest';
+
 const BuyTab = () => {
-  return <div>역경매탭입니다</div>;
+  return (
+    <div>
+      <Latest />
+      <BuySoon />
+    </div>
+  );
 };
 
 export default BuyTab;

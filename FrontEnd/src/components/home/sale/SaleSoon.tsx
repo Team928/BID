@@ -1,6 +1,6 @@
 import AuctionItem, { ISaleSimpleRes } from '../AuctionItem';
 
-const Soon = () => {
+const SaleSoon = () => {
   return (
     <>
       <div className="py-4 border-b border-[#D9D9D9]">
@@ -18,7 +18,7 @@ const Soon = () => {
   );
 };
 
-export default Soon;
+export default SaleSoon;
 
 const list: ISaleSimpleRes[] = [
   {
