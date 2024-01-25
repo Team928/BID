@@ -5,10 +5,14 @@ spring:
     group:
       local:
         - db-local
+        - oauth2
+        - app
       server:
         - db-server
     include:
       - db
+      - oauth2
+      - app
   datasource:
     driver-class-name: ${db.driver}
     url: ${db.url}
@@ -38,3 +42,9 @@ springdoc: #swagger
       enabled: true
   cache:
     disabled: true
+
+jwt:
+  header: Authorization
+  secret: ${auth.tokenSecret}
+  token-validity-time: ${auth.tokenExpirationMsec}
+  token-refresh-time: 30000
