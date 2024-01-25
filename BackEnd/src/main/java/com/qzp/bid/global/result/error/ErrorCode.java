@@ -18,7 +18,8 @@ public enum ErrorCode {
 
     // sale
     GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다."),
-    UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),;
+    UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),
+    ;
 
 
     private final int status;

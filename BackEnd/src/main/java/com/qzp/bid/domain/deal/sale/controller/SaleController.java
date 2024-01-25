@@ -1,5 +1,7 @@
 package com.qzp.bid.domain.deal.sale.controller;
 
+import com.qzp.bid.domain.deal.dto.SearchParam;
+import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
 import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
@@ -39,7 +41,8 @@ public class SaleController {
     }
 
     @PatchMapping("/{saleId}")
-    public ResponseEntity<ResultResponse> updateSale(@PathVariable Long saleId, @RequestBody SaleUpdateReq saleUpdateReq) {
+    public ResponseEntity<ResultResponse> updateSale(@PathVariable Long saleId,
+        @RequestBody SaleUpdateReq saleUpdateReq) {
         saleService.updateSale(saleId, saleUpdateReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_SALE_SUCCESS));
     }
@@ -48,5 +51,11 @@ public class SaleController {
     public ResponseEntity<ResultResponse> deleteSale(@PathVariable Long saleId) {
         saleService.deleteSale(saleId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_SALE_SUCCESS));
+    }
+
+    @GetMapping
+    public ResponseEntity<ResultResponse> getSales(SearchParam searchParam) {
+        SaleListPage saleListPage = saleService.getSales(searchParam);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_SALE_SUCCESS, saleListPage));
     }
 }

@@ -59,7 +59,7 @@ public abstract class Deal {
     public Deal(DealReq dealReq) {
         this.title = dealReq.getTitle();
         this.content = dealReq.getContent();
-        this.category = Category.valueOf(dealReq.getCategory().toUpperCase());
+        this.category = dealReq.getCategory();
         this.area = dealReq.getArea();
     }
 }
