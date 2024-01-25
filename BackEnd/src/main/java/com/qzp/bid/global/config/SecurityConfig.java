@@ -36,7 +36,7 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/oauth2/**").permitAll()
+                .requestMatchers("/oauth2/**", "/member/**").permitAll()
                 .anyRequest().authenticated()); //모든 사용자에 대해서 인증 요청
 
         return http.build();

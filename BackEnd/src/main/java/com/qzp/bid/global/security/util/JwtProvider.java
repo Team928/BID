@@ -51,11 +51,12 @@ public class JwtProvider {
         return new LoginTokenDto(email, generateAccessToken(email, getAuthorities(authentication)), generateRefreshToken(email));
     }
 
-    //access 토큰, refresh 토큰 생성
+    //존재하는 유저의 access 토큰, refresh 토큰 생성
     public LoginTokenRes getLoginResponseExist(String email, Authentication authentication){
         return new LoginTokenRes(email, generateAccessToken(email, getAuthorities(authentication)), generateRefreshToken(email));
     }
 
+    //권한 정보 가져오기 (GUEST, USER, ADMIN)
     public String getAuthorities(Member member){
         return member.getRole().stream()
             .map(role -> new SimpleGrantedAuthority(role.name()).getAuthority())
@@ -114,18 +115,16 @@ public class JwtProvider {
         }
     }
 
-    ////////////////////////////////////////////////////////
+    //토큰을 기반으로 사용자 정보를 반환 해주는 메서드
+    public String parseTokenToUserInfo(String token) {
+        return Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .getSubject();
+    }
 
-//    //토큰을 기반으로 사용자 정보를 반환 해주는 메서드
-//    public String parseTokenToUserInfo(String token) {
-//        return Jwts.parserBuilder()
-//            .setSigningKey(createKey())
-//            .build()
-//            .parseClaimsJws(token)
-//            .getBody()
-//            .getSubject();
-//    }
-//
 //    //토큰의 유효성을 체크하고 Claims 정보를 반환받는 메서드
 //    public Claims validateAndGetClaims(String token) {
 //        try {
