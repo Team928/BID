@@ -1,3 +1,4 @@
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ChatPage from '@/pages/chat/ChatPage';
 import ChatRoomPage from '@/pages/chat/room/ChatRoomPage';
 import HomePage from '@/pages/home/HomePage';
@@ -8,13 +9,21 @@ import ScrapPage from '@/pages/scrap/ScrapPage';
 import SearchPage from '@/pages/search/SearchPage';
 import SignupPage from '@/pages/signup/SignupPage';
 import WritePage from '@/pages/write/WritePage';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LivePage from './pages/live/LivePage';
+import BuyCategoryPage from './pages/home/buy/BuyCategoryPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <HomePage />,
+  },
+  {
+    path: '/buy/:category',
+    element: <BuyCategoryPage />,
+  },
+  {
+    path: '/sale/:category',
+    element: '',
   },
   {
     path: '/chat',
