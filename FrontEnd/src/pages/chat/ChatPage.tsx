@@ -1,6 +1,6 @@
 import Header, { IHeaderInfo } from '@/components/@common/header';
 import ChatItem, { IItem } from '@/components/chat/ChatItem';
-import { icons } from '@/constants/icons';
+import Bottom from '@/components/@common/Bottom';
 
 const ChatPage = () => {
   // #TODO 실제 데이터로 추후에 수정해야함
@@ -23,20 +23,25 @@ const ChatPage = () => {
   ];
 
   const info: IHeaderInfo = {
-    left: icons.BACK,
+    // 채팅목록 페이지는 하단바로 이동하므로 left에 null
+    left: null,
     center: '채팅',
     right_1: null,
     right_2: null,
+    prev: '/'
   }
   return (
-    <div className="w-full h-screen">
-      <Header info={info} />
-      <div className="pt-12">
-        {chatList.map((item, index) => {
-          return <ChatItem key={index} item={item} />;
-        })}
+    <>
+      <div className="w-full h-screen">
+        <Header info={info} />
+        <div className="pt-12">
+          {chatList.map((item, index) => {
+            return <ChatItem key={index} item={item} />;
+          })}
+        </div>
       </div>
-    </div>
+    <Bottom />
+    </>
   );
 };
 

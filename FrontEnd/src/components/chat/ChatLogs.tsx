@@ -1,5 +1,7 @@
 import React from "react";
 
+// const ChatLogs: React.FC<{ logs: string[] }> = ({ logs }) => {
+  
 const ChatLogs: React.FC = () => {
 
     // TODO 나중에 실제 데이터로 수정해야함
