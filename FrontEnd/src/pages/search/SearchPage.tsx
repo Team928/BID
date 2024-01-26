@@ -12,7 +12,7 @@ const SearchPage = () => {
 
   return (
     <>
-      <div className="bg-white w-full px-6 h-16 flex items-center border-b border-[#D9D9D9] fixed top-0">
+      <div className="bg-white w-full px-BID_P h-16 flex items-center border-b border-[#D9D9D9] fixed top-0">
         <input
           type="text"
           placeholder="제목으로 검색해보세요"
@@ -22,7 +22,7 @@ const SearchPage = () => {
           <p className="cursor-pointer font-bold w-8">취소</p>
         </div>
       </div>
-      <div className="pt-16 px-6">
+      <div className="pt-16 px-BID_P">
         <Recommend />
         <Popular />
       </div>
