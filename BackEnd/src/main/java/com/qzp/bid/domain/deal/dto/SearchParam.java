@@ -1,5 +1,7 @@
 package com.qzp.bid.domain.deal.dto;
 
+import com.qzp.bid.domain.deal.entity.Category;
+import com.qzp.bid.domain.deal.entity.DealStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +11,9 @@ public class SearchParam {
 
     int page;
     int size;
-    String catg;
+    Category catg;
     String area;
-    String order;
-    String status;
+    String order; // 기본 최신순 desc / 마감임박 or 시작임박  asc
+    DealStatus status;
     String keyword;
 }
