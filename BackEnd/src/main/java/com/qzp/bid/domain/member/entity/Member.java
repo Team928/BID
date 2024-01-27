@@ -29,6 +29,7 @@ import org.springframework.data.annotation.CreatedDate;
 public class Member {
 
     @OneToMany
+    @Builder.Default
     List<PointHistory> pointHistory = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +39,14 @@ public class Member {
     @CreatedDate
     private LocalDateTime createTime;
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> area;
+    @Builder.Default
+    private List<String> area = new ArrayList<>();
     private double score;
     private long point;
     private long holdingPoint;
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private Set<Role> role = new HashSet<>();
     private String profileImage;
 
