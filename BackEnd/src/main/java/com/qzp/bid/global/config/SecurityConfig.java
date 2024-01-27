@@ -31,14 +31,15 @@ public class SecurityConfig {
         http
             .oauth2Login(oauth2 -> oauth2
                 .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/code/*"))
-                .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService)) //로그인 성공 시 CustomOAuthUserServiceImpl에서 후처리
+                .userInfoEndpoint(endpoint -> endpoint.userService(
+                    oAuth2UserService)) //로그인 성공 시 CustomOAuthUserServiceImpl에서 후처리
                 .successHandler(oAuth2SuccessHandler));
 
         http
             .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/oauth2/**", "/member/**").permitAll()
+                .requestMatchers("/oauth2/**", "/member/**", "/swagger-resources/**",
+                    "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**").permitAll()
                 .anyRequest().authenticated()); //모든 사용자에 대해서 인증 요청
-
         return http.build();
     }
 }
