@@ -1,25 +1,32 @@
 package com.qzp.bid.domain.chat.service;
 
 
+import com.qzp.bid.domain.chat.entity.Chat;
 import com.qzp.bid.domain.chat.entity.ChatRoom;
 import com.qzp.bid.domain.chat.repository.ChatRoomRepository;
 import com.qzp.bid.domain.deal.entity.Deal;
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.member.entity.Member;
+import com.qzp.bid.domain.member.repository.MemberRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 @Service
 public class ChatServiceImpl implements ChatService {
 
+    private final SimpMessageSendingOperations template;
     private final ChatRoomRepository chatRoomRepository;
-
+    private final MemberRepository memberRepository;
     private final DealRepository dealRepository;
 
     @Override
@@ -38,17 +45,21 @@ public class ChatServiceImpl implements ChatService {
             }
 
             if (member.isPresent()) {
-                long randomId = chatRoomRepository.count() + 1;
-                String name = deal.get().getTitle();
-                String hostId = deal.get().getWriter().getNickname();
-                String guestId = member.get().getNickname();
+                String roomName = deal.get().getTitle();
+                long hostId = deal.get().getWriter().getId();
+                long guestId = member.get().getId();
 
-                ChatRoom chatRoom = new ChatRoom().create(randomId, name, hostId, guestId);
+                ChatRoom chatRoom = ChatRoom.builder()
+                    .dealId(dealId)
+                    .roomName(roomName)
+                    .hostId(hostId)
+                    .guestId(guestId)
+                    .build();
+
                 chatRoomRepository.save(chatRoom);
             }
         }
-
-
     }
+
 }
 

@@ -4,11 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class ChatRoom {
 
@@ -17,18 +25,11 @@ public class ChatRoom {
     private long id;
     private String roomName;
     private long dealId;
-    private String hostId;
-    private String guestId;
-    private LocalDateTime time;
-
-    public ChatRoom create(Long roomId, String roomName, String hostId, String guestId) {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.id = roomId;
-        chatRoom.roomName = roomName;
-        chatRoom.hostId = hostId;
-        chatRoom.guestId = guestId;
-        chatRoom.time = LocalDateTime.now();
-        return chatRoom;
-    }
+    private long hostId;
+    private long guestId;
+    @CreationTimestamp
+    private LocalDateTime createTime;
+    @UpdateTimestamp
+    private LocalDateTime updateTime;
 
 }
