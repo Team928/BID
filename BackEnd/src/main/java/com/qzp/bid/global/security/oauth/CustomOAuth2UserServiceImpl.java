@@ -39,17 +39,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 
         String email = null;
 
-        //네이버 응답 형식
-            /*
-            {"resultcode":"00",
-             "message":"success",
-             "response":{
-                "id":"OhG07Eo61lTZo7FfQRMkGzgjOHBvoO0Ez44cp72jaYI",
-                "email":"gmldnjs427@naver.com","name":"�����"
-                }
-            }
-            */
-
         Member member = null;
         if (oauthClientName.equals("naver")) {
 
@@ -66,9 +55,10 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
             .collect(Collectors.toList());
 
         Map<String, Object> map = new HashMap<>();
-        map.put("email", email);
+        map.put("id", member.getId());
 
-        return new DefaultOAuth2User(authorities, map ,"email");
+        // DefaultOAuth2User(사용자가 가진 권한 목록, 사용자 속성을 담는 맵, 사용자 이름의 속성 키)
+        return new DefaultOAuth2User(authorities, map ,"id");
     }
 
 

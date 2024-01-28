@@ -1,21 +1,32 @@
 package com.qzp.bid.global.config;
 
+import com.qzp.bid.global.security.filter.JWTFilter;
 import com.qzp.bid.global.security.oauth.CustomOAuth2UserServiceImpl;
 import com.qzp.bid.global.security.oauth.OAuth2SuccessHandler;
+import com.qzp.bid.global.security.util.JwtProvider;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private String[] whiteList = {"/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
     private final CustomOAuth2UserServiceImpl oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final RedisTemplate redisTemplate;
+    private final JwtProvider jwtProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -25,6 +36,9 @@ public class SecurityConfig {
             .formLogin((login) -> login.disable());
         http
             .httpBasic((basic) -> basic.disable());
+
+        http
+            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         //userInfoEndpoint 설정
         // -> 데이터를 받을 수 있는 userdetail service를 등록해주는 endpoint라는 뜻
@@ -36,9 +50,27 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/oauth2/**", "/member/**").permitAll()
-                .anyRequest().authenticated()); //모든 사용자에 대해서 인증 요청
+                .requestMatchers(whiteList).permitAll()
+                .anyRequest().authenticated() //모든 사용자에 대해서 인증 요청
+            );
+
+        http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
 
         return http.build();
+    }
+
+    public JWTFilter jwtFilter(){
+        return new JWTFilter(jwtProvider, redisTemplate);
+    }
+
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

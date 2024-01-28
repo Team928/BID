@@ -14,8 +14,20 @@ public enum ErrorCode {
     HTTP_MESSAGE_NOT_READABLE(400, "request message body가 없거나, 값 타입이 올바르지 않습니다."),
     HTTP_HEADER_INVALID(400, "request header가 유효하지 않습니다."),
     ENTITY_NOT_FOUNT(500, "존재하지 않는 Entity입니다."),
-    FORBIDDEN_ERROR(403, "작업을 수행하기 위한 권한이 없습니다.");
+    FORBIDDEN_ERROR(403, "작업을 수행하기 위한 권한이 없습니다."),
 
+    //JWT
+    JWT_INVALID(401, "유효하지 않은 토큰입니다."),
+    JWT_BADTYPE(401, "Bearer 타입 토큰이 아닙니다."),
+    JWT_EXPIRED(403, "만료된 토큰입니다."),
+    JWT_MALFORM(401, "토큰값이 올바르지 않습니다."),
+    BLACK_TOKEN(401,"접근이 차단된 토큰입니다."),
+    TOKEN_ALIVE(400,  "유효기간이 만료되지 않은 토큰입니다."),
+    REFRESH_INVALID(400,"리프레시 토큰이 유효하지 않습니다."),
+
+    //Member
+    MEMBER_ID_NOT_EXIST(400, "회원 id가 존재하지 않습니다."),
+    REGISTER_FAIL(400, "회원가입에 실패하였습니다.");
 
     private final int status;
     private final String message;
