@@ -1,7 +1,7 @@
 package com.qzp.bid.domain.deal.mapper;
 
 import com.qzp.bid.domain.deal.dto.DealRes;
-import com.qzp.bid.domain.deal.sale.entity.Sale;
+import com.qzp.bid.domain.deal.entity.Deal;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -11,5 +11,5 @@ public interface DealMapper {
 
     @Mapping(source = "writer", target = "writer", ignore = true)
     @Mapping(source = "images", target = "images", ignore = true)
-    DealRes toDealRes(Sale sale);
+    DealRes toDealRes(Deal deal);
 }
