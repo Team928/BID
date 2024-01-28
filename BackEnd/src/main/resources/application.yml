@@ -27,6 +27,10 @@ spring:
         format_sql: true
     show-sql: true
 
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
 
 springdoc: #swagger
   packages-to-scan: com.qzp.bid
@@ -47,4 +51,4 @@ jwt:
   header: Authorization
   secret: ${auth.tokenSecret}
   token-validity-time: ${auth.tokenExpirationMsec}
-  token-refresh-time: 30000
+  token-refresh-time: ${auth.tokenExpirationMsec}
