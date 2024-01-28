@@ -82,7 +82,10 @@ public class ChatServiceImpl implements ChatService {
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), res);
     }
 
-
+    @Override
+    public List<ChatRoom> findChatRooms(Long userId) {
+        return chatRoomRepository.findAllByGuestIdOrHostIdOrderByCreateTimeDesc(userId, userId);
+    }
 
 
 }
