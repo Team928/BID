@@ -34,4 +34,9 @@ public class PurchaseServiceImpl implements PurchaseService {
             .orElseThrow(() -> new BusinessException(GET_PURCHASE_FAIL));
         return purchaseMapper.toPurchaseRes(purchase);
     }
+
+    @Override
+    public void deletePurchase(Long purchaseId) {
+        purchaseRepository.deleteById(purchaseId);
+    }
 }

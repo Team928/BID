@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,5 +39,12 @@ public class PurchaseController {
     public ResponseEntity<ResultResponse> getPurchase(@PathVariable Long purchaseId) {
         PurchaseRes purchaseRes = purchaseService.getPurchase(purchaseId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_PURCHASE_SUCCESS, purchaseRes));
+    }
+
+    @Operation(summary = "판매글 삭제")
+    @DeleteMapping("/{purchaseId}")
+    public ResponseEntity<ResultResponse> deletePurchase(@PathVariable Long purchaseId) {
+        purchaseService.deletePurchase(purchaseId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_PURCHASE_SUCCESS));
     }
 }

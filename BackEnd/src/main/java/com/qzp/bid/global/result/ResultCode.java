@@ -20,7 +20,9 @@ public enum ResultCode {
 
     //purchase
     CREATE_PURCHASE_SUCCESS(201, "구매글 생성에 성공하였습니다."),
-    GET_PURCHASE_SUCCESS(200, "구매글 조회에 성공하였습니다.");
+    GET_PURCHASE_SUCCESS(200, "구매글 조회에 성공하였습니다."),
+    DELETE_PURCHASE_SUCCESS(200, "구매글 삭제에 성공하였습니다."),
+    ;
 
 
     private final int status;
