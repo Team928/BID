@@ -2,7 +2,6 @@ package com.qzp.bid.domain.chat.entity;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,10 +18,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "chat")
 public class Chat {
 
-    private long id;
     private String sender;
+    private long senderId;
     private long roomId;
-    private LocalDateTime time;
+    private String createTime;
     private String message;
     @Enumerated(EnumType.STRING)
     private ChatType type;
