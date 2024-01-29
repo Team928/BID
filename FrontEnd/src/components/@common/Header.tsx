@@ -22,7 +22,7 @@ const Header = (props: { info: IHeaderInfo }) => {
           <div className="cursor-pointer">
             <img
               onClick={() =>
-                navigate('search', {
+                navigate('/search', {
                   state: {
                     prev: prev,
                   },
@@ -36,7 +36,7 @@ const Header = (props: { info: IHeaderInfo }) => {
           <div className="cursor-pointer">
             <img
               onClick={() =>
-                navigate('notify', {
+                navigate('/notify', {
                   state: {
                     prev: prev,
                   },

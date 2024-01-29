@@ -1,9 +1,10 @@
 import { PiChatsCircle } from 'react-icons/pi';
 import { PiUser } from 'react-icons/pi';
 import { GoHome } from 'react-icons/go';
-import { IoBookmarksOutline } from 'react-icons/io5';
 import { PiPencilSimpleLine } from 'react-icons/pi';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BsSuitHeart } from 'react-icons/bs';
 
 const Bottom = () => {
   const navigate = useNavigate();
@@ -17,17 +18,17 @@ const Bottom = () => {
       defaultIcon: <GoHome size={'2rem'} color="#545454" />,
     },
     {
-      name: '북마크',
+      name: '위시',
       path: '/scrap',
       selectIcon: (
         // 사이즈를 줄여야 다른 아이콘과 맞아서 <div>태그로 감싸서 해결했습니다
         <div className="w-8 h-8 flex  items-center justify-center">
-          <IoBookmarksOutline size={'1.6rem'} color="#3498DB" />
+          <BsSuitHeart size={'1.9rem'} color="#3498DB" />
         </div>
       ),
       defaultIcon: (
         <div className="w-8 h-8 flex  items-center justify-center">
-          <IoBookmarksOutline size={'1.6rem'} color="#545454" />
+          <BsSuitHeart size={'1.9rem'} color="#545454" />
         </div>
       ),
     },
@@ -50,6 +51,11 @@ const Bottom = () => {
       defaultIcon: <PiUser size={'2rem'} color="#545454" />,
     },
   ];
+
+  useEffect(() => {
+    // #TODO 홈 선택되도록 바꿔야함 (경매탭, 역경매탭 등)
+    console.log(pathname);
+  }, [pathname]);
 
   return (
     <>
