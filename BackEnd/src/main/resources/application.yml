@@ -9,6 +9,8 @@ spring:
         - app
       server:
         - db-server
+        - oauth2
+        - app
     include:
       - db
       - oauth2
