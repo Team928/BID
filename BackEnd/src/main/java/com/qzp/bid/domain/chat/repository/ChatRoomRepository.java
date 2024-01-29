@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
-    List<ChatRoom> findAllByGuestIdOrHostIdOrderByTimeDesc(
-        String guestId, String hostId);
+    List<ChatRoom> findAllByGuestIdOrHostIdOrderByCreateTimeDesc(
+        Long guestId, Long hostId);
     
 }
 
