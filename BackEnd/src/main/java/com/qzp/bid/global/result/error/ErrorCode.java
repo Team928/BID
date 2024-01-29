@@ -20,6 +20,9 @@ public enum ErrorCode {
     GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다."),
     UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),
 
+    //purchase
+    GET_PURCHASE_FAIL(400, "구매글 조회에 실패하였습니다."),
+
     //JWT
     JWT_INVALID(401, "유효하지 않은 토큰입니다."),
     JWT_BADTYPE(401, "Bearer 타입 토큰이 아닙니다."),
