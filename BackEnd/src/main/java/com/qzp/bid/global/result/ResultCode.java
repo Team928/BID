@@ -14,6 +14,7 @@ public enum ResultCode {
 
     //deal
     ADD_WISH_SUCCESS(201, "거래글 찜목록 추가에 성공하였습니다."),
+    DELETE_WISH_SUCCESS(200, "거래글 찜목록 삭제에 성공하였습니다."),
 
     //sale
     CREATE_SALE_SUCCESS(201, "판매글 생성에 성공하였습니다."),

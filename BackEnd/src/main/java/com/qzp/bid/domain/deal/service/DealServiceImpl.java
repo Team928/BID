@@ -3,6 +3,7 @@ package com.qzp.bid.domain.deal.service;
 import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.WISH_ALREADY_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.WISH_NOT_EXIST;
 
 import com.qzp.bid.domain.deal.entity.Deal;
 import com.qzp.bid.domain.deal.entity.Wish;
@@ -33,5 +34,17 @@ public class DealServiceImpl implements DealService {
             throw new BusinessException(WISH_ALREADY_EXIST);
         }
         wishRepository.save(new Wish(member, deal));
+    }
+
+    @Override
+    public void deleteWish(long dealId) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        Deal deal = dealRepository.findById(dealId)
+            .orElseThrow(() -> new BusinessException(DEAL_ID_NOT_EXIST));
+
+        Wish wish = wishRepository.findByMemberAndDeal(member, deal)
+            .orElseThrow(() -> new BusinessException(WISH_NOT_EXIST));
+        wishRepository.delete(wish);
     }
 }

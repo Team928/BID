@@ -19,6 +19,7 @@ public enum ErrorCode {
     //deal
     DEAL_ID_NOT_EXIST(400, "거래 id가 존재하지 않습니다."),
     WISH_ALREADY_EXIST(400, "이미 찜한 거래입니다."),
+    WISH_NOT_EXIST(400, "찜한 거래가 존재하지 않습니다."),
 
     // sale
     GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다."),
