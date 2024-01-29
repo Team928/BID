@@ -11,6 +11,8 @@ import SignupPage from '@/pages/signup/SignupPage';
 import WritePage from '@/pages/write/WritePage';
 import LivePage from './pages/live/LivePage';
 import BuyCategoryPage from './pages/home/buy/BuyCategoryPage';
+import SaleCategoryPage from './pages/home/sale/SaleCategoryPage';
+import AuctionDetailPage from './pages/home/detail/AuctionDetailPage';
 
 const router = createBrowserRouter([
   {
@@ -23,7 +25,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/sale/:category',
-    element: '',
+    element: <SaleCategoryPage />,
+  },
+  {
+    path: '/deals/:id',
+    element: <AuctionDetailPage />,
   },
   {
     path: '/chat',
