@@ -26,7 +26,7 @@ services:
       - db
       - redis
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/bid
       SPRING_DATASOURCE_USERNAME: developer
