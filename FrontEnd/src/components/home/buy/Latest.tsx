@@ -11,22 +11,20 @@ const Latest = () => {
         <div className="pl-4 py-4 flex flex-nowrap overflow-x-auto">
           {list.map(item => {
             return (
-              <>
-                <div className="text-xs ">
-                  <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
-                    <div className="w-full h-full absolute bg-black/10 rounded-2xl"></div>
-                    <img src="/src/assets/image/sample.png" className="w-full h-full rounded-2xl object-cover" />
-                    <div className="absolute top-9 left-8">
-                      <p className="text-white font-bold text-lg ">1/5 (금)</p>
-                      <p className="text-white font-bold text-2xl">10:00</p>
-                    </div>
-                  </div>
-                  <div className="px-1 flex flex-col gap-1">
-                    <p className=" text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(item.categories)}</p>
-                    <p className=" w-32 truncate whitespace-normal line-clamp-2">{item.title}</p>
+              <div key={item.id} className="text-xs ">
+                <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
+                  <div className="w-full h-full absolute bg-black/10 rounded-2xl"></div>
+                  <img src="/src/assets/image/sample.png" className="w-full h-full rounded-2xl object-cover" />
+                  <div className="absolute top-9 left-8">
+                    <p className="text-white font-bold text-lg ">1/5 (금)</p>
+                    <p className="text-white font-bold text-2xl">10:00</p>
                   </div>
                 </div>
-              </>
+                <div className="px-1 flex flex-col gap-1">
+                  <p className=" text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(item.categories)}</p>
+                  <p className=" w-32 truncate whitespace-normal line-clamp-2">{item.title}</p>
+                </div>
+              </div>
             );
           })}
         </div>
