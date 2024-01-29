@@ -1,6 +1,5 @@
 package com.qzp.bid.domain.deal.entity;
 
-import com.qzp.bid.domain.deal.dto.DealReq;
 import com.qzp.bid.domain.member.entity.Member;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.ElementCollection;
@@ -55,11 +54,4 @@ public abstract class Deal {
     private List<String> area = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY)
     private List<Image> images = new ArrayList<>();
-
-    public Deal(DealReq dealReq) {
-        this.title = dealReq.getTitle();
-        this.content = dealReq.getContent();
-        this.category = dealReq.getCategory();
-        this.area = dealReq.getArea();
-    }
 }
