@@ -1,6 +1,7 @@
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { getPriceName } from '@/utils/getPriceName';
+import { useNavigate } from 'react-router-dom';
 
 export interface ISaleSimpleRes {
   salePostSimpleRes: {
@@ -21,11 +22,12 @@ export interface ISaleSimpleRes {
 export type statusType = 'BEFORE' | 'AUCTION' | 'LIVE' | 'END';
 
 const AuctionItem = (props: { item: ISaleSimpleRes }) => {
+  const navigate = useNavigate();
   const sale = props.item.salePostSimpleRes;
   const item = props.item;
 
   return (
-    <div className="text-xs ">
+    <div onClick={() => navigate(`/deals/${sale.id}`)} className="text-xs">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
         {item.status === 'BEFORE' && (
           <>
