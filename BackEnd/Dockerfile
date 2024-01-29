@@ -2,8 +2,8 @@ FROM openjdk:17
 
 WORKDIR /app
 
-COPY build/libs/*.jar application.jar
+COPY build/libs/*.jar back_application.jar
 
 EXPOSE 8081
 
-CMD["java", "-jar", "application.jar"]
+CMD ["java", "-jar", "back_application.jar"]
