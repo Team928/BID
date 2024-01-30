@@ -13,7 +13,6 @@ public interface PurchaseMapper {
 
     @Mapping(source = "dealReq.title", target = "title")
     @Mapping(source = "dealReq.content", target = "content")
-    //@Mapping(source = "dealReq.writer", target = "writer")
     @Mapping(target = "status", constant = "BEFORE")
     @Mapping(source = "dealReq.category", target = "category")
     @Mapping(source = "dealReq.area", target = "area")
