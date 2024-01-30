@@ -49,7 +49,7 @@ const LiveEntrancePage = () => {
 
   // @TODO: 전역으로 저장
   const tType = TRANSACTION_TYPE.BUY;
-  const pType = PARTICIPANT_TYPE.SELLER;
+  const pType = PARTICIPANT_TYPE.SALER;
 
   // @TODO: 판별하기
   // 경매 판매자 : 물건을 업로드 한 사람의 id === 내 id
@@ -61,7 +61,7 @@ const LiveEntrancePage = () => {
   const checkType = () => {
     if (tType === TRANSACTION_TYPE.BUY) {
       // 경매 판매자
-      if (pType === PARTICIPANT_TYPE.SELLER) {
+      if (pType === PARTICIPANT_TYPE.SALER) {
         // 카메라, 음소거 설정 가능
         setIsPossibleToggle(prev => {
           return {
@@ -78,9 +78,9 @@ const LiveEntrancePage = () => {
         // 라이브 진행 중이면 라이브 화면 이동
         navigate(`/live/buy/${liveId}`);
       }
-    } else if (tType === TRANSACTION_TYPE.SELL) {
+    } else if (tType === TRANSACTION_TYPE.SALE) {
       // 역경매 판매자
-      if (pType === PARTICIPANT_TYPE.SELLER) {
+      if (pType === PARTICIPANT_TYPE.SALER) {
         // 카메라 설정 가능
         setIsPossibleToggle(prev => {
           return {

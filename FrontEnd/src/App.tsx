@@ -17,7 +17,7 @@ import SaleCategoryPage from './pages/home/sale/SaleCategoryPage';
 import BuyLivePage from './pages/live/BuyLivePage';
 import LiveEntrancePage from './pages/live/LiveEntrancePage';
 import LivePage from './pages/live/LivePage';
-import SellLivePage from './pages/live/SellLivePage';
+import SaleLivePage from './pages/live/SaleLivePage';
 
 const router = createBrowserRouter([
   {
@@ -85,8 +85,8 @@ const router = createBrowserRouter([
     element: <BuyLivePage />,
   },
   {
-    path: '/live/sell/:id',
-    element: <SellLivePage />,
+    path: '/live/sale/:id',
+    element: <SaleLivePage />,
   },
 ]);
 function App() {
