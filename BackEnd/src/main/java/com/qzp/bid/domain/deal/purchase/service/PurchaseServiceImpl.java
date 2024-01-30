@@ -4,8 +4,10 @@ import static com.qzp.bid.global.result.error.ErrorCode.GET_PURCHASE_FAIL;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 
 import com.qzp.bid.domain.deal.dto.ImageDto;
+import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.mapper.ImageMapper;
+import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseReq;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseRes;
 import com.qzp.bid.domain.deal.purchase.entity.Purchase;
@@ -61,5 +63,10 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public void deletePurchase(Long purchaseId) {
         purchaseRepository.deleteById(purchaseId);
+    }
+
+    @Override
+    public PurchaseListPage getPurchases(SearchParam searchParam) {
+        return purchaseRepository.getPurchaseListPageBySearchParam(searchParam);
     }
 }

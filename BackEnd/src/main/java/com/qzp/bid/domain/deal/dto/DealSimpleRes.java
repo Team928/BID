@@ -2,7 +2,7 @@ package com.qzp.bid.domain.deal.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.qzp.bid.domain.deal.entity.Category;
-import com.qzp.bid.domain.deal.sale.entity.Sale;
+import com.qzp.bid.domain.deal.entity.Deal;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,15 +20,15 @@ public class DealSimpleRes {
     private String image;
 
     @QueryProjection
-    public DealSimpleRes(Sale sale) {
-        this.id = sale.getId();
-        this.title = sale.getTitle();
-        this.content = sale.getContent();
-        this.category = sale.getCategory();
-        this.createTime = sale.getCreateTime();
-        this.startTime = sale.getStartTime();
-        if (sale.getImages() != null && sale.getImages().size() > 0) {
-            this.image = sale.getImages().get(0).getImagePath();
+    public DealSimpleRes(Deal deal) {
+        this.id = deal.getId();
+        this.title = deal.getTitle();
+        this.content = deal.getContent();
+        this.category = deal.getCategory();
+        this.createTime = deal.getCreateTime();
+        this.startTime = deal.getStartTime();
+        if (deal.getImages() != null && !deal.getImages().isEmpty()) {
+            this.image = deal.getImages().get(0).getImagePath();
         }
     }
 }

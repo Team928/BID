@@ -1,5 +1,7 @@
 package com.qzp.bid.domain.deal.purchase.service;
 
+import com.qzp.bid.domain.deal.dto.SearchParam;
+import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseReq;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseRes;
 import java.util.List;
@@ -12,4 +14,6 @@ public interface PurchaseService {
     PurchaseRes getPurchase(Long purchaseId);
 
     void deletePurchase(Long purchaseId);
+
+    PurchaseListPage getPurchases(SearchParam searchParam);
 }
