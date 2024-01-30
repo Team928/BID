@@ -8,9 +8,9 @@ import { OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvid
 import { useEffect, useRef, useState } from 'react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 
-const SellLivePage = () => {
+const SaleLivePage = () => {
   // 경매 라이브 페이지
-  const pType = PARTICIPANT_TYPE.SELLER;
+  const pType = PARTICIPANT_TYPE.SALER;
 
   interface ILiveUser {
     sessionId: string;
@@ -34,6 +34,15 @@ const SellLivePage = () => {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager>();
 
+  const deleteSubscriber = (streamManager: any) => {
+    let currentSubscribers = subscribers;
+    let index = currentSubscribers.indexOf(streamManager, 0);
+    if (index > -1) {
+      subscribers.splice(index, 1);
+      setSubscribers([...subscribers]);
+    }
+  };
+
   const connectSession = async (newSession: Session) => {
     const token = await getToken(userData.sessionId);
     await newSession.connect(token, { clientData: userData.name });
@@ -51,6 +60,10 @@ const SellLivePage = () => {
       }
     });
 
+    newSession.on('streamDestroyed', event => {
+      deleteSubscriber(event.stream.streamManager);
+    });
+
     newSession.on('connectionCreated', event => {});
 
     setSession(newSession);
@@ -58,7 +71,7 @@ const SellLivePage = () => {
     // seisson 연결
     await connectSession(newSession);
 
-    if (pType === PARTICIPANT_TYPE.SELLER) {
+    if (pType === PARTICIPANT_TYPE.SALER) {
       // 송출
       let devices = await OV.current.getDevices();
       let videoDevices = devices.filter(device => device.kind === 'videoinput');
@@ -91,10 +104,14 @@ const SellLivePage = () => {
 
   useEffect(() => {
     initLiveSetting();
+
+    return () => {
+      session?.disconnect();
+    };
   }, []);
 
   // 판매자는 옵션바, 본인 화면 볼 수 있음
-  if (pType === PARTICIPANT_TYPE.SELLER) {
+  if (pType === PARTICIPANT_TYPE.SALER) {
     // 판매자는 그냥 남은 시간 정도 띄우고
     // 녹화 가이드라인
     return (
@@ -166,4 +183,4 @@ const SellLivePage = () => {
   }
 };
 
-export default SellLivePage;
+export default SaleLivePage;
