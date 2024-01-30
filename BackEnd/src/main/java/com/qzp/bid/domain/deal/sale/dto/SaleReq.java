@@ -12,6 +12,5 @@ public class SaleReq {
     DealReq dealReq;
     int immediatePrice;
     int startPrice;
-    LocalDateTime startTime;
     LocalDateTime endTime;
 }

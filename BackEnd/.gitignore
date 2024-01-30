@@ -38,3 +38,5 @@ out/
 
 application-db.yml
 application-oauth.yml
+
+**/resources/static/images/**

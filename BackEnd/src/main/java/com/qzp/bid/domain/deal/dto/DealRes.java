@@ -19,4 +19,5 @@ public class DealRes {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private List<String> images;
+    private LocalDateTime startTime;
 }

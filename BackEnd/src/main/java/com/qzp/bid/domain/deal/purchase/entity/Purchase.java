@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -21,7 +20,6 @@ import lombok.Setter;
 @DiscriminatorValue("purchase")
 public class Purchase extends Deal {
 
-    private LocalDateTime startTime;
     private int minPrice;
     private int maxPrice;
     private int memberLimit;

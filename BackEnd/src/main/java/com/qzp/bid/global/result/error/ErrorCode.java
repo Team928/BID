@@ -15,6 +15,7 @@ public enum ErrorCode {
     HTTP_HEADER_INVALID(400, "request header가 유효하지 않습니다."),
     ENTITY_NOT_FOUNT(500, "존재하지 않는 Entity입니다."),
     FORBIDDEN_ERROR(403, "작업을 수행하기 위한 권한이 없습니다."),
+    IS_NOT_IMAGE(400, "이미지가 아닙니다."),
 
     //deal
     DEAL_ID_NOT_EXIST(400, "거래 id가 존재하지 않습니다."),

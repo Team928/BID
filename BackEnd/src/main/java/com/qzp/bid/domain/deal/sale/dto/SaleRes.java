@@ -16,7 +16,6 @@ public class SaleRes {
     private int immediatePrice;
     private int startPrice;
     private int highestBid;
-    private LocalDateTime startTime;
     private LocalDateTime endTime;
     private DealStatus status;
     private int liveRequestCount;

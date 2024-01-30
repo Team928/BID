@@ -1,6 +1,6 @@
-package com.qzp.bid.domain.deal.sale.repository;
+package com.qzp.bid.domain.deal.purchase.repository;
 
-import static com.qzp.bid.domain.deal.sale.entity.QSale.sale;
+import static com.qzp.bid.domain.deal.purchase.entity.QPurchase.purchase;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
@@ -10,44 +10,40 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
-import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
-import com.qzp.bid.domain.deal.sale.dto.SaleSimpleRes;
+import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.purchase.dto.PurchaseSimpleRes;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
-public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
+public class PurchaseRepositoryQuerydslImpl implements PurchaseRepositoryQuerydsl {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public SaleListPage getSaleListPageBySearchParam(SearchParam searchParam) {
+    public PurchaseListPage getPurchaseListPageBySearchParam(SearchParam searchParam) {
         BooleanBuilder booleanBuilder = createBooleanBuilder(searchParam);
         OrderSpecifier orderSpecifiers = createOrderSpecifiers(searchParam);
         Pageable pageable = PageRequest.of(searchParam.getPage(), searchParam.getSize());
-        List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory.select(Projections.fields(
-                SaleSimpleRes.class,
-                new QDealSimpleRes(sale).as("dealSimpleRes"),
-                sale.immediatePrice,
-                sale.startPrice,
-                sale.endTime,
-                //sale.highestBid.bidPrice,
-                sale.status
+        List<PurchaseSimpleRes> purchaseSimpleResList = jpaQueryFactory.select(Projections.fields(
+                PurchaseSimpleRes.class,
+                new QDealSimpleRes(purchase).as("dealSimpleRes")
             ))
-            .from(sale)
+            .from(purchase)
             .where(booleanBuilder)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
             .orderBy(orderSpecifiers)
             .fetch();
         boolean hasNext = false;
-        if (saleSimpleResList.size() > pageable.getPageSize()) {
-            saleSimpleResList.remove(pageable.getPageSize());
+        if (purchaseSimpleResList.size() > pageable.getPageSize()) {
+            purchaseSimpleResList.remove(pageable.getPageSize());
             hasNext = true;
         }
-        return new SaleListPage(saleSimpleResList, pageable.getPageNumber(), pageable.getPageSize(),
+        return new PurchaseListPage(purchaseSimpleResList, pageable.getPageNumber(),
+            pageable.getPageSize(),
             !hasNext);
     }
 
@@ -56,27 +52,25 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
         String order = searchParam.getOrder();
         if (status != null && order != null && order.equals("asc")) {
             if (status.equals(DealStatus.BEFORE)) {
-                return new OrderSpecifier(Order.ASC, sale.startTime);
-            } else {
-                return new OrderSpecifier(Order.ASC, sale.endTime);
+                return new OrderSpecifier(Order.ASC, purchase.startTime);
             }
         }
-        return new OrderSpecifier<>(Order.DESC, sale.createTime);
+        return new OrderSpecifier<>(Order.DESC, purchase.createTime);
     }
 
     private BooleanBuilder createBooleanBuilder(SearchParam searchParam) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if (!(searchParam.getCatg() == null)) {
-            booleanBuilder.and(sale.category.eq(searchParam.getCatg()));
+            booleanBuilder.and(purchase.category.eq(searchParam.getCatg()));
         }
         if (!(searchParam.getKeyword() == null) && !searchParam.getKeyword().isEmpty()) {
-            booleanBuilder.and(sale.title.contains(searchParam.getKeyword()));
+            booleanBuilder.and(purchase.title.contains(searchParam.getKeyword()));
         }
         if (!(searchParam.getArea() == null) && !searchParam.getArea().isEmpty()) {
-            booleanBuilder.and(sale.area.contains(searchParam.getArea()));
+            booleanBuilder.and(purchase.area.contains(searchParam.getArea()));
         }
         if (!(searchParam.getStatus() == null)) {
-            booleanBuilder.and(sale.status.eq(searchParam.getStatus()));
+            booleanBuilder.and(purchase.status.eq(searchParam.getStatus()));
         }
         return booleanBuilder;
     }

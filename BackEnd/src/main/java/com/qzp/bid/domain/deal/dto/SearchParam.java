@@ -16,7 +16,7 @@ public class SearchParam {
     int page;
     @Schema(description = "한 페이지 당 글 갯수", example = "10", defaultValue = "10", requiredMode = RequiredMode.REQUIRED)
     int size;
-    @Schema(description = "검색 카테고리 (ALL, FASSION, BEAUTY, CHILD, LIVING, DIGITAL, BOOK, TOY, PET, ETC)")
+    @Schema(description = "검색 카테고리 (ALL, FASHION, BEAUTY, CHILD, LIVING, DIGITAL, BOOK, TOY, PET, ETC)")
     Category catg;
     @Schema(description = "검색 지역")
     String area;
