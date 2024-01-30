@@ -54,4 +54,5 @@ public abstract class Deal {
     private List<String> area = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY)
     private List<Image> images = new ArrayList<>();
+    private LocalDateTime startTime;
 }

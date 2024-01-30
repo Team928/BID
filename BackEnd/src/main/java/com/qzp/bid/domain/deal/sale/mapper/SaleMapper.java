@@ -16,6 +16,7 @@ public interface SaleMapper {
     @Mapping(target = "status", constant = "BEFORE")
     @Mapping(source = "dealReq.category", target = "category")
     @Mapping(source = "dealReq.area", target = "area")
+    @Mapping(source = "dealReq.startTime", target = "startTime")
     Sale toSale(SaleReq saleReq);
 
     @Mapping(source = ".", target = "dealRes")

@@ -16,6 +16,7 @@ public interface PurchaseMapper {
     @Mapping(target = "status", constant = "BEFORE")
     @Mapping(source = "dealReq.category", target = "category")
     @Mapping(source = "dealReq.area", target = "area")
+    @Mapping(source = "dealReq.startTime", target = "startTime")
     Purchase toPurchase(PurchaseReq purchaseReq);
 
     @Mapping(source = ".", target = "dealRes")

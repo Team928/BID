@@ -1,6 +1,7 @@
 package com.qzp.bid.domain.deal.dto;
 
 import com.qzp.bid.domain.deal.entity.Category;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,4 +15,5 @@ public class DealReq {
     String writer;
     Category category;
     List<String> area;
+    LocalDateTime startTime;
 }

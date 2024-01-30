@@ -24,7 +24,6 @@ public class Sale extends Deal {
     @OneToOne(fetch = FetchType.LAZY)
     private Bid highestBid;
     private int startPrice;
-    private LocalDateTime startTime;
     private LocalDateTime endTime;
     @Enumerated(EnumType.STRING)
     private DealStatus status;
