@@ -5,10 +5,12 @@ import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
 import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
+import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface SaleService {
 
-    void createSale(SaleReq saleReq);
+    void createSale(SaleReq saleReq, List<MultipartFile> photos);
 
     SaleRes getSale(Long saleId);
 

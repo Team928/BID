@@ -7,7 +7,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.qzp.bid.domain.deal.dto.DealSimpleRes;
+import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
@@ -26,20 +26,10 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
     public SaleListPage getSaleListPageBySearchParam(SearchParam searchParam) {
         BooleanBuilder booleanBuilder = createBooleanBuilder(searchParam);
         OrderSpecifier orderSpecifiers = createOrderSpecifiers(searchParam);
-
         Pageable pageable = PageRequest.of(searchParam.getPage(), searchParam.getSize());
         List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory.select(Projections.fields(
                 SaleSimpleRes.class,
-                Projections.fields(
-                    DealSimpleRes.class,
-                    sale.id,
-                    sale.title,
-                    sale.content,
-                    sale.category,
-                    sale.createTime,
-                    sale.startTime
-                    //sale.images.get(0).imagePath // TODO: 이미지, bid 작업 후 수정 필요
-                ).as("dealSimpleRes"),
+                new QDealSimpleRes(sale).as("dealSimpleRes"),
                 sale.immediatePrice,
                 sale.startPrice,
                 sale.endTime,
