@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
-    private String[] whiteList = {"/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
+    @Value("${auth.whiteList}")
+    private String[] whiteList = {"/member/**", "/deals/**", "/chat/**", "/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
 

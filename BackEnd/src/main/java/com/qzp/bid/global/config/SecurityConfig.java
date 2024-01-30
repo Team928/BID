@@ -6,6 +6,7 @@ import com.qzp.bid.global.security.oauth.OAuth2SuccessHandler;
 import com.qzp.bid.global.security.util.JwtProvider;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private String[] whiteList = {"/oauth2/**", "/member/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
+    @Value("${auth.whiteList}")
+    private String[] whiteList = {"/member/**", "/deals/**", "/chat/**", "/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
     private final CustomOAuth2UserServiceImpl oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final RedisTemplate redisTemplate;

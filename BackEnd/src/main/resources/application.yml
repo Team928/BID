@@ -8,16 +8,14 @@ spring:
     group:
       local:
         - db-local
-        - oauth2
-        - app
+        - auth-local
       server:
         - db-server
-        - oauth2
-        - app
+        - auth-server
     include:
       - db
-      - oauth2
-      - app
+      - oauth
+
   datasource:
     driver-class-name: ${db.driver}
     url: ${db.url}
