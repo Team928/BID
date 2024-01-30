@@ -16,17 +16,17 @@ const Modal = ({ width, height, title, onClose, children }: IModalProps) => {
     setIsRendering(false);
     setTimeout(() => {
       onClose();
-    }, 400);
+    }, 500);
   };
 
   return (
     <div
-      className={`fixed w-screen h-screen top-0 bottom-0 left-0 right-0 transition ease-in-out delay-200 z-[1] ${isRendering ? 'bg-black/30' : 'bg-black/0'}`}
+      className={`fixed w-screen h-screen top-0 bottom-0 left-0 right-0 transition ease-in-out delay-200 z-[11] ${isRendering ? 'bg-black/30' : 'bg-black/0'}`}
       onClick={handleClose}
     >
       {/* modal wrapper */}
       <div
-        className={`fixed top-1/2 left-1/2 translate-x-mHalf translate-y-mHalf rounded-lg z-[2] drop-shadow-lg bg-white ${isRendering ? 'animate-modalOn' : 'animate-modalOff'}`}
+        className={`fixed top-1/2 left-1/2 translate-x-mHalf translate-y-mHalf rounded-lg z-[12] drop-shadow-lg bg-white ${isRendering ? 'animate-modalOn' : 'animate-modalOff'}`}
       >
         {/* modal */}
         <div

@@ -8,13 +8,13 @@ const RequestSalePriceModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <Modal width="280px" height="auto" title={MODAL_TITLE.REQUEST_SALE_PRICE} onClose={onClose}>
-      <div className="px-6 py-3">
+      <div className="px-6 pt-1 pb-6">
         {/* @TODO: input component */}
         <div className="bg-white w-full h-12 py-1 flex items-center border-BID-GRAY">
           <input
             type="number"
             placeholder="판매희망가를 입력해주세요"
-            className="px-3 h-full outline-none border w-full rounded-full"
+            className="px-3 h-full outline-none border w-full rounded-full text-sm"
           ></input>
         </div>
         <div className="text-center text-sm">

@@ -41,10 +41,7 @@ const BeforeLiveModal = ({ onClose }: { onClose: () => void }) => {
           </div>
         </div>
         <div className="w-full h-10 px-12 mb-4">
-          <button
-            type="button"
-            className="w-full h-full rounded-3xl shadow-sm text-white text-lg bg-BID_MAIN hover:bg-BID_HOVER_MAIN "
-          >
+          <button type="button" className="blueBtn">
             적용하기
           </button>
         </div>

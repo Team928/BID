@@ -1,56 +1,59 @@
-import { icons } from '@/constants/icons';
-import { useState } from 'react';
-
-export type LiveTabOptionType = 'camera' | 'audio' | 'chat' | 'participants' | 'exit';
-
+import useLiveStore from '@/stores/userLiveStore';
+import { GoPerson } from 'react-icons/go';
+import { PiChatsTeardrop } from 'react-icons/pi';
+import { RxExit } from 'react-icons/rx';
+import { TbCamera, TbCameraOff, TbMicrophone, TbMicrophoneOff } from 'react-icons/tb';
 export interface ILiveOptionInfo {
-  type: LiveTabOptionType;
-  onIcon?: JSX.Element;
-  offIcon?: JSX.Element;
-  handleClick: () => void;
+  type: 'camera' | 'audio' | 'chat' | 'participants' | 'exit';
+  icon: JSX.Element;
 }
 
 const LiveOptionTab = () => {
-  const liveOptionInfo: ILiveOptionInfo[] = [
-    {
+  const { onCamera, onMike, setOnCamera, setOnMike } = useLiveStore();
+
+  const liveOption = {
+    camera: {
       type: 'camera',
-      onIcon: icons.CAMERA,
-      offIcon: icons.CAMERA_SLASH,
-      handleClick: () => handleOption('camera'),
+      icon: onCamera ? <TbCamera size={35} color={'white'} /> : <TbCameraOff size={35} color={'white'} />,
     },
-    {
+    audio: {
       type: 'audio',
-      onIcon: icons.MICROPHONE,
-      offIcon: icons.MICROPHONE_SLASH,
-      handleClick: () => handleOption('audio'),
+      icon: onMike ? <TbMicrophone size={35} color={'white'} /> : <TbMicrophoneOff size={35} color={'white'} />,
     },
-    {
+    chat: {
       type: 'chat',
-      onIcon: icons.CHAT,
-      handleClick: () => null,
+      icon: <PiChatsTeardrop size={35} style={{ strokeWidth: '4px' }} color={'white'} />,
     },
-    {
+    participants: {
       type: 'participants',
-      onIcon: icons.USER,
-      handleClick: () => null,
+      icon: <GoPerson size={35} style={{ strokeWidth: '0.5px' }} color={'white'} />,
     },
+    exit: {
+      type: 'exit',
+      icon: <RxExit size={30} style={{ strokeWidth: '0.6px' }} color="white" />,
+    },
+  };
+  const liveOptionInfo = [
+    liveOption.camera,
+    liveOption.audio,
+    liveOption.chat,
+    liveOption.participants,
+    liveOption.exit,
   ];
 
-  const [cameraFlag, setCameraFlag] = useState<boolean>(false);
-  const [audioFlag, setAudioFlag] = useState<boolean>(false);
-
-  const handleOption = (type: LiveTabOptionType) => {
+  // @TODO: 사용자에 따라 메뉴 다르게
+  const handleOption = (type: string) => {
     switch (type) {
       case 'camera': {
-        setCameraFlag(!cameraFlag);
+        setOnCamera(!onCamera);
         break;
       }
       case 'audio': {
-        setAudioFlag(!audioFlag);
+        setOnMike(!onMike);
         break;
       }
       case 'chat': {
-        // @TODO: 채팅창 슬라이드로 열기
+        // @TODO: 채팅창 on
         break;
       }
       case 'participants': {
@@ -65,23 +68,21 @@ const LiveOptionTab = () => {
   };
 
   return (
-    <div className="w-full h-full p-2 relative">
+    <div className="w-full h-full p-2 relative z-[5]">
       <div className="w-8 h-[3px] bg-white/55 absolute left-1/2 top-3 rounded-full translate-x-mHalf">&nbsp;</div>
-      <div className="bg-white/30 grid grid-cols-5 place-items-center p-1 pb-2 pt-3 rounded-3xl">
+      <div className="bg-black/50 grid grid-cols-5 place-items-center px-4 pb-2 pt-3 rounded-3xl">
         {liveOptionInfo.map(info => {
           return (
             <button
               key={info.type}
-              className="flex justify-center items-center rounded-full bg-white/50 w-16 h-16"
-              onClick={() => handleOption(info.type)}
+              value={info.type}
+              className={`liveBtn ${info.type === 'exit' ? 'bg-red-500 hover:bg-red-600' : 'bg-[#D9D9D9]/50 hover:bg-[#D9D9D9]/80'}`}
+              onClick={e => handleOption(e.currentTarget.value)}
             >
-              {info.onIcon}
+              {info.icon}
             </button>
           );
         })}
-        <div className="flex justify-center items-center rounded-full bg-white/50 w-16 h-16 bg-red-500">
-          {icons.SIGN_OUT}
-        </div>
       </div>
     </div>
   );

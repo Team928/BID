@@ -1,301 +1,155 @@
-import CameraBox from '@/components/live/CameraBox';
+import CameraItem from '@/components/live/CameraItem';
 import LiveOptionTab from '@/components/live/LiveOptionTab';
 import { getToken } from '@/service/live';
-import { Device, OpenVidu, Publisher, Session, Subscriber } from 'openvidu-browser';
-import { ChangeEvent, Component } from 'react';
+import useLiveStore from '@/stores/userLiveStore';
+import { OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
+import { useEffect, useRef, useState } from 'react';
 
-export interface ISessionInfo {
-  mySessionId: string;
-  myUserName: string;
-  session: Session | undefined;
-  mainStreamManager: any;
-  publisher: Publisher | undefined;
-  subscribers: Subscriber[] | any[];
-  currentVideoDevice?: Device;
-  onCamera: boolean;
-  onMike: boolean;
-  onSpeak: boolean;
-}
-
-class LivePage extends Component<{}, ISessionInfo> {
-  private OV: any;
-
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      mySessionId: 'sessionQWER',
-      myUserName: 'ID ' + Math.floor(Math.random() * 100),
-      session: undefined,
-      mainStreamManager: undefined,
-      publisher: undefined,
-      subscribers: [],
-      currentVideoDevice: undefined,
-      onCamera: true,
-      onMike: true,
-      onSpeak: false,
-    };
-
-    this.joinSession = this.joinSession.bind(this);
-    this.leaveSession = this.leaveSession.bind(this);
-    this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
-    this.handleChangeUserName = this.handleChangeUserName.bind(this);
-    this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
-    this.onbeforeunload = this.onbeforeunload.bind(this);
-
-    //   설정
-    this.setCamera = this.setCamera.bind(this);
+// @TEST 로직 페이지임
+const LivePage = () => {
+  interface ILiveUser {
+    sessionId: string;
+    name: string;
   }
 
-  componentDidMount() {
-    window.addEventListener('beforeunload', this.onbeforeunload);
-  }
+  const { onCamera, onMike } = useLiveStore();
 
-  componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onbeforeunload);
-  }
+  const newOV = new OpenVidu();
+  newOV.enableProdMode();
 
-  // 언로드 이벤트 => 세션 끊는 함수
-  onbeforeunload(e: any) {
-    this.leaveSession();
-  }
+  const OV = useRef(newOV);
 
-  setCamera(cameraOn: boolean) {
-    if (this.state.mainStreamManager) {
-      this.state.mainStreamManager.publishVideo(cameraOn);
-    }
-  }
+  const [session, setSession] = useState<Session>();
+  const [userData, setUserData] = useState<ILiveUser>({
+    sessionId: 'SessionA',
+    name: 'Participant' + Math.floor(Math.random() * 100),
+  });
 
-  handleChangeSessionId(e: ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      mySessionId: e.target.value,
-    });
-  }
+  const [publisher, setPublisher] = useState<Publisher>();
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const [mainStreamManager, setMainStreamManager] = useState<StreamManager>();
 
-  handleChangeUserName(e: ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      myUserName: e.target.value,
-    });
-  }
-
-  // 메인 비디오 설정
-  handleMainVideoStream(stream: any) {
-    if (this.state.mainStreamManager !== stream) {
-      this.setState({
-        mainStreamManager: stream,
-      });
-    }
-  }
-
-  // 구독자 제거
-  deleteSubscriber(streamManager: any) {
-    if (!this.state.subscribers) return;
-
-    let subscribers = this.state.subscribers;
-
-    let index = subscribers.indexOf(streamManager, 0);
+  const deleteSubscriber = (streamManager: any) => {
+    let currentSubscribers = subscribers;
+    let index = currentSubscribers.indexOf(streamManager, 0);
     if (index > -1) {
       subscribers.splice(index, 1);
-      this.setState({
-        subscribers: subscribers,
-      });
+      setSubscribers([...subscribers]);
     }
-  }
+  };
 
-  // openvidu 초기화, 세션 연결, 사용자 비디오 스트림 게시 처리
-  // 입장할 때 실행되는 함수
-  joinSession() {
-    // 새 객체 생성
-    this.OV = new OpenVidu();
+  const initLiveSetting = async () => {
+    const newSession = OV.current.initSession();
 
-    // 세션 상태 변경
-    this.setState(
-      {
-        session: this.OV.initSession(),
-      },
-      // state 변경 후 실행되는 콜백함수
-      () => {
-        const mySession: any = this.state.session;
+    newSession.on('streamCreated', event => {
+      console.log('streamCreated event', event);
 
-        // subscriber
-        mySession.on('streamCreated', (event: any) => {
-          const subscriber = mySession.subscribe(event.stream, undefined);
-          const subscribers = this.state.subscribers; // 현재 구독자들
-          subscribers.push(subscriber);
+      // 다른 참가자가 publish함
+      let subscriber = newSession.subscribe(event.stream, undefined);
 
-          this.setState({
-            subscribers: subscribers,
-          });
-        });
-
-        mySession.on('streamDestroyed', (event: any) => {
-          this.deleteSubscriber(event.stream.streamManager);
-        });
-
-        mySession.on('exception', (exception: Error) => {
-          console.warn(exception);
-        });
-
-        // publisher
-        getToken(this.state.mySessionId).then(token => {
-          // 토큰을 가지고 연결
-          mySession
-            .connect(token, { clientData: this.state.myUserName })
-            .then(async () => {
-              // 게시자 초기화
-              let publisher = await this.OV.initPublisherAsync(undefined, {
-                audioSource: undefined,
-                videoSource: undefined,
-                publishAudio: true,
-                publishVideo: true,
-                resolution: '640x480',
-                frameRate: 30,
-                insertMode: 'APPEND',
-                mirror: false,
-              });
-
-              // 게시자 스트리밍 시작
-              mySession.publish(publisher);
-
-              // 현재 비디오 장치
-              const devices = await this.OV.getDevices(); // 현재 사용가능한 모든 장치 가져옴
-              const videoDevices = devices.filter((device: any) => device.kind === 'videoinput'); // 웹캠만 필터링
-              const currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId; // 현재 비디오 id
-              const currentVideoDevice = videoDevices.find((device: any) => device.deviceId === currentVideoDeviceId); // 현재 비디오
-
-              // 게시자 + 현재 카메라 저장
-              this.setState({
-                currentVideoDevice: currentVideoDevice,
-                mainStreamManager: publisher,
-                publisher: publisher,
-              });
-            })
-            .catch((error: Error) => {
-              console.log(error.message);
-            });
-        });
-      },
-    );
-
-    console.log('subscribers', this.state.subscribers);
-  }
-
-  // openvidu 연결을 끊고 상태를 재설정하는 함수
-  leaveSession() {
-    const mySession: any = this.state.session;
-
-    if (mySession) {
-      mySession.disconnect();
-    }
-
-    this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: '',
-      myUserName: 'ID ' + Math.floor(Math.random() * 100),
-      mainStreamManager: undefined,
-      publisher: undefined,
+      let subscriberList = subscribers;
+      subscriberList.push(subscriber);
+      setSubscribers([...subscriberList]);
     });
-  }
 
-  handleToggle(type: string) {
-    if (this.state.publisher) {
-      switch (type) {
-        case 'camera':
-          this.setState({ onCamera: !this.state.onCamera }, () => {
-            console.log(this.state.publisher);
-            this.state.publisher?.publishVideo(this.state.onCamera);
-          });
-          break;
+    // 퇴장
+    newSession.on('streamDestroyed', event => {
+      deleteSubscriber(event.stream.streamManager);
+    });
 
-        case 'speaker':
-          this.setState({ onSpeak: !this.state.onSpeak }, () => {
-            this.state.subscribers.forEach(s => s.subscribeToAudio(this.state.onSpeak));
-          });
-          break;
+    // 다른 참가자가 세션에 연결됨
+    newSession.on('connectionCreated', event => {});
 
-        case 'mike':
-          this.setState({ onMike: !this.state.onMike }, () => {
-            this.state.publisher?.publishAudio(this.state.onMike);
-          });
-          break;
+    // 발언 감지
+    newSession.on('publisherStartSpeaking', event => {
+      console.log('사용자 ' + event.connection.connectionId + '님 말하는중');
+    });
+
+    // 발언 중지 감지
+    newSession?.on('publisherStopSpeaking', event => {
+      console.log('사용자 ' + event.connection.connectionId + ' 님 말 끝남');
+    });
+
+    setSession(newSession);
+
+    // seisson 연결
+    const token = await getToken(userData.sessionId);
+    await newSession.connect(token, { clientData: userData.name });
+
+    // 송출
+    let devices = await OV.current.getDevices();
+    let videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+    let publisher = await OV.current.initPublisherAsync(undefined, {
+      audioSource: undefined,
+      videoSource: undefined,
+      publishAudio: onMike,
+      publishVideo: onCamera,
+      resolution: '600X900',
+      frameRate: 30,
+      insertMode: 'APPEND',
+      mirror: true,
+    });
+
+    newSession.publish(publisher);
+
+    let currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
+    let currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
+
+    setPublisher(publisher);
+    setMainStreamManager(publisher);
+  };
+
+  const handleSetting = (type: string) => {
+    switch (type) {
+      case 'camera': {
+        publisher?.publishVideo(onCamera);
+        break;
+      }
+      case 'mike': {
+        publisher?.publishAudio(onMike);
       }
     }
-  }
+  };
 
-  render() {
-    const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
+  const handleMainVideoStream = (stream: any) => {
+    if (mainStreamManager !== stream) {
+      setMainStreamManager(stream);
+    }
+  };
 
-    return (
-      <div>
-        {/* 세션 밖 */}
-        {this.state.session === undefined ? (
-          <div>
-            <div>
-              <form onSubmit={this.joinSession}>
-                <p>
-                  <label>참가자: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> 세션: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-                <p className="text-center">
-                  <input className="btn btn-lg btn-success" name="commit" type="submit" value="JOIN" />
-                </p>
-              </form>
-            </div>
+  useEffect(() => {
+    initLiveSetting();
+  }, []);
+
+  useEffect(() => {
+    handleSetting('camera');
+  }, [onCamera]);
+
+  useEffect(() => {
+    handleSetting('mike');
+  }, [onMike]);
+
+  return (
+    <div>
+      {/* publisher */}
+      {publisher !== undefined ? (
+        // 판매 라이브 화면
+        <div className="relative">
+          <div onClick={() => handleMainVideoStream(publisher)}>
+            <CameraItem streamManager={publisher} />
           </div>
-        ) : (
-          // 라이브 방송 중
-          <div className="bg-black/80 w-screen h-screen relative">
-            <div>
-              <div>{mySessionId}</div>
-              <button onClick={this.leaveSession} value="Leave session" />
-            </div>
-
-            {/* 전체 사람 띄우기 */}
-            <div>
-              {/* publisher */}
-              {this.state.publisher !== undefined && (
-                <div onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                  <CameraBox streamManager={this.state.publisher} />
-                </div>
-              )}
-              {/* subscribers */}
-              {this.state.subscribers &&
-                this.state.subscribers.map((sub, i) => (
-                  <div>
-                    <div key={sub.id} onClick={() => this.handleMainVideoStream(sub)}>
-                      <span>{sub.id}번 카메라</span>
-                      <CameraBox streamManager={sub} />
-                    </div>
-                  </div>
-                ))}
-            </div>
+          <div className="absolute bottom-0 left-0 right-0">
             <LiveOptionTab />
           </div>
-        )}
-      </div>
-    );
-  }
-}
+        </div>
+      ) : (
+        <div className="w-screen h-screen flex flex-col justify-center items-center relative">
+          <div>연결중입니다..</div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default LivePage;

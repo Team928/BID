@@ -9,7 +9,7 @@ export interface ILivePlusOptionFlag {
   bgFilter: boolean;
 }
 
-const LivePlusSettingModal = ({ onClose }: { onClose: () => void }) => {
+const LiveSettingModal = ({ onClose }: { onClose: () => void }) => {
   const [toggleFlag, setToggleFlag] = useState<ILivePlusOptionFlag>({
     mask: false,
     voiceModulation: false,
@@ -61,4 +61,4 @@ const LivePlusSettingModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default LivePlusSettingModal;
+export default LiveSettingModal;
