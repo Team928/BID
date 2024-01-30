@@ -1,7 +1,7 @@
 import { StreamManager } from 'openvidu-browser';
 import { useEffect, useRef } from 'react';
 
-const CameraItem = ({ streamManager }: { streamManager: StreamManager }) => {
+const FullCameraItem = ({ streamManager }: { streamManager: StreamManager }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -17,4 +17,4 @@ const CameraItem = ({ streamManager }: { streamManager: StreamManager }) => {
   );
 };
 
-export default CameraItem;
+export default FullCameraItem;
