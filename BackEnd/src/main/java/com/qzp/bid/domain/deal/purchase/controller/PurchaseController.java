@@ -45,7 +45,7 @@ public class PurchaseController {
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_PURCHASE_SUCCESS, purchaseRes));
     }
 
-    @Operation(summary = "판매글 삭제")
+    @Operation(summary = "구매글 삭제")
     @DeleteMapping("/{purchaseId}")
     public ResponseEntity<ResultResponse> deletePurchase(@PathVariable Long purchaseId) {
         purchaseService.deletePurchase(purchaseId);
