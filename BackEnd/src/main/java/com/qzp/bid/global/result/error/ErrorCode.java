@@ -16,6 +16,11 @@ public enum ErrorCode {
     ENTITY_NOT_FOUNT(500, "존재하지 않는 Entity입니다."),
     FORBIDDEN_ERROR(403, "작업을 수행하기 위한 권한이 없습니다."),
 
+    //deal
+    DEAL_ID_NOT_EXIST(400, "거래 id가 존재하지 않습니다."),
+    WISH_ALREADY_EXIST(400, "이미 찜한 거래입니다."),
+    WISH_NOT_EXIST(400, "찜한 거래가 존재하지 않습니다."),
+
     // sale
     GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다."),
     UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),
@@ -28,9 +33,9 @@ public enum ErrorCode {
     JWT_BADTYPE(401, "Bearer 타입 토큰이 아닙니다."),
     JWT_EXPIRED(403, "만료된 토큰입니다."),
     JWT_MALFORM(401, "토큰값이 올바르지 않습니다."),
-    BLACK_TOKEN(401,"접근이 차단된 토큰입니다."),
-    TOKEN_ALIVE(400,  "유효기간이 만료되지 않은 토큰입니다."),
-    REFRESH_INVALID(400,"리프레시 토큰이 유효하지 않습니다."),
+    BLACK_TOKEN(401, "접근이 차단된 토큰입니다."),
+    TOKEN_ALIVE(400, "유효기간이 만료되지 않은 토큰입니다."),
+    REFRESH_INVALID(400, "리프레시 토큰이 유효하지 않습니다."),
 
     //Member
     MEMBER_ID_NOT_EXIST(400, "회원 id가 존재하지 않습니다."),
