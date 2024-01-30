@@ -30,11 +30,11 @@ const ChatPage: React.FC = () => {
       try {
         // TODO: 나중에 실제 userId로 바꾸기 ( test용 userId=1로 구현 )
         const res = await axios.get('http://localhost:8080/chat/rooms?userId=1');
-        const chatRooms: ChatRoom[] = res.data.map((item: any) => {
+        const chatRooms: ChatRoom[] = res.data.data.map((item: any) => {
           return { id: item.id, roomName: item.roomName, createTime: item.creatTime } as ChatRoom;
         });
         setChatRooms(chatRooms);
-        console.log(chatRooms)
+        console.log(chatRooms);
       } catch (err) {
         console.log('채팅 내역 불러오기 실패', err)
       }
