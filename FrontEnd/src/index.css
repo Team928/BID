@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .liveBtn {
+    @apply flex justify-center items-center rounded-full p-3 mx-1;
+  }
+
+  .blueBtn {
+    @apply w-full h-full rounded-3xl shadow-sm text-white text-lg bg-BID_MAIN hover:bg-BID_HOVER_MAIN;
+  }
+
+  .liveRedBtn {
+    @apply px-2.5 py-0.5 bg-[#FF0000] text-white rounded-[3px] italic font-semibold text-sm;
+  }
+}
