@@ -1,5 +1,4 @@
 import FullCameraItem from '@/components/live/FullCameraItem';
-import LiveOptionTab from '@/components/live/LiveOptionTab';
 import BuyModal from '@/components/live/Modal/BuyModal';
 import { PARTICIPANT_TYPE } from '@/constants/liveType';
 import { getToken } from '@/service/live';
@@ -10,11 +9,12 @@ import { BsXLg } from 'react-icons/bs';
 import { FiSend } from 'react-icons/fi';
 import { GoBroadcast } from 'react-icons/go';
 import { HiDotsHorizontal } from 'react-icons/hi';
+import { MdFlipCameraAndroid } from 'react-icons/md';
 import { RiAuctionFill } from 'react-icons/ri';
 
 const BuyLivePage = () => {
   // 경매 라이브 페이지
-  const pType = PARTICIPANT_TYPE.SELLER;
+  const pType = PARTICIPANT_TYPE.SALER;
 
   interface ILiveUser {
     sessionId: string;
@@ -38,6 +38,15 @@ const BuyLivePage = () => {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager>();
 
+  const deleteSubscriber = (streamManager: any) => {
+    let currentSubscribers = subscribers;
+    let index = currentSubscribers.indexOf(streamManager, 0);
+    if (index > -1) {
+      subscribers.splice(index, 1);
+      setSubscribers([...subscribers]);
+    }
+  };
+
   const connectSession = async (newSession: Session) => {
     const token = await getToken(userData.sessionId);
     await newSession.connect(token, { clientData: userData.name });
@@ -55,6 +64,10 @@ const BuyLivePage = () => {
       }
     });
 
+    newSession.on('streamDestroyed', event => {
+      deleteSubscriber(event.stream.streamManager);
+    });
+
     newSession.on('connectionCreated', event => {});
 
     setSession(newSession);
@@ -62,7 +75,7 @@ const BuyLivePage = () => {
     // seisson 연결
     await connectSession(newSession);
 
-    if (pType === PARTICIPANT_TYPE.SELLER) {
+    if (pType === PARTICIPANT_TYPE.SALER) {
       // 송출
       let devices = await OV.current.getDevices();
       let videoDevices = devices.filter(device => device.kind === 'videoinput');
@@ -94,17 +107,21 @@ const BuyLivePage = () => {
   const handleMoreSetting = () => {};
 
   const handleExit = () => {
-    // 기존에 접속한 페이지로 이동
+    session?.disconnect();
   };
 
   useEffect(() => {
     initLiveSetting();
+
+    return () => {
+      session?.disconnect();
+    };
   }, []);
 
   // 판매자는 옵션바, 본인 화면 볼 수 있음
-  if (pType === PARTICIPANT_TYPE.SELLER) {
-    // 판매자는 그냥 남은 시간 정도 띄우고
-    // 녹화 가이드라인
+  if (pType === PARTICIPANT_TYPE.SALER) {
+    let status = 'onLive';
+
     return (
       <div className="relative">
         {mainStreamManager && (
@@ -114,7 +131,7 @@ const BuyLivePage = () => {
         )}
         {/* 사진 위 화면 */}
         {onCamera && (
-          <div className="absolute top-0 left-0 right-0 bottom-24">
+          <div className="absolute top-0 left-0 right-0 bottom-4">
             <div className="w-full h-full relative">
               <div className="absolute w-full h-36 bg-gradient-to-b from-black/35 to-black/0">&nbsp;</div>
               <div className="absolute w-full flex p-3 items-center">
@@ -136,22 +153,37 @@ const BuyLivePage = () => {
               </div>
               {/* 나머지 얼굴 보이는 부분*/}
               <div className="absolute top-24 left-4 right-4 bottom-0 z-[10] flex justify-center items-center">
-                {/* 녹화 시작 전 */}
-                <div className="w-[80%] flex flex-col justify-center items-center">
-                  <span className="text-white text-sm">지금 바로 라이브가 시작됩니다</span>
-                  <span className="text-[50px] text-white pb-3">00:05:47</span>
-                  <button className="bg-red-600 text-white px-4 py-2 rounded-full flex items-center hover:bg-red-700">
-                    <GoBroadcast size="20" style={{ border: '1px' }} />
-                    <span className="pl-2">방송시작하기</span>
-                  </button>
-                </div>
+                {/* 라이브 시작 전 */}
+                {status === 'beforeLive' && (
+                  <div className="w-[80%] flex flex-col justify-center items-center">
+                    <span className="text-white text-sm">지금 바로 라이브가 시작됩니다</span>
+                    <span className="text-[50px] text-white pb-3">00:05:47</span>
+                    <button className="bg-red-600 text-white px-4 py-2 rounded-full flex items-center hover:bg-red-700">
+                      <GoBroadcast size="20" style={{ border: '1px' }} />
+                      <span className="pl-2">라이브 시작하기</span>
+                    </button>
+                  </div>
+                )}
+                {/* 라이브 시작 이후 - 녹화 시작 전 */}
+                {status === 'beforeRecording' && <div>녹화하기</div>}
+                {/* 녹화 끝나고 라이브 진행 중 */}
+                {status === 'onLive' && (
+                  <div className="w-full absolute bottom-0 flex justify-between">
+                    <button className="w-3">
+                      <MdFlipCameraAndroid size={30} color="white" />
+                    </button>
+                    <button className="bg-red-600 text-white px-4 py-2.5 rounded-full flex items-center hover:bg-red-700">
+                      <GoBroadcast size="20" style={{ border: '1px' }} />
+                      <span className="pl-2">라이브 종료하기</span>
+                    </button>
+                    {/* 임의 버튼 추가 */}
+                    <button className="w-3">&nbsp;</button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         )}
-        <div className="absolute bottom-0 left-0 right-0">
-          <LiveOptionTab />
-        </div>
         <div className="absolute bottom-0 w-full h-60 bg-gradient-to-b from-black/0 to-black/35">&nbsp;</div>
       </div>
     );
