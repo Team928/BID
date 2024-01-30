@@ -1,7 +1,6 @@
 spring:
   profiles:
-    active: # 기본설정
-      - local
+    active: local # 기본설정
     group:
       local:
         - db-local
