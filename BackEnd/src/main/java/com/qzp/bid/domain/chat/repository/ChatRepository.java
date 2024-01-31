@@ -16,4 +16,7 @@ public interface ChatRepository extends MongoRepository<Chat, Long> {
     int countAllByRoomIdAndReadIsFalse(long roomId);
 
     List<ChatRes> findAllByRoomIdOrderByCreateTime(Long roomId);
+
+    @Query("{'room_id': ?0}")
+    void deleteAllByRoomId(Long roomId);
 }

@@ -131,5 +131,25 @@ public class ChatServiceImpl implements ChatService {
         return chatRepository.findAllByRoomIdOrderByCreateTime(roomId);
     }
 
+
+    @Override
+    @Transactional
+    public void exitChatRooms(long userId, long chatRoomId) {
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(chatRoomId);
+        if (optionalChatRoom.isPresent()){
+            ChatRoom chatRoom = optionalChatRoom.get();
+            chatRoom.setHostId(chatRoom.getHostId() == userId ? -1 : chatRoom.getHostId());
+            chatRoom.setGuestId(chatRoom.getGuestId() == userId ? -1 : chatRoom.getGuestId());
+            if (chatRoom.getHostId() == -1 && chatRoom.getGuestId() == -1){
+                chatRoomRepository.delete(chatRoom);
+                chatRepository.deleteAllByRoomId(chatRoomId);
+            }else{
+                chatRoomRepository.save(chatRoom);
+            }
+
+        }
+    }
+
+
 }
 
