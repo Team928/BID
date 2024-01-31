@@ -1,6 +1,7 @@
 package com.qzp.bid.domain.deal.sale.controller;
 
 import com.qzp.bid.domain.deal.dto.SearchParam;
+import com.qzp.bid.domain.deal.sale.dto.BidReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
@@ -73,5 +74,14 @@ public class SaleController {
         @ModelAttribute @ParameterObject SearchParam searchParam) {
         SaleListPage saleListPage = saleService.getSales(searchParam);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_SALE_SUCCESS, saleListPage));
+    }
+
+    @Operation(summary = "경매 입찰하기")
+    @PostMapping("/{saleId}/bids")
+    public ResponseEntity<ResultResponse> createBid(@PathVariable Long saleId,
+        @RequestBody BidReq bidReq) {
+        saleService.createBid(saleId, bidReq);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ResultResponse.of(ResultCode.CREATE_BID_SUCCESS));
     }
 }

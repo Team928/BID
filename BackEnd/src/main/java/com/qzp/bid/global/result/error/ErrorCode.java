@@ -23,8 +23,11 @@ public enum ErrorCode {
     WISH_NOT_EXIST(400, "찜한 거래가 존재하지 않습니다."),
 
     // sale
+    SALE_ID_NOT_EXIST(400, "존재하지 않는 판매글 ID입니다."),
     GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다."),
     UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),
+    BID_PRICE_TOO_LOW(400, "입찰가가 낮습니다."),
+    BID_FAIL(400, "입찰에 실패하였습니다."),
 
     //purchase
     GET_PURCHASE_FAIL(400, "구매글 조회에 실패하였습니다."),

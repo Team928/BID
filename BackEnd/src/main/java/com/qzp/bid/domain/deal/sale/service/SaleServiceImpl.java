@@ -8,12 +8,15 @@ import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.mapper.ImageMapper;
 import com.qzp.bid.domain.deal.repository.ImageRepository;
+import com.qzp.bid.domain.deal.sale.dto.BidReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
 import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
+import com.qzp.bid.domain.deal.sale.entity.Bid;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.mapper.SaleMapper;
+import com.qzp.bid.domain.deal.sale.repository.BidRepository;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.global.result.error.ErrorCode;
@@ -39,6 +42,7 @@ public class SaleServiceImpl implements SaleService {
     private final AccountUtil accountUtil;
     private final ImageUploader imageUploader;
     private final ImageRepository imageRepository;
+    private final BidRepository bidRepository;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -80,5 +84,24 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public SaleListPage getSales(SearchParam searchParam) {
         return saleRepository.getSaleListPageBySearchParam(searchParam);
+    }
+
+    @Override
+    public void createBid(Long saleId, BidReq bidReq) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        Sale sale = saleRepository.findById(saleId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
+        if (sale.getStatus() != DealStatus.AUCTION && sale.getStatus() != DealStatus.LIVE) {
+            throw new BusinessException(ErrorCode.BID_FAIL);
+        }
+        if (sale.getHighestBid() != null
+            && sale.getHighestBid().getBidPrice() >= bidReq.getBidPrice()) {
+            throw new BusinessException(ErrorCode.BID_PRICE_TOO_LOW);
+        }
+        Bid bid = Bid.builder().bidder(member).bidPrice(bidReq.getBidPrice()).isSuccess(false)
+            .sale(sale).build();
+        bidRepository.save(bid);
+        sale.setHighestBid(bid);
     }
 }
