@@ -15,10 +15,10 @@ public class AccountUtil {
 
     private final MemberRepository memberRepository;
 
-    public String getLoginMemberId(){
-        try{
-            return SecurityContextHolder.getContext().getAuthentication().getName(); //사용자 이메일 반환
-        }catch(Exception e){
+    public String getLoginMemberId() {
+        try {
+            return SecurityContextHolder.getContext().getAuthentication().getName(); //사용자 id 반환
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
@@ -33,11 +33,11 @@ public class AccountUtil {
         }
     }
 
-    public boolean checkLoginMember(long memberId){
+    public boolean checkLoginMember(long memberId) {
         try {
             long loginMemberId = Long.parseLong(
                 SecurityContextHolder.getContext().getAuthentication().getName());
-            return loginMemberId==memberId;
+            return loginMemberId == memberId;
         } catch (Exception e) {
             throw new RuntimeException();
         }

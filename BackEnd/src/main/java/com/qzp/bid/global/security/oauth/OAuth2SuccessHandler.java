@@ -44,19 +44,21 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String authorities = jwtProvider.getAuthorities(authentication);
 
         //권한에 USER가 존재한다면 LogintTokenRes 전달
-        if(authorities.contains("USER")){
+        if (authorities.contains("USER")) {
 
             Member existMember = memberRepository.findById(id).get();
             String nickname = existMember.getNickname();
             List<String> area = existMember.getArea();
 
-            LoginTokenRes loginTokenRes = jwtProvider.getLoginResponseExist(id,authentication); //accessToken, refreshToken 생성
+            LoginTokenRes loginTokenRes = jwtProvider.getLoginResponseExist(id,
+                authentication); //accessToken, refreshToken 생성
             loginTokenRes.setArea(area);
             loginTokenRes.setNickname(nickname);
 
             //Redis에 저장
             redisTemplate.opsForValue()
-                .set("RTK:"+loginTokenRes.getId(), loginTokenRes.getRefreshToken(), Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
+                .set("RTK:" + loginTokenRes.getId(), loginTokenRes.getRefreshToken(),
+                    Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
             ResultResponse result = ResultResponse.of(ResultCode.LOGIN_SUCCESS, loginTokenRes);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
@@ -64,13 +66,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             String jsonStr = gson.toJson(result);
             response.getWriter().println(jsonStr);
 
-        } else if(authorities.contains("GUEST")){
+        } else if (authorities.contains("GUEST")) {
 
-            LoginTokenDto loginResponse = jwtProvider.getLoginResponse(id,authentication); //accessToken, refreshToken 생성
+            LoginTokenDto loginResponse = jwtProvider.getLoginResponse(id,
+                authentication); //accessToken, refreshToken 생성
 
             //Redis에 저장
             redisTemplate.opsForValue()
-                .set("RTK:"+loginResponse.getId(), loginResponse.getRefreshToken(), Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
+                .set("RTK:" + loginResponse.getId(), loginResponse.getRefreshToken(),
+                    Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
             ResultResponse result = ResultResponse.of(ResultCode.LOGIN_SUCCESS, loginResponse);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");

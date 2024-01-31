@@ -40,6 +40,7 @@ public enum ErrorCode {
 
     //Member
     MEMBER_ID_NOT_EXIST(400, "회원 id가 존재하지 않습니다."),
+    MEMBER_NICKNAME_NOT_EXIST(400, "회원 닉네임이 존재하지 않습니다."),
     REGISTER_FAIL(400, "회원가입에 실패하였습니다.");
 
     private final int status;
