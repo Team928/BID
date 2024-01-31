@@ -1,17 +1,24 @@
 package com.qzp.bid.domain.deal.purchase.service;
 
+import static com.qzp.bid.global.result.error.ErrorCode.APPLY_LIMIT_FAIL;
 import static com.qzp.bid.global.result.error.ErrorCode.GET_PURCHASE_FAIL;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.PURCHASE_IS_NOT_BEFORE;
 
 import com.qzp.bid.domain.deal.dto.ImageDto;
 import com.qzp.bid.domain.deal.dto.SearchParam;
+import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.mapper.ImageMapper;
+import com.qzp.bid.domain.deal.purchase.dto.ApplyFormReq;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseReq;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseRes;
+import com.qzp.bid.domain.deal.purchase.entity.ApplyForm;
 import com.qzp.bid.domain.deal.purchase.entity.Purchase;
+import com.qzp.bid.domain.deal.purchase.mapper.ApplyFormMapper;
 import com.qzp.bid.domain.deal.purchase.mapper.PurchaseMapper;
+import com.qzp.bid.domain.deal.purchase.repository.ApplyFormRepository;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.repository.ImageRepository;
 import com.qzp.bid.domain.member.entity.Member;
@@ -37,6 +44,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final AccountUtil accountUtil;
     private final ImageUploader imageUploader;
     private final ImageRepository imageRepository;
+    private final ApplyFormRepository applyFormRepository;
+    private final ApplyFormMapper applyFormMapper;
 
     @Override
     public void createPurchase(PurchaseReq purchaseReq, List<MultipartFile> photos) {
@@ -68,5 +77,29 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public PurchaseListPage getPurchases(SearchParam searchParam) {
         return purchaseRepository.getPurchaseListPageBySearchParam(searchParam);
+    }
+
+    @Override
+    public void createApplyForm(Long purchasesId, ApplyFormReq applyFormReq, MultipartFile image) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        Purchase purchase = purchaseRepository.findById(purchasesId)
+            .orElseThrow(() -> new BusinessException(GET_PURCHASE_FAIL));
+        if (purchase.getApplyForms().size() >= purchase.getMemberLimit()) {
+            throw new BusinessException(APPLY_LIMIT_FAIL);
+        }
+        if (purchase.getStatus() != DealStatus.BEFORE) {
+            throw new BusinessException(PURCHASE_IS_NOT_BEFORE);
+        }
+
+        ApplyForm applyForm = applyFormMapper.applyFormToApplyFormReq(applyFormReq);
+        ImageDto imageDto = imageUploader.uploadOne(image);
+        applyForm.setSellerId(member.getId());
+        applyForm.setImage(imageDto.getImagePath());
+        applyFormRepository.save(applyForm);
+
+        List<ApplyForm> applyForms = purchase.getApplyForms();
+        applyForms.add(applyForm);
+        purchase.setApplyForms(applyForms);
     }
 }

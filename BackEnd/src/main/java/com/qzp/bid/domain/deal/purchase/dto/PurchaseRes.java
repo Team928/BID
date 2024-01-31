@@ -2,6 +2,7 @@ package com.qzp.bid.domain.deal.purchase.dto;
 
 import com.qzp.bid.domain.deal.dto.DealRes;
 import com.qzp.bid.domain.deal.entity.DealStatus;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +17,5 @@ public class PurchaseRes {
     private DealStatus status;
     private boolean isScrap;
     private boolean isJoinReq;
+    private List<ApplyFormRes> applyForms;
 }
