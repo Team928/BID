@@ -1,29 +1,12 @@
+import { ISaleSimpleRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { getPriceName } from '@/utils/getPriceName';
 import { useNavigate } from 'react-router-dom';
 
-export interface ISaleSimpleRes {
-  salePostSimpleRes: {
-    id: number;
-    title: string;
-    categories: string;
-    createTime: string;
-    image: string;
-  };
-  immediate_price: number | null;
-  startTime: string | null;
-  startPrice: number | null;
-  endTime: string | null;
-  bid: number | null;
-  status: statusType;
-}
-
-export type statusType = 'BEFORE' | 'AUCTION' | 'LIVE' | 'END';
-
 const AuctionItem = (props: { item: ISaleSimpleRes }) => {
   const navigate = useNavigate();
-  const sale = props.item.salePostSimpleRes;
+  const sale = props.item.dealSimpleRes;
   const item = props.item;
 
   return (
@@ -41,8 +24,8 @@ const AuctionItem = (props: { item: ISaleSimpleRes }) => {
         )}
       </div>
       <div className="px-1 flex flex-col gap-1">
-        <p className=" text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(sale.categories)}</p>
-        <p className=" w-32 truncate whitespace-normal line-clamp-2">{sale.title}</p>
+        <p className="text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(sale.category)}</p>
+        <p className="w-32 truncate whitespace-normal line-clamp-2">{sale.title}</p>
         <div className="">
           <p className="font-bold text-sm">
             {item.status === 'BEFORE' ? addCommaToPrice(item.immediate_price) : addCommaToPrice(item.bid)}원
