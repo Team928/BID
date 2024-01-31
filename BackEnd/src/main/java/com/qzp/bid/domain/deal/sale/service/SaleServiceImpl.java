@@ -23,6 +23,9 @@ import com.qzp.bid.domain.deal.sale.repository.BidRepository;
 import com.qzp.bid.domain.deal.sale.repository.LiveRequestRepository;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.entity.Member;
+import com.qzp.bid.domain.member.entity.PointHistory;
+import com.qzp.bid.domain.member.entity.PointStatus;
+import com.qzp.bid.domain.member.repository.PointHistoryRepository;
 import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
@@ -52,6 +55,7 @@ public class SaleServiceImpl implements SaleService {
     private final BidMapper bidMapper;
     private final LiveRequestRepository liveRequestRepository;
     private final WishRepository wishRepository;
+    private final PointHistoryRepository pointHistoryRepository;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -128,8 +132,23 @@ public class SaleServiceImpl implements SaleService {
             throw new BusinessException(ErrorCode.NOT_ENOUGH_POINT);
         }
         bidRepository.save(bid);
+        PointHistory hold = PointHistory.builder()
+            .amount(bid.getBidPrice())
+            .status(PointStatus.HOLD)
+            .time(bid.getBidTime())
+            .build();
+        pointHistoryRepository.save(hold);
+        member.getPointHistory().add(hold);
         if (sale.getHighestBid() != null) {
-            sale.getHighestBid().cancelBidding();
+            Bid highestBid = sale.getHighestBid();
+            highestBid.cancelBidding();
+            PointHistory free = PointHistory.builder()
+                .amount(highestBid.getBidPrice())
+                .status(PointStatus.FREE)
+                .time(bid.getBidTime())
+                .build();
+            pointHistoryRepository.save(free);
+            sale.getHighestBid().getBidder().getPointHistory().add(free);
         }
         sale.setHighestBid(bid);
     }
