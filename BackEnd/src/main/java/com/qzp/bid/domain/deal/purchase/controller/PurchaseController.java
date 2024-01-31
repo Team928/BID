@@ -1,6 +1,7 @@
 package com.qzp.bid.domain.deal.purchase.controller;
 
 import com.qzp.bid.domain.deal.dto.SearchParam;
+import com.qzp.bid.domain.deal.purchase.dto.ApplyFormReq;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseReq;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseRes;
@@ -61,6 +62,15 @@ public class PurchaseController {
     public ResponseEntity<ResultResponse> getPurchases(
         @ModelAttribute @ParameterObject SearchParam searchParam) {
         PurchaseListPage purchaseListPage = purchaseService.getPurchases(searchParam);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_SALE_SUCCESS, purchaseListPage));
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.GET_PURCHASE_SUCCESS, purchaseListPage));
+    }
+
+    @Operation(summary = "역경매 참가 신청")
+    @PostMapping(value = "/{purchasesId}/applyforms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResultResponse> CreateApplyForm(@PathVariable Long purchasesId,
+        @RequestPart ApplyFormReq applyFormReq, @RequestPart MultipartFile image) {
+        purchaseService.createApplyForm(purchasesId, applyFormReq, image);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.CREATE_APPLYFORM_SUCCESS));
     }
 }
