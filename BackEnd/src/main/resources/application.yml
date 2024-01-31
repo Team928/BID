@@ -18,7 +18,11 @@ spring:
     url: ${db.url}
     username: ${db.username}
     password: ${db.password}
-
+  data:
+    mongodb:
+      database: ${db.database}
+      host: ${db.host}
+      port: ${db.port}
   jpa:
     hibernate:
       ddl-auto: update

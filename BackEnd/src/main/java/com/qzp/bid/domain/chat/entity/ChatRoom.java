@@ -2,6 +2,7 @@ package com.qzp.bid.domain.chat.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class ChatRoom {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String roomName;
     private long dealId;
@@ -31,5 +32,7 @@ public class ChatRoom {
     private LocalDateTime createTime;
     @UpdateTimestamp
     private LocalDateTime updateTime;
+    private String lastMessage;
+    private long lastSenderId;
 
 }
