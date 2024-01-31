@@ -3,7 +3,6 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import BuyCategoryItem from '@/components/home/buy/BuyCategoryItem';
 import { icons } from '@/constants/icons';
 import { changeEngToKr } from '@/utils/changeCategorie';
-import { changeOneCapitalize } from '@/utils/changeOneCapitalize';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -29,7 +28,7 @@ const BuyCategoryPage = () => {
         <Header info={info} />
         <div className="pt-12 pb-4 px-BID_P ">
           <div className="pt-4 ">
-            <p className="font-bold text-lg">{changeEngToKr(changeOneCapitalize(pathname.split('/')[2]))}</p>
+            <p className="font-bold text-lg">{changeEngToKr(pathname.split('/')[2].toUpperCase())}</p>
             <p className="text-xs text-BID_BLACK">적을꺼 없음 뭐적지?</p>
           </div>
           <div className="pt-4 flex font-bold gap-3 text-center">
