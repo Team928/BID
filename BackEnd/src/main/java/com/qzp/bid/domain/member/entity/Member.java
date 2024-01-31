@@ -55,4 +55,15 @@ public class Member {
     private Set<Role> role = new HashSet<>();
     private String profileImage;
 
+    public boolean bidding(int price) {
+        if (point - holdingPoint < price) {
+            return false;
+        }
+        this.holdingPoint += price;
+        return true;
+    }
+
+    public void cancelBidding(int price) {
+        this.holdingPoint -= price;
+    }
 }

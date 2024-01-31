@@ -116,7 +116,7 @@ public class SaleServiceImpl implements SaleService {
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
         if (sale.getStatus() != DealStatus.AUCTION && sale.getStatus() != DealStatus.LIVE) {
-            throw new BusinessException(ErrorCode.BID_FAIL);
+            throw new BusinessException(ErrorCode.NOT_AUCTION_STATUS);
         }
         if (sale.getHighestBid() != null
             && sale.getHighestBid().getBidPrice() >= bidReq.getBidPrice()) {
@@ -124,7 +124,13 @@ public class SaleServiceImpl implements SaleService {
         }
         Bid bid = Bid.builder().bidder(member).bidPrice(bidReq.getBidPrice()).isSuccess(false)
             .sale(sale).build();
+        if (!bid.bidding()) {
+            throw new BusinessException(ErrorCode.NOT_ENOUGH_POINT);
+        }
         bidRepository.save(bid);
+        if (sale.getHighestBid() != null) {
+            sale.getHighestBid().cancelBidding();
+        }
         sale.setHighestBid(bid);
     }
 
