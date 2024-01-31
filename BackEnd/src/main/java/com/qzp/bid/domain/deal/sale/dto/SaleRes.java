@@ -18,7 +18,7 @@ public class SaleRes {
     private LocalDateTime endTime;
     private DealStatus status;
     private int liveRequestCount;
-    private boolean isScrap;
+    private boolean isWished;
     private boolean isLiveReq;
     private List<BidRes> bidList;
 }

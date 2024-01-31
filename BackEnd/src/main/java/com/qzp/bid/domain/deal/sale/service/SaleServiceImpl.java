@@ -8,6 +8,7 @@ import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.mapper.ImageMapper;
 import com.qzp.bid.domain.deal.repository.ImageRepository;
+import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.dto.BidReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
@@ -50,6 +51,7 @@ public class SaleServiceImpl implements SaleService {
     private final BidRepository bidRepository;
     private final BidMapper bidMapper;
     private final LiveRequestRepository liveRequestRepository;
+    private final WishRepository wishRepository;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -68,6 +70,8 @@ public class SaleServiceImpl implements SaleService {
     @Transactional(readOnly = true)
     @Override
     public SaleRes getSale(Long saleId) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
         Optional<List<Bid>> bids = bidRepository.findBySaleId(saleId);
@@ -75,6 +79,12 @@ public class SaleServiceImpl implements SaleService {
         bids.ifPresent(
             bidList -> saleRes.setBidList(
                 bidList.stream().map(bidMapper::BidToBidRes).collect(Collectors.toList())));
+        if (liveRequestRepository.existsBySaleIdAndMemberId(saleId, member.getId())) {
+            saleRes.setLiveReq(true);
+        }
+        if (wishRepository.existsByDealIdAndMemberId(saleId, member.getId())) {
+            saleRes.setWished(true);
+        }
         return saleRes;
     }
 
