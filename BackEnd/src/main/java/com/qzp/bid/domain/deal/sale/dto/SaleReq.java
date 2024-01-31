@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class SaleReq {
 
-    DealReq dealReq;
-    int immediatePrice;
-    int startPrice;
-    LocalDateTime endTime;
+    private DealReq dealReq;
+    private int immediatePrice;
+    private int startPrice;
+    private LocalDateTime endTime;
 }

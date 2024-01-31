@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 public class DealReq {
 
-    String title;
-    String content;
-    String writer;
-    Category category;
-    List<String> area;
-    LocalDateTime startTime;
+    private String title;
+    private String content;
+    private String writer;
+    private Category category;
+    private List<String> area;
+    private LocalDateTime startTime;
 }

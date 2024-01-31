@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 public class PurchaseReq {
 
-    DealReq dealReq;
-    int minPrice;
-    int maxPrice;
-    int memberLimit;
+    private DealReq dealReq;
+    private int minPrice;
+    private int maxPrice;
+    private int memberLimit;
 }

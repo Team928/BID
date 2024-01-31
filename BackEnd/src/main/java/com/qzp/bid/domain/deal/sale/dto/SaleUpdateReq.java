@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class SaleUpdateReq {
 
-    int immediatePrice;
+    private int immediatePrice;
 }

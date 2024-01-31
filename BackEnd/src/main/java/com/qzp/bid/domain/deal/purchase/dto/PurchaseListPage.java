@@ -10,8 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PurchaseListPage {
 
-    List<PurchaseSimpleRes> purchaseSimpleRes;
-    int pageNumber;
-    int pageSize;
-    boolean last;
+    private List<PurchaseSimpleRes> purchaseSimpleRes;
+    private int pageNumber;
+    private int pageSize;
+    private boolean last;
 }
