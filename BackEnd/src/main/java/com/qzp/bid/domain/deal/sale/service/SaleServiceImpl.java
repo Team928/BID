@@ -14,10 +14,12 @@ import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
 import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
 import com.qzp.bid.domain.deal.sale.entity.Bid;
+import com.qzp.bid.domain.deal.sale.entity.LiveRequest;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.mapper.BidMapper;
 import com.qzp.bid.domain.deal.sale.mapper.SaleMapper;
 import com.qzp.bid.domain.deal.sale.repository.BidRepository;
+import com.qzp.bid.domain.deal.sale.repository.LiveRequestRepository;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.global.result.error.ErrorCode;
@@ -47,6 +49,7 @@ public class SaleServiceImpl implements SaleService {
     private final ImageRepository imageRepository;
     private final BidRepository bidRepository;
     private final BidMapper bidMapper;
+    private final LiveRequestRepository liveRequestRepository;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -113,5 +116,20 @@ public class SaleServiceImpl implements SaleService {
             .sale(sale).build();
         bidRepository.save(bid);
         sale.setHighestBid(bid);
+    }
+
+    @Override
+    public void createLiveReq(Long saleId) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        if (liveRequestRepository.existsBySaleIdAndMemberId(saleId, member.getId())) {
+            throw new BusinessException(ErrorCode.ALREADY_REQUESTED);
+        }
+        LiveRequest liveRequest = LiveRequest.builder().memberId(member.getId())
+            .saleId(saleId).build();
+        liveRequestRepository.save(liveRequest);
+        Sale sale = saleRepository.findById(saleId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
+        sale.setLiveRequestCount(sale.getLiveRequestCount() + 1);
     }
 }

@@ -28,6 +28,7 @@ public enum ErrorCode {
     UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),
     BID_PRICE_TOO_LOW(400, "입찰가가 낮습니다."),
     BID_FAIL(400, "입찰에 실패하였습니다."),
+    ALREADY_REQUESTED(400, "이미 요청한 경매글입니다."),
 
     //purchase
     GET_PURCHASE_FAIL(400, "구매글 조회에 실패하였습니다."),

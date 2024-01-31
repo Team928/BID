@@ -84,4 +84,12 @@ public class SaleController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResultResponse.of(ResultCode.CREATE_BID_SUCCESS));
     }
+
+    @Operation(summary = "라이브 요청하기")
+    @PostMapping("/{saleId}/livereqs")
+    public ResponseEntity<ResultResponse> createLiveReq(@PathVariable Long saleId) {
+        saleService.createLiveReq(saleId);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ResultResponse.of(ResultCode.CREATE_LIVEREQUEST_SUCCESS));
+    }
 }
