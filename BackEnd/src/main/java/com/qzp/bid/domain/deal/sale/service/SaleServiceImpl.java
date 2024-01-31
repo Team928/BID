@@ -89,9 +89,14 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public void updateSale(Long saleId, SaleUpdateReq saleUpdateReq) { // TODO: 권한조회 추가 필요
+    public void updateSale(Long saleId, SaleUpdateReq saleUpdateReq) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
+        if (sale.getWriter().getId() != member.getId()) {
+            throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
+        }
         if (!sale.getStatus().equals(DealStatus.BEFORE)) {
             throw new BusinessException(ErrorCode.UPDATE_SALE_FAIL);
         }
@@ -99,8 +104,15 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public void deleteSale(Long saleId) { // TODO: 권한검사,삭제 시 BID처리 수정 필요
-        saleRepository.deleteById(saleId);
+    public void deleteSale(Long saleId) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        Sale sale = saleRepository.findById(saleId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
+        if (sale.getWriter().getId() != member.getId()) {
+            throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
+        }
+        saleRepository.delete(sale);
     }
 
     @Transactional(readOnly = true)

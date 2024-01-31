@@ -22,6 +22,7 @@ import com.qzp.bid.domain.deal.purchase.repository.ApplyFormRepository;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.repository.ImageRepository;
 import com.qzp.bid.domain.member.entity.Member;
+import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.util.ImageUploader;
@@ -72,7 +73,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public void deletePurchase(Long purchaseId) {
-        purchaseRepository.deleteById(purchaseId);
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        Purchase purchase = purchaseRepository.findById(purchaseId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
+        if (purchase.getWriter().getId() != member.getId()) {
+            throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
+        }
+        purchaseRepository.delete(purchase);
     }
 
     @Transactional(readOnly = true)
