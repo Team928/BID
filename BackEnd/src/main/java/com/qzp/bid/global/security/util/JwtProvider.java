@@ -1,6 +1,8 @@
 package com.qzp.bid.global.security.util;
 
-import static com.qzp.bid.global.result.error.ErrorCode.*;
+import static com.qzp.bid.global.result.error.ErrorCode.JWT_EXPIRED;
+import static com.qzp.bid.global.result.error.ErrorCode.JWT_INVALID;
+import static com.qzp.bid.global.result.error.ErrorCode.JWT_MALFORM;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,41 +49,45 @@ public class JwtProvider {
     @Value("${jwt.token-refresh-time}")
     private long refreshTokenValidityTime;
 
-    public long getRefreshTokenValidityTime(){
+    public long getRefreshTokenValidityTime() {
         return refreshTokenValidityTime;
     }
 
     //access 토큰, refresh 토큰 생성한 것 LoginTokenDto에 담아서 return
-    public LoginTokenDto getLoginResponse(Member member){
-        return new LoginTokenDto(member.getId(), generateAccessToken(member.getId(), getAuthorities(member)),generateRefreshToken(member.getId()));
+    public LoginTokenDto getLoginResponse(Member member) {
+        return new LoginTokenDto(member.getId(),
+            generateAccessToken(member.getId(), getAuthorities(member)),
+            generateRefreshToken(member.getId()));
     }
 
     //access 토큰, refresh 토큰 생성
     public LoginTokenDto getLoginResponse(long id,
-        Authentication authentication){
-        return new LoginTokenDto(id, generateAccessToken(id, getAuthorities(authentication)), generateRefreshToken(id));
+        Authentication authentication) {
+        return new LoginTokenDto(id, generateAccessToken(id, getAuthorities(authentication)),
+            generateRefreshToken(id));
     }
 
     //존재하는 유저의 access 토큰, refresh 토큰 생성한 것 LoginTokenRes에 담아서 return
-    public LoginTokenRes getLoginResponseExist(long id, Authentication authentication){
-        return new LoginTokenRes(id, generateAccessToken(id, getAuthorities(authentication)), generateRefreshToken(id));
+    public LoginTokenRes getLoginResponseExist(long id, Authentication authentication) {
+        return new LoginTokenRes(id, generateAccessToken(id, getAuthorities(authentication)),
+            generateRefreshToken(id));
     }
 
     //권한 정보 가져오기 (GUEST, USER, ADMIN)
-    public String getAuthorities(Member member){
+    public String getAuthorities(Member member) {
         return member.getRole().stream()
             .map(role -> new SimpleGrantedAuthority(role.name()).getAuthority())
             .collect(Collectors.joining(","));
     }
 
-    public String getAuthorities(Authentication authentication){
+    public String getAuthorities(Authentication authentication) {
         return authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
     }
 
     // key 생성
-    private Key createKey(){
+    private Key createKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
@@ -89,7 +95,8 @@ public class JwtProvider {
     //AccessToken 생성
     public String generateAccessToken(Long id, String role) {
         //TODO: tokenValidityTime 따로 빼서 설정하기
-        Date expiredAt = Date.from(Instant.now().plus(1, ChronoUnit.HOURS)); //유효 시간 1시간
+        Date expiredAt = Date.from(
+            Instant.now().plus(tokenValidityTime, ChronoUnit.HOURS));
 
         return Jwts.builder()
             .signWith(createKey())
@@ -101,8 +108,9 @@ public class JwtProvider {
     }
 
     //RefreshToken 생성
-    public String generateRefreshToken(long id){
-        Date expiredAt = Date.from(ZonedDateTime.now().plusDays(refreshTokenValidityTime).toInstant()); //plusDays: day(일) 단위
+    public String generateRefreshToken(long id) {
+        Date expiredAt = Date.from(ZonedDateTime.now().plusDays(refreshTokenValidityTime)
+            .toInstant()); //plusDays: day(일) 단위
 
         return Jwts.builder()
             .signWith(createKey())
@@ -125,7 +133,8 @@ public class JwtProvider {
     //토큰의 유효성을 체크하고 Claims 정보를 반환받는 메서드
     public Claims validateAndGetClaims(String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(createKey()).build().parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder().setSigningKey(createKey()).build().parseClaimsJws(token)
+                .getBody();
         } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
             throw new TokenException(JWT_MALFORM);
         } catch (ExpiredJwtException e) {
@@ -148,7 +157,6 @@ public class JwtProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = new User(claims.getSubject(), "", authorities);
 
@@ -157,10 +165,11 @@ public class JwtProvider {
     }
 
     // 만료되었지만 올바른 형식의 Token인지 검사.
-    public HashMap<Object,String> parseClaimsByExpiredToken(String accessToken){
+    public HashMap<Object, String> parseClaimsByExpiredToken(String accessToken) {
         try {
             Jwts.parserBuilder().setSigningKey(createKey()).build().parseClaimsJws(accessToken);
-        } catch (ExpiredJwtException e) { // 토큰 검사 과정에서 토큰의 유효시간을 가장 나중에 체크하기 때문에 이전 예외에 걸리지않으면 올바른 토큰임.
+        } catch (
+            ExpiredJwtException e) { // 토큰 검사 과정에서 토큰의 유효시간을 가장 나중에 체크하기 때문에 이전 예외에 걸리지않으면 올바른 토큰임.
             try {
                 String[] splitJwt = accessToken.split("\\.");
                 Base64.Decoder decoder = Base64.getDecoder();
