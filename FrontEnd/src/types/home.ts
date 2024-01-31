@@ -12,7 +12,7 @@ export interface IDealSimpleRes {
 
 export interface ISaleSimpleRes {
   dealSimpleRes: IDealSimpleRes;
-  immediate_price: number;
+  immediatePrice: number;
   startPrice: number;
   endTime: string;
   bid: number;
