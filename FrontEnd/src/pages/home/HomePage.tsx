@@ -1,5 +1,5 @@
 import Bottom from '@/components/@common/Bottom';
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import AuctionTabBar from '@/components/home/AuctionTabBar';
 import BuyTab from '@/components/home/BuyTab';
 import Category from '@/components/home/Category';

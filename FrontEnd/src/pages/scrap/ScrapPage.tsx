@@ -1,6 +1,6 @@
 import Bottom from '@/components/@common/Bottom';
 import StateButton from '@/components/@common/StateButton';
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import AuctionTabBar from '@/components/home/AuctionTabBar';
 import { icons } from '@/constants/icons';
 import useTabStore from '@/stores/auctionTabStore';

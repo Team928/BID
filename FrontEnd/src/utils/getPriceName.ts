@@ -1,6 +1,6 @@
-import { statusType } from '@/components/home/AuctionItem';
+import { dealStatusType } from '@/types/model';
 
-export const getPriceName = (status: statusType) => {
+export const getPriceName = (status: dealStatusType) => {
   let name = '';
   switch (status) {
     case 'AUCTION':

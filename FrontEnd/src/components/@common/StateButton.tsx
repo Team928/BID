@@ -1,10 +1,10 @@
-import { statusType } from '../home/AuctionItem';
+import { dealStatusType } from '@/types/model';
 
-type dealsType = 'buy' | 'sale';
+type dealType = 'buy' | 'sale';
 
 interface IStateButtonProp {
-  deals: dealsType;
-  status: statusType;
+  deals: dealType;
+  status: dealStatusType;
 }
 
 const StateButton = ({ deals, status }: IStateButtonProp) => {

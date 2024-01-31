@@ -1,5 +1,5 @@
 import Bottom from '@/components/@common/Bottom';
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import BuyCategoryItem from '@/components/home/buy/BuyCategoryItem';
 import { icons } from '@/constants/icons';
 import { changeEngToKr } from '@/utils/changeCategorie';

@@ -1,5 +1,5 @@
 import DaumPostModal from '@/components/@common/DaumPostModal';
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import { useEffect, useState } from 'react';
 
 const SignupPage = () => {

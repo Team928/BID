@@ -1,12 +1,12 @@
-import { dealType } from '@/types/model';
+import { dealStatusType } from '@/types/model';
 import { useEffect, useState } from 'react';
 import { FaCheck } from 'react-icons/fa6';
 
 interface ISelectModal {
   order: string;
   setOrder: React.Dispatch<React.SetStateAction<string>>;
-  state: dealType | 'ALL';
-  setState: React.Dispatch<React.SetStateAction<dealType | 'ALL'>>;
+  state: dealStatusType | 'ALL';
+  setState: React.Dispatch<React.SetStateAction<dealStatusType | 'ALL'>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   sort: { state: string; lower: string[] };
 }

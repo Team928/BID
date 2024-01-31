@@ -1,4 +1,4 @@
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import DetailBottom from '@/components/home/detail/DetailBottom';
 import SaleDetail from '@/components/home/detail/SaleDetail';
 import { icons } from '@/constants/icons';

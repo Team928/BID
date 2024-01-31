@@ -1,4 +1,4 @@
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import NotifyItem, { IItem } from '@/components/notify/NotifyItem';
 import { icons } from '@/constants/icons';
 import { useLocation } from 'react-router-dom';

@@ -1,5 +1,5 @@
 import Bottom from '@/components/@common/Bottom';
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import BuyCategoryItem from '@/components/home/buy/BuyCategoryItem';
 import { icons } from '@/constants/icons';
 import { changeEngToKr } from '@/utils/changeCategorie';
@@ -7,13 +7,13 @@ import { changeOneCapitalize } from '@/utils/changeOneCapitalize';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import SelectModal from '@/components/home/SelectModal';
-import { dealType } from '@/types/model';
+import { dealStatusType } from '@/types/model';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const SaleCategoryPage = () => {
   const { pathname } = useLocation();
   // 현재 경매 상태를 관리 ( 전체, 경매 시작전, 경매 진행중 )
-  const [state, setState] = useState<dealType | 'ALL'>('ALL');
+  const [state, setState] = useState<dealStatusType | 'ALL'>('ALL');
   // 모달의 상태를 관리
   const [isOpen, setIsOpen] = useState<boolean>(false);
   // 경매 시작전과 경매 진행중의 하위 정렬을 관리

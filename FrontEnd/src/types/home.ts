@@ -1,4 +1,4 @@
-import { categoryType, dealOrderType, dealType } from './model';
+import { categoryType, dealOrderType, dealStatusType } from './model';
 
 export interface IDealSimpleRes {
   id: number;
@@ -16,7 +16,7 @@ export interface ISaleSimpleRes {
   startPrice: number;
   endTime: string;
   bid: number;
-  status: dealType;
+  status: dealStatusType;
 }
 
 // 판매글 목록 조회 Response ('deals/sales')
@@ -34,6 +34,6 @@ export interface ISalesListReq {
   catg?: categoryType;
   area?: string;
   order?: dealOrderType;
-  status?: dealType;
+  status?: dealStatusType;
   keyword?: string;
 }
