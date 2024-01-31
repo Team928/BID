@@ -22,4 +22,6 @@ public interface SaleService {
     SaleListPage getSales(SearchParam searchParam);
 
     void createBid(Long saleId, BidReq bidReq);
+
+    void createLiveReq(Long saleId);
 }

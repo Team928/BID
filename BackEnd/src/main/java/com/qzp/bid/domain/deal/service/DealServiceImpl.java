@@ -32,7 +32,7 @@ public class DealServiceImpl implements DealService {
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(DEAL_ID_NOT_EXIST));
 
-        if (wishRepository.findByMemberAndDeal(member, deal).isPresent()) {
+        if (wishRepository.existsByDealIdAndMemberId(deal.getId(), member.getId())) {
             throw new BusinessException(WISH_ALREADY_EXIST);
         }
         wishRepository.save(new Wish(member, deal));
