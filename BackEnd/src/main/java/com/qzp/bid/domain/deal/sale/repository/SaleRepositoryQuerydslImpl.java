@@ -33,7 +33,7 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
                 sale.immediatePrice,
                 sale.startPrice,
                 sale.endTime,
-                //sale.highestBid.bidPrice,
+                sale.highestBid.bidPrice.as("bid"),
                 sale.status
             ))
             .from(sale)

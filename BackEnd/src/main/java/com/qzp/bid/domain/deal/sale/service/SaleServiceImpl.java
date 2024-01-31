@@ -15,6 +15,7 @@ import com.qzp.bid.domain.deal.sale.dto.SaleRes;
 import com.qzp.bid.domain.deal.sale.dto.SaleUpdateReq;
 import com.qzp.bid.domain.deal.sale.entity.Bid;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
+import com.qzp.bid.domain.deal.sale.mapper.BidMapper;
 import com.qzp.bid.domain.deal.sale.mapper.SaleMapper;
 import com.qzp.bid.domain.deal.sale.repository.BidRepository;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
@@ -24,6 +25,8 @@ import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.util.ImageUploader;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,7 @@ public class SaleServiceImpl implements SaleService {
     private final ImageUploader imageUploader;
     private final ImageRepository imageRepository;
     private final BidRepository bidRepository;
+    private final BidMapper bidMapper;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -63,7 +67,12 @@ public class SaleServiceImpl implements SaleService {
     public SaleRes getSale(Long saleId) {
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
-        return saleMapper.toSaleRes(sale);
+        Optional<List<Bid>> bids = bidRepository.findBySaleId(saleId);
+        SaleRes saleRes = saleMapper.toSaleRes(sale);
+        bids.ifPresent(
+            bidList -> saleRes.setBidList(
+                bidList.stream().map(bidMapper::BidToBidRes).collect(Collectors.toList())));
+        return saleRes;
     }
 
     @Override
