@@ -90,6 +90,7 @@ public class SaleServiceImpl implements SaleService {
         saleRepository.deleteById(saleId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SaleListPage getSales(SearchParam searchParam) {
         return saleRepository.getSaleListPageBySearchParam(searchParam);

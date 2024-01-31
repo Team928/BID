@@ -62,6 +62,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseRepository.save(purchase);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PurchaseRes getPurchase(Long purchaseId) {
         Purchase purchase = purchaseRepository.findById(purchaseId)
@@ -74,6 +75,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseRepository.deleteById(purchaseId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PurchaseListPage getPurchases(SearchParam searchParam) {
         return purchaseRepository.getPurchaseListPageBySearchParam(searchParam);
