@@ -1,8 +1,11 @@
 package com.qzp.bid.domain.member.service;
 
+import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
+import com.qzp.bid.domain.deal.repository.DealRepository;
+import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
 import com.qzp.bid.domain.member.entity.Member;
@@ -33,6 +36,8 @@ public class MemberServiceImpl implements MemberService {
     //Repository
     private final MemberRepository memberRepository;
     private final ReviewRepository reviewRepository;
+    private final DealRepository dealRepository;
+    private final SaleRepository saleRepository;
     //Mapper
     private final ReviewMapper reviewMapper;
     //etc
@@ -70,10 +75,25 @@ public class MemberServiceImpl implements MemberService {
                 memberReviewReq.getTargetNickname())
             .orElseThrow(() -> (new BusinessException(MEMBER_NICKNAME_NOT_EXIST)));
 
+        String role;
+
+        if (dealRepository.existsByIdAndWriterId(memberReviewReq.getDealId(), reviewerId)) {
+            //존재할 때
+            //sale에 존재한다면 -> seller
+            if (saleRepository.existsById(memberReviewReq.getDealId())) {
+                role = "seller";
+            } else { //sale에 존재하지 않는다면 -> purchase에 존재하는 것 -> buyer
+                role = "buyer";
+            }
+        } else {
+            //(거래 아이디+리뷰 작성자) 맞는 것이 존재하지 않을 때
+            throw new BusinessException(DEAL_ID_NOT_EXIST);
+        }
+
         Review review = reviewMapper.toReview(memberReviewReq);
         review.setReviewerId(reviewerId);
         review.setTargetId(targetMember.getId());
+        review.setRole(role);
         reviewRepository.save(review);
     }
-
 }
