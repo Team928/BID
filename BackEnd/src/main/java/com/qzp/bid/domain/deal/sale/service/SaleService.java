@@ -1,6 +1,7 @@
 package com.qzp.bid.domain.deal.sale.service;
 
 import com.qzp.bid.domain.deal.dto.SearchParam;
+import com.qzp.bid.domain.deal.sale.dto.BidReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleReq;
 import com.qzp.bid.domain.deal.sale.dto.SaleRes;
@@ -19,4 +20,6 @@ public interface SaleService {
     void deleteSale(Long saleId);
 
     SaleListPage getSales(SearchParam searchParam);
+
+    void createBid(Long saleId, BidReq bidReq);
 }

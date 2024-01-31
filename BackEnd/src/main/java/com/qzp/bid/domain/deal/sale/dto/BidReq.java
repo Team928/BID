@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SaleUpdateReq {
+public class BidReq {
 
-    private int immediatePrice;
+    private int bidPrice;
 }

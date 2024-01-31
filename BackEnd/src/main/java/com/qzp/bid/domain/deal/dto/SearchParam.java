@@ -13,17 +13,17 @@ import lombok.Setter;
 public class SearchParam {
 
     @Schema(description = "페이지 번호", example = "0", defaultValue = "0", requiredMode = RequiredMode.REQUIRED)
-    int page;
+    private int page;
     @Schema(description = "한 페이지 당 글 갯수", example = "10", defaultValue = "10", requiredMode = RequiredMode.REQUIRED)
-    int size;
+    private int size;
     @Schema(description = "검색 카테고리 (ALL, FASHION, BEAUTY, CHILD, LIVING, DIGITAL, BOOK, TOY, PET, ETC)")
-    Category catg;
+    private Category catg;
     @Schema(description = "검색 지역")
-    String area;
+    private String area;
     @Schema(description = "최신순(desc) / 시작or마감 임박(asc)")
-    String order; // 기본 최신순 desc / 마감임박 or 시작임박  asc
+    private String order; // 기본 최신순 desc / 마감임박 or 시작임박  asc
     @Schema(description = "거래 진행 상태 (BEFORE, LIVE, AUCTION, END)")
-    DealStatus status;
+    private DealStatus status;
     @Schema(description = "제목 검색 키워드")
-    String keyword;
+    private String keyword;
 }

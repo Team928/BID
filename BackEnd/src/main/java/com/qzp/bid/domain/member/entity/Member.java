@@ -35,7 +35,7 @@ public class Member {
 
     @OneToMany
     @Builder.Default
-    List<PointHistory> pointHistory = new ArrayList<>();
+    private List<PointHistory> pointHistory = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

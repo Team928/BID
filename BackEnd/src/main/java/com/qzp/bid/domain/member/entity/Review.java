@@ -12,12 +12,12 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
     @CreatedDate
-    LocalDateTime createTime;
-    String content;
-    int score; //1~5
-    long dealId;
-    long reviewerId;
-    long targetId;
+    private LocalDateTime createTime;
+    private String content;
+    private int score; //1~5
+    private long dealId;
+    private long reviewerId;
+    private long targetId;
 }

@@ -2,7 +2,6 @@ package com.qzp.bid.domain.deal.sale.dto;
 
 import com.qzp.bid.domain.deal.dto.DealRes;
 import com.qzp.bid.domain.deal.entity.DealStatus;
-import com.qzp.bid.domain.deal.sale.entity.Bid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -21,5 +20,5 @@ public class SaleRes {
     private int liveRequestCount;
     private boolean isScrap;
     private boolean isLiveReq;
-    private List<Bid> bidList;
+    private List<BidRes> bidList;
 }
