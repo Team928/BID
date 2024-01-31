@@ -5,8 +5,8 @@ import { FaCheck } from 'react-icons/fa6';
 interface ISelectModal {
   order: string;
   setOrder: React.Dispatch<React.SetStateAction<string>>;
-  state: dealStatusType | 'ALL';
-  setState: React.Dispatch<React.SetStateAction<dealStatusType | 'ALL'>>;
+  state: dealStatusType | '';
+  setState: React.Dispatch<React.SetStateAction<dealStatusType | ''>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   sort: { state: string; lower: string[] };
 }
@@ -33,10 +33,10 @@ const SelectModal = ({ order, setOrder, state, setState, setIsOpen, sort }: ISel
         onClick={() => setIsOpen(false)}
         className="w-screen h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30"
       ></div>
-      <div className="fixed bottom-0 h-80 w-screen pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30">
+      <div className="fixed bottom-0 h-72 w-screen pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30">
         <div className="h-full flex flex-col justify-between font-bold text-xl">
           <p className="text-center text-lg">{sort.state}</p>
-          <div className="flex flex-col  gap-5">
+          <div className="flex flex-col gap-5">
             {sort.lower.map((lower, index) => {
               return (
                 <div key={index} onClick={() => itemClickEvent(lower)} className="flex justify-between">
