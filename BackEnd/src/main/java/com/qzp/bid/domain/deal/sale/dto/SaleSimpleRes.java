@@ -11,7 +11,7 @@ import lombok.Setter;
 public class SaleSimpleRes {
 
     private DealSimpleRes dealSimpleRes;
-    private int immediate_price;
+    private int immediatePrice;
     private int startPrice;
     private LocalDateTime endTime;
     private int bid;
