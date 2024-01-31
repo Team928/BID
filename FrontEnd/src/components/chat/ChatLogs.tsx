@@ -1,35 +1,36 @@
 import React from "react";
 
-// const ChatLogs: React.FC<{ logs: string[] }> = ({ logs }) => {
-  
-const ChatLogs: React.FC = () => {
+export interface ChatLog {
+  senderId: number,
+  type: string;
+  createTime: Date;
+  message: string;
+  read: boolean;
+}
 
-    // TODO 나중에 실제 데이터로 수정해야함
+interface ChatLogsProps {
+  chatLogs: ChatLog[];
+}
 
-    const dummyChatData = [
-        { author: "사용자1", message: "안녕하세요", time: '09:10' },
-        { author: "사용자1", message: "내일 거래해요", time: '09:10' },
-        { author: "나", message: "좋습니다", time: '09:10' },
-        { author: "나", message: "ㅎㅎㅎ", time: '09:10' },
-        
-      ];
+const ChatLogs: React.FC<ChatLogsProps> = ({ chatLogs }) => {
+
 
       return (
         <div className="w-full flex flex-col space-y-2 px-6 py-3">
-          {dummyChatData.map((log, i) => (
+          {chatLogs.map((log, i) => (
             <div
-              className={`flex ${log.author !== '나' ? 'justify-start' : 'justify-end'}`}
+              className={`flex ${log.senderId !== 1 ? 'justify-start' : 'justify-end'}`}
               key={`${i}`}
             >
               <div className='flex items-end'>
-                {log.author !== '나' ? (
+                {log.senderId !== 1 ? (
                   <>
                     <p className="bg-gray-200 rounded-lg p-3">{`${log.message}`}</p>
-                    <p className="text-sm text-gray-400 ml-2">{`${log.time}`}</p>
+                    <p className="text-sm text-gray-400 ml-2">{`${log.createTime}`}</p>
                   </>
                 ) : (
                   <>
-                    <p className="text-sm text-gray-400 mr-2">{`${log.time}`}</p>
+                    <p className="text-sm text-gray-400 mr-2">{`${log.createTime}`}</p>
                     <p className="bg-BID_MAIN rounded-lg p-3">{`${log.message}`}</p>
                   </>
                 )}
@@ -40,3 +41,14 @@ const ChatLogs: React.FC = () => {
       );
 }
 export default ChatLogs;
+
+/**
+ * 이런식으로 get
+ {"status":200,"message":"판매글 조회에 성공하였습니다.",
+ "data":[{"sender":"test1","senderId":1,"roomId":1,"createTime":"2024-01-30T10:48:10.018745200","message":"하이요","type":"TALK","read":false},
+ {"sender":"test1","senderId":1,"roomId":1,"createTime":"2024-01-30T10:48:16.762795200","message":"반가워요?","type":"TALK","read":false},
+ {"sender":"test1","senderId":1,"roomId":1,"createTime":"2024-01-30T10:48:22.611945300","message":"대답 좀.","type":"TALK","read":false},
+ {"sender":"test2","senderId":2,"roomId":1,"createTime":"2024-01-30T13:50:44.995501200","message":"안녕하세요","type":"TALK","read":false},
+ {"sender":"test2","senderId":2,"roomId":1,"createTime":"2024-01-30T16:07:41.998319300","message":"계세요?","type":"TALK","read":false}]}
+ * 
+ */

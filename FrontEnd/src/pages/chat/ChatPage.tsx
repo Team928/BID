@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Header, { IHeaderInfo } from '@/components/@common/header';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Bottom from '@/components/@common/Bottom';
 import axios from 'axios';
 import ChatItem from '@/components/chat/ChatItem';
@@ -30,8 +30,8 @@ const ChatPage: React.FC = () => {
       try {
         // TODO: 나중에 실제 userId로 바꾸기 ( test용 userId=1로 구현 )
         const res = await axios.get('http://localhost:8080/chat/rooms?userId=1');
-        const chatRooms: ChatRoom[] = res.data.data.map((item: any) => {
-          return { id: item.id, roomName: item.roomName, createTime: item.creatTime } as ChatRoom;
+        const chatRooms: ChatRoom[] = res.data.data.map((item: ChatRoom) => {
+          return { id: item.id, roomName: item.roomName, createTime: item.createTime } as ChatRoom;
         });
         setChatRooms(chatRooms);
         console.log(chatRooms);
@@ -41,7 +41,8 @@ const ChatPage: React.FC = () => {
     }
     chatRoomList();
   }, [])
- 
+
+
   return (
     <>
       <div className="w-full h-screen">

@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { BsEmojiSunglasses } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export interface IItem {
   id: number;
@@ -11,14 +12,24 @@ export interface IItem {
   updateTime: string;
 }
 
-const ChatItem = (props: { item: IItem }) => {
+interface ChatItemProps {
+  item: IItem;
+}
+
+const ChatItem: React.FC<ChatItemProps> = (props: { item: IItem }) => {
   const { id, roomName } = props.item;
+
+  const navigate = useNavigate();
+  
+  const handleChatItemClick = () => {
+    navigate(`/chat/rooms/${id}`);
+  };
 
   return (
     <>
       <div className="flex pl-6 py-3 border-b border-[#D9D9D9]">
-        <Item>
-          <div className="flex justify-between overflow-hidden w-full">
+        <Item >
+          <div className="flex justify-between overflow-hidden w-full" onClick={handleChatItemClick}>
             <div className=" flex">
               <div>
                 <BsEmojiSunglasses size={"3.5rem"} color="#545454" />
