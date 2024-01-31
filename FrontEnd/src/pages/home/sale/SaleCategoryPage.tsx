@@ -6,92 +6,98 @@ import { changeEngToKr } from '@/utils/changeCategorie';
 import { changeOneCapitalize } from '@/utils/changeOneCapitalize';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { IoIosArrowDown } from 'react-icons/io';
 import SelectModal from '@/components/home/SelectModal';
+import { dealType } from '@/types/model';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const SaleCategoryPage = () => {
   const { pathname } = useLocation();
   // 현재 경매 상태를 관리 ( 전체, 경매 시작전, 경매 진행중 )
-  const [state, setState] = useState<'a' | 'f' | 't'>('a');
+  const [state, setState] = useState<dealType | 'ALL'>('ALL');
   // 모달의 상태를 관리
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // 현재 선택된 셀렉트 박스 하위 상태를 관리
-  const [lowerState, setLowerState] = useState<string>('최신순');
+  // 경매 시작전과 경매 진행중의 하위 정렬을 관리
+  const [order, setOrder] = useState<string>('');
+  // 임시 상태를 관리
+  const [tempState, setTempState] = useState<'경매 시작전' | '경매 진행중' | ''>('');
 
   const info: IHeaderInfo = {
     left: icons.BACK,
-    center: null,
+    center: '카테고리',
     right_1: null,
     right_2: null,
     prev: '/ ',
   };
 
-  // ?catg=all & area=all & asc=f & staste=a (&key=아이폰)
-
-  // asc >
-  // f = 최신순
-  // t = 경매 종료 임박순
-
-  // state >
-  // f = 경매 전
-  // t = 경매 진행중(첫 라이브 후)
-  // a = 모든 경매
-
   useEffect(() => {
     // #TODO order 바뀌면 그에 따른 API 호출하기
-  }, [state, lowerState]);
-
-  useEffect(() => {
-    setLowerState('최신순');
   }, [state]);
+
+  useEffect(() => {}, [state]);
 
   return (
     <>
       {isOpen && (
         <SelectModal
+          order={order}
+          state={state}
+          setState={setState}
           setIsOpen={setIsOpen}
-          state={state === 'f' ? sort[0] : sort[1]}
-          lowerState={lowerState}
-          setLowerState={setLowerState}
+          setOrder={setOrder}
+          sort={tempState === '경매 시작전' ? sort[0] : sort[1]}
         ></SelectModal>
       )}
 
-      <div className="w-full h-screen pb-[4.5rem]">
+      <div className="w-screen h-screen pb-[4.5rem]">
         <Header info={info} />
-        <div className="pt-12 pb-4 px-BID_P ">
-          <div className="pt-4 ">
+
+        <div className="w-full pt-12 pb-4  ">
+          <div className="pt-4 px-BID_P">
             <p className="font-bold text-lg">{changeEngToKr(changeOneCapitalize(pathname.split('/')[2]))}</p>
             <p className="text-xs text-BID_BLACK">적을꺼 없음 뭐적지?</p>
           </div>
-          <div className="pt-4 flex font-bold gap-3 text-center overflow-x-auto">
+          <div className="pl-4 pt-4 flex font-bold gap-3 text-center  overflow-x-scroll  whitespace-nowrap">
             <div
-              onClick={() => setState('a')}
-              className={`w-[3.5rem] border border-BID_BLACK rounded-xl p-1 text-sm ${state === 'a' && 'bg-BID_BLACK text-white'}`}
+              onClick={() => {
+                setOrder('');
+                setState('ALL');
+              }}
+              className={` border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === 'ALL' && 'bg-BID_BLACK text-white'}`}
             >
               <p>전체</p>
             </div>
             <div
               onClick={() => {
-                setState('f');
-                setIsOpen(true);
+                setOrder('');
+                setState('LIVE');
               }}
-              className={`border border-BID_BLACK rounded-xl p-1 px-2 text-sm flex justify-center items-center gap-1 ${state === 'f' && 'bg-BID_BLACK text-white'}`}
+              className={` border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === 'LIVE' && 'bg-BID_BLACK text-white'}`}
             >
-              {state === 'f' ? <p>{lowerState}</p> : <p>경매 시작전</p>}
-              <IoIosArrowDown />
+              <p>라이브 진행중</p>
             </div>
             <div
               onClick={() => {
-                setState('t');
+                setTempState('경매 시작전');
                 setIsOpen(true);
               }}
-              className={`border border-BID_BLACK rounded-xl p-1 px-2 text-sm flex items-center justify-center gap-1 ${state === 't' && 'bg-BID_BLACK text-white'}`}
+              className={`flex justify-center items-center gap-1 border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === 'BEFORE' && 'bg-BID_BLACK text-white'}`}
             >
-              {state === 't' ? <p>{lowerState}</p> : <p>경매 진행중</p>}
-              <IoIosArrowDown />
+              <p>{state === 'BEFORE' ? order : '경매 시작전'}</p>
+              <MdKeyboardArrowDown />
+            </div>
+            <div
+              onClick={() => {
+                setTempState('경매 진행중');
+                setIsOpen(true);
+              }}
+              className={`flex justify-center items-center gap-1 border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === 'AUCTION' && 'bg-BID_BLACK text-white'}`}
+            >
+              <p>{state === 'AUCTION' ? order : '경매 진행중'}</p>
+              <MdKeyboardArrowDown />
             </div>
           </div>
         </div>
+
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
           {categoryList.map((item, index) => {
             return <BuyCategoryItem key={index} item={item} />;
@@ -112,7 +118,7 @@ const sort = [
   },
   {
     state: '경매 진행중',
-    lower: ['최신순', '라이브 진행중', '경매 마감 임박'],
+    lower: ['최신순', '경매 마감 임박'],
   },
 ];
 

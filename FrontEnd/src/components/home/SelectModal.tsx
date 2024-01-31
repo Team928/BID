@@ -1,20 +1,31 @@
+import { dealType } from '@/types/model';
+import { useEffect, useState } from 'react';
 import { FaCheck } from 'react-icons/fa6';
 
 interface ISelectModal {
+  order: string;
+  setOrder: React.Dispatch<React.SetStateAction<string>>;
+  state: dealType | 'ALL';
+  setState: React.Dispatch<React.SetStateAction<dealType | 'ALL'>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  state: { state: string; lower: string[] };
-  lowerState: string;
-  setLowerState: React.Dispatch<React.SetStateAction<string>>;
+  sort: { state: string; lower: string[] };
 }
 
-const SelectModal = ({ setIsOpen, state, lowerState, setLowerState }: ISelectModal) => {
-  // 경매 시작전 f -> 최신순, 경매 시작 임박
-  // 경매 진행중 t -> 최신순, 라이브진행중,  경매마감임박
+const SelectModal = ({ order, setOrder, state, setState, setIsOpen, sort }: ISelectModal) => {
+  // 경매 시작전 BEFORE -> 최신순, 경매 시작 임박
+  // 경매 진행중 AUCTION -> 최신순,  경매마감임박
 
   const itemClickEvent = (lower: string) => {
-    setLowerState(lower);
+    setState(sort.state === '경매 시작전' ? 'BEFORE' : 'AUCTION');
+    setOrder(lower);
     setIsOpen(false);
   };
+
+  const [temp, setTemp] = useState<string>('');
+
+  useEffect(() => {
+    setTemp(state === 'BEFORE' ? '경매 시작전' : '경매 진행중');
+  }, []);
 
   return (
     <>
@@ -24,13 +35,13 @@ const SelectModal = ({ setIsOpen, state, lowerState, setLowerState }: ISelectMod
       ></div>
       <div className="fixed bottom-0 h-80 w-screen pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30">
         <div className="h-full flex flex-col justify-between font-bold text-xl">
-          <p className="text-center text-lg">{state.state}</p>
+          <p className="text-center text-lg">{sort.state}</p>
           <div className="flex flex-col  gap-5">
-            {state.lower.map((lower, index) => {
+            {sort.lower.map((lower, index) => {
               return (
                 <div key={index} onClick={() => itemClickEvent(lower)} className="flex justify-between">
-                  <p className={`${lowerState === lower && 'text-BID_MAIN'}`}>{lower}</p>
-                  {lowerState === lower && <FaCheck color="#3498DB" />}
+                  <p className={`${order === lower && temp === sort.state && 'text-BID_MAIN'}`}>{lower}</p>
+                  {order === lower && temp === sort.state && <FaCheck color="#3498DB" />}
                 </div>
               );
             })}
