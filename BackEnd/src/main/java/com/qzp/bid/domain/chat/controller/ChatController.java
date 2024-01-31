@@ -68,10 +68,9 @@ public class ChatController {
 
     @DeleteMapping("/rooms/{roomId}")
     public ResponseEntity<ResultResponse> exitChatRooms(@RequestHeader("Authorization") String authorizationHeader, @PathVariable(name = "roomId") Long roomId){
-        // 나간다 > chatRooms >> id 를 찾는다 >> 지운다.
         String userInfo = jwtProvider.parseTokenToUserInfo(authorizationHeader.substring(7));
         chatService.exitChatRooms(Integer.parseInt(userInfo), roomId);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.CREATE_CHAT_SUCCESS, "TEST"));
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.EXIT_CHATROOM_SUCCESS));
     }
 
 }
