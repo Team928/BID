@@ -11,3 +11,4 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_REDIS_HOST: i10d208.p.ssafy.io
       SPRING_REDIS_PORT: 6379
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/bid
