@@ -4,7 +4,6 @@ import Header, { IHeaderInfo } from "@/components/@common/Header";
 import { icons } from "@/constants/icons";
 import MessageInput from "@/components/chat/MessageInput";
 import ChatLogs, { ChatLog } from "@/components/chat/ChatLogs";
-import useChatStore from "@/stores/chatLogStore";
 import axios from "axios";
 
 const ChatRoomPage: React.FC = () => {
@@ -22,6 +21,8 @@ const ChatRoomPage: React.FC = () => {
     prev: '/chat',
   }
 
+  
+
   useEffect(() => {
     // 웹소켓 연결
     const newClient = new Client();
@@ -36,9 +37,6 @@ const ChatRoomPage: React.FC = () => {
           console.log("받은 메시지 :", message.body);
           // 메시지를 받으면 body를 파싱하여 chatLogs에 추가
           const parsedMessage = JSON.parse(message.body);
-          
-          // Zustand 스토어에 채팅 메시지 추가
-          addChatLog(parsedMessage.body.data);
 
           // 새로운 채팅이 도착할 때마다 상태를 업데이트
           setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data])
@@ -70,8 +68,6 @@ const ChatRoomPage: React.FC = () => {
     };
 
   }, []);
-  
-  const addChatLog = useChatStore(state => state.addChatLog);
 
   // Message 전달 형태 {"senderId":1, "roomId":1, "message":"안녕","type":"TALK"}
   // dummy user 로 테스트 진행
