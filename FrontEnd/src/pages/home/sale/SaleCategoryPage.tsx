@@ -24,7 +24,7 @@ const SaleCategoryPage = () => {
   // 임시 상태를 관리
   const [tempState, setTempState] = useState<'경매 시작전' | '경매 진행중' | ''>('');
   // keyword 상태 관리
-  const { keyword, init } = useKeywordStore();
+  const { keyword } = useKeywordStore();
   const { useGetSaleList } = useSale();
   const {
     // isLoading,
