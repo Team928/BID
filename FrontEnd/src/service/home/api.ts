@@ -1,5 +1,5 @@
 import { axiosAuthInstance } from '@/apis/axiosInstance';
-import { IDealsListReq, ISaleListRes, ISaleDetailRes, IPurchaseListRes } from '@/types/home';
+import { IDealsListReq, ISaleListRes, ISaleDetailRes, IPurchaseListRes, IPurchaseDetailRes } from '@/types/home';
 import { APIResponse } from '@/types/model';
 
 export const getSaleListReq = async ({
@@ -52,6 +52,12 @@ export const getPurchaseListReq = async ({
       keyword: keyword,
     },
   });
+  console.log(data);
+  return data;
+};
+
+export const getPurchaseDetailReq = async (purchaseId: number): Promise<APIResponse<IPurchaseDetailRes>> => {
+  const { data } = await axiosAuthInstance.get(`deals/purchases/${purchaseId}`);
   console.log(data);
   return data;
 };

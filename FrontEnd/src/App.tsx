@@ -12,12 +12,13 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BuyCategoryPage from './pages/home/buy/BuyCategoryPage';
-import AuctionDetailPage from './pages/home/detail/AuctionDetailPage';
+import SaleDetailPage from './pages/home/detail/SaleDetailPage';
 import SaleCategoryPage from './pages/home/sale/SaleCategoryPage';
 import BuyLivePage from './pages/live/BuyLivePage';
 import LiveEntrancePage from './pages/live/LiveEntrancePage';
 import LivePage from './pages/live/LivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
+import PurchaseDetailPage from './pages/home/detail/PurchaseDetailPage';
 
 const router = createBrowserRouter([
   {
@@ -33,8 +34,12 @@ const router = createBrowserRouter([
     element: <SaleCategoryPage />,
   },
   {
-    path: '/deals/:id',
-    element: <AuctionDetailPage />,
+    path: '/sale/detail/:id',
+    element: <SaleDetailPage />,
+  },
+  {
+    path: '/purchase/detail/:id',
+    element: <PurchaseDetailPage />,
   },
   {
     path: '/chat',

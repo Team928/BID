@@ -1,4 +1,4 @@
-import { getPurchaseListReq } from '@/service/home/api';
+import { getPurchaseDetailReq, getPurchaseListReq } from '@/service/home/api';
 import { IDealsListReq } from '@/types/home';
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,5 +10,12 @@ export const usePurchase = () => {
     });
   };
 
-  return { useGetPurchaseList };
+  const useGetPurchaseDetail = (purchaseId: number) => {
+    return useQuery({
+      queryKey: ['purchase', 'detail', purchaseId],
+      queryFn: () => getPurchaseDetailReq(purchaseId),
+    });
+  };
+
+  return { useGetPurchaseList, useGetPurchaseDetail };
 };

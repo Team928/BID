@@ -76,3 +76,15 @@ export interface IPurchaseListRes {
 export interface IPurchaseSimpleRes {
   dealSimpleRes: IDealSimpleRes;
 }
+
+// 구매글 상세 조회 Response ('deals/purchases/{purchaseId}')
+export interface IPurchaseDetailRes {
+  dealRes: IDealRes;
+  minPrice: number;
+  maxPrice: number;
+  memberLimit: number;
+  status: dealStatusType;
+  applyForms: [];
+  wished: boolean;
+  joinReq: boolean;
+}
