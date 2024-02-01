@@ -1,47 +1,28 @@
-import React, { useEffect, useState } from 'react';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Bottom from '@/components/@common/Bottom';
-import axios from 'axios';
 import ChatItem from '@/components/chat/ChatItem';
+import { useChatRoom } from '@/hooks/chat/useChat';
 
-interface ChatRoom {
-  id: number;
-  roomName: string;
-  dealId: number;
-  hostId: number;
-  guestId: number;
-  createTime: string;
-  updateTime: string;
-}
+const ChatPage = () => {
 
-const info: IHeaderInfo = {
-  left: null,
-  center: '채팅',
-  right_1: null,
-  right_2: null,
-  prev: '/'
-}
+  const info: IHeaderInfo = {
+    left: null,
+    center: '채팅',
+    right_1: null,
+    right_2: null,
+    prev: '/'
+  }
 
-const ChatPage: React.FC = () => {
-  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+  const { useGetChatRoomList } = useChatRoom()
 
-  useEffect(() => {
-    const chatRoomList = async () => {
-      try {
-        // TODO: 나중에 실제 userId로 바꾸기 ( test용 userId=1로 구현 )
-        const res = await axios.get('http://localhost:8080/chat/rooms?userId=1');
-        const chatRooms: ChatRoom[] = res.data.data.map((item: ChatRoom) => {
-          return { id: item.id, roomName: item.roomName, createTime: item.createTime } as ChatRoom;
-        });
-        setChatRooms(chatRooms);
-        console.log(chatRooms);
-      } catch (err) {
-        console.log('채팅 내역 불러오기 실패', err)
-      }
-    }
-    chatRoomList();
-  }, [])
+  const {
+    data: chatRoomInfo,
+    isLoading,
+    error,
+  } = useGetChatRoomList({ userId: 1, })
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>
@@ -49,8 +30,8 @@ const ChatPage: React.FC = () => {
         <Header info={info} />
         <div className="pt-12">
           <div>
-            {chatRooms.map((room) => (
-              <ChatItem key={room.id} item={room} />
+            {chatRoomInfo && chatRoomInfo.data.map((item) => (
+              <ChatItem key={item.chatRoom.id} item={item.chatRoom} unReadCount={item.unReadCount} />
             ))}
           </div>
         </div>
