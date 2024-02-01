@@ -16,7 +16,8 @@ export type dealStatusType = 'BEFORE' | 'LIVE' | 'AUCTION' | 'END';
 
 // desc -> 최신순
 // asc -> 시작임박 or 마감임박
-export type dealOrderType = 'desc' | 'asc';
+// hot -> 인기순
+export type dealOrderType = 'desc' | 'asc' | 'hot';
 
 export interface APIResponse<T> {
   status: number;
