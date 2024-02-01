@@ -6,4 +6,4 @@ COPY build/libs/*.jar back_application.jar
 
 EXPOSE 8081
 
-CMD ["java", "-jar", "back_application.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=server", "back_application.jar"]
