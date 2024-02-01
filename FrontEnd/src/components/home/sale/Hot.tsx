@@ -1,5 +1,4 @@
-import { ISaleSimpleRes } from '@/types/home';
-import AuctionItem from '../AuctionItem';
+import SaleListItem from './SaleListItem';
 import { useSale } from '@/hooks/home/useSale';
 
 const Hot = () => {
@@ -20,7 +19,7 @@ const Hot = () => {
         </div>
         <div className="pl-4 py-4 flex flex-nowrap overflow-x-auto">
           {hotInfo?.data.saleSimpleResList.map(item => {
-            return <AuctionItem key={item.dealSimpleRes.id} item={item} />;
+            return <SaleListItem key={item.dealSimpleRes.id} item={item} />;
           })}
         </div>
       </div>

@@ -5,7 +5,7 @@ import { icons } from '@/constants/icons';
 import { useSale } from '@/hooks/home/useSale';
 import { useParams } from 'react-router-dom';
 
-const AuctionDetailPage = () => {
+const SaleDetailPage = () => {
   const { id } = useParams();
 
   const { useGetSaleDetail } = useSale();
@@ -37,4 +37,4 @@ const AuctionDetailPage = () => {
     );
 };
 
-export default AuctionDetailPage;
+export default SaleDetailPage;

@@ -1,5 +1,5 @@
 import { useSale } from '@/hooks/home/useSale';
-import AuctionItem from '../AuctionItem';
+import SaleListItem from './SaleListItem';
 
 const DeadLine = () => {
   const { useGetSaleList } = useSale();
@@ -18,7 +18,7 @@ const DeadLine = () => {
         </div>
         <div className="pl-4 py-4 flex flex-nowrap overflow-x-auto">
           {deadLineInfo?.data.saleSimpleResList.map(item => {
-            return <AuctionItem key={item.dealSimpleRes.id} item={item} />;
+            return <SaleListItem key={item.dealSimpleRes.id} item={item} />;
           })}
         </div>
       </div>

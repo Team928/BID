@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Bottom from '@/components/@common/Bottom';
 import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
 import Header, { IHeaderInfo } from '@/components/@common/Header';

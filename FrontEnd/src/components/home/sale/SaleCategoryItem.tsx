@@ -8,7 +8,7 @@ const SaleCategoryItem = (props: { item: ISaleSimpleRes }) => {
   const { dealSimpleRes, status, bid, immediatePrice, startPrice } = props.item;
 
   return (
-    <div onClick={() => navigate(`/deals/${dealSimpleRes.id}`)} className="flex gap-4">
+    <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="flex gap-4">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative"></div>
       <div className="flex-1 flex flex-col justify-around ">
         <p className="font-bold truncate whitespace-normal line-clamp-2">{dealSimpleRes.title}</p>

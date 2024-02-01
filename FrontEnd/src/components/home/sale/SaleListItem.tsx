@@ -5,7 +5,7 @@ import { getDate } from '@/utils/getDate';
 import { getPriceName } from '@/utils/getPriceName';
 import { useNavigate } from 'react-router-dom';
 
-const AuctionItem = (props: { item: ISaleSimpleRes }) => {
+const SaleListItem = (props: { item: ISaleSimpleRes }) => {
   const navigate = useNavigate();
   const sale = props.item.dealSimpleRes;
   const item = props.item;
@@ -13,7 +13,7 @@ const AuctionItem = (props: { item: ISaleSimpleRes }) => {
   const { month, date, datOfWeek, time } = getDate(sale.startTime);
 
   return (
-    <div onClick={() => navigate(`/deals/${sale.id}`)} className="text-xs">
+    <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
         <img src="/src/assets/image/sample.png" className="w-full h-full rounded-2xl object-cover" />
         {/* 경매 진행전이라면 라이브 일정 보여주기 */}
@@ -47,4 +47,4 @@ const AuctionItem = (props: { item: ISaleSimpleRes }) => {
   );
 };
 
-export default AuctionItem;
+export default SaleListItem;
