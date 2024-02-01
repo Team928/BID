@@ -25,6 +25,9 @@ spring:
       database: ${db.database}
       host: ${db.host}
       port: ${db.port}
+    redis:
+      host: 127.0.0.1
+      port: 6379
   jpa:
     hibernate:
       ddl-auto: update
@@ -32,10 +35,6 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
-
-  redis:
-    host: 127.0.0.1
-    port: 6379
 
 
 springdoc: #swagger
