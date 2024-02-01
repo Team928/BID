@@ -28,4 +28,5 @@ public class Sale extends Deal {
     @Enumerated(EnumType.STRING)
     private DealStatus status;
     private int liveRequestCount;
+    private int bidCount;
 }

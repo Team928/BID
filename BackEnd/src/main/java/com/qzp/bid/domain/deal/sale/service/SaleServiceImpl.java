@@ -163,6 +163,7 @@ public class SaleServiceImpl implements SaleService {
             sale.getHighestBid().getBidder().getPointHistory().add(free);
         }
         sale.setHighestBid(bid);
+        sale.setBidCount(sale.getBidCount() + 1);
     }
 
     @Override
