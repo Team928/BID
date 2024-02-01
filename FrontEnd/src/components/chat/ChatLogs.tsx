@@ -1,4 +1,6 @@
+import { formatDateTime } from "@/utils/formatDateTime";
 import React from "react";
+
 
 export interface ChatLog {
   senderId: number,
@@ -14,7 +16,6 @@ interface ChatLogsProps {
 
 const ChatLogs: React.FC<ChatLogsProps> = ({ chatLogs }) => {
 
-
       return (
         <div className="w-full flex flex-col space-y-2 px-6 py-3">
           {chatLogs.map((log, i) => (
@@ -26,11 +27,11 @@ const ChatLogs: React.FC<ChatLogsProps> = ({ chatLogs }) => {
                 {log.senderId !== 1 ? (
                   <>
                     <p className="bg-gray-200 rounded-lg p-3">{`${log.message}`}</p>
-                    <p className="text-sm text-gray-400 ml-2">{`${log.createTime}`}</p>
+                    <p className="text-sm text-gray-400 ml-2">{`${formatDateTime(log.createTime.toString())}`}</p>
                   </>
                 ) : (
                   <>
-                    <p className="text-sm text-gray-400 mr-2">{`${log.createTime}`}</p>
+                    <p className="text-sm text-gray-400 mr-2">{`${formatDateTime(log.createTime.toString())}`}</p>
                     <p className="bg-BID_MAIN rounded-lg p-3">{`${log.message}`}</p>
                   </>
                 )}
