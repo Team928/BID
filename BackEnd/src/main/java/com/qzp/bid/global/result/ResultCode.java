@@ -27,7 +27,13 @@ public enum ResultCode {
     CREATE_PURCHASE_SUCCESS(201, "구매글 생성에 성공하였습니다."),
     GET_PURCHASE_SUCCESS(200, "구매글 조회에 성공하였습니다."),
     DELETE_PURCHASE_SUCCESS(200, "구매글 삭제에 성공하였습니다."),
-    CREATE_APPLYFORM_SUCCESS(200, "역경매 참가 신청에 성공하였습니다.");
+    CREATE_APPLYFORM_SUCCESS(200, "역경매 참가 신청에 성공하였습니다."),
+
+    //chat
+    CREATE_CHAT_SUCCESS(201, "채팅 생성에 성공하였습니다."),
+    GET_CHATROOMS_SUCCESS(200, "채팅방 조회에 성공하였습니다."),
+    GET_CHATS_SUCCESS(200, "채팅내역 조회에 성공하였습니다.")
+    ;
 
 
     private final int status;
