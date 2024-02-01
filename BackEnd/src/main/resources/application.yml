@@ -20,14 +20,15 @@ spring:
     url: ${db.url}
     username: ${db.username}
     password: ${db.password}
+
   data:
     mongodb:
-      database: ${db.database}
-      host: ${db.host}
-      port: ${db.port}
+      uri: ${db.uri}
+
     redis:
-      host: 127.0.0.1
-      port: 6379
+      host: ${db.redis.host}
+      port: ${db.redis.port}
+
   jpa:
     hibernate:
       ddl-auto: update
