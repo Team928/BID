@@ -21,6 +21,14 @@ spring:
     username: ${db.username}
     password: ${db.password}
 
+  data:
+    mongodb:
+      uri: ${db.uri}
+
+    redis:
+      host: ${db.redis.host}
+      port: ${db.redis.port}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -28,10 +36,6 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
-
-  redis:
-    host: 127.0.0.1
-    port: 6379
 
 
 springdoc: #swagger

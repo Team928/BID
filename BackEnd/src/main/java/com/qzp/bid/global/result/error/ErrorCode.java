@@ -27,7 +27,8 @@ public enum ErrorCode {
     GET_SALE_FAIL(400, "판매글 조회에 실패하였습니다."),
     UPDATE_SALE_FAIL(400, "판매글 수정에 실패하였습니다."),
     BID_PRICE_TOO_LOW(400, "입찰가가 낮습니다."),
-    BID_FAIL(400, "입찰에 실패하였습니다."),
+    NOT_AUCTION_STATUS(400, "입찰이 불가능한 상태입니다."),
+    NOT_ENOUGH_POINT(400, "포인트가 부족합니다."),
     ALREADY_REQUESTED(400, "이미 요청한 경매글입니다."),
 
     //purchase
@@ -46,7 +47,11 @@ public enum ErrorCode {
 
     //Member
     MEMBER_ID_NOT_EXIST(400, "회원 id가 존재하지 않습니다."),
-    REGISTER_FAIL(400, "회원가입에 실패하였습니다.");
+    REGISTER_FAIL(400, "회원가입에 실패하였습니다."),
+
+    //Chat
+    EXIT_CHATROOM_FAIL(400, "거래가 확정되지 않았습니다.")
+    ;
 
     private final int status;
     private final String message;

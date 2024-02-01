@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { ReactNode, useRef } from "react";
 import { BsEmojiSunglasses } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ interface ChatItemProps {
 }
 
 const ChatItem: React.FC<ChatItemProps> = (props: { item: IItem }) => {
-  const { id, roomName } = props.item;
+  const { id, roomName } = props.item
 
   const navigate = useNavigate();
   
@@ -29,12 +29,12 @@ const ChatItem: React.FC<ChatItemProps> = (props: { item: IItem }) => {
     <>
       <div className="flex pl-6 py-3 border-b border-[#D9D9D9]">
         <Item >
-          <div className="flex justify-between overflow-hidden w-full" onClick={handleChatItemClick}>
+          <div className="flex justify-between overflow-hidden w-full">
             <div className=" flex">
               <div>
                 <BsEmojiSunglasses size={"3.5rem"} color="#545454" />
               </div>
-              <div className="flex flex-col gap-1 px-5">
+              <div className="flex flex-col gap-1 px-5" onClick={handleChatItemClick}>
                 <p className="font-bold">{id}</p>
                 <p>{roomName}</p>
               </div>
@@ -54,28 +54,31 @@ const ChatItem: React.FC<ChatItemProps> = (props: { item: IItem }) => {
 
 export default ChatItem;
 
-const Item: React.FC = ({ children }) => {
+
+// 스와이프 이벤트 구현
+
+const Item: React.FC<{ children: ReactNode }> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
   let downX: number;
   let isClicked = false;
 
-  const onPointMove = (e: MouseEvent) => {
-    // 클릭 유무 처리해서 애니메 작동 안 되게
+  const onPointerMove = (e: MouseEvent) => {
+    // 클릭 유무 처리해서 애니메이션 작동 안 되게
     if (!isClicked) return;
     const newX = e.clientX;
-    
+
     if (newX - downX < -30) {
-      ref.current.style.transform = "translateX(-55px)";
+      ref.current!.style.transform = "translateX(-55px)";
       setTimeout(() => {
         if (ref.current) ref.current.style.transform = "translateX(0px)";
       }, 4000);
-    } else ref.current.style.transform = "translateX(0px)";
+    } else ref.current!.style.transform = "translateX(0px)";
   };
 
   const onPointerUp = () => {
     if (ref.current) {
-    ref.current.removeEventListener("pointermove", onPointMove);
-    ref.current.style.transform = "translate-x-0";
+      ref.current.removeEventListener("pointermove", onPointerMove);
+      ref.current.style.transform = "translate-x-0";
     }
     isClicked = false;
   };
@@ -83,7 +86,7 @@ const Item: React.FC = ({ children }) => {
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     isClicked = true;
     downX = e.clientX;
-    document.addEventListener("pointermove", onPointMove);
+    document.addEventListener("pointermove", onPointerMove);
   };
 
   return (

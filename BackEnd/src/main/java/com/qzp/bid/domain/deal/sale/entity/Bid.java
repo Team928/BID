@@ -39,5 +39,13 @@ public class Bid {
     private Member bidder;
     @ManyToOne(fetch = FetchType.LAZY)
     private Sale sale;
+
+    public boolean bidding() {
+        return this.bidder.bidding(this.bidPrice);
+    }
+
+    public void cancelBidding() {
+        this.bidder.cancelBidding(this.bidPrice);
+    }
 }
 

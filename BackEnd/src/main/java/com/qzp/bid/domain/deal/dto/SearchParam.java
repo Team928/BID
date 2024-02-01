@@ -20,7 +20,7 @@ public class SearchParam {
     private Category catg;
     @Schema(description = "검색 지역")
     private String area;
-    @Schema(description = "최신순(desc) / 시작or마감 임박(asc)")
+    @Schema(description = "정렬 (status와 함께 사용)  [최신순(desc) / 시작or마감 임박(asc) / 인기순(hot)]")
     private String order; // 기본 최신순 desc / 마감임박 or 시작임박  asc
     @Schema(description = "거래 진행 상태 (BEFORE, LIVE, AUCTION, END)")
     private DealStatus status;
