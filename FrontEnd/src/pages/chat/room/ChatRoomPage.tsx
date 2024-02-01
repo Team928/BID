@@ -5,6 +5,7 @@ import { icons } from "@/constants/icons";
 import MessageInput from "@/components/chat/MessageInput";
 import ChatLogs, { ChatLog } from "@/components/chat/ChatLogs";
 import axios from "axios";
+import DealInfo from "@/components/chat/dealInfo";
 
 const ChatRoomPage: React.FC = () => {
   const [client, setClient] = useState<Client | null>(null);
@@ -20,8 +21,6 @@ const ChatRoomPage: React.FC = () => {
     right_2: null,
     prev: '/chat',
   }
-
-  
 
   useEffect(() => {
     // 웹소켓 연결
@@ -91,17 +90,19 @@ const ChatRoomPage: React.FC = () => {
   return (
     <div className="w-full h-screen pb-[4.5rem]">
       <Header info={info} />
-      <div className="pt-12">
+        {/* 거래글 정보 추가하기 */}
+        <DealInfo />
         <ChatLogs chatLogs={chatLogs}/>
-      </div>
-      <MessageInput
-        message={message}
-        setMessage={setMessage}
-        sendMessage={(message) => {
-          sendMessage(message); 
-          setMessage("");
-        }}
-      />
+          
+          <div>
+          <MessageInput
+            message={message}
+            setMessage={setMessage}
+            sendMessage={(message) => {
+              sendMessage(message); 
+              setMessage("");
+            }}
+          /></div>
     </div>
   );
 };
