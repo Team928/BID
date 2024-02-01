@@ -12,10 +12,11 @@ const BuyCategoryPage = () => {
 
   const info: IHeaderInfo = {
     left: icons.BACK,
-    center: null,
-    right_1: null,
-    right_2: null,
-    prev: '/ ',
+    center: '카테고리',
+    right_1: icons.SEARCH,
+    right_2: icons.NOTIFY,
+    prev: '/',
+    cur: pathname,
   };
 
   useEffect(() => {

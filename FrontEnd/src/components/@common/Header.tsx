@@ -6,12 +6,13 @@ export interface IHeaderInfo {
   right_1: JSX.Element | null;
   right_2: JSX.Element | null;
   prev: string;
+  cur?: string;
 }
 
 const Header = (props: { info: IHeaderInfo }) => {
   const navigate = useNavigate();
 
-  const { left, center, right_1, right_2, prev } = props.info;
+  const { left, center, right_1, right_2, prev, cur } = props.info;
 
   return (
     <div className="bg-white w-full px-BID_P h-12 flex justify-between items-center border-b border-[#D9D9D9] fixed top-0 z-10">
@@ -24,7 +25,7 @@ const Header = (props: { info: IHeaderInfo }) => {
               onClick={() =>
                 navigate('/search', {
                   state: {
-                    prev: prev,
+                    prev: cur ? cur : prev,
                   },
                 })
               }
@@ -38,7 +39,7 @@ const Header = (props: { info: IHeaderInfo }) => {
               onClick={() =>
                 navigate('/notify', {
                   state: {
-                    prev: prev,
+                    prev: cur ? cur : prev,
                   },
                 })
               }
