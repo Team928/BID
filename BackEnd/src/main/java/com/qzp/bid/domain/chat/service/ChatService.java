@@ -16,5 +16,7 @@ public interface ChatService {
 
     public List<ChatRes> findChats(long roomId,boolean read,long userId);
 
-    public void exitChatRooms(long userId, long chatRoomId);
+    public void exitChatRooms(long chatRoomId);
+
+    public void dealConfirmed(long chatRoomId);
 }

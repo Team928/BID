@@ -11,6 +11,8 @@ import lombok.Setter;
 public class ChatRoomRes {
 
     private ChatRoom chatRoom;
+    @Builder.Default
     private int unReadCount = 0;
+    private boolean exitPossible;
 
 }

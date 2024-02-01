@@ -14,10 +14,15 @@ import com.qzp.bid.domain.member.repository.MemberRepository;
 import com.qzp.bid.global.config.WebSocketConfig;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
+import com.qzp.bid.global.result.error.ErrorCode;
+import com.qzp.bid.global.result.error.exception.BusinessException;
+import com.qzp.bid.global.security.util.AccountUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +42,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
     private final MemberRepository memberRepository;
     private final DealRepository dealRepository;
-
+    private final AccountUtil accountUtil;
 
     @Override
     @Transactional
@@ -134,12 +139,22 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public void exitChatRooms(long userId, long chatRoomId) {
+    public void exitChatRooms(long chatRoomId) {
+
+        long userId = Long.parseLong(accountUtil.getLoginMemberId());
         Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(chatRoomId);
+
         if (optionalChatRoom.isPresent()){
             ChatRoom chatRoom = optionalChatRoom.get();
+
+            if(chatRoom.getDealConfirmed() == null || chatRoom.getDealConfirmed().size() != 2){
+                throw new BusinessException(ErrorCode.EXIT_CHATROOM_FAIL);
+            }
+            log.info("TEST1 @@ "+chatRoom.getDealConfirmed().size());
             chatRoom.setHostId(chatRoom.getHostId() == userId ? -1 : chatRoom.getHostId());
+            log.info("TEST1 @@ "+chatRoom.getHostId());
             chatRoom.setGuestId(chatRoom.getGuestId() == userId ? -1 : chatRoom.getGuestId());
+            log.info("TEST1 @@ "+chatRoom.getGuestId());
             if (chatRoom.getHostId() == -1 && chatRoom.getGuestId() == -1){
                 chatRoomRepository.delete(chatRoom);
                 chatRepository.deleteAllByRoomId(chatRoomId);
@@ -147,6 +162,20 @@ public class ChatServiceImpl implements ChatService {
                 chatRoomRepository.save(chatRoom);
             }
 
+        }
+    }
+
+    @Override
+    @Transactional
+    public void dealConfirmed(long chatRoomId) {
+        long userId = Long.parseLong(accountUtil.getLoginMemberId());
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(chatRoomId);
+        if(optionalChatRoom.isPresent()){
+            ChatRoom chatRoom = optionalChatRoom.get();
+            Set<Long> confirmedIds = (chatRoom.getDealConfirmed() == null)?new HashSet<>():chatRoom.getDealConfirmed();
+            confirmedIds.add(userId);
+            chatRoom.setDealConfirmed(confirmedIds);
+            chatRoomRepository.save(chatRoom);
         }
     }
 
