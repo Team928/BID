@@ -6,18 +6,25 @@ import Category from '@/components/home/Category';
 import SaleTab from '@/components/home/SaleTab';
 import { icons } from '@/constants/icons';
 import useTabStore from '@/stores/auctionTabStore';
+import useKeywordStore from '@/stores/keywordStore';
+import { useEffect } from 'react';
 
 const HomePage = () => {
   const { tab } = useTabStore();
+  const { init } = useKeywordStore();
 
   const info: IHeaderInfo = {
     left: null,
     center: null,
-    right_1: icons.SEARCH,
+    right_1: null,
     right_2: icons.NOTIFY,
     prev: '/',
+    cur: '/',
   };
 
+  useEffect(() => {
+    init();
+  }, []);
   return (
     <>
       <div className="w-full h-screen pb-[4.5rem]">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Bottom from '@/components/@common/Bottom';
 import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import { categoryType, dealStatusType } from '@/types/model';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { useSale } from '@/hooks/home/useSale';
+import useKeywordStore from '@/stores/keywordStore';
 
 const SaleCategoryPage = () => {
   const { pathname } = useLocation();
@@ -22,7 +23,8 @@ const SaleCategoryPage = () => {
   const [order, setOrder] = useState<string>('');
   // 임시 상태를 관리
   const [tempState, setTempState] = useState<'경매 시작전' | '경매 진행중' | ''>('');
-
+  // keyword 상태 관리
+  const { keyword, init } = useKeywordStore();
   const { useGetSaleList } = useSale();
   const {
     // isLoading,
@@ -34,14 +36,16 @@ const SaleCategoryPage = () => {
     ...(order === '최신순' || order === '' ? { order: 'asc' } : { order: 'desc' }),
     ...(category !== 'ALL' && { catg: category }),
     ...(state !== '' && { status: state }),
+    ...(keyword !== '' && { keyword: keyword }),
   });
 
   const info: IHeaderInfo = {
     left: icons.BACK,
     center: '카테고리',
-    right_1: null,
-    right_2: null,
+    right_1: icons.SEARCH,
+    right_2: icons.NOTIFY,
     prev: '/',
+    cur: pathname,
   };
 
   return (
@@ -59,7 +63,6 @@ const SaleCategoryPage = () => {
 
       <div className="w-screen h-screen pb-[4.5rem]">
         <Header info={info} />
-
         <div className="w-full pt-12 pb-4  ">
           <div className="pt-4 px-BID_P">
             <p className="font-bold text-lg">{changeEngToKr(category)}</p>
