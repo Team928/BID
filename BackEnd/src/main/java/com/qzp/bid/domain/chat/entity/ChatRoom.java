@@ -1,10 +1,12 @@
 package com.qzp.bid.domain.chat.entity;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,5 +36,6 @@ public class ChatRoom {
     private LocalDateTime updateTime;
     private String lastMessage;
     private long lastSenderId;
-
+    @ElementCollection
+    private Set<Long> dealConfirmed;
 }

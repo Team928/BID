@@ -67,10 +67,15 @@ public class ChatController {
     }
 
     @DeleteMapping("/rooms/{roomId}")
-    public ResponseEntity<ResultResponse> exitChatRooms(@RequestHeader("Authorization") String authorizationHeader, @PathVariable(name = "roomId") Long roomId){
-        String userInfo = jwtProvider.parseTokenToUserInfo(authorizationHeader.substring(7));
-        chatService.exitChatRooms(Integer.parseInt(userInfo), roomId);
+    public ResponseEntity<ResultResponse> exitChatRooms(@PathVariable(name = "roomId") Long roomId){
+        chatService.exitChatRooms(roomId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.EXIT_CHATROOM_SUCCESS));
     }
 
+    //거래 확정 버튼 누르기
+    @GetMapping("/confirmed/{roomId}")
+    public ResponseEntity<ResultResponse> dealConfirmed(@RequestHeader("Authorization") String authorizationHeader, @PathVariable(name = "roomId") Long roomId){
+        chatService.dealConfirmed(roomId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.CONFIRMED_DEAL_SUCCESS));
+    }
 }

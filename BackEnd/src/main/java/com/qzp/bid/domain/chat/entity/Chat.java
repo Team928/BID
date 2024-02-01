@@ -31,5 +31,6 @@ public class Chat {
     private String message;
     @Enumerated(EnumType.STRING)
     private ChatType type;
+    @Builder.Default
     private boolean read = false;
 }
