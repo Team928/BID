@@ -12,6 +12,7 @@ import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleSimpleRes;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +26,7 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
     @Override
     public SaleListPage getSaleListPageBySearchParam(SearchParam searchParam) {
         BooleanBuilder booleanBuilder = createBooleanBuilder(searchParam);
-        OrderSpecifier orderSpecifiers = createOrderSpecifiers(searchParam);
+        List<OrderSpecifier<?>> orderSpecifiers = createOrderSpecifiers(searchParam);
         Pageable pageable = PageRequest.of(searchParam.getPage(), searchParam.getSize());
         List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory.select(Projections.fields(
                 SaleSimpleRes.class,
@@ -40,7 +41,7 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
             .where(booleanBuilder)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
-            .orderBy(orderSpecifiers)
+            .orderBy(orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]))
             .fetch();
         boolean hasNext = false;
         if (saleSimpleResList.size() > pageable.getPageSize()) {
@@ -51,17 +52,29 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
             !hasNext);
     }
 
-    private OrderSpecifier createOrderSpecifiers(SearchParam searchParam) {
+    private List<OrderSpecifier<?>> createOrderSpecifiers(SearchParam searchParam) {
+        List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
+
         DealStatus status = searchParam.getStatus();
         String order = searchParam.getOrder();
-        if (status != null && order != null && order.equals("asc")) {
-            if (status.equals(DealStatus.BEFORE)) {
-                return new OrderSpecifier(Order.ASC, sale.startTime);
-            } else {
-                return new OrderSpecifier(Order.ASC, sale.endTime);
+        if (status != null && order != null) {
+            if (order.equals("asc")) {
+                if (status.equals(DealStatus.BEFORE)) {
+                    orderSpecifiers.add(new OrderSpecifier<>(Order.ASC, sale.startTime));
+                } else {
+                    orderSpecifiers.add(new OrderSpecifier<>(Order.ASC, sale.endTime));
+                }
+            } else if (order.equals("hot")) {
+                orderSpecifiers.add(
+                    new OrderSpecifier<>(Order.DESC, sale.bidCount));
+                orderSpecifiers.add(
+                    new OrderSpecifier<>(Order.DESC,
+                        (sale.highestBid.bidPrice.subtract(sale.startPrice))));
             }
+            return orderSpecifiers;
         }
-        return new OrderSpecifier<>(Order.DESC, sale.createTime);
+        orderSpecifiers.add(new OrderSpecifier<>(Order.DESC, sale.createTime));
+        return orderSpecifiers;
     }
 
     private BooleanBuilder createBooleanBuilder(SearchParam searchParam) {
