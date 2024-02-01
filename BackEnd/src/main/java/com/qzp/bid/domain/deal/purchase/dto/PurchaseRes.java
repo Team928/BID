@@ -15,7 +15,7 @@ public class PurchaseRes {
     private int maxPrice;
     private int memberLimit;
     private DealStatus status;
-    private boolean isScrap;
+    private boolean isWished;
     private boolean isJoinReq;
     private List<ApplyFormRes> applyForms;
 }
