@@ -19,6 +19,19 @@ export interface ISaleSimpleRes {
   status: dealStatusType;
 }
 
+export interface IDealRes {
+  id: number;
+  title: string;
+  content: string;
+  writer: string;
+  category: categoryType;
+  area: string[];
+  createTime: string;
+  updateTime: string;
+  images: string[];
+  startTime: string;
+}
+
 // 판매글 목록 조회 Response ('deals/sales')
 export interface ISaleListRes {
   saleSimpleResList: ISaleSimpleRes[];
@@ -27,8 +40,8 @@ export interface ISaleListRes {
   pageSize: number;
 }
 
-// 판매글 목록 조회 Request ('deals/sales')
-export interface ISalesListReq {
+// 판매글, 구매글 목록 조회 Request ('deals/sales', 'deals/purchase')
+export interface IDealsListReq {
   page: string;
   size: string;
   catg?: categoryType;
@@ -40,7 +53,7 @@ export interface ISalesListReq {
 
 // 판매글 상세 조회 Response ('deals/sales/{saleID}')
 export interface ISaleDetailRes {
-  dealRes: dealResType;
+  dealRes: IDealRes;
   immediatePrice: number;
   startPrice: number;
   highestBid: number;
@@ -52,15 +65,14 @@ export interface ISaleDetailRes {
   wished: false;
 }
 
-export interface dealResType {
-  id: number;
-  title: string;
-  content: string;
-  writer: string;
-  category: categoryType;
-  area: string[];
-  createTime: string;
-  updateTime: string;
-  images: string[];
-  startTime: string;
+// 구매글 목록 조회 Response ('deals/purchase')
+export interface IPurchaseListRes {
+  purchaseSimpleRes: IPurchaseSimpleRes[];
+  last: boolean;
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface IPurchaseSimpleRes {
+  dealSimpleRes: IDealSimpleRes;
 }
