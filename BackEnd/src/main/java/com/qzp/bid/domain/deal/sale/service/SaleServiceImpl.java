@@ -23,6 +23,9 @@ import com.qzp.bid.domain.deal.sale.repository.BidRepository;
 import com.qzp.bid.domain.deal.sale.repository.LiveRequestRepository;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.entity.Member;
+import com.qzp.bid.domain.member.entity.PointHistory;
+import com.qzp.bid.domain.member.entity.PointStatus;
+import com.qzp.bid.domain.member.repository.PointHistoryRepository;
 import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
@@ -52,6 +55,7 @@ public class SaleServiceImpl implements SaleService {
     private final BidMapper bidMapper;
     private final LiveRequestRepository liveRequestRepository;
     private final WishRepository wishRepository;
+    private final PointHistoryRepository pointHistoryRepository;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -128,7 +132,7 @@ public class SaleServiceImpl implements SaleService {
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
         if (sale.getStatus() != DealStatus.AUCTION && sale.getStatus() != DealStatus.LIVE) {
-            throw new BusinessException(ErrorCode.BID_FAIL);
+            throw new BusinessException(ErrorCode.NOT_AUCTION_STATUS);
         }
         if (sale.getHighestBid() != null
             && sale.getHighestBid().getBidPrice() >= bidReq.getBidPrice()) {
@@ -136,7 +140,28 @@ public class SaleServiceImpl implements SaleService {
         }
         Bid bid = Bid.builder().bidder(member).bidPrice(bidReq.getBidPrice()).isSuccess(false)
             .sale(sale).build();
+        if (!bid.bidding()) {
+            throw new BusinessException(ErrorCode.NOT_ENOUGH_POINT);
+        }
         bidRepository.save(bid);
+        PointHistory hold = PointHistory.builder()
+            .amount(bid.getBidPrice())
+            .status(PointStatus.HOLD)
+            .time(bid.getBidTime())
+            .build();
+        pointHistoryRepository.save(hold);
+        member.getPointHistory().add(hold);
+        if (sale.getHighestBid() != null) {
+            Bid highestBid = sale.getHighestBid();
+            highestBid.cancelBidding();
+            PointHistory free = PointHistory.builder()
+                .amount(highestBid.getBidPrice())
+                .status(PointStatus.FREE)
+                .time(bid.getBidTime())
+                .build();
+            pointHistoryRepository.save(free);
+            sale.getHighestBid().getBidder().getPointHistory().add(free);
+        }
         sale.setHighestBid(bid);
     }
 
