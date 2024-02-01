@@ -1,5 +1,5 @@
 import { axiosAuthInstance } from '@/apis/axiosInstance';
-import { ISalesListReq, ISaleListRes } from '@/types/home';
+import { ISalesListReq, ISaleListRes, ISaleDetailRes } from '@/types/home';
 import { APIResponse } from '@/types/model';
 
 export const getSaleListReq = async ({
@@ -22,6 +22,12 @@ export const getSaleListReq = async ({
       keyword: keyword,
     },
   });
+  console.log(data);
+  return data;
+};
+
+export const getSaleDetailReq = async (saleId: number): Promise<APIResponse<ISaleDetailRes>> => {
+  const { data } = await axiosAuthInstance.get(`deals/sales/${saleId}`);
   console.log(data);
   return data;
 };

@@ -37,3 +37,30 @@ export interface ISalesListReq {
   status?: dealStatusType;
   keyword?: string;
 }
+
+// 판매글 상세 조회 Response ('deals/sales/{saleID}')
+export interface ISaleDetailRes {
+  dealRes: dealResType;
+  immediatePrice: number;
+  startPrice: number;
+  highestBid: number;
+  endTime: string;
+  status: dealStatusType;
+  liveRequestCount: number;
+  bidList: [];
+  liveReq: boolean;
+  wished: false;
+}
+
+export interface dealResType {
+  id: number;
+  title: string;
+  content: string;
+  writer: string;
+  category: categoryType;
+  area: string[];
+  createTime: string;
+  updateTime: string;
+  images: string[];
+  startTime: string;
+}
