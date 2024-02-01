@@ -8,12 +8,15 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface ChatRepository extends MongoRepository<Chat, Long> {
 
-    ChatRes findFirstByRoomIdOrderByCreateTimeDesc(Long roomId);
+    ChatRes findFirstByRoomIdOrderByCreateTimeDesc(long roomId);
 
     @Query("{ 'roomId' : ?0, 'read': false }")
     List<Chat> findUnReadChats(long roomId);
 
     int countAllByRoomIdAndReadIsFalse(long roomId);
 
-    List<ChatRes> findAllByRoomIdOrderByCreateTime(Long roomId);
+    List<ChatRes> findAllByRoomIdOrderByCreateTime(long roomId);
+
+
+     void deleteAllByRoomId(long roomId);
 }

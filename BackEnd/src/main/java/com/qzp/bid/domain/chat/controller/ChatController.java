@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -56,8 +57,7 @@ public class ChatController {
 
     @GetMapping("/rooms/{roomId}")
     public ResponseEntity<ResultResponse> findChats(@RequestHeader("Authorization") String authorizationHeader, @PathVariable(name = "roomId") Long roomId){
-        String token = authorizationHeader.substring(7);
-        String userInfo = jwtProvider.parseTokenToUserInfo(token);
+        String userInfo = jwtProvider.parseTokenToUserInfo(authorizationHeader.substring(7));
 
         ChatRes chatRes = chatRepository.findFirstByRoomIdOrderByCreateTimeDesc(roomId);
         boolean read = chatRes.getSenderId() != Integer.parseInt(userInfo);
@@ -66,6 +66,11 @@ public class ChatController {
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATS_SUCCESS, chats));
     }
 
-
+    @DeleteMapping("/rooms/{roomId}")
+    public ResponseEntity<ResultResponse> exitChatRooms(@RequestHeader("Authorization") String authorizationHeader, @PathVariable(name = "roomId") Long roomId){
+        String userInfo = jwtProvider.parseTokenToUserInfo(authorizationHeader.substring(7));
+        chatService.exitChatRooms(Integer.parseInt(userInfo), roomId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.EXIT_CHATROOM_SUCCESS));
+    }
 
 }
