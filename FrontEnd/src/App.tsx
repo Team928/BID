@@ -19,6 +19,7 @@ import LiveEntrancePage from './pages/live/LiveEntrancePage';
 import LivePage from './pages/live/LivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
 import PurchaseDetailPage from './pages/home/detail/PurchaseDetailPage';
+import ReviewPage from './pages/Review/ReviewPage';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
   {
     path: '/chat/rooms/:roomId',
     element: <ChatRoomPage />,
+  },
+  {
+    path: '/review',
+    element: <ReviewPage />,
   },
   {
     path: '/login',
