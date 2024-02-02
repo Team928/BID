@@ -30,6 +30,7 @@ import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.util.ImageUploader;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -179,5 +180,22 @@ public class SaleServiceImpl implements SaleService {
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
         sale.setLiveRequestCount(sale.getLiveRequestCount() + 1);
+    }
+
+    @Override
+    public void saleClosing() {
+        Optional<List<Sale>> sales = saleRepository.findByStatusIsNot(DealStatus.END);
+        if (sales.isEmpty()) {
+            return;
+        }
+        for (Sale sale : sales.get()) {
+            log.info(sale.getEndTime().toString());
+            log.info(LocalDateTime.now().toString());
+            if (sale.getEndTime().isAfter(LocalDateTime.now())) {
+                continue;
+            }
+            sale.setStatus(DealStatus.END);
+            //TODO: 구매자 판매자 채팅방 생성
+        }
     }
 }
