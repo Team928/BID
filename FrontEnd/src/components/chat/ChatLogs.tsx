@@ -1,23 +1,21 @@
+
 import { IChatLogListRes } from "@/types/chat";
 import { formatDateTime } from "@/utils/formatDateTime";
-import React from "react";
+import { useEffect, useRef } from "react";
 
 
-interface ChatItemProps {
-  chatLogs: IChatLogListRes;
-}
 
-const ChatLogs: React.FC<ChatItemProps> = ({ chatLogs }) => {
-  const {senderId, message, createTime} = chatLogs
+const ChatLogs = (props: {item: IChatLogListRes}) => {
+  const {senderId, message, createTime} = props.item
 
   // 마지막 내용 바로 보여주기
-  // const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   if (messagesEndRef.current) {
-  //     messagesEndRef.current.scrollIntoView();
-  //   }
-  // }, [chatLogs]);
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView();
+    }
+  });
 
   return (
     <div className="w-full flex flex-col space-y-2 flex-nowrap overflow-x-auto">

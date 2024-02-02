@@ -12,7 +12,7 @@ export interface IChatRoom {
 
 // 채팅방 목록 조회 Res
 export interface IChatRoomListRes {
-    chatRoom: IChatRoom[];
+    chatRoom: IChatRoom;
     unReadCount: number;
     exitPossible: boolean;
 }
@@ -26,6 +26,7 @@ export interface IChatRoomListReq {
 
 // 채팅로그 조회 Response
 export interface IChatLogListRes {
+    id: number;
     sender: string;
     senderId: number;
     roomId: number;

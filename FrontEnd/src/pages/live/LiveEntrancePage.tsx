@@ -1,5 +1,5 @@
+import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Toggle from '@/components/@common/Toggle';
-import Header, { IHeaderInfo } from '@/components/@common/header';
 import LivePermissonModal from '@/components/live/Modal/LivePermissonModal';
 import { icons } from '@/constants/icons';
 import { PARTICIPANT_TYPE, TRANSACTION_TYPE } from '@/constants/liveType';
