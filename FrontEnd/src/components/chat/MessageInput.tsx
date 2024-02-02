@@ -24,11 +24,11 @@ const MessageInput: React.FC<MessageInputProps> = ({ message, setMessage, sendMe
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="메시지를 입력하세요"
                 className="p-3 outline-none border w-full rounded-lg bg-[#F4F4F4]"
-                // onKeyPress={(e) => {
-                //     if (e.key === "Enter") {
-                //         handleSendMessage();
-                //     }
-                // }}
+                onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                        handleSendMessage();
+                    }
+                }}
             />
             <button
                 onClick={handleSendMessage}

@@ -7,12 +7,15 @@ import ChatLogs from "@/components/chat/ChatLogs";
 import DealInfo from "@/components/chat/DealInfo";
 import { useChatLog } from "@/hooks/chat/useChat";
 import { axiosAuthInstance } from "@/apis/axiosInstance";
+import { IChatLogListRes } from "@/types/chat";
+
 
 const ChatRoomPage: React.FC = () => {
+
   const [client, setClient] = useState<Client | null>(null);
   const [message, setMessage] = useState<string>("");
+  const [chatLogs, setChatLogs] = useState<IChatLogListRes[]>([]);
 
-  // const [chatLogs, setChatLogs] = useState<ChatLog[]>([]);
 
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
@@ -23,6 +26,7 @@ const ChatRoomPage: React.FC = () => {
     prev: '/chat',
   }
 
+  console.log(chatLogs)
   const { useGetChatLogList } = useChatLog()
 
     const {
@@ -45,11 +49,9 @@ const ChatRoomPage: React.FC = () => {
         };
         newClient.subscribe(`/sub/chat/room/1`, (message) => {
           console.log("받은 메시지 :", message.body);
-          // 메시지를 받으면 body를 파싱하여 chatLogs에 추가
-          // const parsedMessage = JSON.parse(message.body);
 
-          // // 새로운 채팅이 도착할 때마다 상태를 업데이트
-          // setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data])
+          const parsedMessage = JSON.parse(message.body);
+          setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data])
       }, headers);
     },
 
@@ -78,7 +80,7 @@ const ChatRoomPage: React.FC = () => {
         type: "TALK",
       };
       const jsonMessage = JSON.stringify(newMessage);
-      console.log(jsonMessage)
+      console.log("보낸 메시지" , jsonMessage)
       client.publish({ destination: '/pub/message/1', body: jsonMessage });
       
     } else {
@@ -88,12 +90,12 @@ const ChatRoomPage: React.FC = () => {
 
   return (
     <div className="w-full h-screen pb-[4.5rem]">
-      <Header info={info} />
+      <Header info={info}/>
       <DealInfo />
       {chatLogInfo && chatLogInfo.data && (
         <div className="px-6 pt-40 pb-20">
-          {chatLogInfo.data.map((item: ChatLog) => (
-            <ChatLogs key={item.createTime} chatLogs={item} />
+          {chatLogInfo && chatLogInfo.data.map((item) => (
+            <ChatLogs key={item.id} item={item} />
           ))}
         </div>
       )}

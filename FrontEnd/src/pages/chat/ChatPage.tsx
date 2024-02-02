@@ -30,8 +30,8 @@ const ChatPage = () => {
         <Header info={info} />
         <div className="pt-12">
           <div>
-            {chatRoomInfo && chatRoomInfo.data.map((item) => (
-              <ChatItem key={item.chatRoom.id} item={item.chatRoom} unReadCount={item.unReadCount} />
+            {chatRoomInfo && chatRoomInfo.data.map((item, index) => (
+              <ChatItem key={index} item={item} />
             ))}
           </div>
         </div>
