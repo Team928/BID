@@ -34,6 +34,7 @@ const ChatRoomPage: React.FC = () => {
     } = useGetChatLogList({ roomId: 1 })
     
   const accessToken = axiosAuthInstance
+  
 
   useEffect(() => {
     // 웹소켓 연결
@@ -47,10 +48,11 @@ const ChatRoomPage: React.FC = () => {
         const headers: StompHeaders = {
           Authorization: 'Bearer ' + accessToken,
         };
-        newClient.subscribe(`/sub/chat/room/1`, (message) => {
+        newClient.subscribe(`/sub/chats/rooms/1`, (message) => {
           console.log("받은 메시지 :", message.body);
 
           const parsedMessage = JSON.parse(message.body);
+          console.log(setChatLogs)
           setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data])
       }, headers);
     },
@@ -70,12 +72,11 @@ const ChatRoomPage: React.FC = () => {
 
   }, []);
 
-  // Message 전달 형태 {"senderId":1, "roomId":1, "message":"안녕","type":"TALK"}
+  // Message 전달 형태 {"senderId":1, "message":"안녕","type":"TALK"}
   const sendMessage = (message: string) => {
     if (client !== null) {
       const newMessage = {
         senderId: 1,
-        roomId: 1,
         message: message,
         type: "TALK",
       };
@@ -92,13 +93,14 @@ const ChatRoomPage: React.FC = () => {
     <div className="w-full h-screen pb-[4.5rem]">
       <Header info={info}/>
       <DealInfo />
-      {chatLogInfo && chatLogInfo.data && (
         <div className="px-6 pt-40 pb-20">
-          {chatLogInfo && chatLogInfo.data.map((item) => (
-            <ChatLogs key={item.id} item={item} />
+          {chatLogInfo && chatLogInfo.data.map((chatLogs) => (
+            <ChatLogs key={chatLogs.id} chatLogs={chatLogs} />
           ))}
-        </div>
-      )}
+        {chatLogs.map((chatLog, index) => (
+          <ChatLogs key={index} chatLogs={chatLog} />
+        ))}
+      </div>
       <div>
           <MessageInput
             message={message}

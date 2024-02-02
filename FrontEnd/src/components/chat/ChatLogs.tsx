@@ -5,8 +5,8 @@ import { useEffect, useRef } from "react";
 
 
 
-const ChatLogs = (props: {item: IChatLogListRes}) => {
-  const {senderId, message, createTime} = props.item
+const ChatLogs = (props: {chatLogs: IChatLogListRes}) => {
+  const {senderId, message, createTime} = props.chatLogs
 
   // 마지막 내용 바로 보여주기
   const messagesEndRef = useRef<HTMLDivElement>(null);

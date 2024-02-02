@@ -17,12 +17,9 @@ const ChatPage = () => {
 
   const {
     data: chatRoomInfo,
-    isLoading,
-    error,
-  } = useGetChatRoomList({ userId: 1, })
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+    // isLoading,
+    // error,
+  } = useGetChatRoomList({ userId: 1,})
 
   return (
     <>
