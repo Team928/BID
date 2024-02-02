@@ -103,7 +103,7 @@ public class SaleServiceImpl implements SaleService {
             throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
         }
         if (!sale.getStatus().equals(DealStatus.BEFORE)) {
-            throw new BusinessException(ErrorCode.UPDATE_SALE_FAIL);
+            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
         }
         sale.setImmediatePrice(saleUpdateReq.getImmediatePrice());
     }
@@ -116,6 +116,9 @@ public class SaleServiceImpl implements SaleService {
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
         if (sale.getWriter().getId() != member.getId()) {
             throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
+        }
+        if (!sale.getStatus().equals(DealStatus.BEFORE)) {
+            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
         }
         saleRepository.delete(sale);
     }
@@ -174,11 +177,14 @@ public class SaleServiceImpl implements SaleService {
         if (liveRequestRepository.existsBySaleIdAndMemberId(saleId, member.getId())) {
             throw new BusinessException(ErrorCode.ALREADY_REQUESTED);
         }
+        Sale sale = saleRepository.findById(saleId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
+        if (!sale.getStatus().equals(DealStatus.BEFORE)) {
+            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
+        }
         LiveRequest liveRequest = LiveRequest.builder().memberId(member.getId())
             .saleId(saleId).build();
         liveRequestRepository.save(liveRequest);
-        Sale sale = saleRepository.findById(saleId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
         sale.setLiveRequestCount(sale.getLiveRequestCount() + 1);
     }
 

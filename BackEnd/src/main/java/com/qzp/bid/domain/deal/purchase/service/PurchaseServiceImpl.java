@@ -3,7 +3,7 @@ package com.qzp.bid.domain.deal.purchase.service;
 import static com.qzp.bid.global.result.error.ErrorCode.APPLY_LIMIT_FAIL;
 import static com.qzp.bid.global.result.error.ErrorCode.GET_PURCHASE_FAIL;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
-import static com.qzp.bid.global.result.error.ErrorCode.PURCHASE_IS_NOT_BEFORE;
+import static com.qzp.bid.global.result.error.ErrorCode.NOT_BEFORE_STATUS;
 
 import com.qzp.bid.domain.deal.dto.ImageDto;
 import com.qzp.bid.domain.deal.dto.SearchParam;
@@ -111,7 +111,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             throw new BusinessException(APPLY_LIMIT_FAIL);
         }
         if (purchase.getStatus() != DealStatus.BEFORE) {
-            throw new BusinessException(PURCHASE_IS_NOT_BEFORE);
+            throw new BusinessException(NOT_BEFORE_STATUS);
         }
 
         ApplyForm applyForm = applyFormMapper.applyFormToApplyFormReq(applyFormReq);
