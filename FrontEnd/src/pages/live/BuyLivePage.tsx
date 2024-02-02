@@ -30,6 +30,11 @@ const BuyLivePage = () => {
 
   const [session, setSession] = useState<Session>();
   const [userData, setUserData] = useState<ILiveUser>({
+    sessionId: '',
+    name: '',
+  });
+
+  setUserData({
     sessionId: 'SessionA',
     name: 'Participant' + Math.floor(Math.random() * 100),
   });
@@ -78,7 +83,9 @@ const BuyLivePage = () => {
     if (pType === PARTICIPANT_TYPE.SALER) {
       // 송출
       let devices = await OV.current.getDevices();
-      // let videoDevices = devices.filter(device => device.kind === 'videoinput');
+      let videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+      console.log(videoDevices);
 
       let publisher = await OV.current.initPublisherAsync(undefined, {
         audioSource: undefined,

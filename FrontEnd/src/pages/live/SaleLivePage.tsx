@@ -26,6 +26,11 @@ const SaleLivePage = () => {
 
   const [session, setSession] = useState<Session>();
   const [userData, setUserData] = useState<ILiveUser>({
+    sessionId: '',
+    name: '',
+  });
+
+  setUserData({
     sessionId: 'SessionA',
     name: 'Participant' + Math.floor(Math.random() * 100),
   });

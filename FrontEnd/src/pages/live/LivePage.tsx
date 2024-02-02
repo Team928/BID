@@ -89,7 +89,7 @@ const LivePage = () => {
 
     let publisher = await OV.current.initPublisherAsync(undefined, {
       audioSource: undefined,
-      videoSource: undefined,
+      videoSource: videoDevices[0].deviceId,
       publishAudio: onMike,
       publishVideo: onCamera,
       resolution: '600X900',
