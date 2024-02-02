@@ -21,9 +21,16 @@ const LivePage = () => {
 
   const [session, setSession] = useState<Session>();
   const [userData, setUserData] = useState<ILiveUser>({
+    sessionId: '',
+    name: '',
+  });
+
+  setUserData({
     sessionId: 'SessionA',
     name: 'Participant' + Math.floor(Math.random() * 100),
   });
+
+  console.log(session);
 
   const [publisher, setPublisher] = useState<Publisher>();
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
@@ -58,7 +65,7 @@ const LivePage = () => {
     });
 
     // 다른 참가자가 세션에 연결됨
-    newSession.on('connectionCreated', event => {});
+    // newSession.on('connectionCreated', event => {});
 
     // 발언 감지
     newSession.on('publisherStartSpeaking', event => {
@@ -93,8 +100,8 @@ const LivePage = () => {
 
     newSession.publish(publisher);
 
-    let currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
-    let currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
+    // let currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
+    // let currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
 
     setPublisher(publisher);
     setMainStreamManager(publisher);
