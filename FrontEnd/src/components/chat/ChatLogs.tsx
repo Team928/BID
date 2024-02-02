@@ -1,52 +1,44 @@
+import { IChatLogListRes } from "@/types/chat";
 import { formatDateTime } from "@/utils/formatDateTime";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
-export interface ChatLog {
-  senderId: number;
-  type: string;
-  createTime: Date;
-  message: string;
-  read: boolean;
+
+interface ChatItemProps {
+  chatLogs: IChatLogListRes;
 }
 
-interface ChatLogsProps {
-  chatLogs: ChatLog[];
-}
-
-const ChatLogs: React.FC<ChatLogsProps> = ({ chatLogs }) => {
+const ChatLogs: React.FC<ChatItemProps> = ({ chatLogs }) => {
+  const {senderId, message, createTime} = chatLogs
 
   // 마지막 내용 바로 보여주기
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  // const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView();
-    }
-  }, [chatLogs]);
+  // useEffect(() => {
+  //   if (messagesEndRef.current) {
+  //     messagesEndRef.current.scrollIntoView();
+  //   }
+  // }, [chatLogs]);
 
   return (
-    <div className="w-full flex flex-col space-y-2 px-6 pt-40 pb-24 flex-nowrap overflow-x-auto">
-      {chatLogs.map((log, index) => (
+    <div className="w-full flex flex-col space-y-2 flex-nowrap overflow-x-auto">
         <div
-          className={`flex ${log.senderId !== 1 ? 'justify-start' : 'justify-end'}`}
-          key={index}
+          className={`flex ${senderId !== 1 ? 'justify-start' : 'justify-end'}`}
         >
           <div className='flex items-end'>
-            {log.senderId !== 1 ? (
+            {senderId !== 1 ? (
               <>
-                <p className="bg-gray-200 rounded-lg p-3">{`${log.message}`}</p>
-                <p className="text-sm text-gray-400 ml-2">{`${formatDateTime(log.createTime.toString())}`}</p>
+                <p className="bg-gray-200 rounded-lg p-3">{`${message}`}</p>
+                <p className="text-sm text-gray-400 ml-2">{`${formatDateTime(createTime.toString())}`}</p>
               </>
             ) : (
               <>
-                <p className="text-sm text-gray-400 mr-2">{`${formatDateTime(log.createTime.toString())}`}</p>
-                <p className="bg-BID_MAIN rounded-lg p-3">{`${log.message}`}</p>
+                <p className="text-sm text-gray-400 mr-2">{`${formatDateTime(createTime.toString())}`}</p>
+                <p className="bg-BID_MAIN rounded-lg p-3">{message}</p>
               </>
             )}
           </div>
         </div>
-      ))}
-      <div ref={messagesEndRef} />
+      <div/>
     </div>
   );
 }

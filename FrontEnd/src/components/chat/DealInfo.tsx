@@ -24,7 +24,7 @@ const DealInfo: React.FC = () => {
           <p className="text-lg font-bold">150,000원</p>
         </div>
         <button 
-          className="p-3 h-12 border border-BID_MAIN rounded-2xl font-bold"
+          className="p-3 h-12 text-BID_MAIN border border-BID_MAIN rounded-2xl font-bold"
           onClick={() => setIsModalOpen(true)}
         >
           거래확정

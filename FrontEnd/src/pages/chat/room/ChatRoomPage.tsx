@@ -3,15 +3,16 @@ import { Client, StompHeaders } from "@stomp/stompjs";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import { icons } from "@/constants/icons";
 import MessageInput from "@/components/chat/MessageInput";
-import ChatLogs, { ChatLog } from "@/components/chat/ChatLogs";
-import axios from "axios";
-import DealInfo from "@/components/chat/dealInfo";
+import ChatLogs from "@/components/chat/ChatLogs";
+import DealInfo from "@/components/chat/DealInfo";
+import { useChatLog } from "@/hooks/chat/useChat";
+import { axiosAuthInstance } from "@/apis/axiosInstance";
 
 const ChatRoomPage: React.FC = () => {
   const [client, setClient] = useState<Client | null>(null);
   const [message, setMessage] = useState<string>("");
 
-  const [chatLogs, setChatLogs] = useState<ChatLog[]>([]);
+  // const [chatLogs, setChatLogs] = useState<ChatLog[]>([]);
 
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
@@ -22,23 +23,33 @@ const ChatRoomPage: React.FC = () => {
     prev: '/chat',
   }
 
+  const { useGetChatLogList } = useChatLog()
+
+    const {
+      data:chatLogInfo,
+    } = useGetChatLogList({ roomId: 1 })
+    
+  const accessToken = axiosAuthInstance
+
   useEffect(() => {
     // 웹소켓 연결
     const newClient = new Client();
     newClient.configure({
-      brokerURL: 'ws://localhost:8080/ws',
+      brokerURL: 'ws://localhost:8081/ws',
       onConnect: () => {
         console.log("웹소켓 연결 완료");
 
         // '/sub/chat/room/1'로 구독
-        const headers: StompHeaders = {};
-        newClient.subscribe('/sub/chat/room/1', (message) => {
+        const headers: StompHeaders = {
+          Authorization: 'Bearer ' + accessToken,
+        };
+        newClient.subscribe(`/sub/chat/room/1`, (message) => {
           console.log("받은 메시지 :", message.body);
           // 메시지를 받으면 body를 파싱하여 chatLogs에 추가
-          const parsedMessage = JSON.parse(message.body);
+          // const parsedMessage = JSON.parse(message.body);
 
-          // 새로운 채팅이 도착할 때마다 상태를 업데이트
-          setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data])
+          // // 새로운 채팅이 도착할 때마다 상태를 업데이트
+          // setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data])
       }, headers);
     },
 
@@ -51,17 +62,6 @@ const ChatRoomPage: React.FC = () => {
     newClient.activate();
     setClient(newClient);
 
-    // Axios를 이용한 데이터 가져오기
-    axios.get('http://localhost:8080/chat/rooms/1')
-      .then(response => {
-        // 서버로부터 받은 데이터를 채팅 로그 상태로 업데이트
-        setChatLogs(response.data.data);
-        console.log("업데이트 ", response.data.data)
-      })
-      .catch(error => {
-        console.error('데이터를 불러오는 도중 오류가 발생 !!', error);
-      });
-
     return () => {
       newClient.deactivate();
     };
@@ -69,7 +69,6 @@ const ChatRoomPage: React.FC = () => {
   }, []);
 
   // Message 전달 형태 {"senderId":1, "roomId":1, "message":"안녕","type":"TALK"}
-  // dummy user 로 테스트 진행
   const sendMessage = (message: string) => {
     if (client !== null) {
       const newMessage = {
@@ -90,11 +89,15 @@ const ChatRoomPage: React.FC = () => {
   return (
     <div className="w-full h-screen pb-[4.5rem]">
       <Header info={info} />
-        {/* 거래글 정보 추가하기 */}
-        <DealInfo />
-        <ChatLogs chatLogs={chatLogs}/>
-          
-          <div>
+      <DealInfo />
+      {chatLogInfo && chatLogInfo.data && (
+        <div className="px-6 pt-40 pb-20">
+          {chatLogInfo.data.map((item: ChatLog) => (
+            <ChatLogs key={item.createTime} chatLogs={item} />
+          ))}
+        </div>
+      )}
+      <div>
           <MessageInput
             message={message}
             setMessage={setMessage}
