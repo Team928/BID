@@ -21,6 +21,7 @@ import com.qzp.bid.domain.deal.purchase.mapper.PurchaseMapper;
 import com.qzp.bid.domain.deal.purchase.repository.ApplyFormRepository;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.repository.ImageRepository;
+import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
@@ -47,6 +48,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final ImageRepository imageRepository;
     private final ApplyFormRepository applyFormRepository;
     private final ApplyFormMapper applyFormMapper;
+    private final WishRepository wishRepository;
 
     @Override
     public void createPurchase(PurchaseReq purchaseReq, List<MultipartFile> photos) {
@@ -66,9 +68,19 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Transactional(readOnly = true)
     @Override
     public PurchaseRes getPurchase(Long purchaseId) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
         Purchase purchase = purchaseRepository.findById(purchaseId)
             .orElseThrow(() -> new BusinessException(GET_PURCHASE_FAIL));
-        return purchaseMapper.toPurchaseRes(purchase);
+        PurchaseRes purchaseRes = purchaseMapper.toPurchaseRes(purchase);
+        if (purchase.getApplyForms().stream()
+            .anyMatch(applyForm -> applyForm.getSellerId() == member.getId())) {
+            purchaseRes.setJoinReq(true);
+        }
+        if (wishRepository.existsByDealIdAndMemberId(purchaseId, member.getId())) {
+            purchaseRes.setWished(true);
+        }
+        return purchaseRes;
     }
 
     @Override
