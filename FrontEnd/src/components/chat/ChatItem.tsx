@@ -1,16 +1,12 @@
-import { IChatRoom } from "@/types/chat";
+import { IChatRoomListRes } from "@/types/chat";
 import React, { ReactNode, useRef } from "react";
 import { BsEmojiSunglasses } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-interface ChatItemProps {
-  item: IChatRoom;
-  unReadCount: number;
-}
 
-const ChatItem: React.FC<ChatItemProps> = ({ item, unReadCount }) => {
-  const { id, roomName, lastMessage } = item
-
+const ChatItem = (props : {item : IChatRoomListRes}) => {
+  const { chatRoom, unReadCount } = props.item;
+  const {id, roomName, lastMessage} = chatRoom;
   const navigate = useNavigate();
   
   const handleChatItemClick = () => {
