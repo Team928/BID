@@ -1,23 +1,15 @@
+import { IChatRoom } from "@/types/chat";
 import React, { ReactNode, useRef } from "react";
 import { BsEmojiSunglasses } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-export interface IItem {
-  id: number;
-  roomName: string;
-  dealId: number;
-  hostId: number;
-  guestId: number;
-  createTime: string;
-  updateTime: string;
-}
-
 interface ChatItemProps {
-  item: IItem;
+  item: IChatRoom;
+  unReadCount: number;
 }
 
-const ChatItem: React.FC<ChatItemProps> = (props: { item: IItem }) => {
-  const { id, roomName } = props.item
+const ChatItem: React.FC<ChatItemProps> = ({ item, unReadCount }) => {
+  const { id, roomName, lastMessage } = item
 
   const navigate = useNavigate();
   
@@ -28,21 +20,21 @@ const ChatItem: React.FC<ChatItemProps> = (props: { item: IItem }) => {
   return (
     <>
       <div className="flex pl-6 py-3 border-b border-[#D9D9D9]">
-        <Item >
+        <Item>
           <div className="flex justify-between overflow-hidden w-full">
             <div className=" flex">
               <div>
                 <BsEmojiSunglasses size={"3.5rem"} color="#545454" />
               </div>
               <div className="flex flex-col gap-1 px-5" onClick={handleChatItemClick}>
-                <p className="font-bold">{id}</p>
-                <p>{roomName}</p>
+                <p className="font-bold">{roomName}</p>
+                <p>{lastMessage}</p>
               </div>
             </div>
             <div className="flex items-center">
               {/* TODO: unread messages count해서 실제 데이터로 추가하기 */}
               <span className="bg-orange-500 rounded-full h-6 w-6 flex items-center justify-center text-white font-semibold">
-                3
+                {unReadCount}
               </span>
             </div>
           </div>
