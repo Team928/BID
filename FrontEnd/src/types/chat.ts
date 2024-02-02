@@ -23,10 +23,9 @@ export interface IChatRoomListReq {
 
 }
 
-
 // 채팅로그 조회 Response
 export interface IChatLogListRes {
-    id: number;
+    id: string;
     sender: string;
     senderId: number;
     roomId: number;
