@@ -50,7 +50,8 @@ public enum ErrorCode {
     REGISTER_FAIL(400, "회원가입에 실패하였습니다."),
 
     //Chat
-    EXIT_CHATROOM_FAIL(400, "거래가 확정되지 않았습니다.")
+    EXIT_CHATROOM_FAIL(400, "거래가 확정되지 않았습니다."),
+    CHATROOM_NOT_EXIST(400, "채팅방이 존재하지 않습니다."),
     ;
 
     private final int status;

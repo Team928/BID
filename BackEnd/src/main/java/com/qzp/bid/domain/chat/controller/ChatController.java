@@ -21,7 +21,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,17 +35,11 @@ public class ChatController {
 
 
     private final ChatService chatService;
-    private final ChatRepository chatRepository;
-    private final JwtProvider jwtProvider;
-
 
     @ResponseBody
     @MessageMapping("/message/{roomId}")
-    public void sendMessage(@DestinationVariable("roomId") Long roomId, @Payload Chat chat) {
-        chat.setRoomId(roomId);
-        if (chat.getType().equals(ChatType.TALK)) {
-            chatService.sendChat(chat);
-        }
+    public void sendMessage(@DestinationVariable("roomId") long roomId, @Payload Chat chat) {
+        chatService.sendChat(chat, roomId);
     }
 
     @GetMapping("/rooms")
@@ -56,13 +49,8 @@ public class ChatController {
     }
 
     @GetMapping("/rooms/{roomId}")
-    public ResponseEntity<ResultResponse> findChats(@RequestHeader("Authorization") String authorizationHeader, @PathVariable(name = "roomId") Long roomId){
-        String userInfo = jwtProvider.parseTokenToUserInfo(authorizationHeader.substring(7));
-
-        ChatRes chatRes = chatRepository.findFirstByRoomIdOrderByCreateTimeDesc(roomId);
-        boolean read = chatRes.getSenderId() != Integer.parseInt(userInfo);
-
-        List<ChatRes> chats = chatService.findChats(roomId, read, Long.valueOf(userInfo));
+    public ResponseEntity<ResultResponse> findChats(@PathVariable(name = "roomId") Long roomId){
+        List<ChatRes> chats = chatService.findChats(roomId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATS_SUCCESS, chats));
     }
 
@@ -74,7 +62,7 @@ public class ChatController {
 
     //거래 확정 버튼 누르기
     @GetMapping("/confirmed/{roomId}")
-    public ResponseEntity<ResultResponse> dealConfirmed(@RequestHeader("Authorization") String authorizationHeader, @PathVariable(name = "roomId") Long roomId){
+    public ResponseEntity<ResultResponse> dealConfirmed(@PathVariable(name = "roomId") Long roomId){
         chatService.dealConfirmed(roomId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CONFIRMED_DEAL_SUCCESS));
     }

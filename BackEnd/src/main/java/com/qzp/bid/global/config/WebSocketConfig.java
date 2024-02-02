@@ -1,7 +1,6 @@
 package com.qzp.bid.global.config;
 
 
-import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +23,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-    private final HashMap<String, Integer> sessionSubMap = new HashMap<>();
+
     private final RedisTemplate redisTemplate;
-//    private final MessageHandler messageHandler;
-//    private final SimpUserRegistry simpUserRegistry;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -50,37 +47,40 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor =
                     MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+
                 switch(accessor.getCommand()){
                     case SUBSCRIBE:
-//                        sessionSubMap.put(accessor.getSessionId(), accessor.getDestination());
+                        redisTemplate.opsForValue().set(accessor.getSessionId(), accessor.getDestination());
 
-                        if(redisTemplate.opsForValue().get(accessor.getSessionId()) == null){
-                            redisTemplate.opsForValue().set(accessor.getSessionId(), accessor.getDestination(), 1);
+                        if(redisTemplate.opsForHash().get("SubDestination", accessor.getDestination()) == null){
+                            redisTemplate.opsForHash().put("SubDestination", accessor.getDestination(), 1);
+                        }else{
+                            redisTemplate.opsForHash().put("SubDestination", accessor.getDestination(),
+                                (int)redisTemplate.opsForHash().get("SubDestination", accessor.getDestination()) + 1);
                         }
-                        sessionSubMap.put(accessor.getDestination(), (sessionSubMap.get(accessor.getDestination()) == null)?1:sessionSubMap.get(accessor.getDestination())+1);
-                        //TEST
-                        System.out.println(redisTemplate.opsForValue().get(accessor.getSessionId()));
-                        System.out.println(sessionSubMap.get(accessor.getDestination()));
-
                         break;
 
                     case DISCONNECT:
+
                         String subscribe = String.valueOf(redisTemplate.opsForValue().get(accessor.getSessionId())).trim();
                         redisTemplate.delete(accessor.getSessionId());
 
-                        if(sessionSubMap.get(subscribe) == 1){
-                            sessionSubMap.remove(subscribe);
-                        }else{
-                            sessionSubMap.put(subscribe, sessionSubMap.get(subscribe) - 1);
+                        if(redisTemplate.opsForHash().get( "SubDestination", subscribe) != null){
+                            int subScriberCount = (int)redisTemplate.opsForHash().get( "SubDestination", subscribe);
+
+                            if (subScriberCount == 1){
+                                redisTemplate.opsForHash().delete( "SubDestination", subscribe);
+                            }else{
+                                redisTemplate.opsForHash().put("SubDestination", subscribe, subScriberCount - 1);
+                            }
                         }
-                        System.out.println((sessionSubMap.get(subscribe) != null)?"null":"1");
                         break;
                 }
+
                 return message;
             }
         });
     }
-    public Integer getSubCount(String roomId){
-        return sessionSubMap.get("/sub/chats/room/" + roomId);
-    }
+
+
 }
