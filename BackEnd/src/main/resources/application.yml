@@ -28,6 +28,8 @@ spring:
     redis:
       host: ${db.redis.host}
       port: ${db.redis.port}
+      user: ${db.redis.user}
+      password: ${db.redis.password}
 
   jpa:
     hibernate:
