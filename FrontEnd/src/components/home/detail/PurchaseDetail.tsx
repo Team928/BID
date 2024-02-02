@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
   const navigate = useNavigate();
-  const { dealRes, minPrice, maxPrice } = props.info;
+  const { dealRes, minPrice, maxPrice, status } = props.info;
   const { month, date, datOfWeek, time } = getDate(dealRes.startTime);
 
   // #TODO 프로필 파람 해야함
