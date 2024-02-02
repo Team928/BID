@@ -53,7 +53,7 @@ public class ImageUploader {
             e.printStackTrace();
         }
         File saveFile = savePath.toFile();
-        return new ImageDto(saveFile.getAbsolutePath(),
+        return new ImageDto("/images/" + saveFile.getName(),
             multipartFile.getOriginalFilename());
     }
 
