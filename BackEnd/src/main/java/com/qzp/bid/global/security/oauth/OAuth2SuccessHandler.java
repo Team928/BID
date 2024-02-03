@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
@@ -58,11 +60,16 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             redisTemplate.opsForValue()
                 .set("RTK:"+loginTokenRes.getId(), loginTokenRes.getRefreshToken(), Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
-            ResultResponse result = ResultResponse.of(ResultCode.LOGIN_SUCCESS, loginTokenRes);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
-            Gson gson = new Gson();
-            String jsonStr = gson.toJson(result);
-            response.getWriter().println(jsonStr);
+            response.sendRedirect(
+                UriComponentsBuilder.fromUriString("http://localhost:5173/signup")
+                    .queryParam("id", loginTokenRes.getId())
+                    .queryParam("accessToken", loginTokenRes.getAccessToken())
+                    .queryParam("refreshToken", loginTokenRes.getRefreshToken())
+                    .queryParam("nickname", loginTokenRes.getNickname())
+                    .queryParam("area", loginTokenRes.getArea())
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString());
 
         } else if(authorities.contains("GUEST")){
 
@@ -72,12 +79,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             redisTemplate.opsForValue()
                 .set("RTK:"+loginResponse.getId(), loginResponse.getRefreshToken(), Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
-            ResultResponse result = ResultResponse.of(ResultCode.LOGIN_SUCCESS, loginResponse);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
-            Gson gson = new Gson();
-            String jsonStr = gson.toJson(result);
-            response.getWriter().println(jsonStr);
-
+            response.sendRedirect(
+                UriComponentsBuilder.fromUriString("http://localhost:5173/singup")
+                    .queryParam("id", loginResponse.getId())
+                    .queryParam("accessToken", loginResponse.getAccessToken())
+                    .queryParam("refreshToken", loginResponse.getRefreshToken())
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString());
         }
     }
 }
