@@ -24,4 +24,6 @@ public interface SaleService {
     void createBid(Long saleId, BidReq bidReq);
 
     void createLiveReq(Long saleId);
+
+    void saleClosing();
 }

@@ -21,6 +21,7 @@ public enum ErrorCode {
     DEAL_ID_NOT_EXIST(400, "거래 id가 존재하지 않습니다."),
     WISH_ALREADY_EXIST(400, "이미 찜한 거래입니다."),
     WISH_NOT_EXIST(400, "찜한 거래가 존재하지 않습니다."),
+    NOT_BEFORE_STATUS(400, "BEFORE상태에만 가능합니다."),
 
     // sale
     SALE_ID_NOT_EXIST(400, "존재하지 않는 판매글 ID입니다."),
@@ -34,7 +35,6 @@ public enum ErrorCode {
     //purchase
     GET_PURCHASE_FAIL(400, "구매글 조회에 실패하였습니다."),
     APPLY_LIMIT_FAIL(400, "지원 인원이 모두 찼습니다."),
-    PURCHASE_IS_NOT_BEFORE(400, "역경매 참여 신청 가능한 상태가 아닙니다."),
 
     //JWT
     JWT_INVALID(401, "유효하지 않은 토큰입니다."),

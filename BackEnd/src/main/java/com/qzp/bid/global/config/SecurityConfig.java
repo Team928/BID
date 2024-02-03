@@ -7,11 +7,13 @@ import com.qzp.bid.global.security.util.JwtProvider;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -23,12 +25,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${auth.whiteList}")
-    private String[] whiteList = {"/member/**", "/deals/**", "/chat/**", "/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
     private final CustomOAuth2UserServiceImpl oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final RedisTemplate redisTemplate;
     private final JwtProvider jwtProvider;
+    @Value("${auth.whiteList}")
+    private String[] whiteList = {"/member/**", "/deals/**", "/chat/**", "/oauth2/**",
+        "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,7 +50,8 @@ public class SecurityConfig {
         http
             .oauth2Login(oauth2 -> oauth2
                 .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/code/*"))
-                .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService)) //로그인 성공 시 CustomOAuthUserServiceImpl에서 후처리
+                .userInfoEndpoint(endpoint -> endpoint.userService(
+                    oAuth2UserService)) //로그인 성공 시 CustomOAuthUserServiceImpl에서 후처리
                 .successHandler(oAuth2SuccessHandler));
 
         http
@@ -55,21 +59,30 @@ public class SecurityConfig {
                 .requestMatchers(whiteList).permitAll()
                 .anyRequest().authenticated()); //모든 사용자에 대해서 인증 요청
 
-
-        http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
+        http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(
+            corsConfigurationSource()));
 
         return http.build();
     }
 
-    public JWTFilter jwtFilter(){
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+            .requestMatchers("/static/**")
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
+
+    public JWTFilter jwtFilter() {
         return new JWTFilter(jwtProvider, redisTemplate);
     }
 
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE","OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedMethods(
+            Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(
+            Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

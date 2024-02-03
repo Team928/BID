@@ -30,6 +30,7 @@ import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.util.ImageUploader;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -102,7 +103,7 @@ public class SaleServiceImpl implements SaleService {
             throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
         }
         if (!sale.getStatus().equals(DealStatus.BEFORE)) {
-            throw new BusinessException(ErrorCode.UPDATE_SALE_FAIL);
+            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
         }
         sale.setImmediatePrice(saleUpdateReq.getImmediatePrice());
     }
@@ -115,6 +116,9 @@ public class SaleServiceImpl implements SaleService {
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
         if (sale.getWriter().getId() != member.getId()) {
             throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
+        }
+        if (!sale.getStatus().equals(DealStatus.BEFORE)) {
+            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
         }
         saleRepository.delete(sale);
     }
@@ -173,11 +177,31 @@ public class SaleServiceImpl implements SaleService {
         if (liveRequestRepository.existsBySaleIdAndMemberId(saleId, member.getId())) {
             throw new BusinessException(ErrorCode.ALREADY_REQUESTED);
         }
+        Sale sale = saleRepository.findById(saleId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
+        if (!sale.getStatus().equals(DealStatus.BEFORE)) {
+            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
+        }
         LiveRequest liveRequest = LiveRequest.builder().memberId(member.getId())
             .saleId(saleId).build();
         liveRequestRepository.save(liveRequest);
-        Sale sale = saleRepository.findById(saleId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
         sale.setLiveRequestCount(sale.getLiveRequestCount() + 1);
+    }
+
+    @Override
+    public void saleClosing() {
+        Optional<List<Sale>> sales = saleRepository.findByStatusIsNot(DealStatus.END);
+        if (sales.isEmpty()) {
+            return;
+        }
+        for (Sale sale : sales.get()) {
+            log.info(sale.getEndTime().toString());
+            log.info(LocalDateTime.now().toString());
+            if (sale.getEndTime().isAfter(LocalDateTime.now())) {
+                continue;
+            }
+            sale.setStatus(DealStatus.END);
+            //TODO: 구매자 판매자 채팅방 생성
+        }
     }
 }
