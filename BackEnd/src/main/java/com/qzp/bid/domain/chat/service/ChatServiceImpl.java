@@ -5,6 +5,7 @@ import com.qzp.bid.domain.chat.dto.ChatRes;
 import com.qzp.bid.domain.chat.dto.ChatRoomRes;
 import com.qzp.bid.domain.chat.entity.Chat;
 import com.qzp.bid.domain.chat.entity.ChatRoom;
+import com.qzp.bid.domain.chat.entity.ChatType;
 import com.qzp.bid.domain.chat.repository.ChatRepository;
 import com.qzp.bid.domain.chat.repository.ChatRoomRepository;
 import com.qzp.bid.domain.deal.entity.Deal;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,7 @@ public class ChatServiceImpl implements ChatService {
     private final MemberRepository memberRepository;
     private final DealRepository dealRepository;
     private final AccountUtil accountUtil;
+    private final RedisTemplate redisTemplate;
 
     @Override
     @Transactional
@@ -80,25 +83,37 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public void sendChat(Chat chat) {
-        Member sender = memberRepository.findById(chat.getSenderId()).orElseThrow();
-        Optional<ChatRoom> chatRoom = chatRoomRepository.findById(chat.getRoomId());
-        if (chatRoom.isPresent()) {
-            if(webSocketConfig.getSubCount(String.valueOf(chat.getRoomId())) == 2){
-                chat.setRead(true);
-            }
+    public void sendChat(Chat chat, long roomId) {
 
-            chat.setSender(sender.getNickname());
-            chat.setCreateTime(LocalDateTime.now().toString());
-            chatRepository.save(chat);
-
-            chatRoom.get().setLastMessage(chat.getMessage());
-            chatRoomRepository.save(chatRoom.get());
-
-            ResponseEntity<ResultResponse> res = ResponseEntity.ok(ResultResponse.of(ResultCode. CREATE_CHAT_SUCCESS, chat));
-            template.convertAndSend("/sub/chats/room/" + chat.getRoomId(), res);
-            //TODO 여기에 아마 채팅 갱신하라는 명령이 전달 되어애 할 것 같아요...SSE?
+        chat.setRoomId(roomId);
+        if(!chat.getType().equals(ChatType.TALK)){
+            throw new BusinessException(ErrorCode.INPUT_VALUE_INVALID);
         }
+
+        Member sender = memberRepository.findById(chat.getSenderId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+
+        Optional<ChatRoom> chatRoom = chatRoomRepository.findById(chat.getRoomId());
+        if (!chatRoom.isPresent()) {
+            throw new BusinessException(ErrorCode.CHATROOM_NOT_EXIST);
+        }
+
+        if (redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/"+roomId) != null
+            && (int)redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/"+roomId) == 2){
+            chat.setRead(true);
+        }
+
+        chat.setSender(sender.getNickname());
+        chat.setCreateTime(LocalDateTime.now().toString());
+        chatRepository.save(chat);
+
+        chatRoom.get().setLastMessage(chat.getMessage());
+        chatRoomRepository.save(chatRoom.get());
+
+        ResponseEntity<ResultResponse> res = ResponseEntity.ok(ResultResponse.of(ResultCode. CREATE_CHAT_SUCCESS, chat));
+        template.convertAndSend("/sub/chats/rooms/" + chat.getRoomId(), res);
+        //TODO 여기에 아마 채팅 갱신하라는 명령이 전달 되어야 할 것 같아요...SSE?
+
     }
 
     @Override
@@ -123,8 +138,10 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public List<ChatRes> findChats(long roomId, boolean read, long userId) {
-        if(!read){
+    public List<ChatRes> findChats(long roomId) {
+        long userId = Long.parseLong(accountUtil.getLoginMemberId());
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
+        if(chatRoom.getLastSenderId() != userId){
             List<Chat> chats = chatRepository.findUnReadChats(roomId);
             for (Chat chat : chats) {
                 if(chat.getSenderId() != userId){
@@ -150,11 +167,10 @@ public class ChatServiceImpl implements ChatService {
             if(chatRoom.getDealConfirmed() == null || chatRoom.getDealConfirmed().size() != 2){
                 throw new BusinessException(ErrorCode.EXIT_CHATROOM_FAIL);
             }
-            log.info("TEST1 @@ "+chatRoom.getDealConfirmed().size());
+
             chatRoom.setHostId(chatRoom.getHostId() == userId ? -1 : chatRoom.getHostId());
-            log.info("TEST1 @@ "+chatRoom.getHostId());
             chatRoom.setGuestId(chatRoom.getGuestId() == userId ? -1 : chatRoom.getGuestId());
-            log.info("TEST1 @@ "+chatRoom.getGuestId());
+
             if (chatRoom.getHostId() == -1 && chatRoom.getGuestId() == -1){
                 chatRoomRepository.delete(chatRoom);
                 chatRepository.deleteAllByRoomId(chatRoomId);
