@@ -201,6 +201,9 @@ public class SaleServiceImpl implements SaleService {
                 continue;
             }
             sale.setStatus(DealStatus.END);
+            if (sale.getHighestBid() != null) {
+                sale.getHighestBid().setSuccess(true);
+            }
             //TODO: 구매자 판매자 채팅방 생성
         }
     }
