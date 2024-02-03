@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Client, StompHeaders } from "@stomp/stompjs";
 import { axiosAuthInstance } from "@/apis/axiosInstance";
 import useChatStore from "@/stores/useChatStore";
+import ChatInput from "./ChatInput";
 
 const ChatSection = () => {
     const accessToken = axiosAuthInstance;
@@ -12,13 +13,10 @@ const ChatSection = () => {
 
     console.log(chatLogs);
     console.log(client);
+    
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const savedChatLogs = localStorage.getItem("chatLogs");
-        if (savedChatLogs) {
-            addChatLog(JSON.parse(savedChatLogs));
-        }
-
         // 웹소켓 연결
         const newClient = new Client();
         newClient.configure({
@@ -38,6 +36,11 @@ const ChatSection = () => {
 
                     // 대화 내용 로컬 스토리지에 저장
                     localStorage.setItem("chatLogs", JSON.stringify([...chatLogs, parsedMessage.body.data]));
+                
+                    if (chatContainerRef.current) {
+                        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+                    }
+                
                 }, headers);
             },
 
@@ -57,7 +60,7 @@ const ChatSection = () => {
 
     }, []);
 
-    const sendMessage = () => {
+    const sendMessage = (message: string) => {
         if (client !== null && message.trim() !== "") {
             const newMessage = {
                 senderId: 1,
@@ -74,25 +77,35 @@ const ChatSection = () => {
     };
 
     return (
-        <div>
-            <h1>채팅 섹션</h1>
-            <div>
+        <div >
+            <div className="px-6 max-h-60 overflow-y-auto pt-2 pb-28 relative bg-black bg-opacity-10" ref={chatContainerRef}>
                 {chatLogs.map((log, index) => (
-                    <div key={index}>{log.senderId} : {log.message}</div>
+                    <div key={index}>
+                        <span className="text-BID_MAIN font-bold">{log.senderId}</span> 
+                        <span className="px-2 px-4 font-bold">{log.message}</span>
+                    </div>
                 ))}
             </div>
-
             <div>
-                <input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="메시지를 입력하세요"
-                />
-                <button onClick={sendMessage}>전송</button>
+                <ChatInput message={message} setMessage={setMessage} sendMessage={(message) => {
+                    sendMessage(message); 
+                    setMessage("");
+                }} />
             </div>
         </div>
     );
+    
 };
 
 export default ChatSection;
+
+/*
+컴포넌트 불러올 때 ....
+
+<div className="h-screen flex items-end">
+    <div className="w-full h-40vh">
+        <ChatSection />
+    </div>
+</div>;
+
+*/
