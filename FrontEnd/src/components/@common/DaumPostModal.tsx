@@ -1,31 +1,31 @@
+import { IAddressModalProp, IDaumModalAddr } from '@/service/signup/api';
 import DaumPostcode from 'react-daum-postcode';
 
-interface IAddr {
-  address: string;
-  jibunAddress: string;
-}
-
-export interface IAddressModalProp {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setAddress: React.Dispatch<React.SetStateAction<string>>;
-}
 // 다음 주소 검색 API 사용하기
 // https://programmerplum.tistory.com/185
-const DaumPostModal = ({ setIsOpen, setAddress }: IAddressModalProp) => {
-  const onCompletePost = (data: IAddr) => {
+const DaumPostModal = ({ setIsOpen, setAddress, setInputAddress }: IAddressModalProp) => {
+  const onCompletePost = (data: IDaumModalAddr) => {
     setIsOpen(false);
-    console.log(data);
+
+    // 실제로 회원가입 할 주소
+    if (data.bname1) {
+      setAddress(data.sigungu + ' ' + data.bname1);
+    } else {
+      setAddress(data.sigungu + ' ' + data.bname);
+    }
+
+    // input 창에 보여질 주소
     if (data.jibunAddress) {
-      setAddress(data.jibunAddress);
+      setInputAddress(data.jibunAddress);
     } else if (data.address) {
-      setAddress(data.address);
+      setInputAddress(data.address);
     }
   };
 
   return (
     <div
       onClick={() => setIsOpen(false)}
-      className="h-full w-screen fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-60 text-center z-10"
+      className="h-full w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-60 text-center z-10"
     >
       <div className="w-4/5 h-4/5 bg-white">
         <DaumPostcode style={{ height: '100%' }} onComplete={onCompletePost} />
