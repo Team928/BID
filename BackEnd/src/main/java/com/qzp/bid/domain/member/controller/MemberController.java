@@ -2,11 +2,10 @@ package com.qzp.bid.domain.member.controller;
 
 import static com.qzp.bid.global.result.ResultCode.*;
 
+import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.service.MemberService;
 import com.qzp.bid.global.result.ResultResponse;
-import com.qzp.bid.global.result.error.ErrorCode;
-import com.qzp.bid.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -43,16 +42,8 @@ public class MemberController {
     //TODO: 회원가입
     @PostMapping("/signup")
     public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq){
-        try {
-            memberService.register(memberJoinReq);
-        } catch (Exception e) {
-            throw new BusinessException(ErrorCode.REGISTER_FAIL);
-        }
-        return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS));
+        LoginTokenRes loginTokenRes = memberService.register(memberJoinReq);
+        return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS, loginTokenRes));
     }
-
-    //TODO: 로그아웃
-    //TODO: 회원탈퇴
-    //TODO: 회원 수정
 
 }
