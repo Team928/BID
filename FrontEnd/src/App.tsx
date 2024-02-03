@@ -20,6 +20,7 @@ import LivePage from './pages/live/LivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
 import PurchaseDetailPage from './pages/home/detail/PurchaseDetailPage';
 import ReviewPage from './pages/Review/ReviewPage';
+import LoginRedirectPage from './pages/login/LoginRedirectPage';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/login/redirect',
+    element: <LoginRedirectPage />,
   },
   {
     path: '/notify',
