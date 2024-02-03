@@ -72,6 +72,7 @@ public class SecurityConfig {
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
+    @Bean
     public JWTFilter jwtFilter() {
         return new JWTFilter(jwtProvider, redisTemplate);
     }
