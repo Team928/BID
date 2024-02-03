@@ -8,7 +8,7 @@ const LoginRedirectPage = () => {
   const { loginUser } = userStore();
 
   useEffect(() => {
-    const userId = serchParams.get('id')!;
+    const userId = Number(serchParams.get('id'));
     const accessToken = serchParams.get('accessToken')!;
     const refreshToken = serchParams.get('refreshToken')!;
 

@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 interface IUserState {
   isLogin: boolean;
-  userId: string;
+  userId: number;
   nickname: string;
   area: string[];
   accessToken: string;
@@ -15,7 +15,7 @@ interface IUserState {
     accessToken,
     refreshToken,
   }: {
-    userId: string;
+    userId: number;
     nickname: string;
     area: string;
     accessToken: string;
@@ -28,7 +28,7 @@ const userStore = create(
   persist<IUserState>(
     set => ({
       isLogin: false,
-      userId: '',
+      userId: 0,
       nickname: '',
       area: [],
       accessToken: '',
@@ -45,7 +45,7 @@ const userStore = create(
 
       logoutUser: () =>
         set({
-          userId: '',
+          userId: 0,
           accessToken: '',
           refreshToken: '',
           nickname: '',
