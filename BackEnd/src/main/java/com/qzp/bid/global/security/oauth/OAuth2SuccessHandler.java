@@ -61,7 +61,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .set("RTK:"+loginTokenRes.getId(), loginTokenRes.getRefreshToken(), Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
             response.sendRedirect(
-                UriComponentsBuilder.fromUriString("http://localhost:5173/signup")
+                UriComponentsBuilder.fromUriString("http://login/redirect:5173/signup")
                     .queryParam("id", loginTokenRes.getId())
                     .queryParam("accessToken", loginTokenRes.getAccessToken())
                     .queryParam("refreshToken", loginTokenRes.getRefreshToken())
@@ -80,7 +80,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .set("RTK:"+loginResponse.getId(), loginResponse.getRefreshToken(), Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
             response.sendRedirect(
-                UriComponentsBuilder.fromUriString("http://localhost:5173/singup")
+                UriComponentsBuilder.fromUriString("http://login/redirect:5173/signup")
                     .queryParam("id", loginResponse.getId())
                     .queryParam("accessToken", loginResponse.getAccessToken())
                     .queryParam("refreshToken", loginResponse.getRefreshToken())
