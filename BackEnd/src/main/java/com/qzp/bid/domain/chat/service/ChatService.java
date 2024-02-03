@@ -1,7 +1,7 @@
 package com.qzp.bid.domain.chat.service;
 
 import com.qzp.bid.domain.chat.dto.ChatRes;
-import com.qzp.bid.domain.chat.dto.ChatRoomRes;
+import com.qzp.bid.domain.chat.dto.ChatRoomList;
 import com.qzp.bid.domain.chat.entity.Chat;
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface ChatService {
 
     public void sendChat(Chat chat, long roomId);
 
-    public List<ChatRoomRes> findChatRooms(Long userId);
+    public List<ChatRoomList> findChatRooms(Long userId);
 
     public List<ChatRes> findChats(long roomId);
 

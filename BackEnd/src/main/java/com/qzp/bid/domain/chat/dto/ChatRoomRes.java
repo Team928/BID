@@ -1,18 +1,18 @@
 package com.qzp.bid.domain.chat.dto;
 
-import com.qzp.bid.domain.chat.entity.ChatRoom;
-import lombok.Builder;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
-@Builder
 public class ChatRoomRes {
 
-    private ChatRoom chatRoom;
-    @Builder.Default
-    private int unReadCount = 0;
-    private boolean exitPossible;
+    private long id;
+    private String roomName;
+    private long dealId;
+    private LocalDateTime updateTime;
+    private String lastMessage;
 
 }

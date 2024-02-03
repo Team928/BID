@@ -1,15 +1,11 @@
 package com.qzp.bid.domain.chat.controller;
 
 import com.qzp.bid.domain.chat.dto.ChatRes;
-import com.qzp.bid.domain.chat.dto.ChatRoomRes;
+import com.qzp.bid.domain.chat.dto.ChatRoomList;
 import com.qzp.bid.domain.chat.entity.Chat;
-import com.qzp.bid.domain.chat.entity.ChatType;
-import com.qzp.bid.domain.chat.repository.ChatRepository;
-import com.qzp.bid.domain.chat.repository.ChatRoomRepository;
 import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
-import com.qzp.bid.global.security.util.JwtProvider;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/chats")
-@RequiredArgsConstructor@Tag(name = "ChatController", description = "채팅 api")
+@RequiredArgsConstructor
+@Tag(name = "ChatController", description = "채팅 api")
 public class ChatController {
 
 
@@ -43,26 +40,29 @@ public class ChatController {
     }
 
     @GetMapping("/rooms")
-    public ResponseEntity<ResultResponse> findChatRooms(@RequestParam(name = "userId") Long userId){
-        List<ChatRoomRes> chatRooms = chatService.findChatRooms(userId);
+    public ResponseEntity<ResultResponse> findChatRooms(
+        @RequestParam(name = "userId") Long userId) {
+        List<ChatRoomList> chatRooms = chatService.findChatRooms(userId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATROOMS_SUCCESS, chatRooms));
     }
 
     @GetMapping("/rooms/{roomId}")
-    public ResponseEntity<ResultResponse> findChats(@PathVariable(name = "roomId") Long roomId){
+    public ResponseEntity<ResultResponse> findChats(@PathVariable(name = "roomId") Long roomId) {
         List<ChatRes> chats = chatService.findChats(roomId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATS_SUCCESS, chats));
     }
 
     @DeleteMapping("/rooms/{roomId}")
-    public ResponseEntity<ResultResponse> exitChatRooms(@PathVariable(name = "roomId") Long roomId){
+    public ResponseEntity<ResultResponse> exitChatRooms(
+        @PathVariable(name = "roomId") Long roomId) {
         chatService.exitChatRooms(roomId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.EXIT_CHATROOM_SUCCESS));
     }
 
     //거래 확정 버튼 누르기
     @GetMapping("/confirmed/{roomId}")
-    public ResponseEntity<ResultResponse> dealConfirmed(@PathVariable(name = "roomId") Long roomId){
+    public ResponseEntity<ResultResponse> dealConfirmed(
+        @PathVariable(name = "roomId") Long roomId) {
         chatService.dealConfirmed(roomId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CONFIRMED_DEAL_SUCCESS));
     }
