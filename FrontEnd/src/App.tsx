@@ -21,6 +21,7 @@ import SaleLivePage from './pages/live/SaleLivePage';
 import PurchaseDetailPage from './pages/home/detail/PurchaseDetailPage';
 import ReviewPage from './pages/Review/ReviewPage';
 import LoginRedirectPage from './pages/login/LoginRedirectPage';
+import SaleWritePage from './pages/write/SaleWritePage';
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
   {
     path: '/write',
     element: <WritePage />,
+  },
+  {
+    path: '/write/sale',
+    element: <SaleWritePage />,
   },
   {
     path: '/live',

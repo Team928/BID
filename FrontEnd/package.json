@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.18.0",
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.1",
     "@stomp/stompjs": "^7.0.0",
+    "@tanstack/react-query": "^5.18.0",
     "axios": "^1.6.5",
     "openvidu-browser": "^2.29.1",
     "react": "^18.2.0",
