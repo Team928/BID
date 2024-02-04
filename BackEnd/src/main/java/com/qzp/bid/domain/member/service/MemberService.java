@@ -12,4 +12,6 @@ public interface MemberService {
     void register(MemberJoinReq memberJoinReq) throws Exception;
 
     MemberProfileRes getProfile(String nickname);
+
+    SaleListPage getHauction(String nickname, Pageable pageable);
 }

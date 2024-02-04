@@ -63,14 +63,19 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS));
     }
 
-    //TODO: 로그아웃
-    //TODO: 회원탈퇴
-    //TODO: 회원 수정
     @Operation(summary = "프로필 조회")
     @GetMapping("/profile/{nickname}")
     public ResponseEntity<ResultResponse> getProfile(@PathVariable("nickname") String nickname) {
         MemberProfileRes memberProfileRes = memberService.getProfile(nickname);
         return ResponseEntity.ok(ResultResponse.of(GET_MYPAGE_SUCCESS, memberProfileRes));
+    }
+
+    @Operation(summary = "내 경매 내역 - 내가 주최한 경매")
+    @GetMapping("/profile/{nickname}/hauction")
+    public ResponseEntity<ResultResponse> getHauction(@PathVariable("nickname") String nickname,
+        Pageable pageable) {
+        SaleListPage saleListPage = memberService.getHauction(nickname, pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_HAUCTION_SUCCESS, saleListPage));
     }
 
 

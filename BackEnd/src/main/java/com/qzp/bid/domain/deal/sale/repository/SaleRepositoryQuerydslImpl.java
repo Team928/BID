@@ -52,6 +52,37 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
             !hasNext);
     }
 
+    @Override
+    public SaleListPage findSalesByWriterId(Long writerId, Pageable pageable) {
+
+        List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory
+            .select(Projections.fields(
+                SaleSimpleRes.class,
+                new QDealSimpleRes(sale).as("dealSimpleRes"),
+                sale.immediatePrice,
+                sale.startPrice,
+                sale.endTime,
+                sale.highestBid.bidPrice.as("bid"),
+                sale.status
+            ))
+            .from(sale)
+            .where(sale.writer.id.eq(writerId)) // 작성자 id로 필터링
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize() + 1)
+            .orderBy(sale.createTime.asc()) // 생성시간 오름차순으로 정렬
+            .fetch();
+
+        boolean isLast = true;
+        if (saleSimpleResList.size() > pageable.getPageSize()) {
+            saleSimpleResList.remove(pageable.getPageSize());
+            isLast = false;
+        }
+
+        return new SaleListPage(saleSimpleResList, pageable.getPageNumber(), pageable.getPageSize(),
+            isLast);
+    }
+
+
     private List<OrderSpecifier<?>> createOrderSpecifiers(SearchParam searchParam) {
         List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
 

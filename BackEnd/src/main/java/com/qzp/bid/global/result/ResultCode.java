@@ -12,6 +12,7 @@ public enum ResultCode {
     NICKNAME_DO_EXIST(200, "사용 불가능한 닉네임 입니다."),
     NICKNAME_DO_NOT_EXIST(200, "사용 가능한 닉네임 입니다."),
     GET_MYPAGE_SUCCESS(200, "마이페이지 조회에 성공하였습니다"),
+    GET_HAUCTION_SUCCESS(200, "내가 주최한 경매 조회에 성공하였습니다"),
 
     //deal
     ADD_WISH_SUCCESS(201, "거래글 찜목록 추가에 성공하였습니다."),

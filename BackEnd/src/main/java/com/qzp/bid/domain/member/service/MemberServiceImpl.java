@@ -78,4 +78,15 @@ public class MemberServiceImpl implements MemberService {
         }
         return memberProfileRes;
     }
+
+    @Override
+    public SaleListPage getHauction(String nickname, Pageable pageable) { //내가 주최한 경매
+        Member member = memberRepository.findMemberByNickname(nickname)
+            .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
+
+        SaleListPage saleListPage = saleRepository.findSalesByWriterId(member.getId(), pageable);
+
+        return saleListPage;
+    }
+
 }
