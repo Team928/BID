@@ -1,10 +1,14 @@
 package com.qzp.bid.domain.member.service;
 
+import static com.qzp.bid.global.result.error.ErrorCode.FORBIDDEN_ERROR;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
+import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.entity.Member;
@@ -20,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -37,6 +42,7 @@ public class MemberServiceImpl implements MemberService {
     private final AccountUtil accountUtil;
     private final MemberMapper memberMapper;
     private final SaleRepository saleRepository;
+    private final WishRepository wishRepository;
 
     @Override
     public boolean checkNickname(String nickname) throws Exception {
@@ -95,11 +101,11 @@ public class MemberServiceImpl implements MemberService {
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
 
         if (member.getNickname().equals(nickname)) {
-            Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize(),
-                Sort.by("deal.createTime").descending());
+            Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize());
 
             SaleListPage saleListPage = wishRepository.findSalesWithWishByMemberId(
                 member.getId(), setPageable);
+
             return saleListPage;
 
         } else {
@@ -107,4 +113,21 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public PurchaseListPage getPurchaseWish(String nickname, LookupParam lookupParam) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        if (member.getNickname().equals(nickname)) {
+            Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize());
+
+            PurchaseListPage purchaseListPage = wishRepository.findPurchasesWithWishByMemberId(
+                member.getId(), setPageable);
+
+            return purchaseListPage;
+
+        } else {
+            throw new BusinessException(FORBIDDEN_ERROR);
+        }
+    }
 }

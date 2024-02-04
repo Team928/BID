@@ -85,10 +85,11 @@ public class MemberController {
     @GetMapping("/profile/{nickname}/wish")
     public ResponseEntity<ResultResponse> getWish(@PathVariable("nickname") String nickname,
         LookupParam lookupParam) {
-        if (lookupParam.getType().equals("sale")) {
+        if (lookupParam.getType().equals("sale")) { //경매
             SaleListPage saleListPage = memberService.getSaleWish(nickname, lookupParam);
             return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS, saleListPage));
-        } else if (lookupParam.getType().equals("purchase")) {
+
+        } else if (lookupParam.getType().equals("purchase")) { //역경매
             PurchaseListPage purchaseListPage = memberService.getPurchaseWish(nickname,
                 lookupParam);
             return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS, purchaseListPage));
