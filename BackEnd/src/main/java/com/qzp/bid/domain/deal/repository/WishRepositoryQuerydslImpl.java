@@ -34,7 +34,7 @@ public class WishRepositoryQuerydslImpl implements WishRepositoryQuerydsl {
                 sale.endTime,
                 sale.highestBid.bidPrice.as("bid"),
                 sale.status,
-                Expressions.asBoolean(true).as("wish")
+                Expressions.asBoolean(true).as("isWished")
             ))
             .from(sale)
             .where(JPAExpressions.select(wish.id)
@@ -65,7 +65,7 @@ public class WishRepositoryQuerydslImpl implements WishRepositoryQuerydsl {
         List<PurchaseSimpleRes> purchaseSimpleResList = jpaQueryFactory.select(Projections.fields(
                 PurchaseSimpleRes.class,
                 new QDealSimpleRes(purchase).as("dealSimpleRes"),
-                Expressions.asBoolean(true).as("wish")
+                Expressions.asBoolean(true).as("isWished")
             ))
             .from(purchase)
             .where(JPAExpressions.select(wish.id)
