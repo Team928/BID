@@ -1,6 +1,5 @@
 package com.qzp.bid.domain.member.service;
 
-import static com.qzp.bid.global.result.error.ErrorCode.FORBIDDEN_ERROR;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
@@ -96,38 +95,26 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public SaleListPage getSaleWish(String nickname, LookupParam lookupParam) {
+    public SaleListPage getSaleWish(LookupParam lookupParam) {
         Member member = accountUtil.getLoginMember()
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
 
-        if (member.getNickname().equals(nickname)) {
-            Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize());
+        Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize());
+        SaleListPage saleListPage = wishRepository.findSalesWithWishByMemberId(
+            member.getId(), setPageable);
 
-            SaleListPage saleListPage = wishRepository.findSalesWithWishByMemberId(
-                member.getId(), setPageable);
-
-            return saleListPage;
-
-        } else {
-            throw new BusinessException(FORBIDDEN_ERROR);
-        }
+        return saleListPage;
     }
 
     @Override
-    public PurchaseListPage getPurchaseWish(String nickname, LookupParam lookupParam) {
+    public PurchaseListPage getPurchaseWish(LookupParam lookupParam) {
         Member member = accountUtil.getLoginMember()
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
 
-        if (member.getNickname().equals(nickname)) {
-            Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize());
+        Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize());
+        PurchaseListPage purchaseListPage = wishRepository.findPurchasesWithWishByMemberId(
+            member.getId(), setPageable);
 
-            PurchaseListPage purchaseListPage = wishRepository.findPurchasesWithWishByMemberId(
-                member.getId(), setPageable);
-
-            return purchaseListPage;
-
-        } else {
-            throw new BusinessException(FORBIDDEN_ERROR);
-        }
+        return purchaseListPage;
     }
 }

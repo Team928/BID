@@ -17,7 +17,7 @@ public interface MemberService {
 
     SaleListPage getHauction(String nickname, Pageable pageable);
 
-    SaleListPage getSaleWish(String nickname, LookupParam lookupParam);
+    SaleListPage getSaleWish(LookupParam lookupParam);
 
-    PurchaseListPage getPurchaseWish(String nickname, LookupParam lookupParam);
+    PurchaseListPage getPurchaseWish(LookupParam lookupParam);
 }
