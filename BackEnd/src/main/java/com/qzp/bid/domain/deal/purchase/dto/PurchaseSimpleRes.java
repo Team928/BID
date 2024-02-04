@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.deal.purchase.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.qzp.bid.domain.deal.dto.DealSimpleRes;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,5 +10,6 @@ import lombok.Setter;
 public class PurchaseSimpleRes {
 
     private DealSimpleRes dealSimpleRes;
+    @JsonProperty("isWished")
     private boolean isWished; // wish 여부를 나타내는 필드
 }

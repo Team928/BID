@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.deal.sale.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.qzp.bid.domain.deal.dto.DealRes;
 import com.qzp.bid.domain.deal.entity.DealStatus;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class SaleRes {
     private LocalDateTime endTime;
     private DealStatus status;
     private int liveRequestCount;
+    @JsonProperty("isWished")
     private boolean isWished;
     private boolean isLiveReq;
     private List<BidRes> bidList;
