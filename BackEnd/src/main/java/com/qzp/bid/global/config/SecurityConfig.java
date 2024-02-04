@@ -30,8 +30,7 @@ public class SecurityConfig {
     private final RedisTemplate redisTemplate;
     private final JwtProvider jwtProvider;
     @Value("${auth.whiteList}")
-    private String[] whiteList = {"/member/**", "/deals/**", "/chat/**", "/oauth2/**",
-        "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
+    private String[] whiteList;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
