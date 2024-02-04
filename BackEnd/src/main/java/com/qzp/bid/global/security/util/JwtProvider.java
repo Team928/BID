@@ -17,9 +17,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
@@ -44,8 +42,8 @@ public class JwtProvider {
 
     @Value("${jwt.secret}")
     private String secret;
-    @Value("${jwt.token-validity-time}")
-    private long tokenValidityTime;
+    @Value("${jwt.token-access-time}")
+    private long accessTokenValidityTime;
     @Value("${jwt.token-refresh-time}")
     private long refreshTokenValidityTime;
 
@@ -94,9 +92,8 @@ public class JwtProvider {
 
     //AccessToken 생성
     public String generateAccessToken(Long id, String role) {
-        //TODO: tokenValidityTime 따로 빼서 설정하기
-        Date expiredAt = Date.from(
-            Instant.now().plus(tokenValidityTime, ChronoUnit.HOURS));
+        Date expiredAt = Date.from(ZonedDateTime.now().plusDays(accessTokenValidityTime)
+            .toInstant());
 
         return Jwts.builder()
             .signWith(createKey())

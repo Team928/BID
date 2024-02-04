@@ -58,5 +58,5 @@ springdoc: #swagger
 jwt:
   header: Authorization
   secret: ${auth.tokenSecret}
-  token-validity-time: ${auth.tokenExpirationMsec}
-  token-refresh-time: ${auth.tokenExpirationMsec}
+  token-access-time: ${auth.accessTokenExpiration}
+  token-refresh-time: ${auth.refreshTokenExpiration}
