@@ -17,7 +17,7 @@ public class AccountUtil {
 
     public String getLoginMemberId(){
         try{
-            return SecurityContextHolder.getContext().getAuthentication().getName(); //사용자 이메일 반환
+            return SecurityContextHolder.getContext().getAuthentication().getName(); //사용자 아이디
         }catch(Exception e){
             throw new RuntimeException();
         }

@@ -1,9 +1,17 @@
 package com.qzp.bid.domain.member.service;
 
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
+
+import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
+import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
+import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.Role;
+import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.repository.MemberRepository;
+import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.security.util.JwtProvider;
 import java.util.ArrayList;
@@ -12,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +35,8 @@ public class MemberServiceImpl implements MemberService {
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
     private final AccountUtil accountUtil;
+    private final MemberMapper memberMapper;
+    private final SaleRepository saleRepository;
 
     @Override
     public boolean checkNickname(String nickname) throws Exception {
@@ -48,4 +59,23 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
+    @Override
+    public MemberProfileRes getProfile(String nickname) {
+        long memberId = Long.parseLong(accountUtil.getLoginMemberId());
+        Member loginMember = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        Member searchMember = memberRepository.findMemberByNickname(nickname)
+            .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
+
+        MemberProfileRes memberProfileRes = null;
+
+        if (loginMember.getNickname().equals(nickname)) { //내 프로필 조회 시
+            memberProfileRes = memberMapper.toMemberProfileRes(loginMember);
+        } else { //다른 유저 프로필 조회 시
+            memberProfileRes = memberMapper.toMemberProfileRes(searchMember);
+            memberProfileRes.setPoint(0);
+        }
+        return memberProfileRes;
+    }
 }
