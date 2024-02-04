@@ -2,11 +2,14 @@ package com.qzp.bid.domain.member.controller;
 
 import static com.qzp.bid.global.result.ResultCode.GET_HAUCTION_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_MYPAGE_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_MYWISH_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
 import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_NOT_EXIST;
 import static com.qzp.bid.global.result.ResultCode.REGISTER_SUCCESS;
 
+import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.service.MemberService;
@@ -78,5 +81,19 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_HAUCTION_SUCCESS, saleListPage));
     }
 
+    @Operation(summary = "나의 찜 목록 조회")
+    @GetMapping("/profile/{nickname}/wish")
+    public ResponseEntity<ResultResponse> getWish(@PathVariable("nickname") String nickname,
+        LookupParam lookupParam) {
+        if (lookupParam.getType().equals("sale")) {
+            SaleListPage saleListPage = memberService.getSaleWish(nickname, lookupParam);
+            return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS, saleListPage));
+        } else if (lookupParam.getType().equals("purchase")) {
+            PurchaseListPage purchaseListPage = memberService.getPurchaseWish(nickname,
+                lookupParam);
+            return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS, purchaseListPage));
+        }
+        return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS));
+    }
 
 }

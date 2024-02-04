@@ -14,4 +14,6 @@ public interface MemberService {
     MemberProfileRes getProfile(String nickname);
 
     SaleListPage getHauction(String nickname, Pageable pageable);
+
+    SaleListPage getSaleWish(String nickname, LookupParam lookupParam);
 }

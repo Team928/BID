@@ -16,4 +16,5 @@ public class SaleSimpleRes {
     private LocalDateTime endTime;
     private int bid;
     private DealStatus status;
+    private boolean wish; // wish 여부를 나타내는 필드
 }

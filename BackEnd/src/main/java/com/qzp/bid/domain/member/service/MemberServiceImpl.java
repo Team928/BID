@@ -89,4 +89,22 @@ public class MemberServiceImpl implements MemberService {
         return saleListPage;
     }
 
+    @Override
+    public SaleListPage getSaleWish(String nickname, LookupParam lookupParam) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        if (member.getNickname().equals(nickname)) {
+            Pageable setPageable = PageRequest.of(lookupParam.getPage(), lookupParam.getSize(),
+                Sort.by("deal.createTime").descending());
+
+            SaleListPage saleListPage = wishRepository.findSalesWithWishByMemberId(
+                member.getId(), setPageable);
+            return saleListPage;
+
+        } else {
+            throw new BusinessException(FORBIDDEN_ERROR);
+        }
+    }
+
 }
