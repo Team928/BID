@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,5 +38,6 @@ public class ChatRoom {
     private String lastMessage;
     private long lastSenderId;
     @ElementCollection
-    private Set<Long> dealConfirmed;
+    @Builder.Default
+    private Set<Long> dealConfirmed = new HashSet<>();
 }
