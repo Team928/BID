@@ -27,7 +27,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JWTFilter extends OncePerRequestFilter {
 
     @Value("${auth.whiteList}")
-    private String[] whiteList = {"/member/**", "/deals/**", "/chat/**", "/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
+    private String[] whiteList = {"/ws/**", "/member/**", "/deals/**", "/chat/**", "/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
 

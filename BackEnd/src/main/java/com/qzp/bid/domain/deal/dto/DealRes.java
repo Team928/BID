@@ -3,11 +3,13 @@ package com.qzp.bid.domain.deal.dto;
 import com.qzp.bid.domain.deal.entity.Category;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class DealRes {
 
     private long id;

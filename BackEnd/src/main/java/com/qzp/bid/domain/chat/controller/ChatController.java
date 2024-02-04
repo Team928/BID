@@ -1,6 +1,6 @@
 package com.qzp.bid.domain.chat.controller;
 
-import com.qzp.bid.domain.chat.dto.ChatRes;
+import com.qzp.bid.domain.chat.dto.ChatList;
 import com.qzp.bid.domain.chat.dto.ChatRoomList;
 import com.qzp.bid.domain.chat.entity.Chat;
 import com.qzp.bid.domain.chat.service.ChatService;
@@ -48,7 +48,7 @@ public class ChatController {
 
     @GetMapping("/rooms/{roomId}")
     public ResponseEntity<ResultResponse> findChats(@PathVariable(name = "roomId") Long roomId) {
-        List<ChatRes> chats = chatService.findChats(roomId);
+        ChatList chats = chatService.findChats(roomId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATS_SUCCESS, chats));
     }
 

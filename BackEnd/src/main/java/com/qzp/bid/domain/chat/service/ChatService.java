@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.chat.service;
 
+import com.qzp.bid.domain.chat.dto.ChatList;
 import com.qzp.bid.domain.chat.dto.ChatRes;
 import com.qzp.bid.domain.chat.dto.ChatRoomList;
 import com.qzp.bid.domain.chat.entity.Chat;
@@ -13,7 +14,7 @@ public interface ChatService {
 
     public List<ChatRoomList> findChatRooms(Long userId);
 
-    public List<ChatRes> findChats(long roomId);
+    public ChatList findChats(long roomId);
 
     public void exitChatRooms(long chatRoomId);
 
