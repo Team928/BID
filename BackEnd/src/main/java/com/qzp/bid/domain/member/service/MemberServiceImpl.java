@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
             memberProfileRes = memberMapper.toMemberProfileRes(loginMember);
         } else { //다른 유저 프로필 조회 시
             memberProfileRes = memberMapper.toMemberProfileRes(searchMember);
-            memberProfileRes.setPoint(0);
+            memberProfileRes.setPoint(-1);
         }
         return memberProfileRes;
     }

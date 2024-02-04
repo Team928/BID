@@ -74,15 +74,16 @@ public class MemberController {
     }
 
     @Operation(summary = "내 경매 내역 - 내가 주최한 경매")
-    @GetMapping("/profile/{nickname}/hauction")
-    public ResponseEntity<ResultResponse> getHauction(@PathVariable("nickname") String nickname,
+    @GetMapping("/profiles/{nickname}/hauction")
+    public ResponseEntity<ResultResponse> getAuctionByHost(
+        @PathVariable("nickname") String nickname,
         Pageable pageable) {
         SaleListPage saleListPage = memberService.getHauction(nickname, pageable);
         return ResponseEntity.ok(ResultResponse.of(GET_HAUCTION_SUCCESS, saleListPage));
     }
 
     @Operation(summary = "나의 찜 목록 조회")
-    @GetMapping("/profile/wish")
+    @GetMapping("/profiles/wish")
     public ResponseEntity<ResultResponse> getWish(LookupParam lookupParam) {
         if (lookupParam.getType().equals("sale")) { //경매
             SaleListPage saleListPage = memberService.getSaleWish(lookupParam);
