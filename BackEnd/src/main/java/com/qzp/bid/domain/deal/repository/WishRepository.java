@@ -6,7 +6,7 @@ import com.qzp.bid.domain.member.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WishRepository extends JpaRepository<Wish, Long> {
+public interface WishRepository extends JpaRepository<Wish, Long>, WishRepositoryQuerydsl {
 
     boolean existsByDealIdAndMemberId(Long dealId, Long memberId);
 

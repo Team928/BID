@@ -9,4 +9,5 @@ import lombok.Setter;
 public class PurchaseSimpleRes {
 
     private DealSimpleRes dealSimpleRes;
+    private boolean isWished; // wish 여부를 나타내는 필드
 }
