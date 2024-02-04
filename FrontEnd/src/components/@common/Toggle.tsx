@@ -6,11 +6,11 @@ interface IToggleProps {
 const Toggle = ({ isOn, handleToggle }: IToggleProps) => {
   return (
     <div
-      className={`w-16 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all ${isOn ? 'bg-BID_MAIN' : 'bg-BID_SUB_GRAY'}`}
+      className={`w-[52px] h-[28px] flex items-center rounded-full p-1 cursor-pointer transition-all ${isOn ? 'bg-BID_MAIN' : 'bg-BID_SUB_GRAY'}`}
       onClick={handleToggle}
     >
       <div
-        className={`w-6 h-6 bg-white rounded-full shadow-md transition-transform ${isOn ? 'translate-x-8' : 'translate-x-0'}`}
+        className={`w-[22px] h-[22px] bg-white rounded-full shadow-md transition-transform ${isOn ? 'translate-x-[22px]' : 'translate-x-0'}`}
       ></div>
     </div>
   );
