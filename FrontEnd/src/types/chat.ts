@@ -2,19 +2,22 @@ export interface IChatRoom {
     id: number;
     roomName: string;
     dealId: number;
-    hostId: number;
-    guestId: number;
-    createTime: string;
     updateTime: string;
     lastMessage: string;
-    lastSenderId: number;
+}
+
+export interface IAudienceMember {
+    id: number;
+    opponentNick: string;
+    profileImage: string;
 }
 
 // 채팅방 목록 조회 Res
 export interface IChatRoomListRes {
-    chatRoom: IChatRoom;
+    chatRoomRes: IChatRoom;
     unReadCount: number;
     exitPossible: boolean;
+    audienceMemberRes: IAudienceMember;
 }
 
 // 채팅방 목록 조회 Req

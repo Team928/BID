@@ -4,13 +4,27 @@ import { APIResponse } from "@/types/model"
 
 // 채팅방 목록
 export const getChatRoomListReq = async ({
-    userId,
+    userId
 }: IChatRoomListReq): Promise<APIResponse<IChatRoomListRes[]>> => {
     const { data } = await axiosAuthInstance.get(`chats/rooms`, {
         params: {
             userId: userId,
         },
     });
+    console.log(data);
+    return data;
+}
+
+// 채팅방 목록 삭제
+export const deleteChatRoomReq = async (roomId: number): Promise<APIResponse<IChatRoomListRes[]>> => {
+    const { data } = await axiosAuthInstance.delete(`chats/rooms/${roomId}`);
+    console.log(data);
+    return data;
+}
+
+// 구매확정 전달
+export const confirmedDealReq = async (roomId: number): Promise<APIResponse<IChatRoomListRes[]>> => {
+    const { data } = await axiosAuthInstance.get(`chats/confirmed/${roomId}`);
     console.log(data);
     return data;
 }
