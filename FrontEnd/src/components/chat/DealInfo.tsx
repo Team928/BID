@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import ConfirmModal from './Modal/ConfirmModal';
 import { useNavigate } from 'react-router-dom';
+import { confirmedDealReq } from '@/service/chat/api';
 
 const DealInfo: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
+
   const navigate = useNavigate()
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     console.log('거래 확정');
     setIsConfirmed(true); // 확정 여부를 true로 변경
     setIsModalOpen(false);
+
+    try {
+      // TODO: 실제 데이터로 바꿔야함 임시 roomId = 1
+      const response = await confirmedDealReq(1);
+      console.log(response); 
+    } catch (error) {
+      console.error('API 호출 에러:', error);
+    }
   };
 
   const goToReview = () => {
