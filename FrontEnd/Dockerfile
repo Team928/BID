@@ -2,6 +2,6 @@ FROM node:21.1.0
 
 WORKDIR /app
 
-COPY ./build .
+COPY ./dist .
 
 CMD ["node", "server.js"]
