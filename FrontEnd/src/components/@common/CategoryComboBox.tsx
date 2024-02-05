@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { ICategory } from '@/pages/write/SaleWritePage';
+import { ICategory } from '@/types/write';
 
 interface ICategoryProps {
   selected: ICategory;
