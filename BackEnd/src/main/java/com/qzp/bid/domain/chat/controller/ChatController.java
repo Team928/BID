@@ -39,6 +39,13 @@ public class ChatController {
         chatService.sendChat(chat, roomId);
     }
 
+    @ResponseBody
+    @MessageMapping("/message/live/{roomId}")
+    public void sendLiveMessage(@DestinationVariable("roomId") long roomId, @Payload Chat chat) {
+        chatService.sendLiveChat(chat, roomId);
+    }
+
+
     @GetMapping("/rooms")
     public ResponseEntity<ResultResponse> findChatRooms(
         @RequestParam(name = "userId") Long userId) {
