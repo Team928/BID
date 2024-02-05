@@ -1,8 +1,9 @@
+import ParticipantsBottomSheet from '@/components/live/BottomSheet/ParticipantsBottomSheet';
+import SpeakListBottomSheet, { IParticipantInfo } from '@/components/live/BottomSheet/SpeakListBottomSheet';
 import CameraItem from '@/components/live/CameraItem';
 import LiveOptionTab from '@/components/live/LiveOptionTab';
 import RequestSalePriceModal from '@/components/live/Modal/RequestSalePriceModal';
 import RequestSpeakModal from '@/components/live/Modal/RequestSpeakModal';
-import SpeakListBottomSheet, { IParticipantInfo } from '@/components/live/SpeakListBottomSheet';
 import { PARTICIPANT_TYPE } from '@/constants/liveType';
 import { getToken } from '@/service/live';
 import { Device, OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
@@ -10,7 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const SaleLivePage = () => {
-  const pType = PARTICIPANT_TYPE.SELLER;
+  const pType = PARTICIPANT_TYPE.BUYER;
   const [mySessionId, setMySessionId] = useState<string>('SessionB');
   const [myUserName, setMyUserName] = useState<string>(`Participant${Math.floor(Math.random() * 100)}`);
   const [session, setSession] = useState<Session | undefined>(undefined);
@@ -160,46 +161,61 @@ const SaleLivePage = () => {
     };
   }, [leaveSession]);
 
+  // "applyForms": [
+  //   {
+  //     "id": 3,
+  //     "sellerId": 1,
+  //     "offerPrice": 0,
+  //     "image": "E:\\code\\ssafy\\S10P12D208\\BackEnd\\src\\main\\resources\\static\\images\\88692b22-4a1b-4907-bb93-72bfc0930260_제목 없음.png",
+  //     "content": "string"
+  //   }
+  // ],
+
   const participantInfo: IParticipantInfo[] = [
     {
       name: '중고짱좋아1',
       isRequestSpeak: false,
       onMike: true,
-      hopeSalePrice: 480000,
-      discription: '물건 상태 완전 깨꿋합니당',
+      sellerId: 3,
+      offerPrice: 480000,
       image: '/image.png',
+      content: '물건 상태 완전 깨꿋합니당',
     },
     {
       name: '중고짱좋아2',
-      isRequestSpeak: true,
-      onMike: false,
-      hopeSalePrice: 400000,
-      discription: '물건 상태 완전 깨꿋합니당',
+      isRequestSpeak: false,
+      onMike: true,
+      sellerId: 3,
+      offerPrice: 480000,
       image: '/image.png',
+      content: '물건 상태 완전 깨꿋합니당',
     },
     {
       name: '중고짱좋아3',
       isRequestSpeak: false,
-      onMike: false,
-      hopeSalePrice: 430030,
-      discription: '물건 상태 완전 깨꿋합니당',
+      onMike: true,
+      sellerId: 3,
+      offerPrice: 480000,
       image: '/image.png',
+      content: '물건 상태 완전 깨꿋합니당',
     },
     {
       name: '중고짱좋아4',
       isRequestSpeak: false,
-      onMike: false,
-      hopeSalePrice: 532000,
-      discription: '물건 상태 완전 깨꿋합니당',
+      onMike: true,
+      sellerId: 3,
+      offerPrice: 480000,
       image: '/image.png',
+      content: '물건 상태 완전 깨꿋합니당',
     },
     {
       name: '중고짱좋아5',
-      isRequestSpeak: true,
-      onMike: false,
-      hopeSalePrice: 423500,
-      discription: '물건 상태 완전 깨꿋합니당',
+      isRequestSpeak: false,
+      onMike: true,
+      sellerId: 3,
+      offerPrice: 480000,
       image: '/image.png',
+      content: '물건 상태 완전 깨꿋합니당',
     },
   ];
 
@@ -242,6 +258,7 @@ const SaleLivePage = () => {
   const [isOpenSpeakBottomSheet, setIsOpenSpeakBottomSheet] = useState<boolean>(false);
   const [isOpenRequsetSalePriceModal, setIsOpenRequestSalePriceModal] = useState<boolean>(false);
   const [isOpenRequestSpeakModal, setIsOpenRequestSpeakModal] = useState<boolean>(false);
+  const [isOpenParticipantModal, setIsOpenParticipantModal] = useState<boolean>(false);
 
   return (
     <div className="w-screen h-screen bg-black/80 relative">
@@ -296,7 +313,11 @@ const SaleLivePage = () => {
       )}
       <div className="absolute w-screen">
         {pType === PARTICIPANT_TYPE.BUYER && (
-          <LiveOptionTab pType={pType} handleSpeak={() => setIsOpenSpeakBottomSheet(true)} />
+          <LiveOptionTab
+            pType={pType}
+            handleSpeak={() => setIsOpenSpeakBottomSheet(true)}
+            handleParticipants={() => setIsOpenParticipantModal(true)}
+          />
         )}
         {pType === PARTICIPANT_TYPE.SELLER && (
           <LiveOptionTab
@@ -311,6 +332,9 @@ const SaleLivePage = () => {
       )}
       {isOpenRequsetSalePriceModal && <RequestSalePriceModal onClose={() => setIsOpenRequestSalePriceModal(false)} />}
       {isOpenRequestSpeakModal && <RequestSpeakModal onClose={() => setIsOpenRequestSpeakModal(false)} />}
+      {isOpenParticipantModal && (
+        <ParticipantsBottomSheet onClose={() => setIsOpenParticipantModal(false)} participants={participantInfo} />
+      )}
     </div>
   );
 };

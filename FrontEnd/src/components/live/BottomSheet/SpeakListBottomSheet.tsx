@@ -1,14 +1,15 @@
 import { AiOutlineAudio, AiOutlineAudioMuted } from 'react-icons/ai';
 import { LuHand } from 'react-icons/lu';
-import BottomSheet from '../@common/BottomSheet';
+import BottomSheet from '../../@common/BottomSheet';
 
 export interface IParticipantInfo {
   name: string;
   isRequestSpeak: boolean;
   onMike: boolean;
-  hopeSalePrice: number;
-  discription: string;
+  sellerId: number;
+  offerPrice: number;
   image: string;
+  content: string;
 }
 
 const SpeakListBottomSheet = ({ speakInfo, onClose }: { speakInfo: IParticipantInfo[]; onClose: () => void }) => {
