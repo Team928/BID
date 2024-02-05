@@ -9,17 +9,16 @@ import SearchPage from '@/pages/search/SearchPage';
 import SignupPage from '@/pages/signup/SignupPage';
 import WritePage from '@/pages/write/WritePage';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import ReviewPage from './pages/Review/ReviewPage';
 import BuyCategoryPage from './pages/home/buy/BuyCategoryPage';
+import PurchaseDetailPage from './pages/home/detail/PurchaseDetailPage';
 import SaleDetailPage from './pages/home/detail/SaleDetailPage';
 import SaleCategoryPage from './pages/home/sale/SaleCategoryPage';
-import BuyLivePage from './pages/live/BuyLivePage';
+import LiveEndPage from './pages/live/LiveEndPage';
 import LiveEntrancePage from './pages/live/LiveEntrancePage';
 import LivePage from './pages/live/LivePage';
+import PurchaseLivePage from './pages/live/PurchaseLivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
-import PurchaseDetailPage from './pages/home/detail/PurchaseDetailPage';
-import ReviewPage from './pages/Review/ReviewPage';
 import LoginRedirectPage from './pages/login/LoginRedirectPage';
 import SaleWritePage from './pages/write/SaleWritePage';
 
@@ -101,19 +100,22 @@ const router = createBrowserRouter([
     element: <LiveEntrancePage />,
   },
   {
-    path: '/live/buy/:id',
-    element: <BuyLivePage />,
+    path: '/live/purchase/:id',
+    element: <PurchaseLivePage />,
   },
   {
     path: '/live/sale/:id',
     element: <SaleLivePage />,
+  },
+  {
+    path: '/live/end',
+    element: <LiveEndPage />,
   },
 ]);
 function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer />
     </>
   );
 }

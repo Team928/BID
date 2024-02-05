@@ -1,9 +1,9 @@
 export const TRANSACTION_TYPE = {
-  BUY: 'buy',
+  PURCHASE: 'purchase',
   SALE: 'sale',
 };
 
 export const PARTICIPANT_TYPE = {
   BUYER: 'buyer',
-  SALER: 'saler',
+  SELLER: 'seller',
 };

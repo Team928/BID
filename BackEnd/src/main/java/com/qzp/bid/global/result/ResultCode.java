@@ -35,6 +35,7 @@ public enum ResultCode {
 
     //chat
     CREATE_CHAT_SUCCESS(201, "채팅 생성에 성공하였습니다."),
+    SEND_CHAT_SUCCESS(200, "채팅 전달에 성공하였습니다."),
     GET_CHATROOMS_SUCCESS(200, "채팅방 조회에 성공하였습니다."),
     GET_CHATS_SUCCESS(200, "채팅내역 조회에 성공하였습니다."),
     EXIT_CHATROOM_SUCCESS(204, "채팅방 나가기에 성공하였습니다."),

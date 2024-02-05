@@ -2,6 +2,7 @@ package com.qzp.bid.domain.chat.service;
 
 
 import com.qzp.bid.domain.chat.dto.ChatList;
+import com.qzp.bid.domain.chat.dto.ChatLive;
 import com.qzp.bid.domain.chat.dto.ChatRes;
 import com.qzp.bid.domain.chat.dto.ChatRoomList;
 import com.qzp.bid.domain.chat.entity.Chat;
@@ -12,6 +13,7 @@ import com.qzp.bid.domain.chat.repository.ChatRepository;
 import com.qzp.bid.domain.chat.repository.ChatRoomRepository;
 import com.qzp.bid.domain.deal.dto.DealResWithEndPrice;
 import com.qzp.bid.domain.deal.entity.Deal;
+import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.mapper.DealMapper;
 import com.qzp.bid.domain.deal.purchase.entity.ApplyForm;
 import com.qzp.bid.domain.deal.purchase.entity.Purchase;
@@ -131,6 +133,26 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Transactional
+    public void sendLiveChat(Chat chat, long roomId) {
+
+        Member member = memberRepository.findById((chat.getSenderId()))
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+
+        chat.setSender(member.getNickname());
+        chat.setRoomId(roomId);
+        ChatLive chatLive = chatRoomMapper.toChatLive(chat);
+
+        ResponseEntity<ResultResponse> res = ResponseEntity.ok(
+            ResultResponse.of(ResultCode.SEND_CHAT_SUCCESS, chatLive));
+
+        template.convertAndSend("/sub/chats/lives/" + roomId, res);
+
+
+    }
+
+
+    @Override
     public List<ChatRoomList> findChatRooms(Long userId) {
         List<ChatRoom> chatRoomList = chatRoomRepository.findAllByGuestIdOrHostIdOrderByCreateTimeDesc(
             userId, userId);
@@ -190,8 +212,12 @@ public class ChatServiceImpl implements ChatService {
 
         Deal deal = dealRepository.findById(chatRoom.getDealId()) // 거래 정보
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
-        DealResWithEndPrice dealResWithEndPrice = new DealResWithEndPrice(
-            dealMapper.toDealRes(deal));
+
+        DealResWithEndPrice dealResWithEndPrice = new DealResWithEndPrice(deal);
+        dealResWithEndPrice.setImages(
+            deal.getImages().stream()
+                .map(Image::getImagePath)
+                .collect(Collectors.toList()));
 
         if (deal.getClass().getSimpleName().equals("Sale")) { // 거래 낙찰가격 가지고 오기
             Sale sale = saleRepository.findById(deal.getId())
@@ -232,7 +258,7 @@ public class ChatServiceImpl implements ChatService {
         if (optionalChatRoom.isPresent()) {
             ChatRoom chatRoom = optionalChatRoom.get();
 
-            if (chatRoom.getDealConfirmed() == null || chatRoom.getDealConfirmed().size() != 2) {
+            if (chatRoom.getDealConfirmed().size() != 2) {
                 throw new BusinessException(ErrorCode.EXIT_CHATROOM_FAIL);
             }
 

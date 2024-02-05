@@ -8,7 +8,7 @@
   }
 
   .blueBtn {
-    @apply w-full h-full rounded-3xl shadow-sm text-white text-lg bg-BID_MAIN hover:bg-BID_HOVER_MAIN;
+    @apply w-full h-full rounded-2xl shadow-sm text-white text-lg bg-BID_MAIN hover:bg-BID_HOVER_MAIN;
   }
 
   .liveRedBtn {

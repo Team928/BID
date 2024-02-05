@@ -14,4 +14,5 @@ export const icons = {
   SIGN_OUT: <img src="/src/assets/icon/signOut.png" />,
   USER: <img src="/src/assets/icon/user.png" />,
   VIDEO_CAMERA: <img src="/src/assets/icon/videoCamera.png" />,
+  FLIP: <img src="/src/assets/icon/flip.png" />,
 };
