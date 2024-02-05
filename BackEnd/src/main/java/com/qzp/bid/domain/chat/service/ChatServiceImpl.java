@@ -12,6 +12,7 @@ import com.qzp.bid.domain.chat.repository.ChatRepository;
 import com.qzp.bid.domain.chat.repository.ChatRoomRepository;
 import com.qzp.bid.domain.deal.dto.DealResWithEndPrice;
 import com.qzp.bid.domain.deal.entity.Deal;
+import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.mapper.DealMapper;
 import com.qzp.bid.domain.deal.purchase.entity.ApplyForm;
 import com.qzp.bid.domain.deal.purchase.entity.Purchase;
@@ -190,8 +191,12 @@ public class ChatServiceImpl implements ChatService {
 
         Deal deal = dealRepository.findById(chatRoom.getDealId()) // 거래 정보
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
-        DealResWithEndPrice dealResWithEndPrice = new DealResWithEndPrice(
-            dealMapper.toDealRes(deal));
+
+        DealResWithEndPrice dealResWithEndPrice = new DealResWithEndPrice(deal);
+        dealResWithEndPrice.setImages(
+            deal.getImages().stream()
+                .map(Image::getImagePath)
+                .collect(Collectors.toList()));
 
         if (deal.getClass().getSimpleName().equals("Sale")) { // 거래 낙찰가격 가지고 오기
             Sale sale = saleRepository.findById(deal.getId())
