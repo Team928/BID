@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Client, StompHeaders } from "@stomp/stompjs";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import { icons } from "@/constants/icons";
@@ -7,15 +7,14 @@ import ChatLogs from "@/components/chat/ChatLogs";
 import DealInfo from "@/components/chat/DealInfo";
 import { useChatLog } from "@/hooks/chat/useChat";
 import { axiosAuthInstance } from "@/apis/axiosInstance";
-import { IChatLogListRes } from "@/types/chat";
+import { IChatResList } from "@/types/chat";
 
 
-const ChatRoomPage: React.FC = () => {
+const ChatRoomPage = () => {
 
   const [client, setClient] = useState<Client | null>(null);
   const [message, setMessage] = useState<string>("");
-  const [chatLogs, setChatLogs] = useState<IChatLogListRes[]>([]);
-
+  const [chatLogs, setChatLogs] = useState<IChatResList[]>([])
 
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
@@ -26,13 +25,12 @@ const ChatRoomPage: React.FC = () => {
     prev: '/chat',
   }
 
-  console.log(chatLogs)
-  const { useGetChatLogList } = useChatLog()
+  const { useGetChatLogList }  = useChatLog()
 
     const {
       data:chatLogInfo,
     } = useGetChatLogList({ roomId: 1 })
-    
+
   const accessToken = axiosAuthInstance
   
 
@@ -51,9 +49,9 @@ const ChatRoomPage: React.FC = () => {
         newClient.subscribe(`/sub/chats/rooms/1`, (message) => {
           console.log("받은 메시지 :", message.body);
 
-          const parsedMessage = JSON.parse(message.body);
+         const parsedMessage = JSON.parse(message.body);
           console.log(setChatLogs)
-          setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data])
+          setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data]) 
       }, headers);
     },
 
@@ -92,15 +90,15 @@ const ChatRoomPage: React.FC = () => {
   return (
     <div className="w-full h-screen pb-[4.5rem]">
       <Header info={info}/>
-      <DealInfo />
+        <DealInfo />
         <div className="px-6 pt-40 pb-20">
-          {chatLogInfo && chatLogInfo.data.map((chatLogs) => (
-            <ChatLogs key={chatLogs.id} chatLogs={chatLogs} />
+          {chatLogInfo && chatLogInfo.data.chatResList.map((chatLogs, index) => (
+            <ChatLogs key={index} chatResList={chatLogs} />
           ))}
-        {chatLogs.map((chatLog, index) => (
-          <ChatLogs key={index} chatLogs={chatLog} />
-        ))}
-      </div>
+          {chatLogs.map((chatLog, index) => (
+            <ChatLogs key={index} chatResList={chatLog} />
+          ))}
+        </div>
       <div>
           <MessageInput
             message={message}
@@ -108,8 +106,8 @@ const ChatRoomPage: React.FC = () => {
             sendMessage={(message) => {
               sendMessage(message); 
               setMessage("");
-            }}
-          /></div>
+            }}/>
+        </div>
     </div>
   );
 };
