@@ -17,9 +17,9 @@ services:
       SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
 
   frontend:
-    image: bid_frontend${TAG}
+    image: bid_frontend:${TAG}
     ports:
-      - "3000:3000"
+      - "5173:5173"
     volumes:
       - /workspace/bid/frontend/logs:/logs
     restart: unless-stopped
