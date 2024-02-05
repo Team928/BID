@@ -32,7 +32,7 @@ export const confirmedDealReq = async (roomId: number): Promise<APIResponse<ICha
 // 채팅로그 목록
 export const getChatLogLisReq = async ({
     roomId,
-}: IChatLogListReq): Promise<APIResponse<IChatLogListRes[]>> => {
+}: IChatLogListReq): Promise<APIResponse<IChatLogListRes>> => {
     const { data } = await axiosAuthInstance.get(`chats/rooms/${roomId}`)
     console.log(data)
     return data

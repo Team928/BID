@@ -26,16 +26,34 @@ export interface IChatRoomListReq {
 
 }
 
-// 채팅로그 조회 Response
-export interface IChatLogListRes {
-    id: string;
+export interface IChatResList {
     sender: string;
     senderId: number;
     roomId: number;
     createTime: string;
     message: string;
     type: string;
-    read: boolean
+    read: boolean;
+}
+
+export interface IDealList {
+    id: number;
+    title: string;
+    content: string;
+    category: string;
+    area: string[];
+    createTime: string;
+    updateTime: string;
+    images: string[];
+    startTime: string;
+    endPrice: number;
+}
+
+// 채팅로그 조회 Response
+export interface IChatLogListRes {
+    chatResList: IChatResList[];
+    dealResWithEndPrice: IDealList;
+    exitRoomPossible: boolean;
 }
 
 // 채팅로그 조회 Request
