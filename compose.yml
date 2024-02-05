@@ -1,9 +1,12 @@
 version: '3'
 services:
   backend:
-    image: bid_backend
+    image: bid_backend:${TAG}
     ports:
       - "8081:8081"
+    volumes:
+      - /workspace/bid/backend/images:/static/images/
+      - /workspace/bid/backend/logs:/logs
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
