@@ -42,13 +42,13 @@ const ProfilePage = () => {
             {/* 포인트 섹션 */}
             <div className="px-6">
               <div className="w-full h-30 border p-4 rounded-lg">
-                <div className="flex px-2 justify-between items-center">
+                <div className="flex px-2 py-1 justify-between items-center">
                   <p>나의 포인트</p>
-                  <p className="text-xl font-bold">500,000P</p>
+                  <p className="text-2xl font-bold">5,000,000P</p>
                 </div>
                 <div className="flex justify-end px-2 pt-2 text-lg font-bold">
                   <button className="px-2 text-gray-400">충전</button>
-                  <button className="p-2 text-gray-400">환급</button>
+                  <button className="px-2 py-1 text-gray-400">환급</button>
                 </div>
               </div>
             </div>
