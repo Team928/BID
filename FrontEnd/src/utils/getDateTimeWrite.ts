@@ -1,7 +1,7 @@
 export interface IWriteDateTimeProps {
   date: string;
   time: string;
-  radio: string;
+  radio?: string;
 }
 
 // 글쓰기 페이지에서 활용할 util
