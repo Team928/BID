@@ -35,7 +35,7 @@ const DealInfo = () => {
   };
 
   const goToReview = () => {
-    navigate(`/review`)
+    navigate(`/review`, { state: { dealInfo: chatLogInfo?.data.dealResWithEndPrice } });
   }
 
   console.log(isConfirmed)
