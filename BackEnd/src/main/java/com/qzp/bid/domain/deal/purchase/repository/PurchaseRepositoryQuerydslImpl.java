@@ -1,12 +1,16 @@
 package com.qzp.bid.domain.deal.purchase.repository;
 
+import static com.qzp.bid.domain.deal.entity.QImage.image;
 import static com.qzp.bid.domain.deal.purchase.entity.QPurchase.purchase;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.qzp.bid.domain.deal.dto.ImageSimpleDto;
 import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
@@ -29,7 +33,16 @@ public class PurchaseRepositoryQuerydslImpl implements PurchaseRepositoryQueryds
         Pageable pageable = PageRequest.of(searchParam.getPage(), searchParam.getSize());
         List<PurchaseSimpleRes> purchaseSimpleResList = jpaQueryFactory.select(Projections.fields(
                 PurchaseSimpleRes.class,
-                new QDealSimpleRes(purchase).as("dealSimpleRes")
+                new QDealSimpleRes(purchase,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.deal.id.eq(purchase.id))
+                            .orderBy(image.createTime.asc())
+                            .limit(1),
+                        "imagePath"
+                    ))).as("dealSimpleRes")
             ))
             .from(purchase)
             .where(booleanBuilder)

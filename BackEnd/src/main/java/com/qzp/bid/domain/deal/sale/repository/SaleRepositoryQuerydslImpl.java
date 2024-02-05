@@ -1,12 +1,16 @@
 package com.qzp.bid.domain.deal.sale.repository;
 
+import static com.qzp.bid.domain.deal.entity.QImage.image;
 import static com.qzp.bid.domain.deal.sale.entity.QSale.sale;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.qzp.bid.domain.deal.dto.ImageSimpleDto;
 import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
@@ -30,7 +34,16 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
         Pageable pageable = PageRequest.of(searchParam.getPage(), searchParam.getSize());
         List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory.select(Projections.fields(
                 SaleSimpleRes.class,
-                new QDealSimpleRes(sale).as("dealSimpleRes"),
+                new QDealSimpleRes(sale,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.deal.id.eq(sale.id))
+                            .orderBy(image.createTime.asc())
+                            .limit(1),
+                        "imagePath"
+                    ))).as("dealSimpleRes"),
                 sale.immediatePrice,
                 sale.startPrice,
                 sale.endTime,
@@ -58,7 +71,16 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
         List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory
             .select(Projections.fields(
                 SaleSimpleRes.class,
-                new QDealSimpleRes(sale).as("dealSimpleRes"),
+                new QDealSimpleRes(sale,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.deal.id.eq(sale.id))
+                            .orderBy(image.createTime.asc())
+                            .limit(1),
+                        "imagePath"
+                    ))).as("dealSimpleRes"),
                 sale.immediatePrice,
                 sale.startPrice,
                 sale.endTime,

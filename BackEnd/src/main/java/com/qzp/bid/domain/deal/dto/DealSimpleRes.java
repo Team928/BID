@@ -20,15 +20,15 @@ public class DealSimpleRes {
     private String image;
 
     @QueryProjection
-    public DealSimpleRes(Deal deal) {
+    public DealSimpleRes(Deal deal, ImageSimpleDto image) {
         this.id = deal.getId();
         this.title = deal.getTitle();
         this.content = deal.getContent();
         this.category = deal.getCategory();
         this.createTime = deal.getCreateTime();
         this.startTime = deal.getStartTime();
-        if (deal.getImages() != null && !deal.getImages().isEmpty()) {
-            this.image = deal.getImages().get(0).getImagePath();
+        if (image != null) {
+            this.image = image.getImagePath();
         }
     }
 }
