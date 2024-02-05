@@ -5,7 +5,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface SseService {
 
-    public SseEmitter subscribe(Long userId);
+    public SseEmitter subscribe(Long memberId);
 
     public void send(SseDto event);
 }

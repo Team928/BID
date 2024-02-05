@@ -6,6 +6,7 @@ import com.qzp.bid.domain.sse.dto.SseDto;
 import com.qzp.bid.domain.sse.service.SseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -26,16 +27,18 @@ public class SseController {
     private final SseService sseService;
 
     @Operation(summary = "SSE 연결", description = "스웨거에서 지원하지 않는듯.")
-    @GetMapping(value = "/subscribe/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> subscribe(@PathVariable Long userId) {
-        SseEmitter emitter = sseService.subscribe(userId);
+    @GetMapping(value = "/subscribe/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> subscribe(@PathVariable Long memberId,
+        HttpServletResponse response) {
+        SseEmitter emitter = sseService.subscribe(memberId);
+        response.setHeader("X-Accel-Buffering", "no");
         return ResponseEntity.ok(emitter);
     }
 
     @Operation(summary = "SSE로 테스트 메시지 전달")
-    @PostMapping("/send/{userId}")
-    public ResponseEntity<Void> sendData(@PathVariable Long userId) {
-        SseDto sseDto = SseDto.of(userId, null, TEST_MSG, LocalDateTime.now());
+    @PostMapping("/send/{memberId}")
+    public ResponseEntity<Void> sendData(@PathVariable Long memberId) {
+        SseDto sseDto = SseDto.of(memberId, null, TEST_MSG, LocalDateTime.now());
         sseService.send(sseDto);
         return ResponseEntity.ok().build();
     }
