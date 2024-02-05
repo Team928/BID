@@ -203,14 +203,17 @@ public class SaleServiceImpl implements SaleService {
             return;
         }
         for (Sale sale : sales.get()) {
-            log.info(sale.getEndTime().toString());
-            log.info(LocalDateTime.now().toString());
             if (sale.getEndTime().isAfter(LocalDateTime.now())) {
                 continue;
             }
             sale.setStatus(DealStatus.END);
-            if (sale.getHighestBid() != null) {
-                sale.getHighestBid().setSuccess(true);
+            Bid highestBid = sale.getHighestBid();
+            if (highestBid != null) {
+                highestBid.setSuccess(true);
+
+                sseService.send(
+                    SseDto.of(highestBid.getBidder().getId(), sale.getId(), SseType.SUCCESS_BID,
+                        LocalDateTime.now()));
             }
             //TODO: 구매자 판매자 채팅방 생성
         }
