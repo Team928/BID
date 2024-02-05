@@ -37,7 +37,7 @@ const BottomSheet = ({ height, title, onClose, children }: IBottomSheetProps) =>
             <div className="col-span-1">&nbsp;</div>
             <div className="col-span-4">{title}</div>
           </div>
-          {children}
+          <div className={`overflow-y-scroll h-[calc(100%-56px)]`}>{children}</div>
         </div>
       </div>
     </div>

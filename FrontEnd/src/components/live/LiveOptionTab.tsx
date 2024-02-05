@@ -14,15 +14,14 @@ const LiveOptionTab = ({
   pType,
   handleSpeak,
   handleRequestSalePrice,
+  handleParticipants,
 }: {
   pType: string;
   handleSpeak: () => void;
   handleRequestSalePrice?: () => void;
+  handleParticipants?: () => void;
 }) => {
   const { onCamera, onMike, setOnCamera, setOnMike } = useLiveStore();
-
-  console.log(pType);
-  const testType = 'seller';
 
   const liveOption = {
     camera: {
@@ -66,7 +65,7 @@ const LiveOptionTab = ({
   let liveOptionInfo;
 
   // 구매자
-  if (testType === PARTICIPANT_TYPE.BUYER) {
+  if (pType === PARTICIPANT_TYPE.BUYER) {
     liveOptionInfo = [liveOption.speak, liveOption.audio, liveOption.chat, liveOption.participants, liveOption.match];
   }
   // 판매자
@@ -89,7 +88,9 @@ const LiveOptionTab = ({
         break;
       }
       case 'participants': {
-        // @TODO: 참가자 리스트 보기
+        if (handleParticipants) {
+          handleParticipants();
+        }
         break;
       }
       case 'speak': {
