@@ -1,5 +1,9 @@
 import Header, { IHeaderInfo } from "@/components/@common/Header";
+import ProfileTabBar from "@/components/profile/ProfileTabBar";
+import BuyHost from "@/components/profile/buy/BuyHost";
+import BuyParticipant from "@/components/profile/buy/BuyParticipant";
 import { icons } from "@/constants/icons";
+import useTabStore from "@/stores/auctionTabStore";
 
 const ProfileBuyPage = () => {
     const info: IHeaderInfo = {
@@ -10,11 +14,16 @@ const ProfileBuyPage = () => {
         prev: '/profile',
       };
 
+      const { tab } = useTabStore();
+
 
     return (
         <>
         <div>
             <Header info={info} />
+            <ProfileTabBar leftTab="내가 주최한 역경매" rightTab="내가 참여한 역경매" />
+            {/* 탭에 따른 컴포넌트 보여주기 */}
+            {tab === 'sale' ? <BuyHost></BuyHost> : <BuyParticipant></BuyParticipant>}
         </div>
         </>
     )
