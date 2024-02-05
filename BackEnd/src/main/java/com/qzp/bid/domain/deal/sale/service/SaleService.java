@@ -26,4 +26,6 @@ public interface SaleService {
     void createLiveReq(Long saleId);
 
     void saleClosing();
+
+    void immediateBuy(Long saleId);
 }

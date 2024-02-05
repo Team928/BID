@@ -26,6 +26,7 @@ public enum ResultCode {
     DELETE_SALE_SUCCESS(200, "판매글 삭제에 성공하였습니다."),
     CREATE_BID_SUCCESS(201, "입찰에 성공하였습니다."),
     CREATE_LIVEREQUEST_SUCCESS(201, "라이브 요청에 성공하였습니다."),
+    IMMEDIATE_BUY_SUCCESS(200, "즉시 구매에 성공하였습니다."),
 
     //purchase
     CREATE_PURCHASE_SUCCESS(201, "구매글 생성에 성공하였습니다."),

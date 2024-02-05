@@ -218,4 +218,28 @@ public class SaleServiceImpl implements SaleService {
             //TODO: 구매자 판매자 채팅방 생성
         }
     }
+
+    @Override
+    public void immediateBuy(Long saleId) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        Sale sale = saleRepository.findById(saleId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
+
+        if (sale.getStatus() != DealStatus.BEFORE) {
+            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
+        }
+        if (!member.bidding(sale.getImmediatePrice())) {
+            throw new BusinessException(ErrorCode.NOT_ENOUGH_POINT);
+        }
+        PointHistory hold = PointHistory.builder()
+            .amount(sale.getImmediatePrice())
+            .status(PointStatus.HOLD)
+            .time(LocalDateTime.now())
+            .build();
+        pointHistoryRepository.save(hold);
+        member.getPointHistory().add(hold);
+        sale.setStatus(DealStatus.END);
+        //TODO: 채팅방 연결
+    }
 }
