@@ -10,8 +10,13 @@ import com.qzp.bid.domain.deal.entity.Wish;
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.member.entity.Member;
+import com.qzp.bid.domain.sse.dto.SseDto;
+import com.qzp.bid.domain.sse.dto.SseType;
+import com.qzp.bid.domain.sse.service.SseService;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DealServiceImpl implements DealService {
 
+    private static final long ALARM_TIME = 10L;
     private final AccountUtil accountUtil;
     private final DealRepository<Deal> dealRepository;
     private final WishRepository wishRepository;
+    private final SseService sseService;
 
     @Override
     public void addWish(long dealId) {
@@ -48,5 +55,20 @@ public class DealServiceImpl implements DealService {
         Wish wish = wishRepository.findByMemberAndDeal(member, deal)
             .orElseThrow(() -> new BusinessException(WISH_NOT_EXIST));
         wishRepository.delete(wish);
+    }
+
+    @Override
+    public void auctionStartAlarm() {
+        List<Wish> wishes = wishRepository.getByBeforeAlarm(false);
+        for (Wish wish : wishes) {
+            if (wish.getDeal().getStartTime()
+                .isAfter(LocalDateTime.now().minusMinutes(ALARM_TIME))) {
+                sseService.send(
+                    SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
+                        SseType.START_AUCTION_BEFORE,
+                        LocalDateTime.now()));
+                wish.setBeforeAlarm(true);
+            }
+        }
     }
 }

@@ -9,8 +9,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class Wish {
@@ -22,6 +24,7 @@ public class Wish {
     private Member member;
     @ManyToOne(fetch = FetchType.LAZY)
     private Deal deal;
+    private boolean isBeforeAlarm;
 
     public Wish(Member member, Deal deal) {
         this.member = member;
