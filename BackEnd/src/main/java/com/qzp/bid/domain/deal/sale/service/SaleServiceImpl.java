@@ -26,6 +26,9 @@ import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.PointHistory;
 import com.qzp.bid.domain.member.entity.PointStatus;
 import com.qzp.bid.domain.member.repository.PointHistoryRepository;
+import com.qzp.bid.domain.sse.dto.SseDto;
+import com.qzp.bid.domain.sse.dto.SseType;
+import com.qzp.bid.domain.sse.service.SseService;
 import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
@@ -57,6 +60,7 @@ public class SaleServiceImpl implements SaleService {
     private final LiveRequestRepository liveRequestRepository;
     private final WishRepository wishRepository;
     private final PointHistoryRepository pointHistoryRepository;
+    private final SseService sseService;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -158,6 +162,10 @@ public class SaleServiceImpl implements SaleService {
         if (sale.getHighestBid() != null) {
             Bid highestBid = sale.getHighestBid();
             highestBid.cancelBidding();
+            //상위 입찰 등장 푸시알람
+            sseService.send(SseDto.of(highestBid.getBidder().getId(), saleId, SseType.CANCEL_BID,
+                LocalDateTime.now()));
+
             PointHistory free = PointHistory.builder()
                 .amount(highestBid.getBidPrice())
                 .status(PointStatus.FREE)
@@ -195,14 +203,17 @@ public class SaleServiceImpl implements SaleService {
             return;
         }
         for (Sale sale : sales.get()) {
-            log.info(sale.getEndTime().toString());
-            log.info(LocalDateTime.now().toString());
             if (sale.getEndTime().isAfter(LocalDateTime.now())) {
                 continue;
             }
             sale.setStatus(DealStatus.END);
-            if (sale.getHighestBid() != null) {
-                sale.getHighestBid().setSuccess(true);
+            Bid highestBid = sale.getHighestBid();
+            if (highestBid != null) {
+                highestBid.setSuccess(true);
+
+                sseService.send(
+                    SseDto.of(highestBid.getBidder().getId(), sale.getId(), SseType.SUCCESS_BID,
+                        LocalDateTime.now()));
             }
             //TODO: 구매자 판매자 채팅방 생성
         }

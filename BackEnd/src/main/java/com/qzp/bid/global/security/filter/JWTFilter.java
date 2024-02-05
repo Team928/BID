@@ -1,7 +1,8 @@
 package com.qzp.bid.global.security.filter;
 
 
-import static com.qzp.bid.global.result.error.ErrorCode.*;
+import static com.qzp.bid.global.result.error.ErrorCode.BLACK_TOKEN;
+import static com.qzp.bid.global.result.error.ErrorCode.JWT_BADTYPE;
 
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.result.error.exception.TokenException;
@@ -26,10 +27,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
-    @Value("${auth.whiteList}")
-    private String[] whiteList = {"/pub/**","/sub/**","/ws/**", "/member/**", "/deals/**", "/chat/**", "/oauth2/**", "/swagger-resources/**", "/swagger-ui/**", "v3/**", "/bid-ui.html", "/api-docs/json/**"};
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
+    @Value("${auth.whiteList}")
+    private String[] whiteList;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -38,10 +39,10 @@ public class JWTFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String auth = request.getHeader(HttpHeaders.AUTHORIZATION); //헤더에서 권한정보 가져옴
 
-        if(auth == null){
+        if (auth == null) {
             AntPathMatcher antPathMatcher = new AntPathMatcher();
-            for(String list : whiteList){
-                if(antPathMatcher.match(list,path)){
+            for (String list : whiteList) {
+                if (antPathMatcher.match(list, path)) {
                     log.info("pass token filter ......");
                     filterChain.doFilter(request, response); //다음 필터로 요청, 응답 전달
                     return;
@@ -52,13 +53,14 @@ public class JWTFilter extends OncePerRequestFilter {
         try {
             String token = parseBearerToken(auth); //Request Header에서 JWT토큰(accessToken) 추출
 
-            if(path.equals("/members/reissue")){ //토큰 재발급의 경우
+            if (path.equals("/members/reissue")) { //토큰 재발급의 경우
                 filterChain.doFilter(request, response);
                 return;
             }
             //토큰 유효성 검사
-            if(jwtProvider.validateAndGetClaims(token) != null){
-                if(redisTemplate.opsForValue().get(token) != null){ //null이어야 함 (redis에는 refreshToken이 저장되어 있으니까)
+            if (jwtProvider.validateAndGetClaims(token) != null) {
+                if (redisTemplate.opsForValue().get(token)
+                    != null) { //null이어야 함 (redis에는 refreshToken이 저장되어 있으니까)
                     throw new TokenException(BLACK_TOKEN);
                 }
 
@@ -67,7 +69,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.info("authentication set success......");
             }
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
             new TokenException().sendResponseError(response);
         }
