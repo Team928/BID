@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.chat.mapper;
 
+import com.qzp.bid.domain.chat.dto.ChatLive;
 import com.qzp.bid.domain.chat.dto.ChatRes;
 import com.qzp.bid.domain.chat.dto.ChatRoomRes;
 import com.qzp.bid.domain.chat.entity.Chat;
@@ -12,5 +13,8 @@ public interface ChatRoomMapper {
 
     ChatRes toChatRes(Chat chat);
 
+    ChatLive toChatLive(Chat chat);
+
     ChatRoomRes toChatRoomRes(ChatRoom chatRoom);
+
 }

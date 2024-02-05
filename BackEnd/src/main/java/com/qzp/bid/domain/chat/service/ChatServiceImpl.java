@@ -2,6 +2,7 @@ package com.qzp.bid.domain.chat.service;
 
 
 import com.qzp.bid.domain.chat.dto.ChatList;
+import com.qzp.bid.domain.chat.dto.ChatLive;
 import com.qzp.bid.domain.chat.dto.ChatRes;
 import com.qzp.bid.domain.chat.dto.ChatRoomList;
 import com.qzp.bid.domain.chat.entity.Chat;
@@ -130,6 +131,26 @@ public class ChatServiceImpl implements ChatService {
         //TODO 여기에 아마 채팅 갱신하라는 명령이 전달 되어야 할 것 같아요...SSE?
 
     }
+
+    @Override
+    @Transactional
+    public void sendLiveChat(Chat chat, long roomId) {
+
+        Member member = memberRepository.findById((chat.getSenderId()))
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+
+        chat.setSender(member.getNickname());
+        chat.setRoomId(roomId);
+        ChatLive chatLive = chatRoomMapper.toChatLive(chat);
+
+        ResponseEntity<ResultResponse> res = ResponseEntity.ok(
+            ResultResponse.of(ResultCode.SEND_CHAT_SUCCESS, chatLive));
+
+        template.convertAndSend("/sub/chats/lives/" + roomId, res);
+
+
+    }
+
 
     @Override
     public List<ChatRoomList> findChatRooms(Long userId) {
