@@ -232,7 +232,7 @@ public class ChatServiceImpl implements ChatService {
         if (optionalChatRoom.isPresent()) {
             ChatRoom chatRoom = optionalChatRoom.get();
 
-            if (chatRoom.getDealConfirmed() == null || chatRoom.getDealConfirmed().size() != 2) {
+            if (chatRoom.getDealConfirmed().size() != 2) {
                 throw new BusinessException(ErrorCode.EXIT_CHATROOM_FAIL);
             }
 
