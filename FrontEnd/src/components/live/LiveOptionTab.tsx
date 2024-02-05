@@ -12,11 +12,15 @@ export interface ILiveOptionInfo {
 
 const LiveOptionTab = ({
   pType,
+  handleMike,
+  handleCamera,
   handleSpeak,
   handleRequestSalePrice,
   handleParticipants,
 }: {
   pType: string;
+  handleMike: () => void;
+  handleCamera: () => void;
   handleSpeak: () => void;
   handleRequestSalePrice?: () => void;
   handleParticipants?: () => void;
@@ -76,11 +80,11 @@ const LiveOptionTab = ({
   const handleOption = (type: string) => {
     switch (type) {
       case 'camera': {
-        setOnCamera(!onCamera);
+        handleCamera();
         break;
       }
       case 'audio': {
-        setOnMike(!onMike);
+        handleMike();
         break;
       }
       case 'chat': {
