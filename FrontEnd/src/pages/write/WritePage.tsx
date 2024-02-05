@@ -27,9 +27,11 @@ const WritePage = () => {
                 판매 글쓰기
               </div>
             </Link>
-            <div className="w-full bg-BID_MAIN text-white rounded-2xl text-center p-4 text-lg font-bold">
-              구매 글쓰기
-            </div>
+            <Link to="/write/buy">
+              <div className="w-full bg-BID_MAIN text-white rounded-2xl text-center p-4 text-lg font-bold">
+                구매 글쓰기
+              </div>
+            </Link>
           </div>
         </div>
       </div>

@@ -27,22 +27,12 @@ const CategoryComboBox = ({ selected, setSelected, categoryInfo }: ICategoryProp
           <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
             <Combobox.Options className="absolute mt-1 max-h-64 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 ring-black/5">
               {categoryInfo.map(item => (
-                <Combobox.Option
-                  key={item.id}
-                  className={({ active }) =>
-                    `relative select-none py-2 pl-10 pr-4 z-10 ${active ? 'bg-BID_MAIN text-white' : 'text-gray-900'}`
-                  }
-                  value={item}
-                >
-                  {({ selected, active }) => (
+                <Combobox.Option key={item.id} className={`relative select-none py-2 pl-10 pr-4 z-10}`} value={item}>
+                  {({ selected }) => (
                     <>
-                      <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>{item.name}</span>
+                      <span className={`block truncate ${selected && 'text-BID_MAIN'}`}>{item.name}</span>
                       {selected ? (
-                        <span
-                          className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                            active ? 'text-white' : 'text-BID_MAIN'
-                          }`}
-                        >
+                        <span className={`absolute inset-y-0 left-0 flex items-center pl-3 text-BID_MAIN`}>
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>
                       ) : null}
