@@ -1,3 +1,4 @@
+import Toast from '@/components/@common/Toast';
 import FullCameraItem from '@/components/live/FullCameraItem';
 import LiveSettingModal from '@/components/live/Modal/LiveSettingModal';
 import { icons } from '@/constants/icons';
@@ -9,7 +10,6 @@ import { HiDotsHorizontal } from 'react-icons/hi';
 import { RiCheckboxBlankFill } from 'react-icons/ri';
 import { TbCamera, TbCameraOff, TbMicrophone, TbMicrophoneOff } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 // 경매 판매자 화면
 const PurchaseSeller = ({
@@ -35,7 +35,7 @@ const PurchaseSeller = ({
   const { onCamera, onMike, setOnCamera, setOnMike } = useLiveStore();
 
   const startLive = async () => {
-    toast.dark('라이브 방송을 시작합니다');
+    Toast.info('라이브 방송을 시작합니다');
 
     // 방송 시작 시그널
     session?.signal({
@@ -64,12 +64,12 @@ const PurchaseSeller = ({
   };
 
   const handleExit = () => {
-    toast.dark('라이브 방송이 종료되었습니다.');
+    Toast.info('라이브 방송이 종료되었습니다.');
     leaveSession();
 
     // 방송 종료 시그널
     session?.signal({
-      data: 'onLive',
+      data: 'endLive',
       type: 'live',
     });
 

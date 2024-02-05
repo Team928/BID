@@ -26,3 +26,21 @@
 body {
   font-family: 'KOTRA_GOTHIC';
 }
+
+.Toastify__toast {
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+}
+
+.Toastify__toast--info {
+  background-color: rgb(73, 73, 73);
+}
+
+.Toastify__toast--success {
+  background-color: rgb(52, 164, 52);
+}
+
+.Toastify__toast--error {
+  background-color: rgb(255, 70, 70);
+}
