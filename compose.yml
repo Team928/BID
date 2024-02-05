@@ -1,7 +1,7 @@
 version: '3'
 services:
   backend:
-    image: bid_backend:${TAG}
+    image: bid_backend
     ports:
       - "8081:8081"
     volumes:
@@ -17,7 +17,7 @@ services:
       SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
 
   frontend:
-    image: bid_frontend:${TAG}
+    image: bid_frontend
     ports:
       - "5173:5173"
     volumes:
