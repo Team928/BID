@@ -1,4 +1,4 @@
-import { IAddressModalProp, IDaumModalAddr } from '@/service/signup/api';
+import { IAddressModalProp, IDaumModalAddr } from '@/types/signup';
 import DaumPostcode from 'react-daum-postcode';
 
 // 다음 주소 검색 API 사용하기
@@ -15,9 +15,9 @@ const DaumPostModal = ({ setIsOpen, setAddress, setInputAddress }: IAddressModal
     }
 
     // input 창에 보여질 주소
-    if (data.jibunAddress) {
+    if (data.jibunAddress && setInputAddress) {
       setInputAddress(data.jibunAddress);
-    } else if (data.address) {
+    } else if (data.address && setInputAddress) {
       setInputAddress(data.address);
     }
   };

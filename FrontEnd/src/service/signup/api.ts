@@ -13,17 +13,3 @@ export const postSignup = async (info: ISignupReq): Promise<APIResponse<ISignupR
   console.log(data);
   return data;
 };
-
-export interface IDaumModalAddr {
-  bname: string;
-  bname1: string;
-  sigungu: string;
-  jibunAddress: string;
-  address: string;
-}
-
-export interface IAddressModalProp {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setAddress: React.Dispatch<React.SetStateAction<string>>;
-  setInputAddress: React.Dispatch<React.SetStateAction<string>>;
-}
