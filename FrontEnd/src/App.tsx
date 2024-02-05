@@ -24,6 +24,7 @@ import SaleWritePage from './pages/write/SaleWritePage';
 import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
 import ProfileBuyPage from './pages/profile/buy/ProfileBuyPage';
+import BuyWritePage from './pages/write/BuyWritePage';
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
   {
     path: '/write/sale',
     element: <SaleWritePage />,
+  },
+  {
+    path: '/write/buy',
+    element: <BuyWritePage />,
   },
   {
     path: '/live',
