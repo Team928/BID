@@ -59,7 +59,7 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void auctionStartAlarm() {
-        List<Wish> wishes = wishRepository.getByBeforeAlarm(false);
+        List<Wish> wishes = wishRepository.getByIsBeforeAlarm(false);
         for (Wish wish : wishes) {
             if (wish.getDeal().getStartTime()
                 .isAfter(LocalDateTime.now().minusMinutes(ALARM_TIME))) {
