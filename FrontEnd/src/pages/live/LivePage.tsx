@@ -1,5 +1,4 @@
 import CameraItem from '@/components/live/CameraItem';
-import LiveOptionTab from '@/components/live/LiveOptionTab';
 import { getToken } from '@/service/live';
 import useLiveStore from '@/stores/userLiveStore';
 import { OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
@@ -146,9 +145,7 @@ const LivePage = () => {
           <div onClick={() => handleMainVideoStream(publisher)}>
             <CameraItem streamManager={publisher} />
           </div>
-          <div className="absolute bottom-0 left-0 right-0">
-            <LiveOptionTab />
-          </div>
+          <div className="absolute bottom-0 left-0 right-0">{/* <LiveOptionTab /> */}</div>
         </div>
       ) : (
         <div className="w-screen h-screen flex flex-col justify-center items-center relative">

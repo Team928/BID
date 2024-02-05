@@ -19,36 +19,38 @@ const SaleLivePage = () => {
   const [subscribers, setSubscribers] = useState<(Subscriber | undefined)[]>([]);
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device | undefined>(undefined);
 
+  console.log(publisher, subscribers, currentVideoDevice);
+
   const OV = useRef(new OpenVidu());
   OV.current.enableProdMode();
 
-  const handleMainVideoStream = useCallback(
-    (stream: StreamManager) => {
-      if (mainStreamManager !== stream && stream) {
-        setMainStreamManager(stream);
-      }
-    },
-    [mainStreamManager],
-  );
+  // const handleMainVideoStream = useCallback(
+  //   (stream: StreamManager) => {
+  //     if (mainStreamManager !== stream && stream) {
+  //       setMainStreamManager(stream);
+  //     }
+  //   },
+  //   [mainStreamManager],
+  // );
 
-  const joinSession = useCallback(() => {
-    const mySession = OV.current.initSession();
+  // const joinSession = useCallback(() => {
+  //   const mySession = OV.current.initSession();
 
-    mySession.on('streamCreated', event => {
-      const subscriber = mySession.subscribe(event.stream, undefined);
-      setSubscribers(subscribers => [...subscribers, subscriber]);
-    });
+  //   mySession.on('streamCreated', event => {
+  //     const subscriber = mySession.subscribe(event.stream, undefined);
+  //     setSubscribers(subscribers => [...subscribers, subscriber]);
+  //   });
 
-    mySession.on('streamDestroyed', event => {
-      deleteSubscriber(event.stream.streamManager);
-    });
+  //   mySession.on('streamDestroyed', event => {
+  //     deleteSubscriber(event.stream.streamManager);
+  //   });
 
-    mySession.on('exception', exception => {
-      console.warn(exception);
-    });
+  //   mySession.on('exception', exception => {
+  //     console.warn(exception);
+  //   });
 
-    setSession(mySession);
-  }, []);
+  //   setSession(mySession);
+  // }, []);
 
   useEffect(() => {
     if (session) {
@@ -74,9 +76,9 @@ const SaleLivePage = () => {
           const currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
           const currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
 
+          setCurrentVideoDevice(currentVideoDevice);
           setMainStreamManager(publisher);
           setPublisher(publisher);
-          setCurrentVideoDevice(currentVideoDevice);
         } catch (error: any) {
           console.log('There was an error connecting to the session:', error.code, error.message);
         }
@@ -98,48 +100,48 @@ const SaleLivePage = () => {
     setPublisher(undefined);
   }, [session]);
 
-  const switchCamera = useCallback(async () => {
-    try {
-      const devices = await OV.current.getDevices();
-      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+  // const switchCamera = useCallback(async () => {
+  //   try {
+  //     const devices = await OV.current.getDevices();
+  //     const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
-      if (videoDevices && videoDevices.length > 1) {
-        const newVideoDevice = videoDevices.filter(device => device.deviceId !== currentVideoDevice?.deviceId);
+  //     if (videoDevices && videoDevices.length > 1) {
+  //       const newVideoDevice = videoDevices.filter(device => device.deviceId !== currentVideoDevice?.deviceId);
 
-        if (newVideoDevice.length > 0) {
-          const newPublisher = OV.current.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true,
-          });
+  //       if (newVideoDevice.length > 0) {
+  //         const newPublisher = OV.current.initPublisher(undefined, {
+  //           videoSource: newVideoDevice[0].deviceId,
+  //           publishAudio: true,
+  //           publishVideo: true,
+  //           mirror: true,
+  //         });
 
-          if (session) {
-            await session.unpublish(mainStreamManager);
-            await session.publish(newPublisher);
-            setCurrentVideoDevice(newVideoDevice[0]);
-            setMainStreamManager(newPublisher);
-            setPublisher(newPublisher);
-          }
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }, [currentVideoDevice, session, mainStreamManager]);
+  //         if (session) {
+  //           await session.unpublish(mainStreamManager);
+  //           await session.publish(newPublisher);
+  //           setCurrentVideoDevice(newVideoDevice[0]);
+  //           setMainStreamManager(newPublisher);
+  //           setPublisher(newPublisher);
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }, [currentVideoDevice, session, mainStreamManager]);
 
-  const deleteSubscriber = useCallback((streamManager: any) => {
-    setSubscribers(prevSubscribers => {
-      const index = prevSubscribers.indexOf(streamManager);
-      if (index > -1) {
-        const newSubscribers = [...prevSubscribers];
-        newSubscribers.splice(index, 1);
-        return newSubscribers;
-      } else {
-        return prevSubscribers;
-      }
-    });
-  }, []);
+  // const deleteSubscriber = useCallback((streamManager: any) => {
+  //   setSubscribers(prevSubscribers => {
+  //     const index = prevSubscribers.indexOf(streamManager);
+  //     if (index > -1) {
+  //       const newSubscribers = [...prevSubscribers];
+  //       newSubscribers.splice(index, 1);
+  //       return newSubscribers;
+  //     } else {
+  //       return prevSubscribers;
+  //     }
+  //   });
+  // }, []);
 
   // useEffect(() => {
   //   joinSession();
@@ -148,7 +150,7 @@ const SaleLivePage = () => {
   // }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = (event: any) => {
+    const handleBeforeUnload = () => {
       leaveSession();
     };
     window.addEventListener('beforeunload', handleBeforeUnload);

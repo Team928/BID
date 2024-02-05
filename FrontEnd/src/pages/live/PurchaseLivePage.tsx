@@ -38,6 +38,8 @@ const PurchaseLivePage = () => {
     }
   }, []);
 
+  console.log(myUserName, setMySessionId);
+
   const joinSession = useCallback(async () => {
     const newSession = OV.current.initSession();
     console.log('현재 세션', newSession);
