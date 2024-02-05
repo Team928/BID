@@ -21,6 +21,9 @@ import PurchaseLivePage from './pages/live/PurchaseLivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
 import LoginRedirectPage from './pages/login/LoginRedirectPage';
 import SaleWritePage from './pages/write/SaleWritePage';
+import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
+import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
+import ProfileBuyPage from './pages/profile/buy/ProfileBuyPage';
 
 const router = createBrowserRouter([
   {
@@ -70,6 +73,18 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <ProfilePage />,
+  },
+  {
+    path: '/profile/sale',
+    element: <ProfileSalePage />,
+  },
+  {
+    path: '/profile/buy',
+    element: <ProfileBuyPage />,
+  },
+  {
+    path: '/profile/review',
+    element: <ProfileReviewPage />,
   },
   {
     path: '/scrap',
