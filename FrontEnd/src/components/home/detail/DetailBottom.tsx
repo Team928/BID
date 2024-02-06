@@ -2,7 +2,7 @@ import Modal from '@/components/@common/Modal';
 import { useSale } from '@/hooks/home/useSale';
 import { ISaleDetailRes } from '@/types/home';
 import { useState } from 'react';
-import { IoBookmarksOutline, IoBookmarks } from 'react-icons/io5';
+import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 
 const DetailBottom = (props: { info: ISaleDetailRes }) => {
   const { status, wished, highestBid, startPrice, dealRes } = props.info;
@@ -11,9 +11,10 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
 
   const [bidPrice, setBidPrice] = useState<string>('');
 
-  const { usePostSaleBid, usePostSaleImmediate } = useSale();
+  const { usePostSaleBid, usePostSaleImmediate, usePostDealWishAdd } = useSale();
   const { mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice);
   const { mutate: immediateMuate } = usePostSaleImmediate(dealRes.id);
+  const { mutate: wishAddMuate } = usePostDealWishAdd(dealRes.id);
 
   const handleBtnClick = () => {
     if (status === 'BEFORE') {
@@ -110,9 +111,9 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
       <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
         <div className="w-full h-full py-2 flex items-center gap-3">
           {wished ? (
-            <IoBookmarks size={'2rem'} color="#3498DB" />
+            <HiHeart size={'2.3rem'} color="#FF0000" />
           ) : (
-            <IoBookmarksOutline size={'2rem'} color="#545454" />
+            <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />
           )}
           <div
             onClick={handleBtnClick}
