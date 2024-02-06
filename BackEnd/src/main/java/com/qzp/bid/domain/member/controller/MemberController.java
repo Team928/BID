@@ -85,10 +85,9 @@ public class MemberController {
     }
 
     @Operation(summary = "경매 내역 - 참여한 경매")
-    @GetMapping("/profiles/{nickname}/saleParticipant")
-    public ResponseEntity<ResultResponse> getSaleByParticipant(
-        @PathVariable("nickname") String nickname, Pageable pageable) {
-        SaleListPage saleListPage = memberService.getSaleByParticipant(nickname, pageable);
+    @GetMapping("/profiles/saleParticipant")
+    public ResponseEntity<ResultResponse> getSaleByParticipant(Pageable pageable) {
+        SaleListPage saleListPage = memberService.getSaleByParticipant(pageable);
         return ResponseEntity.ok(ResultResponse.of(GET_PARTICIPATEDSALE_SUCCESS, saleListPage));
     }
 

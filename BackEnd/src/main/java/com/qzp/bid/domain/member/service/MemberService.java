@@ -21,7 +21,7 @@ public interface MemberService {
 
     SaleListPage getSaleByHost(String nickname, Pageable pageable);
 
-    SaleListPage getSaleByParticipant(String nickname, Pageable pageable);
+    SaleListPage getSaleByParticipant(Pageable pageable);
 
     BidHistoryListPage getBidHistoryBySaleId(long saleId, Pageable pageable);
 

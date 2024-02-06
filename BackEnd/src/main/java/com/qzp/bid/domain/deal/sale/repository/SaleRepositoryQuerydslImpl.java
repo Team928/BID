@@ -174,7 +174,7 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
         }
 
         return new SaleListPage(saleSimpleResList, pageable.getPageNumber(), pageable.getPageSize(),
-            !isLast);
+            isLast);
     }
 
 
