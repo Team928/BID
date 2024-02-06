@@ -1,6 +1,5 @@
 package com.qzp.bid.global.security.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.Role;
 import com.qzp.bid.domain.member.repository.MemberRepository;
@@ -58,13 +57,13 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
         map.put("id", member.getId());
 
         // DefaultOAuth2User(사용자가 가진 권한 목록, 사용자 속성을 담는 맵, 사용자 이름의 속성 키)
-        return new DefaultOAuth2User(authorities, map ,"id");
+        return new DefaultOAuth2User(authorities, map, "id");
     }
 
 
     private Member saveOrUpdate(String email) {
         Member member = memberRepository.findMemberByEmail(email);
-        if(member == null) { //멤버가 존재하지 않는다면
+        if (member == null) { //멤버가 존재하지 않는다면
             member = Member.builder()
                 .email(email)
                 .role(Collections.singleton(Role.GUEST))

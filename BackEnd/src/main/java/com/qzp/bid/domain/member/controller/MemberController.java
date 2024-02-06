@@ -8,13 +8,16 @@ import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
+import com.qzp.bid.domain.member.dto.MemberReviewReq;
 import com.qzp.bid.domain.member.service.MemberService;
+import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,6 +87,14 @@ public class MemberController {
             return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS, purchaseListPage));
         }
         return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS));
+    }
+
+    @PostMapping("/review")
+    public ResponseEntity<ResultResponse> createReview(
+        @RequestBody MemberReviewReq memberReviewReq) {
+        memberService.createReview(memberReviewReq);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ResultResponse.of(ResultCode.CREATE_REVIEW_SUCCESS));
     }
 
 }

@@ -7,6 +7,7 @@ import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import org.springframework.data.domain.Pageable;
+import com.qzp.bid.domain.member.dto.MemberReviewReq;
 
 public interface MemberService {
 
@@ -17,6 +18,8 @@ public interface MemberService {
     MemberProfileRes getProfile(String nickname);
 
     SaleListPage getHauction(String nickname, Pageable pageable);
+
+    void createReview(MemberReviewReq memberReviewReq);
 
     SaleListPage getSaleWish(LookupParam lookupParam);
 

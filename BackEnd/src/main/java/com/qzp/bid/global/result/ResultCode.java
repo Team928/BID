@@ -14,6 +14,7 @@ public enum ResultCode {
     GET_MYPAGE_SUCCESS(200, "마이페이지 조회에 성공하였습니다"),
     GET_HAUCTION_SUCCESS(200, "내가 주최한 경매 조회에 성공하였습니다"),
     GET_MYWISH_SUCCESS(200, "나의 찜 목록 조회에 성공하였습니다."),
+    CREATE_REVIEW_SUCCESS(200, "리뷰 등록에 성공하였습니다."),
 
     //deal
     ADD_WISH_SUCCESS(201, "거래글 찜목록 추가에 성공하였습니다."),

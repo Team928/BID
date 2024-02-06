@@ -14,4 +14,6 @@ public interface SaleRepository extends JpaRepository<Sale, Long>, SaleRepositor
     Optional<List<Sale>> findSalesByStatus(@Param("status") DealStatus status);
 
     Optional<List<Sale>> findByStatusIsNot(DealStatus status);
+
+    boolean existsById(long id);
 }
