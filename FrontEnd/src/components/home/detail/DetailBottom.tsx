@@ -11,10 +11,11 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
 
   const [bidPrice, setBidPrice] = useState<string>('');
 
-  const { usePostSaleBid, usePostSaleImmediate, usePostDealWishAdd } = useSale();
+  const { usePostSaleBid, usePostSaleImmediate, usePostDealWishAdd, useDeleteDealWish } = useSale();
   const { mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice);
   const { mutate: immediateMuate } = usePostSaleImmediate(dealRes.id);
   const { mutate: wishAddMuate } = usePostDealWishAdd(dealRes.id);
+  const { mutate: wishDeleteMuate } = useDeleteDealWish(dealRes.id);
 
   const handleBtnClick = () => {
     if (status === 'BEFORE') {
@@ -111,7 +112,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
       <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
         <div className="w-full h-full py-2 flex items-center gap-3">
           {wished ? (
-            <HiHeart size={'2.3rem'} color="#FF0000" />
+            <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />
           ) : (
             <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />
           )}

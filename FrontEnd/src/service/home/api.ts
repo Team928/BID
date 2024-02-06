@@ -102,9 +102,19 @@ export const postLiveReq = async (saleId: number): Promise<APIResponse<string>> 
 // 찜 추가
 export const postDealWishAdd = async (dealId: number): Promise<APIResponse<string>> => {
   try {
-    const { data } = await axiosAuthInstance.post(`deals/wishes`, {
-      dealId: dealId,
-    });
+    const { data } = await axiosAuthInstance.post(`deals/${dealId}/wishes`);
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// 찜 삭제
+export const deleteDealWish = async (dealId: number): Promise<APIResponse<string>> => {
+  try {
+    const { data } = await axiosAuthInstance.delete(`deals/${dealId}/wishes`);
     console.log(data);
     return data;
   } catch (error) {

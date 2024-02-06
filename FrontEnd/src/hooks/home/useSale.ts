@@ -1,9 +1,10 @@
 import Toast from '@/components/@common/Toast';
 import {
+  deleteDealWish,
   getSaleDetailReq,
   getSaleListReq,
-  postImmediateBid,
   postDealWishAdd,
+  postImmediateBid,
   postLiveReq,
   postSaleBid,
 } from '@/service/home/api';
@@ -87,12 +88,28 @@ export const useSale = () => {
     });
   };
 
+  const useDeleteDealWish = (dealId: number) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationKey: ['wished', 'delete', dealId],
+      mutationFn: () => deleteDealWish(dealId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['detail', dealId] });
+      },
+      onError: () => {
+        console.log('에러입니다');
+      },
+    });
+  };
+
   return {
     useGetSaleList,
     useGetSaleDetail,
     usePostSaleBid,
     usePostSaleImmediate,
     usePostDealWishAdd,
+    useDeleteDealWish,
     usePostSaleLive,
   };
 };
