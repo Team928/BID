@@ -60,3 +60,7 @@ jwt:
   secret: ${auth.tokenSecret}
   token-access-time: ${auth.accessTokenExpiration}
   token-refresh-time: ${auth.refreshTokenExpiration}
+
+openvidu:
+  url: ${openvidu.url} #노출 금지
+  secret: ${openvidu.secret}  #노출 금지
