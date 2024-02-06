@@ -1,20 +1,22 @@
 import Accordian from '@/components/@common/Accordian';
 import BottomSheet from '@/components/@common/BottomSheet';
+import { ISellerInfo } from '@/pages/live/SaleLivePage';
 import iphone from '../../../assets/image/iphone.png';
-import { IParticipantInfo } from './SpeakListBottomSheet';
 
 const ParticipantsBottomSheet = ({
   onClose,
+  handleResign,
   participants,
 }: {
   onClose: () => void;
-  participants: IParticipantInfo[];
+  handleResign: (userId: string) => void;
+  participants: ISellerInfo[];
 }) => {
   return (
     <BottomSheet height="600px" title="현재 참여중인 판매자" onClose={onClose}>
-      {participants.map(info => {
+      {participants.map((info, idx) => {
         return (
-          <div>
+          <div key={idx}>
             <Accordian titleContent={'중고 짱좋아'}>
               <div className="grid grid-cols-3 px-3 py-6">
                 <div className="col-span-2">
@@ -33,6 +35,7 @@ const ParticipantsBottomSheet = ({
                 <button
                   type="button"
                   className="border border-red-500 px-2.5 py-0.5 rounded-lg text-red-500 hover:bg-red-100/50"
+                  onClick={() => handleResign(info.userId)}
                 >
                   강퇴
                 </button>

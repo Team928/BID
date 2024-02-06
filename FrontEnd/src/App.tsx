@@ -20,11 +20,11 @@ import LivePage from './pages/live/LivePage';
 import PurchaseLivePage from './pages/live/PurchaseLivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
 import LoginRedirectPage from './pages/login/LoginRedirectPage';
-import SaleWritePage from './pages/write/SaleWritePage';
-import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
-import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
 import ProfileBuyPage from './pages/profile/buy/ProfileBuyPage';
+import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
+import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import BuyWritePage from './pages/write/BuyWritePage';
+import SaleWritePage from './pages/write/SaleWritePage';
 
 const router = createBrowserRouter([
   {
@@ -112,7 +112,7 @@ const router = createBrowserRouter([
     element: <BuyWritePage />,
   },
   {
-    path: '/live',
+    path: '/live/:id',
     element: <LivePage />,
   },
   {

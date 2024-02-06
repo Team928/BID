@@ -1,3 +1,4 @@
+import Toast from '@/components/@common/Toast';
 import FullCameraItem from '@/components/live/FullCameraItem';
 import BuyModal from '@/components/live/Modal/BuyModal';
 import { Subscriber } from 'openvidu-browser';
@@ -29,7 +30,7 @@ const PurchaseBuyer = ({
     //   @TODO: 컴포넌트 만들기
     if (window.confirm('라이브 방송에서 퇴장하시겠습니까?')) {
       leaveSession();
-      toast.dark('라이브 방송에서 퇴장했습니다.');
+      Toast.success('라이브 방송에서 퇴장했습니다.');
 
       setTimeout(() => {
         navigate('/');
@@ -39,7 +40,7 @@ const PurchaseBuyer = ({
 
   useEffect(() => {
     if (buyerStatus === 'onLive') {
-      toast.dark('라이브 방송에 입장했습니다.');
+      Toast.success('라이브 방송에 입장했습니다.');
     }
   }, []);
 

@@ -27,7 +27,7 @@ const Accordian = ({
 
   return (
     <div className="w-full h-full px-6 ">
-      <div className="py-4 flex justify-between border-b-[1px]" onClick={handleOpen}>
+      <div className="py-4 flex justify-between border-b-[1px] cursor-pointer" onClick={handleOpen}>
         <div>{titleContent}</div>
         <div>{isOpen ? <IoIosArrowUp size="25" color="#6C6C6C" /> : <IoIosArrowDown size="25" color="#6C6C6C" />}</div>
       </div>

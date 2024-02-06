@@ -1,20 +1,17 @@
 import Modal from '@/components/@common/Modal';
+import Toast from '@/components/@common/Toast';
 import { MODAL_TITLE } from '@/constants/modalTitle';
 import useLiveStore from '@/stores/userLiveStore';
 import { useState } from 'react';
 import { AiOutlineAudio } from 'react-icons/ai';
 import { IoCameraOutline } from 'react-icons/io5';
-import { toast } from 'react-toastify';
 
 const LivePermissonModal = ({ onClose }: { onClose: () => void }) => {
   const [permissionStatus, setPermissionStatus] = useState('pending');
   const { setOnCamera, setOnMike } = useLiveStore();
 
   const showToast = () => {
-    toast.success('접근 권한이 허용되었습니다.', {
-      position: 'top-right',
-      autoClose: 3000,
-    });
+    Toast.success('접근 권한이 허용되었습니다.');
   };
 
   const requestPermissions = async () => {
