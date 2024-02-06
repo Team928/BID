@@ -1,7 +1,6 @@
 package com.qzp.bid.domain.member.mapper;
 
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
-import com.qzp.bid.domain.member.dto.ReviewSimpleRes;
 import com.qzp.bid.domain.member.entity.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -10,6 +9,4 @@ import org.mapstruct.ReportingPolicy;
 public interface ReviewMapper {
 
     Review toReview(MemberReviewReq memberReviewReq);
-
-    ReviewSimpleRes toReviewRes(Review review);
 }
