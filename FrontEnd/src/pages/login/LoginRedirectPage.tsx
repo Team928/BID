@@ -27,6 +27,7 @@ const LoginRedirectPage = () => {
       navigate('/');
     } else {
       // 그게 아니라면 회원가입 페이지로
+      loginUser({ accessToken: accessToken, area: '', nickname: '', refreshToken: refreshToken, userId: userId });
       navigate('/signup');
     }
   }, []);
