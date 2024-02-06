@@ -63,6 +63,8 @@ const SaleLivePage = () => {
     nickName: '나눈 구매자',
   });
 
+  console.log(setBuyerInfo);
+
   const OV = useRef(new OpenVidu());
   OV.current.enableProdMode();
 
