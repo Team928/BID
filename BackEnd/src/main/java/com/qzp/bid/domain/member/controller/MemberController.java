@@ -4,6 +4,7 @@ import static com.qzp.bid.global.result.ResultCode.GET_BIDHISTORY_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_MYPAGE_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_MYWISH_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_PARTICIPATEDSALE_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_PARTICIPATEPURCHASE_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_PURCHASEHOST_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_SALEHOST_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
@@ -107,6 +108,16 @@ public class MemberController {
         PurchaseListPage purchaseListPage = memberService.getPurchaseByHost(nickname, pageable);
         return ResponseEntity.ok(ResultResponse.of(GET_PURCHASEHOST_SUCCESS, purchaseListPage));
     }
+
+    @Operation(summary = "역경매 내역 - 참여한 역경매 조회")
+    @GetMapping("/profiles/purchaseSeller")
+    public ResponseEntity<ResultResponse> getPurchaseBySeller(Pageable pageable) {
+        PurchaseListPage purchaseListPage = memberService.getPurchaseBySeller(pageable);
+        return ResponseEntity.ok(
+            ResultResponse.of(GET_PARTICIPATEPURCHASE_SUCCESS, purchaseListPage));
+    }
+
+    //TODO: 거래 성사된 역경매 조회
 
     @Operation(summary = "나의 찜 목록 조회")
     @GetMapping("/profiles/wish")

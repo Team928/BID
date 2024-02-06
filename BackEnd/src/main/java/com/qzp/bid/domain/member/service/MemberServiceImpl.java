@@ -168,6 +168,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public PurchaseListPage getPurchaseBySeller(Pageable pageable) {
+        long memberId = Long.parseLong(accountUtil.getLoginMemberId());
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        PurchaseListPage purchaseListPage = purchaseRepository.findPurchasesBySellerId(
+            member.getId(), pageable);
+        return purchaseListPage;
+    }
+
+    @Override
     public SaleListPage getSaleWish(LookupParam lookupParam) {
         Member member = accountUtil.getLoginMember()
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));

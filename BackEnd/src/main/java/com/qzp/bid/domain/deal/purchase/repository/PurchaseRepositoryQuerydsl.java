@@ -9,4 +9,6 @@ public interface PurchaseRepositoryQuerydsl {
     PurchaseListPage getPurchaseListPageBySearchParam(SearchParam searchParam);
 
     PurchaseListPage findPurchasesByWriterId(Long writerId, Pageable pageable);
+
+    PurchaseListPage findPurchasesBySellerId(Long sellerId, Pageable pageable);
 }

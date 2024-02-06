@@ -17,6 +17,7 @@ import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.entity.QWish;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseSimpleRes;
+import com.qzp.bid.domain.deal.purchase.entity.QApplyForm;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -106,6 +107,53 @@ public class PurchaseRepositoryQuerydslImpl implements PurchaseRepositoryQueryds
         return new PurchaseListPage(purchaseSimpleResList, pageable.getPageNumber(),
             pageable.getPageSize(), !hasNext);
 
+    }
+
+    @Override
+    public PurchaseListPage findPurchasesBySellerId(Long sellerId, Pageable pageable) {
+        QWish wish = QWish.wish;
+        QApplyForm applyForm = QApplyForm.applyForm;
+
+        List<PurchaseSimpleRes> purchaseSimpleResList = jpaQueryFactory
+            .select(Projections.fields(
+                PurchaseSimpleRes.class,
+                new QDealSimpleRes(purchase,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(purchase.id))))
+                            .orderBy(image.createTime.asc()),
+                        "imagePath"
+                    ))).as("dealSimpleRes"),
+                purchase.status,
+                Expressions.asBoolean(
+                    JPAExpressions.select(wish.id)
+                        .from(wish)
+                        .where(
+                            wish.member.id.eq(sellerId),
+                            wish.deal.id.eq(purchase.id)
+                        ).exists()).as("isWished")
+            ))
+            .from(purchase)
+            .innerJoin(purchase.applyForms, applyForm).fetchJoin()
+            .where(applyForm.sellerId.eq(sellerId))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .orderBy(purchase.createTime.desc())
+            .fetch();
+
+        boolean hasNext = false;
+        if (purchaseSimpleResList.size() > pageable.getPageSize()) {
+            purchaseSimpleResList.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+
+        return new PurchaseListPage(purchaseSimpleResList, pageable.getPageNumber(),
+            pageable.getPageSize(), !hasNext);
     }
 
     private OrderSpecifier createOrderSpecifiers(SearchParam searchParam) {

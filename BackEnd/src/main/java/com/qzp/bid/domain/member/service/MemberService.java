@@ -27,6 +27,8 @@ public interface MemberService {
 
     PurchaseListPage getPurchaseByHost(String nickname, Pageable pageable);
 
+    PurchaseListPage getPurchaseBySeller(Pageable pageable);
+
     void createReview(MemberReviewReq memberReviewReq);
 
     SaleListPage getSaleWish(LookupParam lookupParam);
