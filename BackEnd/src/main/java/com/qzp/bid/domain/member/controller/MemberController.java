@@ -1,11 +1,17 @@
 package com.qzp.bid.domain.member.controller;
 
-import static com.qzp.bid.global.result.ResultCode.*;
+import static com.qzp.bid.global.result.ResultCode.GET_MYPAGE_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_MYWISH_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_PURCHASEHOST_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_SALEHOST_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
+import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_NOT_EXIST;
+import static com.qzp.bid.global.result.ResultCode.REGISTER_SUCCESS;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
-import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
@@ -71,11 +77,16 @@ public class MemberController {
     @GetMapping("/profiles/{nickname}/saleHost")
     public ResponseEntity<ResultResponse> getSaleByHost(@PathVariable("nickname") String nickname,
         Pageable pageable) {
-        SaleListPage saleListPage = memberService.getHauction(nickname, pageable);
-        return ResponseEntity.ok(ResultResponse.of(GET_HAUCTION_SUCCESS, saleListPage));
         SaleListPage saleListPage = memberService.getSaleByHost(nickname, pageable);
         return ResponseEntity.ok(ResultResponse.of(GET_SALEHOST_SUCCESS, saleListPage));
     }
+
+    @Operation(summary = "역경매 내역 - 주최한 역경매")
+    @GetMapping("/profiles/{nickname}/purchaseHost")
+    public ResponseEntity<ResultResponse> getPurchaseByHost(
+        @PathVariable("nickname") String nickname, Pageable pageable) {
+        PurchaseListPage purchaseListPage = memberService.getPurchaseByHost(nickname, pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_PURCHASEHOST_SUCCESS, purchaseListPage));
     }
 
     @Operation(summary = "나의 찜 목록 조회")

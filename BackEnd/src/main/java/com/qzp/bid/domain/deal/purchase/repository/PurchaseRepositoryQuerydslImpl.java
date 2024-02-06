@@ -14,6 +14,7 @@ import com.qzp.bid.domain.deal.dto.ImageSimpleDto;
 import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
+import com.qzp.bid.domain.deal.entity.QWish;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseSimpleRes;
 import java.util.List;
@@ -59,6 +60,52 @@ public class PurchaseRepositoryQuerydslImpl implements PurchaseRepositoryQueryds
         return new PurchaseListPage(purchaseSimpleResList, pageable.getPageNumber(),
             pageable.getPageSize(),
             !hasNext);
+    }
+
+    @Override
+    public PurchaseListPage findPurchasesByWriterId(Long writerId, Pageable pageable) {
+        QWish wish = QWish.wish;
+
+        List<PurchaseSimpleRes> purchaseSimpleResList = jpaQueryFactory
+            .select(Projections.fields(
+                PurchaseSimpleRes.class,
+                new QDealSimpleRes(purchase,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(purchase.id))))
+                            .orderBy(image.createTime.asc()),
+                        "imagePath"
+                    ))).as("dealSimpleRes"),
+                purchase.status,
+                Expressions.asBoolean(
+                    JPAExpressions.select(wish.id)
+                        .from(wish)
+                        .where(
+                            wish.member.id.eq(writerId),
+                            wish.deal.id.eq(purchase.id)
+                        ).exists()).as("isWished")
+            ))
+            .from(purchase)
+            .where(purchase.writer.id.eq(writerId))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .orderBy(purchase.createTime.desc())
+            .fetch();
+
+        boolean hasNext = false;
+        if (purchaseSimpleResList.size() > pageable.getPageSize()) {
+            purchaseSimpleResList.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+
+        return new PurchaseListPage(purchaseSimpleResList, pageable.getPageNumber(),
+            pageable.getPageSize(), !hasNext);
+
     }
 
     private OrderSpecifier createOrderSpecifiers(SearchParam searchParam) {

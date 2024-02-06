@@ -1,18 +1,18 @@
 package com.qzp.bid.domain.member.service;
 
-import static com.qzp.bid.global.result.error.ErrorCode.*;
+import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
-import com.qzp.bid.domain.member.dto.LookupParam;
-
 import com.qzp.bid.domain.member.dto.LoginTokenDto;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
-
-import com.qzp.bid.domain.deal.repository.DealRepository;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
@@ -23,8 +23,8 @@ import com.qzp.bid.domain.member.entity.Role;
 import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.mapper.ReviewMapper;
 import com.qzp.bid.domain.member.repository.MemberRepository;
-import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.domain.member.repository.ReviewRepository;
+import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.security.util.JwtProvider;
 import java.util.ArrayList;
@@ -51,6 +51,7 @@ public class MemberServiceImpl implements MemberService {
     private final DealRepository dealRepository;
     private final SaleRepository saleRepository;
     private final WishRepository wishRepository;
+    private final PurchaseRepository purchaseRepository;
     //Mapper
     private final MemberMapper memberMapper;
     private final ReviewMapper reviewMapper;
@@ -114,6 +115,17 @@ public class MemberServiceImpl implements MemberService {
         SaleListPage saleListPage = saleRepository.findSalesByWriterId(member.getId(), pageable);
 
         return saleListPage;
+    }
+
+    @Override
+    public PurchaseListPage getPurchaseByHost(String nickname, Pageable pageable) {
+        Member member = memberRepository.findMemberByNickname(nickname)
+            .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
+
+        PurchaseListPage purchaseListPage = purchaseRepository.findPurchasesByWriterId(
+            member.getId(), pageable);
+
+        return purchaseListPage;
     }
 
     @Override
