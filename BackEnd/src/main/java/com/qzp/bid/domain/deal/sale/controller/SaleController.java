@@ -92,4 +92,11 @@ public class SaleController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResultResponse.of(ResultCode.CREATE_LIVEREQUEST_SUCCESS));
     }
+
+    @Operation(summary = "즉시 구매하기")
+    @PostMapping("/{saleId}/immediate")
+    public ResponseEntity<ResultResponse> immediateBuy(@PathVariable Long saleId) {
+        saleService.immediateBuy(saleId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.IMMEDIATE_BUY_SUCCESS));
+    }
 }
