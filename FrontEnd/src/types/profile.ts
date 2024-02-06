@@ -27,3 +27,12 @@ export interface ISaleListRes {
     pageNumber: number;
     pageSize: number;
   }
+
+// 프로필 조회
+  export interface IUserProfile {
+    nickname: string;
+    email: string;
+    point: number;
+    profileImage: string | null;
+    score: number;
+  }

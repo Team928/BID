@@ -1,21 +1,24 @@
-import StateButton from "@/components/@common/StateButton";
-import { useProfile } from "@/hooks/profile/useProfile";
-// import userStore from "@/stores/userStore";
+import StateButton from "@/components/@common/StateButton"
+import { useProfile } from "@/hooks/profile/useProfile"
 
-const SaleHost = () => {
+const OtherSale = () => {
 
-  // 유저 스토어에서 nickName 가져오기
-  // const { nickname } = userStore(state => state);
+    const { useSaleHost } = useProfile()
+    const { useUserProfile } = useProfile()
 
-  const { useSaleHost } = useProfile()
-  const {
-    data: saleHostInfo,
-  } = useSaleHost('이승현') // 임의 닉네임
+    const {
+        data: userProfileInfo,
+    } = useUserProfile('이승현') // 임의 닉네임
 
-    return (
-      <div className="pt-28">
+    const {
+        data: saleHostInfo,
+    } = useSaleHost(`${userProfileInfo?.data.nickname}`) 
+
+    return <div>
+        <div className="">
         {saleHostInfo?.data.saleSimpleResList.map((item, index) => (
-          <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
+          <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9] flex items-center">
+            {/* TODO: 사진 변경해야함 */}
           <div className="w-32 h-32">
             <img className="w-full h-full rounded-xl" src="/src/assets/image/sample.png"></img>
           </div>
@@ -40,7 +43,6 @@ const SaleHost = () => {
         ))}
         
       </div>
-  );
-};
-
-export default SaleHost;
+    </div>
+}
+export default OtherSale
