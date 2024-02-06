@@ -1,14 +1,21 @@
 package com.qzp.bid.domain.member.controller;
 
-import static com.qzp.bid.global.result.ResultCode.*;
+import static com.qzp.bid.global.result.ResultCode.GET_HAUCTION_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_MYPAGE_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_MYWISH_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
+import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_NOT_EXIST;
+import static com.qzp.bid.global.result.ResultCode.REGISTER_SUCCESS;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
-import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
+import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.service.MemberService;
+import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,7 +58,7 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq){
+    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq) {
         LoginTokenRes loginTokenRes = memberService.register(memberJoinReq);
         return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS, loginTokenRes));
     }
@@ -86,4 +93,10 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS));
     }
 
+    @Operation(summary = "포인트 충전")
+    @PostMapping("/points")
+    public ResponseEntity<ResultResponse> chargePoint(@RequestBody PointChargeReq pointChargeReq) {
+        memberService.chargePoint(pointChargeReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.POINT_CHARGE_SUCCESS));
+    }
 }

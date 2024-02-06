@@ -66,4 +66,8 @@ public class Member {
     public void cancelBidding(int price) {
         this.holdingPoint -= price;
     }
+
+    public void chargePoint(int point) {
+        this.point += point;
+    }
 }
