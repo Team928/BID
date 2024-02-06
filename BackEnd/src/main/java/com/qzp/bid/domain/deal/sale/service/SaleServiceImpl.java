@@ -191,8 +191,8 @@ public class SaleServiceImpl implements SaleService {
         }
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
-        if (!sale.getStatus().equals(DealStatus.BEFORE)) {
-            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
+        if (!sale.getStatus().equals(DealStatus.AUCTION)) {
+            throw new BusinessException(ErrorCode.NOT_AUCTION_STATUS);
         }
         LiveRequest liveRequest = LiveRequest.builder().memberId(member.getId())
             .saleId(saleId).build();
