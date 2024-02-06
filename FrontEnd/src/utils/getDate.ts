@@ -30,5 +30,10 @@ export const getDate = (startTime: string) => {
   const customTime = `${hours < 10 ? '0' + hours : hours}시 ${minutes <= 10 ? '0' + minutes : minutes}분`;
   const fullDate = `${year}년 ${month}월 ${date}일 ${customTime}`;
 
-  return { year, month, date, datOfWeek, hours, minutes, time, fullDate };
+  // 전체 날짜 ex) 2024.02.06 14:08
+  const customDate = `${month < 10 ? '0' + month : month}.${date <= 10 ? '0' + date : date}`;
+  const customTime2 = `${hours < 10 ? '0' + hours : hours}:${minutes <= 10 ? '0' + minutes : minutes}`;
+  const fullDate2 = `${year}.${customDate} ${customTime2}`;
+
+  return { year, month, date, datOfWeek, hours, minutes, time, fullDate, fullDate2 };
 };

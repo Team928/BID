@@ -32,6 +32,13 @@ export interface IDealRes {
   startTime: string;
 }
 
+export interface IBidInfo {
+  id: number;
+  bidPrice: number;
+  bidTime: string;
+  bidder: string;
+}
+
 // 판매글 목록 조회 Response ('deals/sales')
 export interface ISaleListRes {
   saleSimpleResList: ISaleSimpleRes[];
@@ -60,7 +67,7 @@ export interface ISaleDetailRes {
   endTime: string;
   status: dealStatusType;
   liveRequestCount: number;
-  bidList: [];
+  bidList: IBidInfo[];
   liveReq: boolean;
   wished: false;
 }
