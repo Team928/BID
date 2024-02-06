@@ -1,9 +1,12 @@
 package com.qzp.bid.domain.deal.repository;
 
+import static com.qzp.bid.domain.deal.entity.QImage.image;
+
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.qzp.bid.domain.deal.dto.ImageSimpleDto;
 import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.entity.QWish;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
@@ -28,7 +31,16 @@ public class WishRepositoryQuerydslImpl implements WishRepositoryQuerydsl {
 
         List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory.select(Projections.fields(
                 SaleSimpleRes.class,
-                new QDealSimpleRes(sale).as("dealSimpleRes"),
+                new QDealSimpleRes(sale,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.deal.id.eq(sale.id))
+                            .orderBy(image.createTime.asc())
+                            .limit(1),
+                        "imagePath"
+                    ))).as("dealSimpleRes"),
                 sale.immediatePrice,
                 sale.startPrice,
                 sale.endTime,
@@ -64,7 +76,16 @@ public class WishRepositoryQuerydslImpl implements WishRepositoryQuerydsl {
 
         List<PurchaseSimpleRes> purchaseSimpleResList = jpaQueryFactory.select(Projections.fields(
                 PurchaseSimpleRes.class,
-                new QDealSimpleRes(purchase).as("dealSimpleRes"),
+                new QDealSimpleRes(purchase,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.deal.id.eq(purchase.id))
+                            .orderBy(image.createTime.asc())
+                            .limit(1),
+                        "imagePath"
+                    ))).as("dealSimpleRes"),
                 Expressions.asBoolean(true).as("isWished")
             ))
             .from(purchase)
