@@ -1,4 +1,5 @@
 import Modal from '@/components/@common/Modal';
+import Toast from '@/components/@common/Toast';
 import { useSale } from '@/hooks/home/useSale';
 import { ISaleDetailRes } from '@/types/home';
 import { useState } from 'react';
@@ -7,6 +8,8 @@ import { IoBookmarksOutline, IoBookmarks } from 'react-icons/io5';
 const DetailBottom = (props: { info: ISaleDetailRes }) => {
   const { status, wished, highestBid, startPrice, dealRes } = props.info;
   const [showBidModal, setShowBidModal] = useState<boolean>(false);
+  const [showImmediateModal, setShowImmediateModal] = useState<boolean>(false);
+
   const [bidPrice, setBidPrice] = useState<string>('');
 
   const { usePostSaleBid } = useSale();
@@ -14,7 +17,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
 
   const handleBtnClick = () => {
     if (status === 'BEFORE') {
-      console.log('즉시구매');
+      setShowImmediateModal(true);
     } else if (status === 'END') {
       return;
     } else {
@@ -26,6 +29,8 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
     bidMuate();
 
     if (bidData) {
+      Toast.error('방장에 의해 강퇴당했습니다.');
+
       // Toast해야함
       // console.log(bidData);
       // if (bidData.status !== 201) {
@@ -34,11 +39,14 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
     }
   };
 
+  const handleImmediateBtnClick = () => {};
+
   // #TODO 위시 등록 및 삭제 해야함
   return (
     <>
+      {/* 입찰하기 모달 */}
       {showBidModal && (
-        <Modal width="300px" height="auto" title="입찰하기" onClose={() => setShowBidModal(false)}>
+        <Modal width="300px" height="auto" title="입찰하기" onClose={() => setShowImmediateModal(false)}>
           <div className="w-full flex flex-col justify-center items-center p-3 px-10">
             <div className="w-full flex gap-3">
               <p className="">현재 최고가</p>
@@ -63,6 +71,38 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
             <div className="w-full flex gap-5 py-4">
               <button
                 className="w-full bg-BID_SUB_GRAY text-white px-4 py-2 rounded-2xl"
+                onClick={() => setShowImmediateModal(false)}
+              >
+                취소
+              </button>
+              <button
+                className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
+                onClick={() => handleImmediateBtnClick()}
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
+      {/* 구매하기 모달 */}
+      {showImmediateModal && (
+        <Modal width="300px" height="auto" title="구매하기" onClose={() => setShowBidModal(false)}>
+          <div className="w-full flex flex-col justify-center items-center p-3 px-10">
+            <div className="w-full flex gap-3">
+              <p className="">현재 최고가</p>
+              <p className="text-BID_MAIN">{highestBid === 0 ? startPrice : highestBid}원</p>
+              <p className=""></p>
+            </div>
+            <div className="w-full flex gap-3 items-center">
+              <p className="">내 포인트</p>
+              {/* 내포인트 조회해야함 */}
+              <p className="text-BID_MAIN">32,000원</p>
+              <span className="text-BID_SUB_GRAY border-b text-xs">충전하기</span>
+            </div>
+            <div className="w-full flex gap-5 py-4">
+              <button
+                className="w-full bg-BID_SUB_GRAY text-white px-4 py-2 rounded-2xl"
                 onClick={() => setShowBidModal(false)}
               >
                 취소
@@ -77,7 +117,6 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
           </div>
         </Modal>
       )}
-
       <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
         <div className="w-full h-full py-2 flex items-center gap-3">
           {wished ? (
