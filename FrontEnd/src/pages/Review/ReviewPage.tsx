@@ -1,6 +1,6 @@
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import { icons } from "@/constants/icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useReview } from "@/hooks/review/useReview";
 import { ICreateReviewReq } from "@/types/review";
@@ -12,6 +12,7 @@ const ReviewPage = () => {
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const {usePostReview} = useReview();
+  const navigate = useNavigate()
 
   const reviewReq : ICreateReviewReq = {
     content: reviewText,
@@ -20,7 +21,7 @@ const ReviewPage = () => {
     targetNickname: dealInfo.writer,
   }
 
-  const {mutate, isSuccess} = usePostReview(reviewReq);
+  const {mutate } = usePostReview(reviewReq);
   const info: IHeaderInfo = {
     left: icons.BACK,
     center: '리뷰',
@@ -41,10 +42,7 @@ const ReviewPage = () => {
   
   const handleReviewCreate = () =>{
     mutate();
-
-    if(isSuccess){
-      console.log("성공")
-    }
+    navigate('/profile')
   }
     return (
       <>
