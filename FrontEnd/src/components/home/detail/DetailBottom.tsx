@@ -1,5 +1,4 @@
 import Modal from '@/components/@common/Modal';
-import Toast from '@/components/@common/Toast';
 import { useSale } from '@/hooks/home/useSale';
 import { ISaleDetailRes } from '@/types/home';
 import { useState } from 'react';
@@ -12,8 +11,9 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
 
   const [bidPrice, setBidPrice] = useState<string>('');
 
-  const { usePostSaleBid } = useSale();
-  const { data: bidData, mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice);
+  const { usePostSaleBid, usePostSaleImmediate } = useSale();
+  const { mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice);
+  const { mutate: immediateMuate } = usePostSaleImmediate(dealRes.id);
 
   const handleBtnClick = () => {
     if (status === 'BEFORE') {
@@ -25,28 +25,12 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
     }
   };
 
-  const handleBidBtnClick = () => {
-    bidMuate();
-
-    if (bidData) {
-      Toast.error('방장에 의해 강퇴당했습니다.');
-
-      // Toast해야함
-      // console.log(bidData);
-      // if (bidData.status !== 201) {
-      // } else {
-      // }
-    }
-  };
-
-  const handleImmediateBtnClick = () => {};
-
   // #TODO 위시 등록 및 삭제 해야함
   return (
     <>
       {/* 입찰하기 모달 */}
       {showBidModal && (
-        <Modal width="300px" height="auto" title="입찰하기" onClose={() => setShowImmediateModal(false)}>
+        <Modal width="300px" height="auto" title="입찰하기" onClose={() => setShowBidModal(false)}>
           <div className="w-full flex flex-col justify-center items-center p-3 px-10">
             <div className="w-full flex gap-3">
               <p className="">현재 최고가</p>
@@ -71,14 +55,11 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
             <div className="w-full flex gap-5 py-4">
               <button
                 className="w-full bg-BID_SUB_GRAY text-white px-4 py-2 rounded-2xl"
-                onClick={() => setShowImmediateModal(false)}
+                onClick={() => setShowBidModal(false)}
               >
                 취소
               </button>
-              <button
-                className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
-                onClick={() => handleImmediateBtnClick()}
-              >
+              <button className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl" onClick={() => bidMuate()}>
                 확인
               </button>
             </div>
@@ -87,7 +68,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
       )}
       {/* 구매하기 모달 */}
       {showImmediateModal && (
-        <Modal width="300px" height="auto" title="구매하기" onClose={() => setShowBidModal(false)}>
+        <Modal width="300px" height="auto" title="구매하기" onClose={() => setShowImmediateModal(false)}>
           <div className="w-full flex flex-col justify-center items-center p-3 px-10">
             <div className="w-full flex gap-3">
               <p className="">현재 최고가</p>
@@ -103,14 +84,11 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
             <div className="w-full flex gap-5 py-4">
               <button
                 className="w-full bg-BID_SUB_GRAY text-white px-4 py-2 rounded-2xl"
-                onClick={() => setShowBidModal(false)}
+                onClick={() => setShowImmediateModal(false)}
               >
                 취소
               </button>
-              <button
-                className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
-                onClick={() => handleBidBtnClick()}
-              >
+              <button className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl" onClick={() => immediateMuate()}>
                 확인
               </button>
             </div>
@@ -129,7 +107,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
             className={`w-full py-3  text-white rounded-xl text-center text-lg font-bold 
           ${status === 'END' ? 'bg-BID_BLACK' : 'bg-BID_MAIN'}`}
           >
-            {status === 'BEFORE' ? '즉시 구매하기' : status === 'END' ? '이미 종료된 경매입니다.' : '입찰하기'}
+            {status === 'BEFORE' ? '즉시 구매하기' : status === 'END' ? '이미 종료된 경매입니다' : '입찰하기'}
           </div>
         </div>
       </div>

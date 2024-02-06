@@ -64,9 +64,26 @@ export const getPurchaseDetailReq = async (purchaseId: number): Promise<APIRespo
 
 // 경매 입찰하기
 export const postSaleBid = async (saleId: number, bidPrice: string): Promise<APIResponse<string>> => {
-  const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/bids`, {
-    bidPrice: bidPrice,
-  });
-  console.log(data);
-  return data;
+  try {
+    const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/bids`, {
+      bidPrice: bidPrice,
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// 즉시 구매하기
+export const postImmediateBid = async (saleId: number): Promise<APIResponse<string>> => {
+  try {
+    const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/immediate`);
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
