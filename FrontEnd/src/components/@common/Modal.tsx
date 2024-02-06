@@ -1,5 +1,5 @@
-import { icons } from '@/constants/icons';
 import { useState } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
 
 interface IModalProps {
   width: string;
@@ -39,7 +39,7 @@ const Modal = ({ width, height, title, onClose, children }: IModalProps) => {
             <div className="col-span-1">&nbsp;</div>
             <div className="col-span-4">{title}</div>
             <div className="col-span-1 w-5 h-5 cursor-pointer" onClick={handleClose}>
-              {icons.DELETE}
+              <AiOutlineClose />
             </div>
           </div>
           {children}
