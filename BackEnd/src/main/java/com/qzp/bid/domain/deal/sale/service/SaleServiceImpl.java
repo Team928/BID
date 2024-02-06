@@ -69,7 +69,11 @@ public class SaleServiceImpl implements SaleService {
         List<ImageDto> uploadPaths = imageUploader.upload(photos);
         sale.setWriter(member);
         List<Image> images = uploadPaths.stream()
-            .map(imageMapper::ImageDtoToImage)
+            .map(imageDto -> {
+                Image image = imageMapper.imageDtoToImage(imageDto);
+                image.setDeal(sale);
+                return image;
+            })
             .map(imageRepository::save)
             .toList();
         sale.setImages(images);
