@@ -1,3 +1,5 @@
+import notify from '@/assets/icon/notify.png';
+import search from '@/assets/icon/search.png';
 import { useNavigate } from 'react-router-dom';
 
 export interface IHeaderInfo {
@@ -29,7 +31,7 @@ const Header = (props: { info: IHeaderInfo }) => {
                   },
                 })
               }
-              src="/src/assets/icon/search.png"
+              src={search}
             />
           </div>
         )}
@@ -43,7 +45,7 @@ const Header = (props: { info: IHeaderInfo }) => {
                   },
                 })
               }
-              src="/src/assets/icon/notify.png"
+              src={notify}
             />
           </div>
         )}

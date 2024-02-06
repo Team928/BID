@@ -1,11 +1,12 @@
+import sample from '@/assets/image/sample.png';
 import { ISaleDetailRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { getDate } from '@/utils/getDate';
 import { getPriceName } from '@/utils/getPriceName';
+import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
-import { MdLiveTv } from 'react-icons/md';
 // import { LiaHandPointerSolid } from 'react-icons/lia';
 
 const SaleDetail = (props: { info: ISaleDetailRes }) => {
@@ -34,7 +35,7 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
       <div className="w-full h-full ">
         {/* 사진 */}
         <div className="relative w-full h-2/5">
-          <img src="/src/assets/image/sample.png" className="object-cover w-full h-full"></img>
+          <img src={sample} className="object-cover w-full h-full"></img>
           {/* #TODO 이미지 캐러셀 해야함 */}
           {dealRes.images.length !== 1 && <p className="absolute right-0 bottom-0 text-white p-5 text-lg">1/3</p>}
 
