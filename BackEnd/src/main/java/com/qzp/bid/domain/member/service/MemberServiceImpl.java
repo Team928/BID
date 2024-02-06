@@ -1,31 +1,36 @@
 package com.qzp.bid.domain.member.service;
 
-import static com.qzp.bid.global.result.error.ErrorCode.*;
+import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
-import com.qzp.bid.domain.member.dto.LookupParam;
-
 import com.qzp.bid.domain.member.dto.LoginTokenDto;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
-
-import com.qzp.bid.domain.deal.repository.DealRepository;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.entity.Member;
+import com.qzp.bid.domain.member.entity.PointHistory;
+import com.qzp.bid.domain.member.entity.PointStatus;
 import com.qzp.bid.domain.member.entity.Review;
 import com.qzp.bid.domain.member.entity.Role;
 import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.mapper.ReviewMapper;
 import com.qzp.bid.domain.member.repository.MemberRepository;
-import com.qzp.bid.global.result.error.exception.BusinessException;
+import com.qzp.bid.domain.member.repository.PointHistoryRepository;
 import com.qzp.bid.domain.member.repository.ReviewRepository;
+import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.security.util.JwtProvider;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -50,6 +55,7 @@ public class MemberServiceImpl implements MemberService {
     private final DealRepository dealRepository;
     private final SaleRepository saleRepository;
     private final WishRepository wishRepository;
+    private final PointHistoryRepository pointHistoryRepository;
     //Mapper
     private final MemberMapper memberMapper;
     private final ReviewMapper reviewMapper;
@@ -178,4 +184,18 @@ public class MemberServiceImpl implements MemberService {
         return reviewListPage;
     }
 
+
+    @Transactional
+    @Override
+    public void chargePoint(PointChargeReq pointChargeReq) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+        member.chargePoint(pointChargeReq.getAmount());
+        PointHistory pointHistory = PointHistory.builder()
+            .amount(pointChargeReq.getAmount())
+            .status(PointStatus.CHARGE)
+            .time(LocalDateTime.now()).build();
+        member.getPointHistory().add(pointHistory);
+        pointHistoryRepository.save(pointHistory);
+    }
 }

@@ -4,12 +4,13 @@ import static com.qzp.bid.global.result.ResultCode.*;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
-import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
+import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.service.MemberService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
@@ -55,7 +56,7 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq){
+    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq) {
         LoginTokenRes loginTokenRes = memberService.register(memberJoinReq);
         return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS, loginTokenRes));
     }
@@ -106,4 +107,10 @@ public class MemberController {
             ResultResponse.of(ResultCode.GET_REVIEW_SUCCESS, reviewListPage));
     }
 
+    @Operation(summary = "포인트 충전")
+    @PostMapping("/points")
+    public ResponseEntity<ResultResponse> chargePoint(@RequestBody PointChargeReq pointChargeReq) {
+        memberService.chargePoint(pointChargeReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.POINT_CHARGE_SUCCESS));
+    }
 }
