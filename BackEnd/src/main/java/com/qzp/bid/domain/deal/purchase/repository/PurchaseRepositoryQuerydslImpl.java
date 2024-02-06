@@ -42,7 +42,8 @@ public class PurchaseRepositoryQuerydslImpl implements PurchaseRepositoryQueryds
                             .orderBy(image.createTime.asc())
                             .limit(1),
                         "imagePath"
-                    ))).as("dealSimpleRes")
+                    ))).as("dealSimpleRes"),
+                purchase.status.as("status")
             ))
             .from(purchase)
             .where(booleanBuilder)
