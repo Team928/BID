@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.member.controller;
 
+import static com.qzp.bid.global.result.ResultCode.GET_BIDHISTORY_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_MYPAGE_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_MYWISH_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_PARTICIPATEDSALE_SUCCESS;
@@ -10,6 +11,7 @@ import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_NOT_EXIST;
 import static com.qzp.bid.global.result.ResultCode.REGISTER_SUCCESS;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.LookupParam;
@@ -90,6 +92,14 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_PARTICIPATEDSALE_SUCCESS, saleListPage));
     }
 
+    @Operation(summary = "참여한 경매(한 개)의 입찰 내역(1개 이상) 조회")
+    @GetMapping("/profiles/saleParticipant/{saleId}")
+    public ResponseEntity<ResultResponse> getBidHistoryBySaleId(
+        @PathVariable("saleId") String saleId, Pageable pageable) {
+        BidHistoryListPage bidHistoryListPage = memberService.getBidHistoryBySaleId(
+            Long.parseLong(saleId), pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_BIDHISTORY_SUCCESS, bidHistoryListPage));
+    }
 
     @Operation(summary = "역경매 내역 - 주최한 역경매")
     @GetMapping("/profiles/{nickname}/purchaseHost")

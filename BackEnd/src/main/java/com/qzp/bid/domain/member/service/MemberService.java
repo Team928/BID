@@ -1,6 +1,7 @@
 package com.qzp.bid.domain.member.service;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.LookupParam;
@@ -21,6 +22,8 @@ public interface MemberService {
     SaleListPage getSaleByHost(String nickname, Pageable pageable);
 
     SaleListPage getSaleByParticipant(String nickname, Pageable pageable);
+
+    BidHistoryListPage getBidHistoryBySaleId(long saleId, Pageable pageable);
 
     PurchaseListPage getPurchaseByHost(String nickname, Pageable pageable);
 
