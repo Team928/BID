@@ -1,7 +1,9 @@
 import Bottom from '@/components/@common/Bottom';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import BuyCategoryItem from '@/components/home/buy/BuyCategoryItem';
-import { icons } from '@/constants/icons';
+import SEARCH from '@/assets/icon/search.png';
+import NOTIFY from '@/assets/icon/notify.png';
+import BACK from '@/assets/icon/back.png';
 import { usePurchase } from '@/hooks/home/usePurchase';
 import useKeywordStore from '@/stores/keywordStore';
 import { categoryType } from '@/types/model';
@@ -18,10 +20,10 @@ const BuyCategoryPage = () => {
   const { keyword } = useKeywordStore();
 
   const info: IHeaderInfo = {
-    left: icons.BACK,
+    left: <img src={BACK} />,
     center: '카테고리',
-    right_1: icons.SEARCH,
-    right_2: icons.NOTIFY,
+    right_1: <img src={SEARCH} />,
+    right_2: <img src={NOTIFY} />,
     prev: '/',
     cur: pathname,
   };

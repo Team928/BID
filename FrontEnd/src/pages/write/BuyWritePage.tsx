@@ -1,5 +1,5 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
-import { icons } from '@/constants/icons';
+import BACK from '@/assets/icon/back.png';
 import useInput from '@/hooks/@common/useInput';
 import userStore from '@/stores/userStore';
 import { useEffect, useRef, useState } from 'react';
@@ -357,7 +357,7 @@ const categoryInfo: ICategory[] = [
 ];
 
 const info: IHeaderInfo = {
-  left: icons.BACK,
+  left: <img src={BACK} />,
   center: '구매',
   right_1: null,
   right_2: null,

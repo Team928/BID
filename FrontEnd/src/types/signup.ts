@@ -6,7 +6,7 @@ export interface ISignupReq {
 export interface ISignupRes {
   id: number;
   nickname: string;
-  address: string;
+  area: string[];
   accessToken: string;
   refreshToken: string;
 }

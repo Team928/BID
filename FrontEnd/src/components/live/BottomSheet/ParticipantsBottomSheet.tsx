@@ -9,7 +9,7 @@ const ParticipantsBottomSheet = ({
   participants,
 }: {
   onClose: () => void;
-  handleResign: (userId: string) => void;
+  handleResign: (userId: number) => void;
   participants: ISellerInfo[];
 }) => {
   return (

@@ -1,7 +1,7 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import DetailBottom from '@/components/home/detail/DetailBottom';
 import SaleDetail from '@/components/home/detail/SaleDetail';
-import { icons } from '@/constants/icons';
+import BACK from '@/assets/icon/back.png';
 import { useSale } from '@/hooks/home/useSale';
 import { useParams } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const SaleDetailPage = () => {
   } = useGetSaleDetail(Number(id));
 
   const info: IHeaderInfo = {
-    left: icons.BACK,
+    left: <img src={BACK} />,
     center: '상세보기',
     right_1: null,
     right_2: null,

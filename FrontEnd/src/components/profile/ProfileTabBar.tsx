@@ -1,5 +1,5 @@
+import useTabStore from '@/stores/auctionTabStore';
 import React from 'react';
-import useTabStore from "@/stores/auctionTabStore";
 
 interface ProfileTabBarProps {
     leftTab: string;
@@ -7,6 +7,7 @@ interface ProfileTabBarProps {
 }
 
 const ProfileTabBar: React.FC<ProfileTabBarProps> = ({ leftTab, rightTab }) => {
+    
     const { tab, setTab } = useTabStore();
     
     return (

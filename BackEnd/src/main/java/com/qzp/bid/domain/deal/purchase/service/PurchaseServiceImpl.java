@@ -58,7 +58,11 @@ public class PurchaseServiceImpl implements PurchaseService {
         List<ImageDto> uploadPaths = imageUploader.upload(photos);
         purchase.setWriter(member);
         List<Image> images = uploadPaths.stream()
-            .map(imageMapper::ImageDtoToImage)
+            .map(imageDto -> {
+                Image image = imageMapper.imageDtoToImage(imageDto);
+                image.setDeal(purchase);
+                return image;
+            })
             .map(imageRepository::save)
             .toList();
         purchase.setImages(images);

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,15 +23,15 @@ public class DealController {
     private final DealService dealService;
 
     @Operation(summary = "거래글 찜목록 추가")
-    @PostMapping("/wishes")
-    public ResponseEntity<ResultResponse> addWish(@RequestParam long dealId) {
+    @PostMapping("/{dealId}/wishes")
+    public ResponseEntity<ResultResponse> addWish(@PathVariable long dealId) {
         dealService.addWish(dealId);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResultResponse.of(ResultCode.ADD_WISH_SUCCESS));
     }
 
     @Operation(summary = "거래글 찜목록 제거")
-    @DeleteMapping("/wishes/{dealId}")
+    @DeleteMapping("/{dealId}/wishes")
     public ResponseEntity<ResultResponse> deleteWish(@PathVariable long dealId) {
         dealService.deleteWish(dealId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_WISH_SUCCESS));

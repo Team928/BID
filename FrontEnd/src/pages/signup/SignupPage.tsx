@@ -4,8 +4,10 @@ import { useSignup } from '@/hooks/signup/useSignup';
 import userStore from '@/stores/userStore';
 import { ISignupReq } from '@/types/signup';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
+  const navigate = useNavigate();
   const { useGetNicknameCheck, usePostSignup } = useSignup();
   const { loginUser } = userStore();
   const [isClick, setIsClick] = useState<boolean>(false);
@@ -40,8 +42,10 @@ const SignupPage = () => {
 
   // 회원가입 진행
   const handleSignup = () => {
-    if (confirmSignup({ address, nickname })) mutate();
-    else {
+    if (confirmSignup({ address, nickname })) {
+      mutate();
+    } else {
+      // #TODO 토스트 메시지 띄우기
       console.log('지금은 회원가입 못해');
     }
   };
@@ -56,8 +60,16 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      const { accessToken, address, id, nickname, refreshToken } = data.data;
-      loginUser({ accessToken, area: address, nickname, refreshToken, userId: id });
+      const { accessToken, area, id, nickname, refreshToken } = data.data;
+      loginUser({
+        accessToken: accessToken,
+        area: area[0],
+        nickname: nickname,
+        refreshToken: refreshToken,
+        userId: id,
+      });
+      navigate('/');
+      // #TODO 토스트 메시지 띄우기
     }
   }, [isSuccess]);
 

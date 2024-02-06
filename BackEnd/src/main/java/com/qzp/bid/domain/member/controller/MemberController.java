@@ -4,17 +4,22 @@ import static com.qzp.bid.global.result.ResultCode.*;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
-import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
+import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
+import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.ReviewListPage;
+import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.service.MemberService;
+import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +56,7 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq){
+    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq) {
         LoginTokenRes loginTokenRes = memberService.register(memberJoinReq);
         return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS, loginTokenRes));
     }
@@ -86,4 +91,26 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS));
     }
 
+    @PostMapping("/review")
+    public ResponseEntity<ResultResponse> createReview(
+        @RequestBody MemberReviewReq memberReviewReq) {
+        memberService.createReview(memberReviewReq);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ResultResponse.of(ResultCode.CREATE_REVIEW_SUCCESS));
+    }
+
+    @Operation(summary = "내가 작성한 리뷰 조회")
+    @GetMapping("/review")
+    public ResponseEntity<ResultResponse> getReviewIWorte(Pageable pageable) {
+        ReviewListPage reviewListPage = memberService.getReviewsIWrote(pageable);
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.GET_REVIEW_SUCCESS, reviewListPage));
+    }
+
+    @Operation(summary = "포인트 충전")
+    @PostMapping("/points")
+    public ResponseEntity<ResultResponse> chargePoint(@RequestBody PointChargeReq pointChargeReq) {
+        memberService.chargePoint(pointChargeReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.POINT_CHARGE_SUCCESS));
+    }
 }

@@ -1,6 +1,6 @@
-import { postReview } from "@/service/review/api";
+import { getReviewListReq, postReview } from "@/service/review/api";
 import { ICreateReviewReq } from "@/types/review";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useReview = () => {
 	const usePostReview = (info: ICreateReviewReq) => {
@@ -9,5 +9,12 @@ export const useReview = () => {
 		});
 	};
 
-	return {usePostReview}
+	const useGetReviewList = () => {
+		return useQuery({
+			queryKey: ['review'],
+			queryFn: () => getReviewListReq(),
+		})
+	}
+
+	return { usePostReview, useGetReviewList }
 };

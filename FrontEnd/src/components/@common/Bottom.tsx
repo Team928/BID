@@ -14,8 +14,8 @@ const Bottom = () => {
     {
       name: '홈',
       path: '/',
-      selectIcon: <GoHome size={'2rem'} color="#3498DB" />,
-      defaultIcon: <GoHome size={'2rem'} color="#545454" />,
+      selectIcon: <GoHome size={'1.8rem'} color="#3498DB" />,
+      defaultIcon: <GoHome size={'1.8rem'} color="#545454" />,
     },
     {
       name: '위시',
@@ -23,32 +23,32 @@ const Bottom = () => {
       selectIcon: (
         // 사이즈를 줄여야 다른 아이콘과 맞아서 <div>태그로 감싸서 해결했습니다
         <div className="w-8 h-8 flex  items-center justify-center">
-          <BsSuitHeart size={'1.9rem'} color="#3498DB" />
+          <BsSuitHeart size={'1.6rem'} color="#3498DB" />
         </div>
       ),
       defaultIcon: (
         <div className="w-8 h-8 flex  items-center justify-center">
-          <BsSuitHeart size={'1.9rem'} color="#545454" />
+          <BsSuitHeart size={'1.6rem'} color="#545454" />
         </div>
       ),
     },
     {
       name: '글쓰기',
       path: '/write',
-      selectIcon: <PiPencilSimpleLine size={'2rem'} color="#3498DB" />,
-      defaultIcon: <PiPencilSimpleLine size={'2rem'} color="#545454" />,
+      selectIcon: <PiPencilSimpleLine size={'1.8rem'} color="#3498DB" />,
+      defaultIcon: <PiPencilSimpleLine size={'1.8rem'} color="#545454" />,
     },
     {
       name: '채팅',
       path: '/chat',
-      selectIcon: <PiChatsCircle size={'2rem'} color="#3498DB" />,
-      defaultIcon: <PiChatsCircle size={'2rem'} color="#545454" />,
+      selectIcon: <PiChatsCircle size={'1.8rem'} color="#3498DB" />,
+      defaultIcon: <PiChatsCircle size={'1.8rem'} color="#545454" />,
     },
     {
       name: '마이',
       path: '/profile',
-      selectIcon: <PiUser size={'2rem'} color="#3498DB" />,
-      defaultIcon: <PiUser size={'2rem'} color="#545454" />,
+      selectIcon: <PiUser size={'1.8rem'} color="#3498DB" />,
+      defaultIcon: <PiUser size={'1.8rem'} color="#545454" />,
     },
   ];
 
@@ -66,12 +66,12 @@ const Bottom = () => {
               <div
                 key={index}
                 onClick={() => navigate(`${item.path}`)}
-                className="flex flex-col items-center cursor-pointer"
+                className="flex flex-col items-center cursor-pointer text-xs"
               >
                 {pathname === item.path ? (
                   <>
                     {item.selectIcon}
-                    <p className="text-BID_MAIN">{item.name}</p>
+                    <p className="text-BID_MAIN ">{item.name}</p>
                   </>
                 ) : (
                   <>

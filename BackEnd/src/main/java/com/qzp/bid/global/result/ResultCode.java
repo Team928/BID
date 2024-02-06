@@ -14,7 +14,10 @@ public enum ResultCode {
     GET_MYPAGE_SUCCESS(200, "마이페이지 조회에 성공하였습니다"),
     GET_HAUCTION_SUCCESS(200, "내가 주최한 경매 조회에 성공하였습니다"),
     GET_MYWISH_SUCCESS(200, "나의 찜 목록 조회에 성공하였습니다."),
+    CREATE_REVIEW_SUCCESS(200, "리뷰 등록에 성공하였습니다."),
+    GET_REVIEW_SUCCESS(200, "리뷰 조회에 성공하였습니다."),
 
+    POINT_CHARGE_SUCCESS(200, "포인트 충전에 성공하였습니다."),
     //deal
     ADD_WISH_SUCCESS(201, "거래글 찜목록 추가에 성공하였습니다."),
     DELETE_WISH_SUCCESS(200, "거래글 찜목록 삭제에 성공하였습니다."),
@@ -40,7 +43,11 @@ public enum ResultCode {
     GET_CHATROOMS_SUCCESS(200, "채팅방 조회에 성공하였습니다."),
     GET_CHATS_SUCCESS(200, "채팅내역 조회에 성공하였습니다."),
     EXIT_CHATROOM_SUCCESS(204, "채팅방 나가기에 성공하였습니다."),
-    CONFIRMED_DEAL_SUCCESS(200, "거래확정에 성공하였습니다.");
+    CONFIRMED_DEAL_SUCCESS(200, "거래확정에 성공하였습니다."),
+
+    //live
+    CREATE_LIVE_ROOM_SUCCESS(201, "라이브 방 생성에 성공하였습니다."),
+    ;
 
 
     private final int status;

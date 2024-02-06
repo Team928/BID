@@ -1,4 +1,4 @@
-import { getSaleListHostReq } from "@/service/profile/api"
+import { getSaleListHostReq, getUserProfileReq } from "@/service/profile/api"
 import { useQuery } from "@tanstack/react-query"
 
 export const useProfile = () => {
@@ -8,5 +8,12 @@ export const useProfile = () => {
             queryFn: () => getSaleListHostReq(nickName),
         })
     }
-    return { useSaleHost }
+
+    const useUserProfile = (nickname: string) => {
+        return useQuery({
+            queryKey: ['profile', nickname],
+            queryFn: () => getUserProfileReq(nickname),
+        })
+    }
+    return { useSaleHost, useUserProfile }
 }

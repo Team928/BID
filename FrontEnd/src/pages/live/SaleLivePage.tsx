@@ -15,24 +15,29 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export interface ISellerInfo {
   type: string;
-  userId: string;
-  nickname: string;
+  userId: number;
+  nickName: string;
   offerPrice: number;
   image: string;
   content: string;
-  isRequestSpeak: string;
+  isRequestSpeak: boolean;
   onMike: boolean;
+  possibleSpeak: boolean;
+}
+
+export interface IBuyerInfo {
+  type: string;
+  userId: number;
+  nickName: string;
 }
 
 const SaleLivePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const pType = PARTICIPANT_TYPE.BUYER;
-  // const { userId, nickname } = userStore();
   const { onMike, onCamera, setOnCamera, setOnMike } = useLiveStore();
   const [mySessionId, setMySessionId] = useState<string>(id || 'SessionA');
-  const [myUserId, setMyUserId] = useState<string>('234');
-  const [myUserName, setMyUserName] = useState<string>();
+  // const { userId, nickname } = userStore();
   const [session, setSession] = useState<Session | undefined>(undefined);
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager | any>(undefined);
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined);
@@ -40,23 +45,25 @@ const SaleLivePage = () => {
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device | undefined>(undefined);
   const [sellerList, setSellerList] = useState<ISellerInfo[]>([]);
 
-  setMyUserId('234');
-
-  // test
-  const sellerInfo = {
-    type: 'seller',
-    userId: '234',
-    nickname: '나눈판매자',
+  const [sellerInfo, setSellerInfo] = useState<ISellerInfo>({
+    type: 'seller', // 추후 변경
+    userId: 234,
+    nickName: '나는 판매자',
     offerPrice: 49000,
     image: 'image.png',
     content: '물건 상태 완전 깨끗해용',
-  };
+    isRequestSpeak: false,
+    onMike: false,
+    possibleSpeak: false,
+  });
 
-  const buyerInfo = {
+  const [buyerInfo, setBuyerInfo] = useState<IBuyerInfo>({
     type: 'buyer',
-    userId: '123',
-    nickname: '나는구매자',
-  };
+    userId: 123,
+    nickName: '나눈 구매자',
+  });
+
+  console.log(setBuyerInfo);
 
   const OV = useRef(new OpenVidu());
   OV.current.enableProdMode();
@@ -77,23 +84,22 @@ const SaleLivePage = () => {
       const clientData = JSON.parse(event.stream.connection.data);
       console.log('들어온 사람', clientData);
 
-      // 내가 구매자일 때 판매자가 들어오면 map에 정보 저장
+      // 내가 구매자일 때 판매자가 들어오면 sellerList에 정보 저장
       if (pType === PARTICIPANT_TYPE.BUYER) {
         if (clientData.type === PARTICIPANT_TYPE.SELLER) {
-          setSellerList((prev: any) => {
-            return [
-              ...prev,
-              {
-                userId: clientData.userId,
-                nickname: clientData.nickname,
-                offerPrice: clientData.offerPrice,
-                image: clientData.image,
-                content: clientData.content,
-                isRequestSpeak: false,
-                onMike: event.stream.audioActive,
-              },
-            ];
-          });
+          const newSeller: ISellerInfo = {
+            type: pType,
+            userId: clientData.userId,
+            nickName: clientData.nickName,
+            offerPrice: clientData.offerPrice,
+            image: clientData.image,
+            content: clientData.content,
+            isRequestSpeak: false,
+            onMike: event.stream.audioActive,
+            possibleSpeak: sellerInfo.possibleSpeak,
+          };
+
+          setSellerList(sellers => [...sellers, newSeller]);
         }
       }
 
@@ -105,21 +111,7 @@ const SaleLivePage = () => {
       deleteSubscriber(event.stream.streamManager);
 
       const exit = JSON.parse(event.stream.connection.data);
-
-      const prevData = [...sellerList];
-      let deleteIdx = -1;
-      if (exit.type === PARTICIPANT_TYPE.SELLER) {
-        for (let i = 0; i < sellerList.length; i++) {
-          if (sellerList[i].userId === exit.userId) {
-            deleteIdx = i;
-            break;
-          }
-        }
-
-        prevData.splice(deleteIdx, 1);
-      }
-
-      setSellerList([...prevData]);
+      setSellerList(sellerList => sellerList.filter(seller => seller.userId !== exit.userId));
     });
 
     mySession.on('exception', exception => {
@@ -128,7 +120,7 @@ const SaleLivePage = () => {
 
     if (pType === PARTICIPANT_TYPE.SELLER) {
       mySession.on('signal:resign', event => {
-        if (event.data === myUserId) {
+        if (Number(event.data) === sellerInfo.userId) {
           Toast.error('방장에 의해 강퇴당했습니다.');
 
           if (mySession) {
@@ -140,10 +132,45 @@ const SaleLivePage = () => {
           }, 2000);
         }
       });
+
+      // 만약에 내가 발언권을 얻었으면
+      mySession.on('signal:resolveSpeak', event => {
+        if (Number(event.data) === sellerInfo.userId) {
+          Toast.info('발언권을 얻었습니다.');
+
+          setSellerInfo(prev => {
+            return {
+              ...prev,
+              possibleSpeak: true,
+            };
+          });
+        }
+      });
+    }
+
+    // 구매자일때 발언권 요청
+    if (pType === PARTICIPANT_TYPE.BUYER) {
+      mySession.on('signal:requestSpeak', event => {
+        // data: 요청 보낸 사람의 userId, nickName
+        console.log('발언권 보낸 사람', event.data);
+
+        if (!event.data) return;
+
+        const data = JSON.parse(event.data);
+        Toast.info(`${data.nickName}님이 발언권을 요청했습니다.`);
+
+        setSellerList(currentSellerList =>
+          currentSellerList.map(seller =>
+            seller.userId === data.userId ? { ...seller, isRequestSpeak: true } : seller,
+          ),
+        );
+      });
     }
 
     setSession(mySession);
   }, []);
+
+  console.log('판매자 리스트', sellerList);
 
   useEffect(() => {
     if (session) {
@@ -178,7 +205,7 @@ const SaleLivePage = () => {
         }
       });
     }
-  }, [session, myUserName]);
+  }, [session]);
 
   console.log(currentVideoDevice);
 
@@ -191,7 +218,6 @@ const SaleLivePage = () => {
     setSession(undefined);
     setSubscribers([]);
     setMySessionId('SessionA');
-    setMyUserName('Participant' + Math.floor(Math.random() * 100));
     setMainStreamManager(undefined);
     setPublisher(undefined);
   }, [session]);
@@ -266,6 +292,14 @@ const SaleLivePage = () => {
   };
 
   const handleMike = () => {
+    // 판매자는 발언권 있어야 말할 수 있음
+    if (pType === PARTICIPANT_TYPE.SELLER) {
+      if (!sellerInfo.possibleSpeak) {
+        Toast.error('대화가 가능한 상태가 아닙니다. 발언권 요청 후 이용해주세요.');
+        return;
+      }
+    }
+
     const nMikeFlag = !onMike;
     setOnMike(nMikeFlag);
 
@@ -332,13 +366,42 @@ const SaleLivePage = () => {
   const [isOpenParticipantModal, setIsOpenParticipantModal] = useState<boolean>(false);
 
   // 강퇴시키기
-  const handleResign = (userId: string) => {
-    console.log('퇴장');
-
+  const handleResign = (userId: number) => {
     session?.signal({
-      data: userId,
+      data: String(userId),
       type: 'resign',
     });
+  };
+
+  // 발언권 신청
+  const handleRequestSpeak = () => {
+    const sendData = {
+      userId: sellerInfo.userId,
+      nickName: sellerInfo.nickName,
+    };
+
+    session?.signal({
+      data: JSON.stringify(sendData),
+      type: 'requestSpeak',
+    });
+
+    Toast.success('발언권을 신청했습니다.');
+  };
+
+  // 발언권 주기
+  const handleResolveSpeakRequest = (userId: number, nickName: string) => {
+    // 이제 여기서 방장이 해당 userId를 가진 사람의 마이크를 풀어준다
+    session?.signal({
+      data: String(userId),
+      type: 'resolveSpeak',
+    });
+
+    Toast.success(`${nickName}님에게 발언권을 주었습니다.`);
+
+    // 현재 판매자 리스트 중에서 요청 여부 변경
+    setSellerList(currentSellerList =>
+      currentSellerList.map(seller => (seller.userId === userId ? { ...seller, isRequestSpeak: false } : seller)),
+    );
   };
 
   return (
@@ -360,9 +423,18 @@ const SaleLivePage = () => {
                 const data = JSON.parse(info.stream.connection.data);
                 return (
                   <div key={idx} className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">
-                    <div className="relative w-full h-full" onClick={() => handleMainVideoStream(info)}>
-                      <CameraItem streamManager={info} />
-                    </div>
+                    {data.userId === (pType === PARTICIPANT_TYPE.SELLER ? sellerInfo.userId : buyerInfo.userId) ? (
+                      <div
+                        className="relative w-full h-full rounded-md border border-2-white"
+                        onClick={() => handleMainVideoStream(info)}
+                      >
+                        <CameraItem streamManager={info} />
+                      </div>
+                    ) : (
+                      <div className="relative w-full h-full" onClick={() => handleMainVideoStream(info)}>
+                        <CameraItem streamManager={info} />
+                      </div>
+                    )}
                     <span className="absolute left-2 top-2 bg-black/30 px-1.5 py-0.5  rounded-md text-white/50 text-xs ">
                       {data.type === 'buyer' ? '구매자' : '판매자'}
                       {data.type === 'seller' && (
@@ -374,7 +446,7 @@ const SaleLivePage = () => {
                       &nbsp;
                     </div>
                     <span className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/80">
-                      {data.nickname}
+                      {data.nickName}
                     </span>
                   </div>
                 );
@@ -405,10 +477,16 @@ const SaleLivePage = () => {
         )}
       </div>
       {isOpenSpeakBottomSheet && (
-        <SpeakListBottomSheet speakInfo={sellerList} onClose={() => setIsOpenSpeakBottomSheet(false)} />
+        <SpeakListBottomSheet
+          speakInfo={sellerList}
+          onClose={() => setIsOpenSpeakBottomSheet(false)}
+          handleResolveSpeakRequest={handleResolveSpeakRequest}
+        />
       )}
       {isOpenRequsetSalePriceModal && <RequestSalePriceModal onClose={() => setIsOpenRequestSalePriceModal(false)} />}
-      {isOpenRequestSpeakModal && <RequestSpeakModal onClose={() => setIsOpenRequestSpeakModal(false)} />}
+      {isOpenRequestSpeakModal && (
+        <RequestSpeakModal onClose={() => setIsOpenRequestSpeakModal(false)} handleRequestSpeak={handleRequestSpeak} />
+      )}
       {isOpenParticipantModal && (
         <ParticipantsBottomSheet
           onClose={() => setIsOpenParticipantModal(false)}

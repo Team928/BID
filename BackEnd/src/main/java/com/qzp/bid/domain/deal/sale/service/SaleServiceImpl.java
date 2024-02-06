@@ -69,7 +69,11 @@ public class SaleServiceImpl implements SaleService {
         List<ImageDto> uploadPaths = imageUploader.upload(photos);
         sale.setWriter(member);
         List<Image> images = uploadPaths.stream()
-            .map(imageMapper::ImageDtoToImage)
+            .map(imageDto -> {
+                Image image = imageMapper.imageDtoToImage(imageDto);
+                image.setDeal(sale);
+                return image;
+            })
             .map(imageRepository::save)
             .toList();
         sale.setImages(images);
@@ -187,8 +191,8 @@ public class SaleServiceImpl implements SaleService {
         }
         Sale sale = saleRepository.findById(saleId)
             .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
-        if (!sale.getStatus().equals(DealStatus.BEFORE)) {
-            throw new BusinessException(ErrorCode.NOT_BEFORE_STATUS);
+        if (!sale.getStatus().equals(DealStatus.AUCTION)) {
+            throw new BusinessException(ErrorCode.NOT_AUCTION_STATUS);
         }
         LiveRequest liveRequest = LiveRequest.builder().memberId(member.getId())
             .saleId(saleId).build();
@@ -203,7 +207,9 @@ public class SaleServiceImpl implements SaleService {
             return;
         }
         for (Sale sale : sales.get()) {
-            if (sale.getEndTime().isBefore(LocalDateTime.now())) {
+            log.info(sale.getEndTime().toString());
+            log.info(LocalDateTime.now().toString());
+            if (sale.getEndTime().isAfter(LocalDateTime.now())) {
                 continue;
             }
             sale.setStatus(DealStatus.END);
