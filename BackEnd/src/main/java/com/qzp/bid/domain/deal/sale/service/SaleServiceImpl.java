@@ -207,7 +207,9 @@ public class SaleServiceImpl implements SaleService {
             return;
         }
         for (Sale sale : sales.get()) {
-            if (sale.getEndTime().isBefore(LocalDateTime.now())) {
+            log.info(sale.getEndTime().toString());
+            log.info(LocalDateTime.now().toString());
+            if (sale.getEndTime().isAfter(LocalDateTime.now())) {
                 continue;
             }
             sale.setStatus(DealStatus.END);
