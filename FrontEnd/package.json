@@ -14,6 +14,7 @@
     "@heroicons/react": "^2.1.1",
     "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^5.18.0",
+    "@types/react-slick": "^0.23.13",
     "axios": "^1.6.5",
     "openvidu-browser": "^2.29.1",
     "react": "^18.2.0",
@@ -21,7 +22,9 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.3",
+    "react-slick": "^0.30.1",
     "react-toastify": "^10.0.4",
+    "slick-carousel": "^1.8.1",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "zustand": "^4.5.0"
