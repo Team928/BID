@@ -42,7 +42,11 @@ public enum ResultCode {
     GET_CHATROOMS_SUCCESS(200, "채팅방 조회에 성공하였습니다."),
     GET_CHATS_SUCCESS(200, "채팅내역 조회에 성공하였습니다."),
     EXIT_CHATROOM_SUCCESS(204, "채팅방 나가기에 성공하였습니다."),
-    CONFIRMED_DEAL_SUCCESS(200, "거래확정에 성공하였습니다.");
+    CONFIRMED_DEAL_SUCCESS(200, "거래확정에 성공하였습니다."),
+
+    //live
+    CREATE_LIVE_ROOM_SUCCESS(201, "라이브 방 생성에 성공하였습니다."),
+    ;
 
 
     private final int status;
