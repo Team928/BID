@@ -1,9 +1,12 @@
 import sample from '@/assets/image/sample.png';
+import Modal from '@/components/@common/Modal';
+import { useSale } from '@/hooks/home/useSale';
 import { ISaleDetailRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { getDate } from '@/utils/getDate';
 import { getPriceName } from '@/utils/getPriceName';
+import { useState } from 'react';
 import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +14,11 @@ import { useNavigate } from 'react-router-dom';
 
 const SaleDetail = (props: { info: ISaleDetailRes }) => {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState<boolean>(false);
   const { dealRes, immediatePrice, startPrice, status, highestBid, bidList } = props.info;
   const { month, date, datOfWeek, time } = getDate(dealRes.startTime);
-
+  const { usePostSaleLive } = useSale();
+  const { mutate: liveMutate } = usePostSaleLive(dealRes.id);
   // #TODO 프로필 파람 해야함
   // 작성자로 사용자 정보 조회
   const getMemberInfo = () => {
@@ -32,6 +37,34 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
 
   return (
     <>
+      {/* 라이브 요청하기 모달 */}
+      {showModal && (
+        <Modal width="300px" height="auto" title="라이브 요청" onClose={() => setShowModal(false)}>
+          <div className="w-full flex flex-col justify-center items-center p-5">
+            <div className="text-center">
+              <p>녹화영상에서 아쉬운 부분이 있었나요?</p>
+              <p className="pt-2">지금 라이브 요청을 하시겠습니까?</p>
+            </div>
+            <div className="w-full flex gap-5 py-4">
+              <button
+                className="w-full bg-BID_SUB_GRAY text-white px-4 py-2 rounded-2xl"
+                onClick={() => setShowModal(false)}
+              >
+                아니오
+              </button>
+              <button
+                className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
+                onClick={() => {
+                  liveMutate();
+                  setShowModal(false);
+                }}
+              >
+                네
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
       <div className="w-full h-full ">
         {/* 사진 */}
         <div className="relative w-full h-2/5">
@@ -44,8 +77,9 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
               onClick={() => liveRequest()}
               className="absolute left-3 bottom-3 p-2 px-3 text-sm bg-white text-black rounded-full font-bold flex items-center gap-1"
             >
-              {/* <LiaHandPointerSolid size={'1.5rem'} color="#545454" /> */}
-              <p className="">라이브 요청하기</p>
+              <p onClick={() => setShowModal(true)} className="">
+                라이브 요청
+              </p>
             </div>
           )}
         </div>
@@ -88,7 +122,6 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
               <p className="text-lg">판매자 정보</p>
             </div>
           </div>
-          {/* #TODO 아래에 라이브보러가기 또는 녹화영상 상태에 따라 다르게 보여줘야 함 */}
           {status !== 'BEFORE' && status === 'LIVE' ? (
             <div
               onClick={() => approachLive()}
@@ -128,8 +161,6 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
                 })}
               </div>
             </div>
-
-            {/* #TODO 입찰로그 dto확인하고 보여주기 */}
           </div>
         </div>
       </div>

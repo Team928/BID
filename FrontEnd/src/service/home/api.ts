@@ -88,6 +88,17 @@ export const postImmediateBid = async (saleId: number): Promise<APIResponse<stri
   }
 };
 
+export const postLiveReq = async (saleId: number): Promise<APIResponse<string>> => {
+  try {
+    const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/livereqs`);
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 // 찜 추가
 export const postDealWishAdd = async (dealId: number): Promise<APIResponse<string>> => {
   try {
