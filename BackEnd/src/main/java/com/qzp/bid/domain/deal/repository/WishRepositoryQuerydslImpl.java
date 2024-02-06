@@ -36,9 +36,11 @@ public class WishRepositoryQuerydslImpl implements WishRepositoryQuerydsl {
                         JPAExpressions
                             .select(image.imagePath)
                             .from(image)
-                            .where(image.deal.id.eq(sale.id))
-                            .orderBy(image.createTime.asc())
-                            .limit(1),
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(sale.id))))
+                            .orderBy(image.createTime.asc()),
                         "imagePath"
                     ))).as("dealSimpleRes"),
                 sale.immediatePrice,
@@ -81,9 +83,11 @@ public class WishRepositoryQuerydslImpl implements WishRepositoryQuerydsl {
                         JPAExpressions
                             .select(image.imagePath)
                             .from(image)
-                            .where(image.deal.id.eq(purchase.id))
-                            .orderBy(image.createTime.asc())
-                            .limit(1),
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(purchase.id))))
+                            .orderBy(image.createTime.asc()),
                         "imagePath"
                     ))).as("dealSimpleRes"),
                 Expressions.asBoolean(true).as("isWished")

@@ -52,7 +52,7 @@ public abstract class Deal {
     private Category category;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> area = new ArrayList<>();
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deal")
     private List<Image> images = new ArrayList<>();
     private LocalDateTime startTime;
 }

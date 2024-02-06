@@ -39,9 +39,11 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
                         JPAExpressions
                             .select(image.imagePath)
                             .from(image)
-                            .where(image.deal.id.eq(sale.id))
-                            .orderBy(image.createTime.asc())
-                            .limit(1),
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(sale.id))))
+                            .orderBy(image.createTime.asc()),
                         "imagePath"
                     ))).as("dealSimpleRes"),
                 sale.immediatePrice,
