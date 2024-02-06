@@ -1,5 +1,6 @@
 import kakao from '@/assets/image/kakao.png';
 import logo from '@/assets/image/logo.png';
+import naver from '@/assets/image/naver.png';
 import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -15,7 +16,7 @@ const LoginPage = () => {
 
           <Link to="http://i10d208.p.ssafy.io:8081/oauth2/authorization/naver">
             <div className="flex items-center gap-3 border border-[#E4E4E4] p-2 px-BID_P rounded-xl">
-              <img src="@/assets/image/naver.png"></img>
+              <img src={naver}></img>
               <div className="absolute translate-x-1/2 pl-1">네이버로 시작하기</div>
             </div>
           </Link>
