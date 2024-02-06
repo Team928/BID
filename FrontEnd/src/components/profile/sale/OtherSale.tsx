@@ -1,5 +1,6 @@
 import StateButton from "@/components/@common/StateButton"
 import { useProfile } from "@/hooks/profile/useProfile"
+import sample from '@/assets/image/sample.png'
 
 const OtherSale = () => {
 
@@ -20,7 +21,7 @@ const OtherSale = () => {
           <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9] flex items-center">
             {/* TODO: 사진 변경해야함 */}
           <div className="w-32 h-32">
-            <img className="w-full h-full rounded-xl" src="/src/assets/image/sample.png"></img>
+            <img className="w-full h-full rounded-xl" src={sample}></img>
           </div>
           <div className="flex-1 flex flex-col py-2">
             <div className="flex items-center justify-between">

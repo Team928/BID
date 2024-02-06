@@ -1,4 +1,4 @@
-import useMyTabStore from '@/stores/profileMyTabStore';
+import useTabStore from '@/stores/auctionTabStore';
 import React from 'react';
 
 interface ProfileTabBarProps {
@@ -8,7 +8,7 @@ interface ProfileTabBarProps {
 
 const ProfileTabBar: React.FC<ProfileTabBarProps> = ({ leftTab, rightTab }) => {
     
-    const { tab, setTab } = useMyTabStore();
+    const { tab, setTab } = useTabStore();
     
     return (
         <div className="w-full flex px-BID_P fixed top-0 pt-16 bg-white z-[9]">
