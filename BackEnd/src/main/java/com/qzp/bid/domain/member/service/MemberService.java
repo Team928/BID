@@ -20,6 +20,8 @@ public interface MemberService {
 
     SaleListPage getSaleByHost(String nickname, Pageable pageable);
 
+    SaleListPage getSaleByParticipant(String nickname, Pageable pageable);
+
     PurchaseListPage getPurchaseByHost(String nickname, Pageable pageable);
 
     void createReview(MemberReviewReq memberReviewReq);

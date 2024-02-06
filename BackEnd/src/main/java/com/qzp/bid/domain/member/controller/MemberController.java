@@ -2,6 +2,7 @@ package com.qzp.bid.domain.member.controller;
 
 import static com.qzp.bid.global.result.ResultCode.GET_MYPAGE_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_MYWISH_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_PARTICIPATEDSALE_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_PURCHASEHOST_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.GET_SALEHOST_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
@@ -80,6 +81,15 @@ public class MemberController {
         SaleListPage saleListPage = memberService.getSaleByHost(nickname, pageable);
         return ResponseEntity.ok(ResultResponse.of(GET_SALEHOST_SUCCESS, saleListPage));
     }
+
+    @Operation(summary = "경매 내역 - 참여한 경매")
+    @GetMapping("/profiles/{nickname}/saleParticipant")
+    public ResponseEntity<ResultResponse> getSaleByParticipant(
+        @PathVariable("nickname") String nickname, Pageable pageable) {
+        SaleListPage saleListPage = memberService.getSaleByParticipant(nickname, pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_PARTICIPATEDSALE_SUCCESS, saleListPage));
+    }
+
 
     @Operation(summary = "역경매 내역 - 주최한 역경매")
     @GetMapping("/profiles/{nickname}/purchaseHost")

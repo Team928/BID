@@ -118,6 +118,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public SaleListPage getSaleByParticipant(String nickname, Pageable pageable) {
+        Member member = memberRepository.findMemberByNickname(nickname)
+            .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
+
+        SaleListPage saleListPage = saleRepository.findSalesByParticipantId(member.getId(),
+            pageable);
+
+        return saleListPage;
+    }
+
+    @Override
     public PurchaseListPage getPurchaseByHost(String nickname, Pageable pageable) {
         Member member = memberRepository.findMemberByNickname(nickname)
             .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
