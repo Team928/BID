@@ -10,8 +10,8 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class LiveController {
 
 
     @GetMapping("/create/rooms") // 방만들기 & 방참가
-    public ResponseEntity<ResultResponse> JoinLiveRoom(@RequestBody(required = false) Map<String, Object> params)
+    public ResponseEntity<ResultResponse> JoinLiveRoom(@RequestParam Map<String, Object> params)
         throws OpenViduJavaClientException, OpenViduHttpException {
         LiveRoomRes liveRoom = liveService.JoinLiveRoom(params);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CREATE_LIVE_ROOM_SUCCESS, liveRoom));
