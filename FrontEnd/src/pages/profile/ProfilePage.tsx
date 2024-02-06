@@ -4,7 +4,6 @@ import { icons } from "@/constants/icons";
 import { MdOutlineCreate } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-
 const ProfilePage = () => {
 
   const info: IHeaderInfo = {
