@@ -9,6 +9,7 @@ import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.service.MemberService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
@@ -95,6 +96,14 @@ public class MemberController {
         memberService.createReview(memberReviewReq);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResultResponse.of(ResultCode.CREATE_REVIEW_SUCCESS));
+    }
+
+    @Operation(summary = "내가 작성한 리뷰 조회")
+    @GetMapping("/review")
+    public ResponseEntity<ResultResponse> getReviewIWorte(Pageable pageable) {
+        ReviewListPage reviewListPage = memberService.getReviewsIWrote(pageable);
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.GET_REVIEW_SUCCESS, reviewListPage));
     }
 
 }

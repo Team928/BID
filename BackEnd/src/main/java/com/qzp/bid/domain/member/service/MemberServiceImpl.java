@@ -15,6 +15,7 @@ import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.Review;
 import com.qzp.bid.domain.member.entity.Role;
@@ -167,4 +168,14 @@ public class MemberServiceImpl implements MemberService {
         review.setRole(role);
         reviewRepository.save(review);
     }
+
+    public ReviewListPage getReviewsIWrote(Pageable pageable) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        ReviewListPage reviewListPage = reviewRepository.getReviewListPageByWriterId(member.getId(),
+            pageable);
+        return reviewListPage;
+    }
+
 }
