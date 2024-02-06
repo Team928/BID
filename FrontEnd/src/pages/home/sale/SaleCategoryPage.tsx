@@ -3,7 +3,9 @@ import Bottom from '@/components/@common/Bottom';
 import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import SelectModal from '@/components/home/SelectModal';
-import { icons } from '@/constants/icons';
+import SEARCH from '@/assets/icon/search.png';
+import NOTIFY from '@/assets/icon/notify.png';
+import BACK from '@/assets/icon/back.png';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { useLocation } from 'react-router-dom';
 import { categoryType, dealStatusType } from '@/types/model';
@@ -40,10 +42,10 @@ const SaleCategoryPage = () => {
   });
 
   const info: IHeaderInfo = {
-    left: icons.BACK,
+    left: <img src={BACK} />,
     center: '카테고리',
-    right_1: icons.SEARCH,
-    right_2: icons.NOTIFY,
+    right_1: <img src={SEARCH} />,
+    right_2: <img src={NOTIFY} />,
     prev: '/',
     cur: pathname,
   };

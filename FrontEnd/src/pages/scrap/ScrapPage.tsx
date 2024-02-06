@@ -3,7 +3,7 @@ import Bottom from '@/components/@common/Bottom';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import StateButton from '@/components/@common/StateButton';
 import AuctionTabBar from '@/components/home/AuctionTabBar';
-import { icons } from '@/constants/icons';
+import NOTIFY from '@/assets/icon/notify.png';
 import useTabStore from '@/stores/auctionTabStore';
 import { HiHeart } from 'react-icons/hi';
 
@@ -14,7 +14,7 @@ const ScrapPage = () => {
     left: null,
     center: '위시',
     right_1: null,
-    right_2: icons.NOTIFY,
+    right_2: <img src={NOTIFY} />,
     prev: '/scrap',
   };
 

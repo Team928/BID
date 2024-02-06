@@ -1,6 +1,6 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Toggle from '@/components/@common/Toggle';
-import { icons } from '@/constants/icons';
+import BACK from '@/assets/icon/back.png';
 import { PARTICIPANT_TYPE, TRANSACTION_TYPE } from '@/constants/liveType';
 import useLiveStore from '@/stores/userLiveStore';
 import { useEffect, useState } from 'react';
@@ -33,7 +33,7 @@ const LiveEntrancePage = () => {
   };
 
   const info: IHeaderInfo = {
-    left: icons.BACK,
+    left: <img src={BACK} />,
     center: '라이브 입장하기',
     right_1: null,
     right_2: null,

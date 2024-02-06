@@ -4,7 +4,7 @@ import AuctionTabBar from '@/components/home/AuctionTabBar';
 import BuyTab from '@/components/home/BuyTab';
 import Category from '@/components/home/Category';
 import SaleTab from '@/components/home/SaleTab';
-import { icons } from '@/constants/icons';
+import NOTIFY from '@/assets/icon/notify.png';
 import useTabStore from '@/stores/auctionTabStore';
 import useKeywordStore from '@/stores/keywordStore';
 import { useEffect } from 'react';
@@ -17,7 +17,7 @@ const HomePage = () => {
     left: null,
     center: null,
     right_1: null,
-    right_2: icons.NOTIFY,
+    right_2: <img src={NOTIFY} />,
     prev: '/',
     cur: '/',
   };

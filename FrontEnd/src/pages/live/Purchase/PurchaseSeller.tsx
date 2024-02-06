@@ -1,7 +1,6 @@
 import Toast from '@/components/@common/Toast';
 import FullCameraItem from '@/components/live/FullCameraItem';
 import LiveSettingModal from '@/components/live/Modal/LiveSettingModal';
-import { icons } from '@/constants/icons';
 import useLiveStore from '@/stores/userLiveStore';
 import { Publisher, Session, StreamManager } from 'openvidu-browser';
 import { useState } from 'react';

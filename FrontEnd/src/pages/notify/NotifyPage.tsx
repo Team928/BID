@@ -1,6 +1,6 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import NotifyItem, { IItem } from '@/components/notify/NotifyItem';
-import { icons } from '@/constants/icons';
+import BACK from '@/assets/icon/back.png';
 import { useLocation } from 'react-router-dom';
 
 const NotifyPage = () => {
@@ -37,7 +37,7 @@ const NotifyPage = () => {
   ];
 
   const info: IHeaderInfo = {
-    left: icons.BACK,
+    left: <img src={BACK} />,
     center: '알림',
     right_1: null,
     right_2: null,
