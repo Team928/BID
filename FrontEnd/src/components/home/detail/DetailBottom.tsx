@@ -1,13 +1,16 @@
 import Modal from '@/components/@common/Modal';
+import { useSale } from '@/hooks/home/useSale';
 import { ISaleDetailRes } from '@/types/home';
 import { useState } from 'react';
 import { IoBookmarksOutline, IoBookmarks } from 'react-icons/io5';
 
 const DetailBottom = (props: { info: ISaleDetailRes }) => {
   const { status, wished, highestBid, startPrice, dealRes } = props.info;
-
   const [showBidModal, setShowBidModal] = useState<boolean>(false);
   const [bidPrice, setBidPrice] = useState<string>('');
+
+  const { usePostSaleBid } = useSale();
+  const { data: bidData, mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice);
 
   const handleBtnClick = () => {
     if (status === 'BEFORE') {
@@ -16,6 +19,18 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
       return;
     } else {
       setShowBidModal(true);
+    }
+  };
+
+  const handleBidBtnClick = () => {
+    bidMuate();
+
+    if (bidData) {
+      // Toast해야함
+      // console.log(bidData);
+      // if (bidData.status !== 201) {
+      // } else {
+      // }
     }
   };
 
@@ -40,7 +55,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
               <input
                 type="text"
                 value={bidPrice}
-                onChange={() => setBidPrice(bidPrice)}
+                onChange={e => setBidPrice(e.target.value)}
                 placeholder="입찰가를 입력해주세요"
                 className="w-full outline-none border p-2 text-sm rounded-xl"
               />
@@ -54,7 +69,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
               </button>
               <button
                 className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
-                onClick={() => setShowBidModal(false)}
+                onClick={() => handleBidBtnClick()}
               >
                 확인
               </button>
