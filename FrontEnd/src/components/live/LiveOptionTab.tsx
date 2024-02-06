@@ -25,7 +25,7 @@ const LiveOptionTab = ({
   handleRequestSalePrice?: () => void;
   handleParticipants?: () => void;
 }) => {
-  const { onCamera, onMike, setOnCamera, setOnMike } = useLiveStore();
+  const { onCamera, onMike } = useLiveStore();
 
   const liveOption = {
     camera: {

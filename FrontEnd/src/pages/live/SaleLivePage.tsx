@@ -40,6 +40,8 @@ const SaleLivePage = () => {
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device | undefined>(undefined);
   const [sellerList, setSellerList] = useState<ISellerInfo[]>([]);
 
+  setMyUserId('234');
+
   // test
   const sellerInfo = {
     type: 'seller',
@@ -178,6 +180,8 @@ const SaleLivePage = () => {
     }
   }, [session, myUserName]);
 
+  console.log(currentVideoDevice);
+
   const leaveSession = useCallback(() => {
     if (session) {
       session.disconnect();
@@ -192,35 +196,35 @@ const SaleLivePage = () => {
     setPublisher(undefined);
   }, [session]);
 
-  const switchCamera = useCallback(async () => {
-    try {
-      const devices = await OV.current.getDevices();
-      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+  // const switchCamera = useCallback(async () => {
+  //   try {
+  //     const devices = await OV.current.getDevices();
+  //     const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
-      if (videoDevices && videoDevices.length > 1) {
-        const newVideoDevice = videoDevices.filter(device => device.deviceId !== currentVideoDevice?.deviceId);
+  //     if (videoDevices && videoDevices.length > 1) {
+  //       const newVideoDevice = videoDevices.filter(device => device.deviceId !== currentVideoDevice?.deviceId);
 
-        if (newVideoDevice.length > 0) {
-          const newPublisher = OV.current.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true,
-          });
+  //       if (newVideoDevice.length > 0) {
+  //         const newPublisher = OV.current.initPublisher(undefined, {
+  //           videoSource: newVideoDevice[0].deviceId,
+  //           publishAudio: true,
+  //           publishVideo: true,
+  //           mirror: true,
+  //         });
 
-          if (session) {
-            await session.unpublish(mainStreamManager);
-            await session.publish(newPublisher);
-            setCurrentVideoDevice(newVideoDevice[0]);
-            setMainStreamManager(newPublisher);
-            setPublisher(newPublisher);
-          }
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }, [currentVideoDevice, session, mainStreamManager]);
+  //         if (session) {
+  //           await session.unpublish(mainStreamManager);
+  //           await session.publish(newPublisher);
+  //           setCurrentVideoDevice(newVideoDevice[0]);
+  //           setMainStreamManager(newPublisher);
+  //           setPublisher(newPublisher);
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // }, [currentVideoDevice, session, mainStreamManager]);
 
   const deleteSubscriber = useCallback((streamManager: any) => {
     setSubscribers(prevSubscribers => {

@@ -1,7 +1,7 @@
+import iphone from '@/assets/image/iphone.png';
 import Accordian from '@/components/@common/Accordian';
 import BottomSheet from '@/components/@common/BottomSheet';
 import { ISellerInfo } from '@/pages/live/SaleLivePage';
-import iphone from '../../../assets/image/iphone.png';
 
 const ParticipantsBottomSheet = ({
   onClose,
