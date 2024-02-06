@@ -59,7 +59,13 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
               >
                 취소
               </button>
-              <button className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl" onClick={() => bidMuate()}>
+              <button
+                className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
+                onClick={() => {
+                  bidMuate();
+                  setShowBidModal(false);
+                }}
+              >
                 확인
               </button>
             </div>
@@ -88,7 +94,13 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
               >
                 취소
               </button>
-              <button className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl" onClick={() => immediateMuate()}>
+              <button
+                className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
+                onClick={() => {
+                  immediateMuate();
+                  setShowImmediateModal(false);
+                }}
+              >
                 확인
               </button>
             </div>
