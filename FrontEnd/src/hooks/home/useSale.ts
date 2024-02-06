@@ -1,5 +1,5 @@
 import Toast from '@/components/@common/Toast';
-import { getSaleDetailReq, getSaleListReq, postImmediateBid, postSaleBid } from '@/service/home/api';
+import { getSaleDetailReq, getSaleListReq, postDealWishAdd, postImmediateBid, postSaleBid } from '@/service/home/api';
 import { IDealsListReq } from '@/types/home';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -50,5 +50,20 @@ export const useSale = () => {
     });
   };
 
-  return { useGetSaleList, useGetSaleDetail, usePostSaleBid, usePostSaleImmediate };
+  const usePostDealWishAdd = (dealId: number) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationKey: ['wished', 'add', dealId],
+      mutationFn: () => postDealWishAdd(dealId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['detail', dealId] });
+      },
+      onError: () => {
+        console.log('에러입니다');
+      },
+    });
+  };
+
+  return { useGetSaleList, useGetSaleDetail, usePostSaleBid, usePostSaleImmediate, usePostDealWishAdd };
 };
