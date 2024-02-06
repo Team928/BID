@@ -1,6 +1,6 @@
-import { getSaleDetailReq, getSaleListReq } from '@/service/home/api';
+import { getSaleDetailReq, getSaleListReq, postSaleBid } from '@/service/home/api';
 import { IDealsListReq } from '@/types/home';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useSale = () => {
   const useGetSaleList = (props: IDealsListReq) => {
@@ -17,5 +17,16 @@ export const useSale = () => {
     });
   };
 
-  return { useGetSaleList, useGetSaleDetail };
+  const usePostSaleBid = (saleId: number, bidPrice: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationKey: ['bid', saleId, bidPrice],
+      mutationFn: () => postSaleBid(saleId, bidPrice),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['sale', 'detail', saleId] });
+      },
+    });
+  };
+  return { useGetSaleList, useGetSaleDetail, usePostSaleBid };
 };

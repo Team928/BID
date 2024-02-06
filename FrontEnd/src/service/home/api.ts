@@ -61,3 +61,12 @@ export const getPurchaseDetailReq = async (purchaseId: number): Promise<APIRespo
   console.log(data);
   return data;
 };
+
+// 경매 입찰하기
+export const postSaleBid = async (saleId: number, bidPrice: string): Promise<APIResponse<string>> => {
+  const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/bids`, {
+    bidPrice: bidPrice,
+  });
+  console.log(data);
+  return data;
+};
