@@ -19,6 +19,7 @@ public interface MemberService {
     MemberProfileRes getProfile(String nickname);
 
     SaleListPage getHauction(String nickname, Pageable pageable);
+    SaleListPage getSaleByHost(String nickname, Pageable pageable);
 
     void createReview(MemberReviewReq memberReviewReq);
 

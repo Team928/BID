@@ -3,6 +3,7 @@ package com.qzp.bid.domain.member.service;
 import static com.qzp.bid.global.result.error.ErrorCode.*;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
@@ -106,7 +107,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public SaleListPage getHauction(String nickname, Pageable pageable) { //내가 주최한 경매
+    public SaleListPage getSaleByHost(String nickname, Pageable pageable) { //내가 주최한 경매
         Member member = memberRepository.findMemberByNickname(nickname)
             .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
 

@@ -55,7 +55,7 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq){
+    public ResponseEntity<ResultResponse> register(@RequestBody MemberJoinReq memberJoinReq) {
         LoginTokenRes loginTokenRes = memberService.register(memberJoinReq);
         return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS, loginTokenRes));
     }
@@ -67,13 +67,15 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_MYPAGE_SUCCESS, memberProfileRes));
     }
 
-    @Operation(summary = "내 경매 내역 - 내가 주최한 경매")
-    @GetMapping("/profiles/{nickname}/hauction")
-    public ResponseEntity<ResultResponse> getAuctionByHost(
-        @PathVariable("nickname") String nickname,
+    @Operation(summary = "경매 내역 - 주최한 경매")
+    @GetMapping("/profiles/{nickname}/saleHost")
+    public ResponseEntity<ResultResponse> getSaleByHost(@PathVariable("nickname") String nickname,
         Pageable pageable) {
         SaleListPage saleListPage = memberService.getHauction(nickname, pageable);
         return ResponseEntity.ok(ResultResponse.of(GET_HAUCTION_SUCCESS, saleListPage));
+        SaleListPage saleListPage = memberService.getSaleByHost(nickname, pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_SALEHOST_SUCCESS, saleListPage));
+    }
     }
 
     @Operation(summary = "나의 찜 목록 조회")

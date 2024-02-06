@@ -14,6 +14,7 @@ import com.qzp.bid.domain.deal.dto.ImageSimpleDto;
 import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
+import com.qzp.bid.domain.deal.entity.QWish;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleSimpleRes;
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
 
     @Override
     public SaleListPage findSalesByWriterId(Long writerId, Pageable pageable) {
+        QWish wish = QWish.wish;
 
         List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory
             .select(Projections.fields(
@@ -76,16 +78,25 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
                         JPAExpressions
                             .select(image.imagePath)
                             .from(image)
-                            .where(image.deal.id.eq(sale.id))
-                            .orderBy(image.createTime.asc())
-                            .limit(1),
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(sale.id))))
+                            .orderBy(image.createTime.asc()),
                         "imagePath"
                     ))).as("dealSimpleRes"),
                 sale.immediatePrice,
                 sale.startPrice,
                 sale.endTime,
                 sale.highestBid.bidPrice.as("bid"),
-                sale.status
+                sale.status,
+                Expressions.asBoolean(
+                    JPAExpressions.select(wish.id)
+                        .from(wish)
+                        .where(
+                            wish.member.id.eq(writerId),
+                            wish.deal.id.eq(sale.id)
+                        ).exists()).as("isWished")
             ))
             .from(sale)
             .where(sale.writer.id.eq(writerId)) // 작성자 id로 필터링
