@@ -1,11 +1,11 @@
 server:
-  port: 8081
+  port: ENC(p6Yp6yUvamdiU4l6toB1EQ==)
   servlet:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-    context-path: /api
+    context-path: ENC(bnnF1c6qrOahmW6jymzmPA==)
 
 spring:
   profiles:
@@ -18,24 +18,9 @@ spring:
         - db-server
         - auth-server
     include:
+      - key
       - db
       - oauth
-
-  datasource:
-    driver-class-name: ${db.driver}
-    url: ${db.url}
-    username: ${db.username}
-    password: ${db.password}
-
-  data:
-    mongodb:
-      uri: ${db.uri}
-
-    redis:
-      host: ${db.redis.host}
-      port: ${db.redis.port}
-      user: ${db.redis.user}
-      password: ${db.redis.password}
 
   jpa:
     hibernate:
@@ -44,7 +29,6 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
-
 
 springdoc: #swagger
   packages-to-scan: com.qzp.bid
@@ -60,13 +44,3 @@ springdoc: #swagger
       enabled: true
   cache:
     disabled: true
-
-jwt:
-  header: Authorization
-  secret: ${auth.tokenSecret}
-  token-access-time: ${auth.accessTokenExpiration}
-  token-refresh-time: ${auth.refreshTokenExpiration}
-
-openvidu:
-  url: ${openvidu.url} #노출 금지
-  secret: ${openvidu.secret}  #노출 금지
