@@ -1,12 +1,8 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import NotifyItem, { IItem } from '@/components/notify/NotifyItem';
 import BACK from '@/assets/icon/back.png';
-import { useLocation } from 'react-router-dom';
 
 const NotifyPage = () => {
-  const location = useLocation();
-  const prev = location.state.prev;
-
   // #TODO 실제 데이터로 추후에 수정해야함
   const notifyList: IItem[] = [
     {

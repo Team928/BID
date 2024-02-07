@@ -3,7 +3,7 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import { Link } from 'react-router-dom';
 
 const WritePage = () => {
-  const info: IHeadesrInfo = {
+  const info: IHeaderInfo = {
     left: null,
     center: '글쓰기',
     right_1: null,

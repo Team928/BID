@@ -12,7 +12,7 @@ export interface IHeaderInfo {
 const Header = (props: { info: IHeaderInfo }) => {
   const navigate = useNavigate();
 
-  const { left, center, right_1, right_2, prev, cur } = props.info;
+  const { left, center, right_1, right_2 } = props.info;
 
   return (
     <div className="bg-white w-full px-BID_P h-12 flex justify-between items-center border-b border-[#D9D9D9] fixed top-0 z-10">
@@ -21,30 +21,12 @@ const Header = (props: { info: IHeaderInfo }) => {
       <div className="basis-1/5 flex gap-3 justify-end">
         {right_1 && (
           <div className="cursor-pointer">
-            <img
-              onClick={() =>
-                navigate('/search', {
-                  state: {
-                    prev: cur ? cur : prev,
-                  },
-                })
-              }
-              src={search}
-            />
+            <img onClick={() => navigate('/search')} src={search} />
           </div>
         )}
         {right_2 && (
           <div className="cursor-pointer">
-            <img
-              onClick={() =>
-                navigate('/notify', {
-                  state: {
-                    prev: cur ? cur : prev,
-                  },
-                })
-              }
-              src={notify}
-            />
+            <img onClick={() => navigate('/notify')} src={notify} />
           </div>
         )}
       </div>

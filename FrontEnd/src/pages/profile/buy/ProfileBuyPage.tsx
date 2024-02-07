@@ -11,7 +11,6 @@ const ProfileBuyPage = () => {
     center: '내 역경매 내역',
     right_1: null,
     right_2: null,
-    s,
   };
 
   const { tab } = useTabStore();
