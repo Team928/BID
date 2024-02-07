@@ -35,6 +35,7 @@ public enum ErrorCode {
     //purchase
     GET_PURCHASE_FAIL(400, "구매글 조회에 실패하였습니다."),
     APPLY_LIMIT_FAIL(400, "지원 인원이 모두 찼습니다."),
+    GET_APPLYFORM_FAIL(400, "지원글 조회에 실패하였습니다."),
 
     //JWT
     JWT_INVALID(401, "유효하지 않은 토큰입니다."),
