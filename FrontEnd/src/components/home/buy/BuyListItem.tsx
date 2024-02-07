@@ -12,7 +12,7 @@ const BuyListItem = (props: { item: IPurchaseSimpleRes }) => {
   const { month, date, datOfWeek, time } = getDate(startTime);
 
   return (
-    <div onClick={() => navigate(`/purchase/detail/${id}`)} className="text-xs ">
+    <div onClick={() => navigate(`/buy/detail/${id}`)} className="text-xs ">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
         <div className="w-full h-full absolute bg-black/10 rounded-2xl"></div>
         <img src={sample} className="w-full h-full rounded-2xl object-cover" />
