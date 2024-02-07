@@ -36,7 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-application-db.yml
-application-oauth.yml
+application-key.yml
 
 **/resources/static/images/**

@@ -1,0 +1,46 @@
+image:
+  upload:
+    path: ENC(UJ9KHk0zaPmTGtn3xEilqPTMJq/W7bXdMIKgAzyIOa5lSXf44ujTNlO/2owTM8hY)
+
+openvidu:
+  url: ENC(R6e/kom8Jw5krMp4+CNKHqsjneQdAVbcqfA94DmFha3JKWVF1ObUGQ==)
+  secret: ENC(KNJHLpgF4riOznuzNsyIWkw5CUpH8KKc)
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: db-local
+  datasource:
+    driver-class-name: ${local.db.driver}
+    url: ${local.db.url}
+    username: ${local.db.username}
+    password: ${local.db.password}
+  data:
+    mongodb:
+      uri: ENC(zuBqpIbmGLBMbWiazTrhIkmVcf4RtMST7s1v6tsBKwOLuOhM+sdEJQ==)
+    redis:
+      host: ENC(C675blAMcXOErgQJtRu5WlsHTHHyJs9q)
+      port: ENC(BwBUkunc7Vr8OqDKfeNL/A==)
+      username:
+      password:
+
+---
+spring:
+  config:
+    activate:
+      on-profile: db-server
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ENC(7DfqZdhzkRV32UXb/ZjA+skUfnSDhhiH//tX+kO+BIGaZ4/izmpOeZh5nq7qiik5pa1BZrDVo2M=)
+    username: ENC(BT+NxbhZyaZKv4odRrYrtAzIu6UhZYpl)
+    password: ENC(XsxnNbWCt8rygqdJk1q41kHzQ9SRjWpe)
+  data:
+    mongodb:
+      uri: ENC(LT/wTsB7fIWcDFDvy3q+gYHCswfCGK5dPpSSNops4eiwKzUTzQQkyvhChaf1A2d1)
+    redis:
+      host: ENC(Rn5UFKpvFvo9QPC73lWnOe48t1FILQLfrhf+soOaz+Q=)
+      port: ENC(1TrHMFwQn/O0BP6eIIXNwg==)
+      username: ENC(480/GSaOYGTC5M7XUxKucQ==)
+      password: ENC(BIPTRfDba7N0Mn2hnckGE+QzoR38SJXN)
