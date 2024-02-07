@@ -14,7 +14,7 @@ const LoginPage = () => {
             <div className="absolute translate-x-1/2 pl-1">카카오로 시작하기</div>
           </div>
 
-          <Link to="http://i10d208.p.ssafy.io:8081/oauth2/authorization/naver">
+          <Link to="https://i10d208.p.ssafy.io:80/oauth2/authorization/naver">
             <div className="flex items-center gap-3 border border-[#E4E4E4] p-2 px-BID_P rounded-xl">
               <img src={naver}></img>
               <div className="absolute translate-x-1/2 pl-1">네이버로 시작하기</div>
