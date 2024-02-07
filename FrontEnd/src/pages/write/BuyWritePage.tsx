@@ -361,5 +361,5 @@ const info: IHeaderInfo = {
   center: '구매',
   right_1: null,
   right_2: null,
-  prev: '/write',
+  prev: '/',
 };
