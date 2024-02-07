@@ -92,6 +92,6 @@ export interface IPurchaseDetailRes {
   memberLimit: number;
   status: dealStatusType;
   applyForms: [];
-  wished: boolean;
+  isWished: boolean;
   joinReq: boolean;
 }

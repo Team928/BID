@@ -2,8 +2,9 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import PurchaseDetail from '@/components/home/detail/PurchaseDetail';
 import BACK from '@/assets/icon/back.png';
 import { usePurchase } from '@/hooks/home/usePurchase';
-import { IoBookmarks, IoBookmarksOutline } from 'react-icons/io5';
 import { useParams } from 'react-router-dom';
+import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
+import { useSale } from '@/hooks/home/useSale';
 
 const PurchaseDetailPage = () => {
   const { id } = useParams();
@@ -22,6 +23,9 @@ const PurchaseDetailPage = () => {
     right_2: null,
     prev: '/',
   };
+  const { usePostDealWishAdd, useDeleteDealWish } = useSale();
+  const { mutate: wishAddMuate } = usePostDealWishAdd(Number(id));
+  const { mutate: wishDeleteMuate } = useDeleteDealWish(Number(id));
 
   // #TODO 역경매 참가 신청 해야함
   const handleApplyForm = () => {};
@@ -37,10 +41,10 @@ const PurchaseDetailPage = () => {
         </div>
         <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
           <div className="w-full h-full py-2 flex items-center gap-3">
-            {purchaseDetailInfo.data.wished ? (
-              <IoBookmarks size={'2rem'} color="#3498DB" />
+            {purchaseDetailInfo.data.isWished ? (
+              <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />
             ) : (
-              <IoBookmarksOutline size={'2rem'} color="#545454" />
+              <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />
             )}
             <div
               onClick={handleApplyForm}

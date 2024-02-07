@@ -65,6 +65,7 @@ export const useSale = () => {
       mutationKey: ['wished', 'add', dealId],
       mutationFn: () => postDealWishAdd(dealId),
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['purchase', 'detail', dealId] });
         queryClient.invalidateQueries({ queryKey: ['sale', 'detail', dealId] });
       },
       onError: () => {
@@ -95,6 +96,7 @@ export const useSale = () => {
       mutationKey: ['wished', 'delete', dealId],
       mutationFn: () => deleteDealWish(dealId),
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['purchase', 'detail', dealId] });
         queryClient.invalidateQueries({ queryKey: ['sale', 'detail', dealId] });
       },
       onError: () => {
