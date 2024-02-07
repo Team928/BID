@@ -1,18 +1,21 @@
 import Modal from '@/components/@common/Modal';
+import Toast from '@/components/@common/Toast';
 import { useSale } from '@/hooks/home/useSale';
 import { useProfile } from '@/hooks/profile/useProfile';
+import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
 import { ISaleDetailRes } from '@/types/home';
 import { useState } from 'react';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
+import { MdLiveTv } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
-const DetailBottom = (props: { info: ISaleDetailRes }) => {
+const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const { status, isWished, highestBid, startPrice, dealRes } = props.info;
+  const isSeller = props.isSeller;
   const [showBidModal, setShowBidModal] = useState<boolean>(false);
   const [showImmediateModal, setShowImmediateModal] = useState<boolean>(false);
-
   const [bidPrice, setBidPrice] = useState<string>('');
-
   const { usePostSaleBid, usePostSaleImmediate, usePostDealWishAdd, useDeleteDealWish } = useSale();
   const { mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice);
   const { mutate: immediateMuate } = usePostSaleImmediate(dealRes.id);
@@ -22,6 +25,8 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
   const { useUserProfile } = useProfile();
   const { nickname } = userStore();
   const { data: userProfileInfo } = useUserProfile(nickname);
+  const navigate = useNavigate();
+  const { setTType, setPType } = useLiveStore();
 
   const handleBtnClick = () => {
     if (status === 'BEFORE') {
@@ -30,6 +35,38 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
       return;
     } else {
       setShowBidModal(true);
+    }
+  };
+
+  // #TODO 라이브방 진입하는 함수
+  const approachLive = () => {
+    setTType('sale');
+    setPType(isSeller ? 'seller' : 'buyer');
+
+    // 판매자 로직
+    if (isSeller && status === 'BEFORE') {
+      navigate(`/live/sale/${dealRes.id}`, {
+        state: {
+          title: dealRes.title,
+          startPrice: startPrice,
+          image: dealRes.images[0],
+        },
+      });
+    }
+    // 구매자 로직
+    else {
+      if (status !== 'LIVE') {
+        Toast.error('라이브 방송 진행중이 아닙니다.');
+        return;
+      }
+
+      // @TODO: 구매자가 경매 진행 중 필요한 데이터를 넘김
+      navigate(`/live/sale/${dealRes.id}`, {
+        state: {
+          title: dealRes.title,
+          startPrice: startPrice,
+        },
+      });
     }
   };
 
@@ -121,13 +158,23 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
           ) : (
             <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />
           )}
-          <div
-            onClick={handleBtnClick}
-            className={`w-full py-3  text-white rounded-xl text-center text-lg font-bold 
+          {isSeller ? (
+            <button
+              onClick={() => approachLive()}
+              className="w-full border rounded-xl border-red-500 font-bold flex p-3 justify-center items-center gap-2"
+            >
+              <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
+              <p className="text-lg text-red-500">라이브 시작하기</p>
+            </button>
+          ) : (
+            <button
+              onClick={handleBtnClick}
+              className={`w-full py-3  text-white rounded-xl text-center text-lg font-bold 
           ${status === 'END' ? 'bg-BID_BLACK' : 'bg-BID_MAIN'}`}
-          >
-            {status === 'BEFORE' ? '즉시 구매하기' : status === 'END' ? '이미 종료된 경매입니다' : '입찰하기'}
-          </div>
+            >
+              {status === 'BEFORE' ? '즉시 구매하기' : status === 'END' ? '이미 종료된 경매입니다' : '입찰하기'}
+            </button>
+          )}
         </div>
       </div>
     </>

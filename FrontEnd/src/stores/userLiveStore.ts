@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type tType = 'purchase' | 'sale' | '';
+type tType = 'sale' | 'purchase' | '';
 type pType = 'buyer' | 'seller' | '';
 
 interface ILive {
