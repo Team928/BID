@@ -8,7 +8,7 @@ const BuyCategoryItem = (props: { item: IPurchaseSimpleRes }) => {
 
   const { month, date, datOfWeek } = getDate(startTime);
   return (
-    <div onClick={() => navigate(`/purchase/detail/${id}`)} className="flex gap-4">
+    <div onClick={() => navigate(`/buy/detail/${id}`)} className="flex gap-4">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative"></div>
       <div className="flex-1 flex flex-col justify-around ">
         <p className="font-bold truncate whitespace-normal line-clamp-2">{title}</p>

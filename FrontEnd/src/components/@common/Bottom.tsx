@@ -55,33 +55,79 @@ const Bottom = () => {
   useEffect(() => {
     // #TODO 홈 선택되도록 바꿔야함 (경매탭, 역경매탭 등)
     console.log(pathname);
+    console.log(pathname.split('/')[0]);
+    console.log(pathname.split('/')[1]);
   }, [pathname]);
 
   return (
     <>
       <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
         <div className="py-2 flex justify-around items-center">
-          {menu.map((item, index) => {
-            return (
-              <div
-                key={index}
-                onClick={() => navigate(`${item.path}`)}
-                className="flex flex-col items-center cursor-pointer text-xs"
-              >
-                {pathname === item.path ? (
-                  <>
-                    {item.selectIcon}
-                    <p className="text-BID_MAIN ">{item.name}</p>
-                  </>
-                ) : (
-                  <>
-                    {item.defaultIcon}
-                    <p>{item.name}</p>
-                  </>
-                )}
-              </div>
-            );
-          })}
+          <div onClick={() => navigate(`/`)} className="flex flex-col items-center cursor-pointer text-xs">
+            {pathname === '/' || pathname.split('/')[1] === 'sale' || pathname.split('/')[1] === 'buy' ? (
+              <>
+                {menu[0].selectIcon}
+                <p className="text-BID_MAIN ">{menu[0].name}</p>
+              </>
+            ) : (
+              <>
+                {menu[0].defaultIcon}
+                <p>{menu[0].name}</p>
+              </>
+            )}
+          </div>
+          <div onClick={() => navigate(`/scrap`)} className="flex flex-col items-center cursor-pointer text-xs">
+            {pathname.split('/')[1] === 'scrap' ? (
+              <>
+                {menu[1].selectIcon}
+                <p className="text-BID_MAIN ">{menu[1].name}</p>
+              </>
+            ) : (
+              <>
+                {menu[1].defaultIcon}
+                <p>{menu[1].name}</p>
+              </>
+            )}
+          </div>
+          <div onClick={() => navigate(`/write`)} className="flex flex-col items-center cursor-pointer text-xs">
+            {pathname.split('/')[1] == 'write' ? (
+              <>
+                {menu[2].selectIcon}
+                <p className="text-BID_MAIN ">{menu[2].name}</p>
+              </>
+            ) : (
+              <>
+                {menu[2].defaultIcon}
+                <p>{menu[2].name}</p>
+              </>
+            )}
+          </div>
+          <div onClick={() => navigate(`/chat`)} className="flex flex-col items-center cursor-pointer text-xs">
+            {pathname.split('/')[1] === 'chat' ? (
+              <>
+                {menu[3].selectIcon}
+                <p className="text-BID_MAIN ">{menu[3].name}</p>
+              </>
+            ) : (
+              <>
+                {menu[3].defaultIcon}
+                <p>{menu[3].name}</p>
+              </>
+            )}
+          </div>
+          <div onClick={() => navigate(`/profile`)} className="flex flex-col items-center cursor-pointer text-xs">
+            {pathname.split('/')[1] === 'profile' ? (
+              <>
+                {menu[4].selectIcon}
+                <p className="text-BID_MAIN ">{menu[4].name}</p>
+              </>
+            ) : (
+              <>
+                {menu[4].defaultIcon}
+                <p>{menu[4].name}</p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
