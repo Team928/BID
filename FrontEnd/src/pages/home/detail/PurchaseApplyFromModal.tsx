@@ -1,5 +1,7 @@
 import Modal from '@/components/@common/Modal';
+import Toast from '@/components/@common/Toast';
 import useInput from '@/hooks/@common/useInput';
+import { postPurchasesApplyForm } from '@/service/home/api';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { CiCamera } from 'react-icons/ci';
 import { FaMinus } from 'react-icons/fa6';
@@ -32,6 +34,21 @@ const PurchaseApplyFromModal = ({ setShowModal, id }: IPurchasesApplyFormProps) 
         };
       }
     }
+  };
+
+  // 역경매 참가 신청
+  const handleApplyClick = () => {
+    const formData = new FormData();
+    const json = JSON.stringify(values);
+    const blob = new Blob([json], { type: 'application/json' });
+
+    formData.append('applyFormReq', blob);
+    formData.append('image', image!);
+
+    postPurchasesApplyForm(formData, id).then(() => {
+      setShowModal(false);
+      Toast.success('성공적으로 참가 신청을 하였습니다');
+    });
   };
 
   return (
@@ -84,12 +101,12 @@ const PurchaseApplyFromModal = ({ setShowModal, id }: IPurchasesApplyFormProps) 
           ></textarea>
         </div>
         <div className="w-full pt-2">
-          <p className="font-bold">가격 정보</p>
+          <p className="font-bold">판매 희망 가격</p>
           <input
             type="text"
             name="offerPrice"
             onChange={changer}
-            placeholder="즉시 구매가를 입력해주세요"
+            placeholder="희망가격을 입력해주세요"
             className="w-full outline-none border-b p-2"
           ></input>
         </div>
@@ -100,13 +117,7 @@ const PurchaseApplyFromModal = ({ setShowModal, id }: IPurchasesApplyFormProps) 
           >
             취소
           </button>
-          <button
-            className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
-            onClick={() => {
-              // bidMuate();
-              setShowModal(false);
-            }}
-          >
+          <button className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl" onClick={() => handleApplyClick()}>
             확인
           </button>
         </div>
