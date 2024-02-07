@@ -1,22 +1,61 @@
 import useTabStore from '@/stores/auctionTabStore';
 import { changeKrToEng } from '@/utils/changeCategorie';
 import { useNavigate } from 'react-router-dom';
+import { BsBook } from 'react-icons/bs';
+import { FaDribbble } from 'react-icons/fa';
+import { IoPawOutline } from 'react-icons/io5';
+import { PiTShirt } from 'react-icons/pi';
+import { PiBaby } from 'react-icons/pi';
+import { PiArmchair } from 'react-icons/pi';
+import { BsThreeDots } from 'react-icons/bs';
+import { PiFlowerTulip } from 'react-icons/pi';
+import { FiMonitor } from 'react-icons/fi';
 
 const Category = () => {
   const navigate = useNavigate();
   const { tab } = useTabStore();
 
   const category = [
-    '전체',
-    '도서/음반',
-    '완구/취미',
-    '반려동물',
-    '패션잡화',
-    '뷰티',
-    '유아동',
-    '리빙',
-    '디지털/가전',
-    '기타',
+    {
+      name: '전체',
+      icon: <p className="text-BID_BLACK font-bold">ALL</p>,
+    },
+    {
+      name: '도서/음반',
+      icon: <BsBook size={'1.5rem'} color="#545454" />,
+    },
+    {
+      name: '완구/취미',
+      icon: <FaDribbble size={'1.5rem'} color="#545454" />,
+    },
+    {
+      name: '반려동물',
+      icon: <IoPawOutline size={'1.5rem'} color="#545454" />,
+    },
+    {
+      name: '패션잡화',
+      icon: <PiTShirt size={'1.6rem'} color="#545454" />,
+    },
+    {
+      name: '뷰티',
+      icon: <PiFlowerTulip size={'1.6rem'} color="#545454" />,
+    },
+    {
+      name: '유아동',
+      icon: <PiBaby size={'1.7rem'} color="#545454" />,
+    },
+    {
+      name: '리빙',
+      icon: <PiArmchair size={'1.7rem'} color="#545454" />,
+    },
+    {
+      name: '디지털/가전',
+      icon: <FiMonitor size={'1.4rem'} color="#545454" />,
+    },
+    {
+      name: '기타',
+      icon: <BsThreeDots size={'1.7rem'} color="#545454" />,
+    },
   ];
 
   const navigateHandler = (item: string) => {
@@ -34,11 +73,13 @@ const Category = () => {
         return (
           <div
             key={index}
-            onClick={() => navigateHandler(item)}
+            onClick={() => navigateHandler(item.name)}
             className="flex flex-col justify-center items-center gap-1"
           >
-            <div className="rounded-full w-[3.75rem] h-[3.75rem] bg-gray-200"></div>
-            <p>{item}</p>
+            <div className="flex justify-center items-center rounded-full w-[3.75rem] h-[3.75rem] border">
+              {item.icon}
+            </div>
+            <p>{item.name}</p>
           </div>
         );
       })}

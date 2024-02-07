@@ -9,17 +9,17 @@ interface CarouselProps {
 }
 
 const Carousel: React.FC<CarouselProps> = ({ settings, images }) => {
-    return (
-        <div className="w-full">
-          <Slider {...settings}>
-            {images.map((image, index) => (
-              <div className="flex items-center justify-center" key={index}>
-                <img src={image} alt={`Slide ${index}`} />
-              </div>
-            ))}
-          </Slider>
-        </div>
-      );
-    };
+  return (
+    <div className="w-full">
+      <Slider {...settings}>
+        {images.map((image, index) => (
+          <div className="flex items-center justify-center" key={index}>
+            <img src={image} alt={`Slide ${index}`} />
+          </div>
+        ))}
+      </Slider>
+    </div>
+  );
+};
 
 export default Carousel;

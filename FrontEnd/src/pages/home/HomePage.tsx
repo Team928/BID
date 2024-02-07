@@ -8,9 +8,9 @@ import NOTIFY from '@/assets/icon/notify.png';
 import useTabStore from '@/stores/auctionTabStore';
 import useKeywordStore from '@/stores/keywordStore';
 import { useEffect } from 'react';
-import image1 from '@/assets/image/carouselEx/1.png'; 
-import image2 from '@/assets/image/carouselEx/2.png'; 
-import image3 from '@/assets/image/carouselEx/3.png'; 
+import image1 from '@/assets/image/carouselEx/1.png';
+import image2 from '@/assets/image/carouselEx/2.png';
+import image3 from '@/assets/image/carouselEx/3.png';
 import Carousel from '@/components/@common/Carousel';
 
 const HomePage = () => {
@@ -40,11 +40,7 @@ const HomePage = () => {
   };
 
   // 캐러셀 이미지 배열
-  const images = [
-    image1,
-    image2,
-    image3,
-  ];
+  const images = [image1, image2, image3];
 
   return (
     <>
@@ -52,8 +48,7 @@ const HomePage = () => {
         <Header info={info} />
         <AuctionTabBar />
         <div className="pt-[5.1rem] h-full overflow-y-auto">
-          {/* #TODO 추후 이미지 찾아서 넣고 위에 글자 넣기 */}
-          <div className="w-full h-1/5 bg-gray-300 mb-4">
+          <div className="w-screen overflow-x-hidden">
             <Carousel settings={carouselSettings} images={images} />
           </div>
           <Category />
