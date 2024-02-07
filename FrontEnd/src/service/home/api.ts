@@ -122,3 +122,15 @@ export const deleteDealWish = async (dealId: number): Promise<APIResponse<string
     throw error;
   }
 };
+
+// 역경매 참가 신청
+export const postPurchasesApplyForm = async (info: FormData, purchaseId: number): Promise<APIResponse<string>> => {
+  console.log(info);
+  const { data } = await axiosAuthInstance.post(`deals/purchases/${purchaseId}/applyforms`, info, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  console.log(data);
+  return data;
+};
