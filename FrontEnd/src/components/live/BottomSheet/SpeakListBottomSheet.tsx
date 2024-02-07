@@ -1,4 +1,4 @@
-import { ISellerInfo } from '@/pages/live/SaleLivePage';
+import { ISellerInfo } from '@/pages/live/PurchaseLivePage';
 import { AiOutlineAudio, AiOutlineAudioMuted } from 'react-icons/ai';
 import { LuHand } from 'react-icons/lu';
 import BottomSheet from '../../@common/BottomSheet';

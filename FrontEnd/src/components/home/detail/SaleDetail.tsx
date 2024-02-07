@@ -1,6 +1,7 @@
-import sample from '@/assets/image/sample.png';
 import Modal from '@/components/@common/Modal';
+import Toast from '@/components/@common/Toast';
 import { useSale } from '@/hooks/home/useSale';
+import useLiveStore from '@/stores/userLiveStore';
 import { ISaleDetailRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
@@ -12,13 +13,16 @@ import { PiUser } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 // import { LiaHandPointerSolid } from 'react-icons/lia';
 
-const SaleDetail = (props: { info: ISaleDetailRes }) => {
+const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState<boolean>(false);
   const { dealRes, immediatePrice, startPrice, status, highestBid, bidList } = props.info;
+  const isSeller = props.isSeller;
   const { month, date, datOfWeek, time } = getDate(dealRes.startTime);
   const { usePostSaleLive } = useSale();
   const { mutate: liveMutate } = usePostSaleLive(dealRes.id);
+  const { setTType, setPType } = useLiveStore();
+
   // #TODO 프로필 파람 해야함
   // 작성자로 사용자 정보 조회
   const getMemberInfo = () => {
@@ -27,7 +31,38 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
   };
 
   // #TODO 라이브방 진입하는 함수
-  const approachLive = () => {};
+  const approachLive = () => {
+    setTType('sale');
+    setPType(isSeller ? 'seller' : 'buyer');
+
+    // 판매자 로직
+    if (isSeller) {
+      if (status === 'BEFORE') {
+        navigate(`/live/sale/${dealRes.id}`, {
+          state: {
+            title: dealRes.title,
+            startPrice: startPrice,
+            image: dealRes.images[0],
+          },
+        });
+      }
+    }
+    // 구매자 로직
+    else {
+      if (status !== 'LIVE') {
+        Toast.error('라이브 방송 진행중이 아닙니다.');
+        return;
+      }
+
+      // @TODO: 구매자가 경매 진행 중 필요한 데이터를 넘김
+      navigate(`/live/sale/${dealRes.id}`, {
+        state: {
+          title: dealRes.title,
+          startPrice: startPrice,
+        },
+      });
+    }
+  };
 
   // #TODO 녹화 영상 볼 수 있는 함수
   const viewVideo = () => {};
@@ -68,7 +103,7 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
       <div className="w-full h-full ">
         {/* 사진 */}
         <div className="relative w-full h-2/5">
-          <img src={sample} className="object-cover w-full h-full"></img>
+          <img src={dealRes.images[0]} className="object-cover w-full h-full"></img>
           {/* #TODO 이미지 캐러셀 해야함 */}
           {dealRes.images.length !== 1 && <p className="absolute right-0 bottom-0 text-white p-5 text-lg">1/3</p>}
 
@@ -114,30 +149,31 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
           </div>
           {/* 판매자 정보 */}
           <div className="pt-2">
-            <div
+            <button
               onClick={() => getMemberInfo()}
-              className="border rounded-xl border-BID_SUB_GRAY font-bold flex p-3 justify-center items-center gap-2"
+              className="w-full border rounded-xl border-BID_SUB_GRAY font-bold flex p-3 justify-center items-center gap-2"
             >
               <PiUser size={'1.8rem'} color="#545454" />
               <p className="text-lg">판매자 정보</p>
-            </div>
+            </button>
           </div>
-          {status !== 'BEFORE' && status === 'LIVE' ? (
-            <div
+          {status === 'LIVE' && !isSeller && (
+            <button
               onClick={() => approachLive()}
               className="border rounded-xl border-BID_SUB_GRAY font-bold flex p-3 justify-center items-center gap-2"
             >
               <MdLiveTv size={'1.8rem'} color="#545454" />
               <p className="text-lg">라이브 보러가기</p>
-            </div>
-          ) : (
-            <div
+            </button>
+          )}
+          {status === 'AUCTION' && (
+            <button
               onClick={() => viewVideo()}
               className=" border rounded-xl border-BID_MAIN font-bold flex p-3 justify-center items-center gap-2 text-BID_MAIN"
             >
               <MdLiveTv size={'1.8rem'} color="#3498DB" />
               <p className="text-lg">녹화 영상 보기</p>
-            </div>
+            </button>
           )}
 
           <div className="pt-8 pb-10 w-full">
