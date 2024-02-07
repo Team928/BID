@@ -1,12 +1,9 @@
 package com.qzp.bid.global.security.oauth;
 
-import com.nimbusds.jose.shaded.gson.Gson;
 import com.qzp.bid.domain.member.dto.LoginTokenDto;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.repository.MemberRepository;
-import com.qzp.bid.global.result.ResultCode;
-import com.qzp.bid.global.result.ResultResponse;
 import com.qzp.bid.global.security.util.JwtProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,8 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -33,6 +30,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtProvider jwtProvider; //JWTProvider
     private final MemberRepository memberRepository;
     private final RedisTemplate redisTemplate;
+    @Value("${oauth.redirect.url}")
+    private String redirectUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -63,7 +62,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
             response.sendRedirect(
-                UriComponentsBuilder.fromUriString("http://localhost:5173/login/redirect")
+                UriComponentsBuilder.fromUriString(redirectUrl)
                     .queryParam("id", loginTokenRes.getId())
                     .queryParam("accessToken", loginTokenRes.getAccessToken())
                     .queryParam("refreshToken", loginTokenRes.getRefreshToken())
@@ -84,7 +83,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
 
             response.sendRedirect(
-                UriComponentsBuilder.fromUriString("http://localhost:5173/login/redirect")
+                UriComponentsBuilder.fromUriString(redirectUrl)
                     .queryParam("id", loginResponse.getId())
                     .queryParam("accessToken", loginResponse.getAccessToken())
                     .queryParam("refreshToken", loginResponse.getRefreshToken())
