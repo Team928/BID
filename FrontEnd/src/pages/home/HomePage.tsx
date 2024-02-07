@@ -22,8 +22,6 @@ const HomePage = () => {
     center: null,
     right_1: null,
     right_2: <img src={NOTIFY} />,
-    prev: '/',
-    cur: '/',
   };
 
   useEffect(() => {

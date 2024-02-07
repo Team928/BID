@@ -13,7 +13,6 @@ const ProfilePage = () => {
     center: '내 프로필',
     right_1: null,
     right_2: <img src={NOTIFY} />,
-    prev: '/profile',
   };
 
   const navigate = useNavigate();
@@ -27,11 +26,11 @@ const ProfilePage = () => {
   };
 
   // 로그아웃 추가
-  const { logoutUser } = userStore()
+  const { logoutUser } = userStore();
   const handleLogout = () => {
     logoutUser();
-    navigate('/login')
-  }
+    navigate('/login');
+  };
 
   return (
     <>

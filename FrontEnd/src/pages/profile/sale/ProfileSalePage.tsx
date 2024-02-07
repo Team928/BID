@@ -11,7 +11,6 @@ const ProfileSalePage = () => {
     center: '내 경매 내역',
     right_1: null,
     right_2: null,
-    prev: '/profile',
   };
 
   const { tab } = useTabStore();

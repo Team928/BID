@@ -41,7 +41,6 @@ const NotifyPage = () => {
     center: '알림',
     right_1: null,
     right_2: null,
-    prev: prev,
   };
 
   return (

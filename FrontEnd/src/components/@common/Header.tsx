@@ -7,8 +7,6 @@ export interface IHeaderInfo {
   center: string | null;
   right_1: JSX.Element | null;
   right_2: JSX.Element | null;
-  prev: string;
-  cur?: string;
 }
 
 const Header = (props: { info: IHeaderInfo }) => {
@@ -18,7 +16,7 @@ const Header = (props: { info: IHeaderInfo }) => {
 
   return (
     <div className="bg-white w-full px-BID_P h-12 flex justify-between items-center border-b border-[#D9D9D9] fixed top-0 z-10">
-      <div className="basis-1/5">{left && <div onClick={() => navigate(prev)}>{left}</div>}</div>
+      <div className="basis-1/5">{left && <div onClick={() => navigate(-1)}>{left}</div>}</div>
       {center && <div className="text-lg font-semibold">{center}</div>}
       <div className="basis-1/5 flex gap-3 justify-end">
         {right_1 && (

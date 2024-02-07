@@ -21,7 +21,6 @@ const SignupPage = () => {
     center: '회원가입',
     right_1: null,
     right_2: null,
-    prev: '/',
   };
 
   const { data: check } = useGetNicknameCheck({ nickname: nickname, isClick: isClick });

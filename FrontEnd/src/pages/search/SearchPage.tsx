@@ -42,7 +42,7 @@ const SearchPage = () => {
           placeholder="제목으로 검색해보세요"
           className="p-3 outline-none border w-full rounded-lg bg-[#F4F4F4]"
         ></input>
-        <div onClick={() => navigate(prev)} className="pl-4">
+        <div onClick={() => navigate(-1)} className="pl-4">
           <p className="cursor-pointer font-bold w-8">취소</p>
         </div>
       </div>

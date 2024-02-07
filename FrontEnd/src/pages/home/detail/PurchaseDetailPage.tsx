@@ -23,7 +23,6 @@ const PurchaseDetailPage = () => {
     center: '상세보기',
     right_1: null,
     right_2: null,
-    prev: '/',
   };
   const { usePostDealWishAdd, useDeleteDealWish } = useSale();
   const { mutate: wishAddMuate } = usePostDealWishAdd(Number(id));

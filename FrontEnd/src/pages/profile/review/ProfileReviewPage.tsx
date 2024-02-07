@@ -11,7 +11,6 @@ const ProfileReviewPage = () => {
     center: '내 리뷰 내역',
     right_1: null,
     right_2: null,
-    prev: '/profile',
   };
 
   const { tab } = useTabStore();

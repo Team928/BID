@@ -16,7 +16,6 @@ const OtherProfilePage = () => {
     center: `${userProfileInfo?.data.nickname}님의 프로필`,
     right_1: null,
     right_2: null,
-    prev: '/',
   };
 
   const { tab } = useOtherTabStore();

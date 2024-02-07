@@ -20,7 +20,6 @@ const ChatRoomPage = () => {
     center: '방제목',
     right_1: null,
     right_2: null,
-    prev: '/chat',
   };
 
   const { useGetChatLogList } = useChatLog();

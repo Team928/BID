@@ -20,7 +20,6 @@ const SaleDetailPage = () => {
     center: '상세보기',
     right_1: null,
     right_2: null,
-    prev: '/',
   };
 
   if (saleDetailInfo)

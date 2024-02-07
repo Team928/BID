@@ -15,7 +15,6 @@ const ScrapPage = () => {
     center: '위시',
     right_1: null,
     right_2: <img src={NOTIFY} />,
-    prev: '/scrap',
   };
 
   return (

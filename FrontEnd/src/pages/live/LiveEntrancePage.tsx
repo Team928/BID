@@ -37,7 +37,6 @@ const LiveEntrancePage = () => {
     center: '라이브 입장하기',
     right_1: null,
     right_2: null,
-    prev: '/',
   };
 
   const checkType = () => {

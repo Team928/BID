@@ -24,8 +24,6 @@ const BuyCategoryPage = () => {
     center: '카테고리',
     right_1: <img src={SEARCH} />,
     right_2: <img src={NOTIFY} />,
-    prev: '/',
-    cur: pathname,
   };
 
   const { useGetPurchaseList } = usePurchase();

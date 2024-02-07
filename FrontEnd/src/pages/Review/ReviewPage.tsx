@@ -26,7 +26,6 @@ const ReviewPage = () => {
     center: '리뷰',
     right_1: null,
     right_2: null,
-    prev: '/',
   };
 
   const handleStarClick = (starValue: number) => {
