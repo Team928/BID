@@ -1,7 +1,7 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import PurchaseDetail from '@/components/home/detail/PurchaseDetail';
-import BACK from '@/assets/icon/back.png';
 import { usePurchase } from '@/hooks/home/usePurchase';
+import { IoIosArrowBack } from 'react-icons/io';
 import { IoBookmarks, IoBookmarksOutline } from 'react-icons/io5';
 import { useParams } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const PurchaseDetailPage = () => {
   } = useGetPurchaseDetail(Number(id));
 
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '상세보기',
     right_1: null,
     right_2: null,

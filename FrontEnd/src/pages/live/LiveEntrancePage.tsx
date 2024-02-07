@@ -1,9 +1,9 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Toggle from '@/components/@common/Toggle';
-import BACK from '@/assets/icon/back.png';
 import { PARTICIPANT_TYPE, TRANSACTION_TYPE } from '@/constants/liveType';
 import useLiveStore from '@/stores/userLiveStore';
 import { useEffect, useState } from 'react';
+import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 export interface IBeforeLiveOptionFlag {
@@ -16,7 +16,7 @@ const LiveEntrancePage = () => {
   const { onMike, onCamera, setOnCamera, setOnMike } = useLiveStore();
 
   // 일단 테스트 할때는 여기서 변경
-  const tType = 'purchase';
+  const tType = 'sale';
   const pType = 'saler';
 
   const [isPossibleToggle, setIsPossibleToggle] = useState<IBeforeLiveOptionFlag>({
@@ -33,7 +33,7 @@ const LiveEntrancePage = () => {
   };
 
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '라이브 입장하기',
     right_1: null,
     right_2: null,
