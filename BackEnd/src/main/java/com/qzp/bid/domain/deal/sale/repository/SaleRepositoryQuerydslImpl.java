@@ -14,8 +14,10 @@ import com.qzp.bid.domain.deal.dto.ImageSimpleDto;
 import com.qzp.bid.domain.deal.dto.QDealSimpleRes;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
+import com.qzp.bid.domain.deal.entity.QWish;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleSimpleRes;
+import com.qzp.bid.domain.deal.sale.entity.QBid;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +71,7 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
 
     @Override
     public SaleListPage findSalesByWriterId(Long writerId, Pageable pageable) {
+        QWish wish = QWish.wish;
 
         List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory
             .select(Projections.fields(
@@ -78,22 +81,92 @@ public class SaleRepositoryQuerydslImpl implements SaleRepositoryQuerydsl {
                         JPAExpressions
                             .select(image.imagePath)
                             .from(image)
-                            .where(image.deal.id.eq(sale.id))
-                            .orderBy(image.createTime.asc())
-                            .limit(1),
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(sale.id))))
+                            .orderBy(image.createTime.asc()),
                         "imagePath"
                     ))).as("dealSimpleRes"),
                 sale.immediatePrice,
                 sale.startPrice,
                 sale.endTime,
                 sale.highestBid.bidPrice.as("bid"),
-                sale.status
+                sale.status,
+                Expressions.asBoolean(
+                    JPAExpressions.select(wish.id)
+                        .from(wish)
+                        .where(
+                            wish.member.id.eq(writerId),
+                            wish.deal.id.eq(sale.id)
+                        ).exists()).as("isWished")
             ))
             .from(sale)
             .where(sale.writer.id.eq(writerId)) // 작성자 id로 필터링
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
             .orderBy(sale.createTime.asc()) // 생성시간 오름차순으로 정렬
+            .fetch();
+
+        boolean isLast = true;
+        if (saleSimpleResList.size() > pageable.getPageSize()) {
+            saleSimpleResList.remove(pageable.getPageSize());
+            isLast = false;
+        }
+
+        return new SaleListPage(saleSimpleResList, pageable.getPageNumber(), pageable.getPageSize(),
+            isLast);
+    }
+
+    @Override
+    public SaleListPage findSalesByParticipantId(Long participantId, Pageable pageable) {
+        QBid bid = QBid.bid;
+        QWish wish = QWish.wish;
+
+        List<SaleSimpleRes> saleSimpleResList = jpaQueryFactory
+            .select(Projections.fields(
+                SaleSimpleRes.class,
+                new QDealSimpleRes(sale,
+                    Projections.constructor(ImageSimpleDto.class, Expressions.as(
+                        JPAExpressions
+                            .select(image.imagePath)
+                            .from(image)
+                            .where(image.id.eq(
+                                JPAExpressions.select(image.id.min())
+                                    .from(image)
+                                    .where(image.deal.id.eq(sale.id))))
+                            .orderBy(image.createTime.asc()),
+                        "imagePath"
+                    ))).as("dealSimpleRes"),
+                sale.immediatePrice,
+                sale.startPrice,
+                sale.endTime,
+                sale.highestBid.bidPrice.as("bid"),
+                sale.status,
+                Expressions.asBoolean(
+                    JPAExpressions.select(wish.id)
+                        .from(wish)
+                        .where(
+                            wish.member.id.eq(participantId),
+                            wish.deal.id.eq(sale.id)
+                        ).exists()).as("isWished")
+            ))
+            .from(sale)
+            .where(sale.id.in(
+                JPAExpressions
+                    .select(bid.sale.id)
+                    .from(bid)
+                    .where(bid.id.in(
+                        JPAExpressions
+                            .select(bid.id.max())
+                            .from(bid)
+                            .where(bid.bidder.id.eq(participantId))
+                            .groupBy(bid.sale.id)
+                    ))
+            ))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize() + 1)
+            .orderBy(sale.createTime.desc())
             .fetch();
 
         boolean isLast = true;

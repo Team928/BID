@@ -1,8 +1,18 @@
 package com.qzp.bid.domain.member.controller;
 
-import static com.qzp.bid.global.result.ResultCode.*;
+import static com.qzp.bid.global.result.ResultCode.GET_BIDHISTORY_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_MYPAGE_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_MYWISH_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_PARTICIPATEDSALE_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_PARTICIPATEPURCHASE_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_PURCHASEHOST_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.GET_SALEHOST_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
+import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_NOT_EXIST;
+import static com.qzp.bid.global.result.ResultCode.REGISTER_SUCCESS;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.LookupParam;
@@ -68,14 +78,47 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_MYPAGE_SUCCESS, memberProfileRes));
     }
 
-    @Operation(summary = "내 경매 내역 - 내가 주최한 경매")
-    @GetMapping("/profiles/{nickname}/hauction")
-    public ResponseEntity<ResultResponse> getAuctionByHost(
-        @PathVariable("nickname") String nickname,
+    @Operation(summary = "경매 내역 - 주최한 경매")
+    @GetMapping("/profiles/{nickname}/saleHost")
+    public ResponseEntity<ResultResponse> getSaleByHost(@PathVariable("nickname") String nickname,
         Pageable pageable) {
-        SaleListPage saleListPage = memberService.getHauction(nickname, pageable);
-        return ResponseEntity.ok(ResultResponse.of(GET_HAUCTION_SUCCESS, saleListPage));
+        SaleListPage saleListPage = memberService.getSaleByHost(nickname, pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_SALEHOST_SUCCESS, saleListPage));
     }
+
+    @Operation(summary = "경매 내역 - 참여한 경매")
+    @GetMapping("/profiles/saleParticipant")
+    public ResponseEntity<ResultResponse> getSaleByParticipant(Pageable pageable) {
+        SaleListPage saleListPage = memberService.getSaleByParticipant(pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_PARTICIPATEDSALE_SUCCESS, saleListPage));
+    }
+
+    @Operation(summary = "참여한 경매(한 개)의 입찰 내역(1개 이상) 조회")
+    @GetMapping("/profiles/saleParticipant/{saleId}")
+    public ResponseEntity<ResultResponse> getBidHistoryBySaleId(
+        @PathVariable("saleId") String saleId, Pageable pageable) {
+        BidHistoryListPage bidHistoryListPage = memberService.getBidHistoryBySaleId(
+            Long.parseLong(saleId), pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_BIDHISTORY_SUCCESS, bidHistoryListPage));
+    }
+
+    @Operation(summary = "역경매 내역 - 주최한 역경매")
+    @GetMapping("/profiles/{nickname}/purchaseHost")
+    public ResponseEntity<ResultResponse> getPurchaseByHost(
+        @PathVariable("nickname") String nickname, Pageable pageable) {
+        PurchaseListPage purchaseListPage = memberService.getPurchaseByHost(nickname, pageable);
+        return ResponseEntity.ok(ResultResponse.of(GET_PURCHASEHOST_SUCCESS, purchaseListPage));
+    }
+
+    @Operation(summary = "역경매 내역 - 참여한 역경매 조회")
+    @GetMapping("/profiles/purchaseSeller")
+    public ResponseEntity<ResultResponse> getPurchaseBySeller(Pageable pageable) {
+        PurchaseListPage purchaseListPage = memberService.getPurchaseBySeller(pageable);
+        return ResponseEntity.ok(
+            ResultResponse.of(GET_PARTICIPATEPURCHASE_SUCCESS, purchaseListPage));
+    }
+
+    //TODO: 거래 성사된 역경매 조회
 
     @Operation(summary = "나의 찜 목록 조회")
     @GetMapping("/profiles/wish")

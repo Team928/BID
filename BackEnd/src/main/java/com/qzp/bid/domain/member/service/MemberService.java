@@ -1,6 +1,7 @@
 package com.qzp.bid.domain.member.service;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.LookupParam;
@@ -19,7 +20,15 @@ public interface MemberService {
 
     MemberProfileRes getProfile(String nickname);
 
-    SaleListPage getHauction(String nickname, Pageable pageable);
+    SaleListPage getSaleByHost(String nickname, Pageable pageable);
+
+    SaleListPage getSaleByParticipant(Pageable pageable);
+
+    BidHistoryListPage getBidHistoryBySaleId(long saleId, Pageable pageable);
+
+    PurchaseListPage getPurchaseByHost(String nickname, Pageable pageable);
+
+    PurchaseListPage getPurchaseBySeller(Pageable pageable);
 
     void createReview(MemberReviewReq memberReviewReq);
 
@@ -28,7 +37,6 @@ public interface MemberService {
     PurchaseListPage getPurchaseWish(LookupParam lookupParam);
 
     ReviewListPage getReviewsIWrote(Pageable pageable);
-
 
     void chargePoint(PointChargeReq pointChargeReq);
 }

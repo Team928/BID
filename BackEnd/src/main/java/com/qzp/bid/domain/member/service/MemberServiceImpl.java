@@ -5,9 +5,15 @@ import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
+import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
+import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
+import com.qzp.bid.domain.deal.sale.dto.BidRes;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
+import com.qzp.bid.domain.deal.sale.entity.Bid;
+import com.qzp.bid.domain.deal.sale.mapper.BidMapper;
+import com.qzp.bid.domain.deal.sale.repository.BidRepository;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.dto.LoginTokenDto;
 import com.qzp.bid.domain.member.dto.LoginTokenRes;
@@ -34,11 +40,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,9 +65,12 @@ public class MemberServiceImpl implements MemberService {
     private final SaleRepository saleRepository;
     private final WishRepository wishRepository;
     private final PointHistoryRepository pointHistoryRepository;
+    private final PurchaseRepository purchaseRepository;
+    private final BidRepository bidRepository;
     //Mapper
     private final MemberMapper memberMapper;
     private final ReviewMapper reviewMapper;
+    private final BidMapper bidMapper;
     //etc
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
@@ -112,13 +124,64 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public SaleListPage getHauction(String nickname, Pageable pageable) { //내가 주최한 경매
+    public SaleListPage getSaleByHost(String nickname, Pageable pageable) { //내가 주최한 경매
         Member member = memberRepository.findMemberByNickname(nickname)
             .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
 
         SaleListPage saleListPage = saleRepository.findSalesByWriterId(member.getId(), pageable);
 
         return saleListPage;
+    }
+
+    @Override
+    public SaleListPage getSaleByParticipant(Pageable pageable) {
+        long memberId = Long.parseLong(accountUtil.getLoginMemberId());
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        SaleListPage saleListPage = saleRepository.findSalesByParticipantId(member.getId(),
+            pageable);
+
+        return saleListPage;
+    }
+
+    @Override
+    public BidHistoryListPage getBidHistoryBySaleId(long saleId, Pageable pageable) {
+        long memberId = Long.parseLong(accountUtil.getLoginMemberId());
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+            Sort.by("id").descending());
+        Slice<Bid> bids = bidRepository.findBySaleIdAndBidderId(saleId,
+            member.getId(), sortedPageable);
+
+        List<BidRes> bidResList = bidMapper.toBidResList(bids);
+        boolean last = bids.hasNext();
+
+        return new BidHistoryListPage(bidResList, bids.getNumber(), bids.getSize(), !last);
+    }
+
+    @Override
+    public PurchaseListPage getPurchaseByHost(String nickname, Pageable pageable) {
+        Member member = memberRepository.findMemberByNickname(nickname)
+            .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
+
+        PurchaseListPage purchaseListPage = purchaseRepository.findPurchasesByWriterId(
+            member.getId(), pageable);
+
+        return purchaseListPage;
+    }
+
+    @Override
+    public PurchaseListPage getPurchaseBySeller(Pageable pageable) {
+        long memberId = Long.parseLong(accountUtil.getLoginMemberId());
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        PurchaseListPage purchaseListPage = purchaseRepository.findPurchasesBySellerId(
+            member.getId(), pageable);
+        return purchaseListPage;
     }
 
     @Override

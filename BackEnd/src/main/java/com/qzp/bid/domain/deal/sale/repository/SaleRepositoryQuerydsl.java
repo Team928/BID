@@ -10,4 +10,6 @@ public interface SaleRepositoryQuerydsl {
 
     SaleListPage findSalesByWriterId(Long writerId, Pageable pageable);
 
+    SaleListPage findSalesByParticipantId(Long participantId, Pageable pageable);
+
 }
