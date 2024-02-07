@@ -82,9 +82,10 @@ export const useSale = () => {
       mutationFn: () => postLiveReq(saleId),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['sale', 'detail', saleId] });
+        Toast.success('라이브 요청이 성공적으로 이루어졌습니다');
       },
       onError: () => {
-        console.log('에러입니다');
+        Toast.error('이미 진행한 요청입니다');
       },
     });
   };

@@ -144,18 +144,18 @@ const SaleDetail = (props: { info: ISaleDetailRes }) => {
             <p className="text-lg font-bold">입찰 로그</p>
             <p className="pt-1 text-sm text-BID_SUB_GRAY">현재까지의 입찰 로그를 확인해보세요</p>
             <div className="px-5">
-              <div className="flex gap-3 w-full border-b pt-4 pb-1">
-                <p className="basis-1/5">입찰자</p>
-                <p className="basis-2/5 text-right">입찰가격</p>
-                <p className="basis-2/5 text-center">입찰시간</p>
+              <div className="flex justify-around gap-3 w-full border-b pt-4 pb-1">
+                <p className="basis-1/7">입찰자</p>
+                <p className="basis-2/7 text-right">입찰가격</p>
+                <p className="basis-4/7 text-center">입찰시간</p>
               </div>
               <div className="pt-2 text-sm text-BID_SUB_GRAY max-h-28 overflow-y-scroll pb-2  border-b">
                 {bidList.map(item => {
                   return (
                     <div key={item.id} className="flex justify-around gap-3">
-                      <p className="basis-1/5">{item.bidder}</p>
-                      <p className="basis-2/5 text-right">{item.bidPrice}원</p>
-                      <p className="basis-2/5 text-right">{getDate(item.bidTime).fullDate2}</p>
+                      <p className="basis-1/7">{item.bidder}</p>
+                      <p className="basis-2/7 text-right">{item.bidPrice}원</p>
+                      <p className="basis-4/7 text-right">{getDate(item.bidTime).fullDate2}</p>
                     </div>
                   );
                 })}
