@@ -33,7 +33,7 @@ public class LiveController {
     }
 
     @GetMapping("/purchase/results") // 역경매 판매자 선택하기 + 채팅방 개설
-    public ResponseEntity<ResultResponse> ChoicePurchaseResult(@RequestParam LiveResultReq resultReq){
+    public ResponseEntity<ResultResponse> ChoicePurchaseResult(LiveResultReq resultReq){
         chatService.createRoom(resultReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
 
