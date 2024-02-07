@@ -11,7 +11,7 @@ const SaleDetailPage = () => {
   const { nickname } = userStore();
   const { useGetSaleDetail } = useSale();
   const {
-    isLoading,
+    // isLoading,
     // error,
     data: saleDetailInfo,
   } = useGetSaleDetail(Number(id));

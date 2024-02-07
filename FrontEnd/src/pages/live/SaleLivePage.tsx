@@ -23,6 +23,7 @@ const SaleLivePage = () => {
   const [myUserName, setMyUserName] = useState(nickname);
   const [currentBid, setCurrentBid] = useState<number>(0); // 현재 입찰가
 
+  console.log(setCurrentBid);
   const OV = useRef(new OpenVidu());
   OV.current.enableProdMode();
 
@@ -51,7 +52,7 @@ const SaleLivePage = () => {
     });
 
     // 누군가 disconnect 호출하면 발생
-    newSession.on('streamDestroyed', event => {
+    newSession.on('streamDestroyed', () => {
       if (pType === PARTICIPANT_TYPE.BUYER) {
         setTimeout(() => {
           navigate('/live/end');

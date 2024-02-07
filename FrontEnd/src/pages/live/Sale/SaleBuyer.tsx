@@ -29,6 +29,7 @@ const SaleBuyer = ({
   const handleBid = () => {
     setOpenVidModal(!openVidModal);
   };
+  console.log(state);
 
   const handleExit = () => {
     //   @TODO: 컴포넌트 만들기
