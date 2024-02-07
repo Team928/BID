@@ -13,15 +13,18 @@ import com.qzp.bid.domain.chat.repository.ChatRepository;
 import com.qzp.bid.domain.chat.repository.ChatRoomRepository;
 import com.qzp.bid.domain.deal.dto.DealResWithEndPrice;
 import com.qzp.bid.domain.deal.entity.Deal;
+import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.entity.Image;
-import com.qzp.bid.domain.deal.mapper.DealMapper;
 import com.qzp.bid.domain.deal.purchase.entity.ApplyForm;
 import com.qzp.bid.domain.deal.purchase.entity.Purchase;
+import com.qzp.bid.domain.deal.purchase.entity.ReverseAuctionResult;
 import com.qzp.bid.domain.deal.purchase.repository.ApplyFormRepository;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
+import com.qzp.bid.domain.deal.purchase.repository.ReverseAuctionResultRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
+import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.repository.MemberRepository;
@@ -51,6 +54,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ChatServiceImpl implements ChatService {
 
+    private final MemberMapper memberMapper;
+    private final ChatRoomMapper chatRoomMapper;
     private final SimpMessageSendingOperations template;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
@@ -60,15 +65,15 @@ public class ChatServiceImpl implements ChatService {
     private final PurchaseRepository purchaseRepository;
     private final AccountUtil accountUtil;
     private final RedisTemplate redisTemplate;
-    private final MemberMapper memberMapper;
-    private final ChatRoomMapper chatRoomMapper;
-    private final DealMapper dealMapper;
     private final ApplyFormRepository applyFormRepository;
+    private final ReverseAuctionResultRepository reverseAuctionResultRepository;
 
     @Override
     @Transactional
-    public void createRoom(long dealId) {
-        Deal deal = dealRepository.findById(dealId)
+    public void createRoom(LiveResultReq resultReq) {
+
+        long dealId = resultReq.getDealId();
+        Deal deal = dealRepository.findById(resultReq.getDealId())
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
 
         String dtype = deal.getClass().getSimpleName(); // DTYPE 가져오기
@@ -78,19 +83,38 @@ public class ChatServiceImpl implements ChatService {
         if (dtype.equals("Sale")) {
             member = dealRepository.findBidderByDealId(dealId);
         } else if (dtype.equals("Purchase")) {
+            // Purchase 상태 바꾸기
+            Purchase purchase = purchaseRepository.findById(resultReq.getDealId()).orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+            purchase.setStatus(DealStatus.END);
+            purchaseRepository.save(purchase);
+            // ApplyForm 가격 갱신
+            ApplyForm applyForm = applyFormRepository.findById(resultReq.getApplyFormId()).orElseThrow(() -> new BusinessException(ErrorCode.GET_APPLYFORM_FAIL));
+            applyForm.setOfferPrice(resultReq.getOfferPrice());
+            applyFormRepository.save(applyForm);
+            // 역 경매결과 생성 저장
+            ReverseAuctionResult reverseAuctionResult = ReverseAuctionResult.builder()
+                .winningBid((int) resultReq.getApplyFormId())
+                .purchaseId((int) resultReq.getDealId())
+                .sellerId(applyForm.getSellerId())
+                .build();
+            reverseAuctionResultRepository.save(reverseAuctionResult);
+
             member = dealRepository.findSellerByDealId(dealId);
         }
 
-        if (member.isPresent()) {
-            String roomName = deal.getTitle();
-            long hostId = deal.getWriter().getId();
-            long guestId = member.get().getId();
-
-            ChatRoom chatRoom = ChatRoom.builder().dealId(dealId).roomName(roomName)
-                .hostId(hostId).guestId(guestId).build();
-
-            chatRoomRepository.save(chatRoom);
+        if (member.isEmpty()) {
+            throw new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST);
         }
+
+        String roomName = deal.getTitle();
+        long hostId = deal.getWriter().getId();
+        long guestId = member.get().getId();
+
+        ChatRoom chatRoom = ChatRoom.builder().dealId(dealId).roomName(roomName)
+            .hostId(hostId).guestId(guestId).build();
+
+        chatRoomRepository.save(chatRoom);
+
 
     }
 
@@ -108,7 +132,7 @@ public class ChatServiceImpl implements ChatService {
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
 
         Optional<ChatRoom> chatRoom = chatRoomRepository.findById(chat.getRoomId());
-        if (!chatRoom.isPresent()) {
+        if (chatRoom.isEmpty()) {
             throw new BusinessException(ErrorCode.CHATROOM_NOT_EXIST);
         }
 
@@ -147,7 +171,6 @@ public class ChatServiceImpl implements ChatService {
             ResultResponse.of(ResultCode.SEND_CHAT_SUCCESS, chatLive));
 
         template.convertAndSend("/sub/chats/lives/" + roomId, res);
-
 
     }
 
