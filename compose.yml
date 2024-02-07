@@ -5,7 +5,7 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - /home/ubuntu/workspace/bid/backend/images:/app/static/images
+      - /home/ubuntu/workspace/bid/backend/images:/app/src/main/resources/static/images
       - /home/ubuntu/workspace/bid/backend/logs:/app/logs
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}

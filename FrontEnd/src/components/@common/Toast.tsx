@@ -3,7 +3,7 @@ import { Flip, ToastOptions, toast } from 'react-toastify';
 import '../../index.css';
 
 const defaultToastOption: ToastOptions = {
-  position: 'top-center',
+  // position: 'top-right',
   autoClose: 2000,
   hideProgressBar: true,
   pauseOnHover: false,

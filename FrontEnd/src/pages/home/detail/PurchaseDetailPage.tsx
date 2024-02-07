@@ -1,11 +1,11 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import PurchaseDetail from '@/components/home/detail/PurchaseDetail';
-import BACK from '@/assets/icon/back.png';
 import { usePurchase } from '@/hooks/home/usePurchase';
-import { useParams } from 'react-router-dom';
-import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 import { useSale } from '@/hooks/home/useSale';
 import { useState } from 'react';
+import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
+import { IoIosArrowBack } from 'react-icons/io';
+import { useParams } from 'react-router-dom';
 import PurchaseApplyFromModal from './PurchaseApplyFromModal';
 
 const PurchaseDetailPage = () => {
@@ -19,7 +19,7 @@ const PurchaseDetailPage = () => {
   } = useGetPurchaseDetail(Number(id));
 
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '상세보기',
     right_1: null,
     right_2: null,

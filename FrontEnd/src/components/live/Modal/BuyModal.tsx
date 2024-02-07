@@ -1,11 +1,28 @@
 import Modal from '@/components/@common/Modal';
 import { MODAL_TITLE } from '@/constants/modalTitle';
+import { useSale } from '@/hooks/home/useSale';
+import { ChangeEvent, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import ParrarelModalButtons from './ParrarelModalButtons';
 
 const BuyModal = ({ onClose }: { onClose: () => void }) => {
   const buyModalInfo = {
     highestPrice: 80000,
     point: 32000,
+  };
+
+  const [bidPrice, setBidPrice] = useState<number>(0);
+  const { id } = useParams();
+  const { usePostSaleBid } = useSale();
+  const { mutate: bidMuate } = usePostSaleBid(Number(id), String(bidPrice));
+
+  const handleChangeBid = (e: ChangeEvent<HTMLInputElement>) => {
+    setBidPrice(Number(e.target.value));
+  };
+
+  const sendBid = () => {
+    bidMuate();
+    onClose();
   };
 
   // @TODO: 포인트 충전 함수
@@ -36,12 +53,13 @@ const BuyModal = ({ onClose }: { onClose: () => void }) => {
           <input
             type="number"
             placeholder="입찰가를 입력해주세요"
+            onChange={handleChangeBid}
             className="px-3 h-full outline-none border w-full rounded-full"
           ></input>
         </div>
       </div>
       {/* @TODO: 각 호출별 함수 로직 작성 */}
-      <ParrarelModalButtons leftText="취소" rightText="입찰" handleLeft={() => onClose()} handleRight={() => null} />
+      <ParrarelModalButtons leftText="취소" rightText="입찰" handleLeft={() => onClose()} handleRight={sendBid} />
     </Modal>
   );
 };
