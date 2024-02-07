@@ -162,7 +162,7 @@ const PurchaseSeller = ({
                 </button>
                 <div className="flex w-20 justify-end">
                   <button className="mx-2" onClick={switchCamera}>
-                    <div className="w-6">{icons.FLIP}</div>
+                    {/* <div className="w-6">{icons.FLIP}</div> */}
                   </button>
                   <button className="mx-2" onClick={handleMoreSetting}>
                     <HiDotsHorizontal color="white" size={32} style={{ strokeWidth: '0px' }} />
