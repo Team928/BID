@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 
 const DetailBottom = (props: { info: ISaleDetailRes }) => {
-  const { status, wished, highestBid, startPrice, dealRes } = props.info;
+  const { status, isWished, highestBid, startPrice, dealRes } = props.info;
   const [showBidModal, setShowBidModal] = useState<boolean>(false);
   const [showImmediateModal, setShowImmediateModal] = useState<boolean>(false);
 
@@ -27,7 +27,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
     }
   };
 
-  // #TODO 위시 등록 및 삭제 해야함
+  // #TODO 내 포인트 조회 해야함
   return (
     <>
       {/* 입찰하기 모달 */}
@@ -41,7 +41,6 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
             </div>
             <div className="w-full flex gap-3 items-center">
               <p className="">내 포인트</p>
-              {/* 내포인트 조회해야함 */}
               <p className="text-BID_MAIN">32,000원</p>
               <span className="text-BID_SUB_GRAY border-b text-xs">충전하기</span>
             </div>
@@ -111,7 +110,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
       )}
       <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
         <div className="w-full h-full py-2 flex items-center gap-3">
-          {wished ? (
+          {isWished ? (
             <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />
           ) : (
             <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />

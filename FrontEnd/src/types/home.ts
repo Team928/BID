@@ -69,7 +69,7 @@ export interface ISaleDetailRes {
   liveRequestCount: number;
   bidList: IBidInfo[];
   liveReq: boolean;
-  wished: false;
+  isWished: false;
 }
 
 // 구매글 목록 조회 Response ('deals/purchase')
