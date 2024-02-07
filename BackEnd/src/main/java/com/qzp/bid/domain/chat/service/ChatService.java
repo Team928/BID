@@ -2,12 +2,13 @@ package com.qzp.bid.domain.chat.service;
 
 import com.qzp.bid.domain.chat.dto.ChatList;
 import com.qzp.bid.domain.chat.dto.ChatRoomList;
+import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.chat.entity.Chat;
 import java.util.List;
 
 public interface ChatService {
 
-    public void createRoom(long dealId);
+    public void  createRoom(LiveResultReq resultReq);
 
     public void sendChat(Chat chat, long roomId);
 
