@@ -10,20 +10,20 @@ import { useState } from 'react';
 import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
-// import { LiaHandPointerSolid } from 'react-icons/lia';
 
 const SaleDetail = (props: { info: ISaleDetailRes }) => {
   const navigate = useNavigate();
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const { dealRes, immediatePrice, startPrice, status, highestBid, bidList } = props.info;
   const { month, date, datOfWeek, time } = getDate(dealRes.startTime);
   const { usePostSaleLive } = useSale();
   const { mutate: liveMutate } = usePostSaleLive(dealRes.id);
-  // #TODO 프로필 파람 해야함
+
   // 작성자로 사용자 정보 조회
   const getMemberInfo = () => {
     console.log(dealRes.writer);
-    navigate('/profile');
+    navigate(`/profile/${dealRes.writer}`);
   };
 
   // #TODO 라이브방 진입하는 함수

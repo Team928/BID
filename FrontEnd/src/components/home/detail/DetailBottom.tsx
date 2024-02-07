@@ -1,5 +1,7 @@
 import Modal from '@/components/@common/Modal';
 import { useSale } from '@/hooks/home/useSale';
+import { useProfile } from '@/hooks/profile/useProfile';
+import userStore from '@/stores/userStore';
 import { ISaleDetailRes } from '@/types/home';
 import { useState } from 'react';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
@@ -16,6 +18,10 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
   const { mutate: immediateMuate } = usePostSaleImmediate(dealRes.id);
   const { mutate: wishAddMuate } = usePostDealWishAdd(dealRes.id);
   const { mutate: wishDeleteMuate } = useDeleteDealWish(dealRes.id);
+
+  const { useUserProfile } = useProfile();
+  const { nickname } = userStore();
+  const { data: userProfileInfo } = useUserProfile(nickname);
 
   const handleBtnClick = () => {
     if (status === 'BEFORE') {
@@ -41,7 +47,7 @@ const DetailBottom = (props: { info: ISaleDetailRes }) => {
             </div>
             <div className="w-full flex gap-3 items-center">
               <p className="">내 포인트</p>
-              <p className="text-BID_MAIN">32,000원</p>
+              <p className="text-BID_MAIN">{userProfileInfo?.data.point}</p>
               <span className="text-BID_SUB_GRAY border-b text-xs">충전하기</span>
             </div>
             <div className="w-full pt-3">

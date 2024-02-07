@@ -11,13 +11,11 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
   const { dealRes, minPrice, maxPrice, status } = props.info;
   const { month, date, datOfWeek, time } = getDate(dealRes.startTime);
 
-  // #TODO 프로필 파람 해야함
   // 작성자로 사용자 정보 조회
   const getMemberInfo = () => {
     console.log(dealRes.writer);
-    navigate('/profile');
+    navigate(`/profile/${dealRes.writer}`);
   };
-
   return (
     <>
       <div className="w-full h-full ">
