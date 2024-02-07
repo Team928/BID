@@ -5,6 +5,8 @@ import { usePurchase } from '@/hooks/home/usePurchase';
 import { useParams } from 'react-router-dom';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 import { useSale } from '@/hooks/home/useSale';
+import { useState } from 'react';
+import PurchaseApplyFromModal from './PurchaseApplyFromModal';
 
 const PurchaseDetailPage = () => {
   const { id } = useParams();
@@ -26,13 +28,13 @@ const PurchaseDetailPage = () => {
   const { usePostDealWishAdd, useDeleteDealWish } = useSale();
   const { mutate: wishAddMuate } = usePostDealWishAdd(Number(id));
   const { mutate: wishDeleteMuate } = useDeleteDealWish(Number(id));
-
-  // #TODO 역경매 참가 신청 해야함
-  const handleApplyForm = () => {};
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   if (purchaseDetailInfo)
     return (
       <>
+        {/* 입찰하기 모달 */}
+        {showModal && <PurchaseApplyFromModal setShowModal={setShowModal} id={Number(id)} />}
         <div className="w-full h-screen pb-[4.5rem]">
           <Header info={info} />
           <div className="pt-12 h-full overflow-y-auto">
@@ -46,15 +48,21 @@ const PurchaseDetailPage = () => {
             ) : (
               <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />
             )}
-            <div
-              onClick={handleApplyForm}
-              className={`w-full py-3  text-white rounded-xl text-center text-base font-bold 
-          ${purchaseDetailInfo.data.applyForms.length === purchaseDetailInfo.data.memberLimit ? 'bg-BID_BLACK' : 'bg-BID_MAIN'}`}
-            >
-              {purchaseDetailInfo.data.applyForms.length === purchaseDetailInfo.data.memberLimit
-                ? '이미 최대 인원에 도달하였습니다.'
-                : '역경매 참여 신청하기'}
-            </div>
+            {purchaseDetailInfo.data.applyForms.length === purchaseDetailInfo.data.memberLimit ? (
+              <div
+                onClick={() => setShowModal(true)}
+                className={`w-full py-3  text-white rounded-xl text-center text-base font-bold bg-BID_BLACK`}
+              >
+                이미 최대 인원에 도달하였습니다
+              </div>
+            ) : (
+              <div
+                onClick={() => setShowModal(true)}
+                className={`w-full py-3  text-white rounded-xl text-center text-base font-bold bg-BID_MAIN`}
+              >
+                역경매 참여 신청하기
+              </div>
+            )}
           </div>
         </div>
       </>
