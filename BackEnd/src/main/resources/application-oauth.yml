@@ -61,4 +61,4 @@ spring:
             user_name_attribute: response
 oauth:
   redirect:
-    url: ENC(jc0M/FXchfIcBfGOKOWAOkLnhf3gP7zVzrXd0higs/cNX92S8qZGV4dmYPM0hKf2II8e0ELiHB0=)
+    url: ENC(DBQRLlomPamKLAHdEzoetafGOqzWRHeolbRXmT7e9c234lwJDOvQbLXjbzpMISszWn01ovkUFk4=)
