@@ -2,6 +2,8 @@ package com.qzp.bid.domain.deal.sale.service;
 
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 
+import com.qzp.bid.domain.chat.dto.LiveResultReq;
+import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.domain.deal.dto.ImageDto;
 import com.qzp.bid.domain.deal.dto.SearchParam;
 import com.qzp.bid.domain.deal.entity.DealStatus;
@@ -61,6 +63,7 @@ public class SaleServiceImpl implements SaleService {
     private final WishRepository wishRepository;
     private final PointHistoryRepository pointHistoryRepository;
     private final SseService sseService;
+    private final ChatService chatService;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -246,6 +249,12 @@ public class SaleServiceImpl implements SaleService {
         pointHistoryRepository.save(hold);
         member.getPointHistory().add(hold);
         sale.setStatus(DealStatus.END);
-        //TODO: 채팅방 연결
+
+        Bid bid = Bid.builder().sale(sale).bidder(member).bidPrice(sale.getImmediatePrice())
+            .isSuccess(true).build();
+
+        bidRepository.save(bid);
+
+        chatService.createRoom(LiveResultReq.builder().dealId(saleId).build());
     }
 }
