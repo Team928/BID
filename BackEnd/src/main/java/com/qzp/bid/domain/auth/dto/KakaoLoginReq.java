@@ -13,9 +13,4 @@ public class KakaoLoginReq implements OAuthLoginReq {
     public SocialType getProviderName() {
         return SocialType.kakao;
     }
-
-    @Override
-    public String getState() {
-        return null;
-    }
 }
