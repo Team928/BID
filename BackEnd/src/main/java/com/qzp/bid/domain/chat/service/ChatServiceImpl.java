@@ -121,9 +121,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public void sendChat(Chat chat, long roomId) {
+    public void sendChat(Chat chat, long dealId) {
 
-        chat.setRoomId(roomId);
+        chat.setRoomId(dealId); // 이게 필요할까?
         if (!chat.getType().equals(ChatType.TALK)) {
             throw new BusinessException(ErrorCode.INPUT_VALUE_INVALID);
         }
@@ -131,13 +131,11 @@ public class ChatServiceImpl implements ChatService {
         Member sender = memberRepository.findById(chat.getSenderId())
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
 
-        Optional<ChatRoom> chatRoom = chatRoomRepository.findById(chat.getRoomId());
-        if (chatRoom.isEmpty()) {
-            throw new BusinessException(ErrorCode.CHATROOM_NOT_EXIST);
-        }
+        ChatRoom chatRoom = chatRoomRepository.findById(chat.getRoomId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
 
-        if (redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/" + roomId) != null
-            && (int) redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/" + roomId)
+        if (redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/" + dealId) != null
+            && (int) redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/" + dealId)
             == 2) {
             chat.setRead(true);
         }
@@ -146,31 +144,32 @@ public class ChatServiceImpl implements ChatService {
         chat.setCreateTime(LocalDateTime.now().toString());
         chatRepository.save(chat);
 
-        chatRoom.get().setLastMessage(chat.getMessage());
-        chatRoomRepository.save(chatRoom.get());
+        chatRoom.setLastMessage(chat.getMessage());
+        chatRoomRepository.save(chatRoom);
 
         ResponseEntity<ResultResponse> res = ResponseEntity.ok(
             ResultResponse.of(ResultCode.CREATE_CHAT_SUCCESS, chat));
-        template.convertAndSend("/sub/chats/rooms/" + chat.getRoomId(), res);
+        template.convertAndSend("/sub/chats/rooms/" + dealId, res);
         //TODO 여기에 아마 채팅 갱신하라는 명령이 전달 되어야 할 것 같아요...SSE?
 
     }
 
     @Override
     @Transactional
-    public void sendLiveChat(Chat chat, long roomId) {
+    public void sendLiveChat(Chat chat, long dealId) {
 
         Member member = memberRepository.findById((chat.getSenderId()))
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
 
         chat.setSender(member.getNickname());
-        chat.setRoomId(roomId);
+        chat.setRoomId(dealId);
+        chat.setCreateTime(LocalDateTime.now().toString());
         ChatLive chatLive = chatRoomMapper.toChatLive(chat);
 
         ResponseEntity<ResultResponse> res = ResponseEntity.ok(
             ResultResponse.of(ResultCode.SEND_CHAT_SUCCESS, chatLive));
 
-        template.convertAndSend("/sub/chats/lives/" + roomId, res);
+        template.convertAndSend("/sub/chats/lives/" + dealId, res);
 
     }
 
@@ -198,7 +197,7 @@ public class ChatServiceImpl implements ChatService {
                 .audienceMemberRes(memberMapper.toOpponentMemberRes(member)).build();
             if (userId != chatRoom.getLastSenderId()) {
                 int countUmReadChats = chatRepository.countAllByRoomIdAndReadIsFalse(
-                    chatRoom.getId());
+                    chatRoom.getDealId());
                 chatRoomRes.setUnReadCount(countUmReadChats);
             }
 
@@ -211,16 +210,18 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public ChatList findChats(long roomId) {
+    public ChatList findChats(long dealId) {
+
         long userId = Long.parseLong(accountUtil.getLoginMemberId());
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByDealId(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
 
-        List<Chat> listChat = chatRepository.findAllByRoomIdOrderByCreateTime(roomId);
+        List<Chat> listChat = chatRepository.findAllByRoomIdOrderByCreateTime(dealId);
 
         // 챗 읽기 처리
         if (chatRoom.getLastSenderId() != userId) {
-            for (int i = 0; i < chatRepository.countAllByRoomIdAndReadIsFalse(roomId); i++) {
+            for (int i = 0; i < chatRepository.countAllByRoomIdAndReadIsFalse(dealId); i++) {
                 Chat readChat = listChat.get(i);
                 readChat.setRead(true);
                 chatRepository.save(readChat);
@@ -233,7 +234,7 @@ public class ChatServiceImpl implements ChatService {
             chatRes.add(chatRoomMapper.toChatRes(chat));
         }
 
-        Deal deal = dealRepository.findById(chatRoom.getDealId()) // 거래 정보
+        Deal deal = dealRepository.findById(dealId) // 거래 정보
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
 
         DealResWithEndPrice dealResWithEndPrice = new DealResWithEndPrice(deal);
@@ -243,13 +244,13 @@ public class ChatServiceImpl implements ChatService {
                 .collect(Collectors.toList()));
 
         if (deal.getClass().getSimpleName().equals("Sale")) { // 거래 낙찰가격 가지고 오기
-            Sale sale = saleRepository.findById(deal.getId())
+            Sale sale = saleRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
 
             dealResWithEndPrice.setEndPrice(sale.getHighestBid().getBidPrice());
 
         } else {
-            Purchase purchase = purchaseRepository.findById(deal.getId())
+            Purchase purchase = purchaseRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
 
             List<Long> sellerIds = purchase.getApplyForms().stream()
@@ -273,44 +274,41 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public void exitChatRooms(long chatRoomId) {
+    public void exitChatRooms(long dealId) {
 
         long userId = Long.parseLong(accountUtil.getLoginMemberId());
-        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(chatRoomId);
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByDealId(dealId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
 
-        if (optionalChatRoom.isPresent()) {
-            ChatRoom chatRoom = optionalChatRoom.get();
-
-            if (chatRoom.getDealConfirmed().size() != 2) {
-                throw new BusinessException(ErrorCode.EXIT_CHATROOM_FAIL);
-            }
-
-            chatRoom.setHostId(chatRoom.getHostId() == userId ? -1 : chatRoom.getHostId());
-            chatRoom.setGuestId(chatRoom.getGuestId() == userId ? -1 : chatRoom.getGuestId());
-
-            if (chatRoom.getHostId() == -1 && chatRoom.getGuestId() == -1) {
-                chatRoomRepository.delete(chatRoom);
-                chatRepository.deleteAllByRoomId(chatRoomId);
-            } else {
-                chatRoomRepository.save(chatRoom);
-            }
-
+        if (chatRoom.getDealConfirmed().size() != 2) {
+            throw new BusinessException(ErrorCode.EXIT_CHATROOM_FAIL);
         }
+
+        chatRoom.setHostId(chatRoom.getHostId() == userId ? -1 : chatRoom.getHostId());
+        chatRoom.setGuestId(chatRoom.getGuestId() == userId ? -1 : chatRoom.getGuestId());
+
+        if (chatRoom.getHostId() == -1 && chatRoom.getGuestId() == -1) {
+            chatRoomRepository.delete(chatRoom);
+            chatRepository.deleteAllByRoomId(dealId);
+        } else {
+            chatRoomRepository.save(chatRoom);
+        }
+
+
     }
 
     @Override
     @Transactional
-    public void dealConfirmed(long chatRoomId) {
+    public void dealConfirmed(long dealId) {
         long userId = Long.parseLong(accountUtil.getLoginMemberId());
-        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(chatRoomId);
-        if (optionalChatRoom.isPresent()) {
-            ChatRoom chatRoom = optionalChatRoom.get();
-            Set<Long> confirmedIds = (chatRoom.getDealConfirmed() == null) ? new HashSet<>()
-                : chatRoom.getDealConfirmed();
-            confirmedIds.add(userId);
-            chatRoom.setDealConfirmed(confirmedIds);
-            chatRoomRepository.save(chatRoom);
-        }
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByDealId(dealId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
+
+        Set<Long> confirmedIds = chatRoom.getDealConfirmed();
+        confirmedIds.add(userId);
+        chatRoom.setDealConfirmed(confirmedIds);
+        chatRoomRepository.save(chatRoom);
+
     }
 
 
