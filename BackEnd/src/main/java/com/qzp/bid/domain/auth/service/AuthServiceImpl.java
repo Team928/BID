@@ -1,6 +1,7 @@
 package com.qzp.bid.domain.auth.service;
 
 import com.qzp.bid.domain.auth.api.KakaoOAuthApi;
+import com.qzp.bid.domain.auth.api.NaverOAuthApi;
 import com.qzp.bid.domain.auth.api.OAuthApi;
 import com.qzp.bid.domain.auth.dto.LoginTokenDto;
 import com.qzp.bid.domain.auth.dto.LoginTokenRes;
@@ -9,6 +10,8 @@ import com.qzp.bid.domain.auth.dto.OAuthLoginReq;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.Role;
 import com.qzp.bid.domain.member.repository.MemberRepository;
+import com.qzp.bid.global.result.error.ErrorCode;
+import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.JwtProvider;
 import java.time.Duration;
 import java.util.Collections;
@@ -31,28 +34,32 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginTokenRes loginOauth(OAuthLoginReq loginReq) {
-        ClientRegistration provider = inMemoryClient.findByRegistrationId(
-            loginReq.getProviderName().name()); //provider 찾음
-        OAuthApi oAuthApi = null;
-        switch (loginReq.getProviderName()) {
-            case kakao -> oAuthApi = new KakaoOAuthApi(provider, loginReq);
-        }
-        OAuth2UserInfo oAuth2UserInfo = oAuthApi.loginProcess();
-        Member member = memberRepository.findMemberByEmail(oAuth2UserInfo.getEmail())
-            .orElseGet(() -> createNewMember(oAuth2UserInfo));
+        try {
+            ClientRegistration provider = inMemoryClient.findByRegistrationId(
+                loginReq.getProviderName().name()); //provider 찾음
+            OAuthApi oAuthApi = null;
+            switch (loginReq.getProviderName()) {
+                case kakao -> oAuthApi = new KakaoOAuthApi(provider, loginReq);
+                case naver -> oAuthApi = new NaverOAuthApi(provider, loginReq);
+            }
+            OAuth2UserInfo oAuth2UserInfo = oAuthApi.loginProcess();
+            Member member = memberRepository.findMemberByEmail(oAuth2UserInfo.getEmail())
+                .orElseGet(() -> createNewMember(oAuth2UserInfo));
 
-        LoginTokenDto loginTokenDto = jwtProvider.getLoginResponse(member);
-        LoginTokenRes loginTokenRes = new LoginTokenRes(loginTokenDto);
-        //Redis에 저장
-        redisTemplate.opsForValue()
-            .set("RTK:" + loginTokenRes.getId(), loginTokenRes.getRefreshToken(),
-                Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
-
-        if (member.getRole().contains(Role.USER)) {
-            loginTokenRes.setNickname(member.getNickname());
-            loginTokenRes.setArea(member.getArea());
+            LoginTokenDto loginTokenDto = jwtProvider.getLoginResponse(member);
+            LoginTokenRes loginTokenRes = new LoginTokenRes(loginTokenDto);
+            //Redis에 저장
+            redisTemplate.opsForValue()
+                .set("RTK:" + loginTokenRes.getId(), loginTokenRes.getRefreshToken(),
+                    Duration.ofDays(jwtProvider.getRefreshTokenValidityTime()));
+            if (member.getRole().contains(Role.USER)) {
+                loginTokenRes.setNickname(member.getNickname());
+                loginTokenRes.setArea(member.getArea());
+            }
+            return loginTokenRes;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.FAIL_TO_OAUTH_LOGIN);
         }
-        return loginTokenRes;
     }
 
     private Member createNewMember(OAuth2UserInfo oAuth2UserInfo) {
