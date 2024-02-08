@@ -32,7 +32,7 @@ const ChatRoomPage = () => {
     // 웹소켓 연결
     const newClient = new Client();
     newClient.configure({
-      brokerURL: 'ws://localhost:8081/ws',
+      brokerURL: 'ws://i10d208.p.ssafy.io:8081/ws',
       onConnect: () => {
         console.log('웹소켓 연결 완료');
 
