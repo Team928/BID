@@ -1,6 +1,6 @@
 import { dealStatusType } from '@/types/model';
 
-type dealType = 'buy' | 'sale';
+export type dealType = 'purchase' | 'sale';
 
 interface IStateButtonProp {
   deals: dealType;
@@ -12,7 +12,7 @@ const StateButton = ({ deals, status }: IStateButtonProp) => {
 
   if (deals === 'sale') {
     name = '경매';
-  } else if (deals === 'buy') {
+  } else if (deals === 'purchase') {
     name = '역경매';
   }
 
