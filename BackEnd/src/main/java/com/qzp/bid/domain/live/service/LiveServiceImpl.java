@@ -1,7 +1,12 @@
 package com.qzp.bid.domain.live.service;
 
 import com.qzp.bid.domain.deal.entity.Deal;
+import com.qzp.bid.domain.deal.entity.DealStatus;
+import com.qzp.bid.domain.deal.purchase.entity.Purchase;
+import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
+import com.qzp.bid.domain.deal.sale.entity.Sale;
+import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
 import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
@@ -12,6 +17,7 @@ import io.openvidu.java.client.OpenVidu;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.OpenViduRole;
+import io.openvidu.java.client.RecordingMode;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.SessionProperties;
 import jakarta.annotation.PostConstruct;
@@ -37,16 +43,17 @@ public class LiveServiceImpl implements LiveService {
 
     @Value("${openvidu.secret}")
     private String OPENVIDU_SECRET;
-    
+
     @PostConstruct
     public void init() {
-        log.info("OPENVIDU_URL + OPENVIDU_SECRET  = " + OPENVIDU_URL + OPENVIDU_SECRET );
         this.openVidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
     }
 
 
     private final RedisTemplate redisTemplate;
     private final DealRepository<Deal> dealRepository;
+    private final SaleRepository saleRepository;
+    private final PurchaseRepository purchaseRepository;
 
     @Override
     public LiveRoomRes JoinLiveRoom(Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
@@ -76,7 +83,7 @@ public class LiveServiceImpl implements LiveService {
 
         if (session != null){ // 세션 존재
 
-           connection = session.createConnection(connectionProperties);
+            connection = session.createConnection(connectionProperties);
 
             //  REDIS  <DealId : <UserId : ConnectionId>> 넣기
             HashMap<String, String> changehashMap = (HashMap<String, String>) redisTemplate.opsForHash().get("OpenVidu_ConnectionId", dealId);
@@ -85,7 +92,23 @@ public class LiveServiceImpl implements LiveService {
 
         }
         else { // 세션 없음 -> 새로 만들기
-            SessionProperties sessionProperties = new SessionProperties.Builder().build();
+
+            // 라이브로 상태 바꾸기
+            if(deal.getClass().getSimpleName().equals("Sale")){
+                Sale sale = saleRepository.findById(dealId).orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
+                sale.setStatus(DealStatus.LIVE);
+                saleRepository.save(sale);
+            }else{
+                Purchase purchase = purchaseRepository.findById(dealId).orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+                purchase.setStatus(DealStatus.LIVE);
+                purchaseRepository.save(purchase);
+            }
+
+            SessionProperties sessionProperties = new SessionProperties.Builder()
+                .customSessionId("LIVECHATROOMID"+dealId)
+                .recordingMode(RecordingMode.MANUAL)
+                .build();
+
             session = openVidu.createSession(sessionProperties);
 
             connection = session.createConnection(connectionProperties);
@@ -108,4 +131,5 @@ public class LiveServiceImpl implements LiveService {
 
         return liveRoom;
     }
+
 }

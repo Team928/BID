@@ -20,11 +20,30 @@ export interface IDealSimpleRes {
     isWished: boolean
   }
 
-// 판매글 목록 조회 Response ('members/review')
+// 나의 경매 Response 
 export interface ISaleListRes {
     saleSimpleResList: ISaleSimpleRes[];
     last: boolean;
     pageNumber: number;
+    pageSize: number;
+  }
+
+  export interface IBuySimpleRes {
+    dealSimpleRes: IDealSimpleRes;
+    immediatePrice: number;
+    startPrice: number;
+    endTime: string;
+    bid: number;
+    status: dealStatusType;
+    isWished: boolean
+
+  }
+
+  // 내가 주최한 역경매 Response
+  export interface IbuyListRes {
+    purchaseSimpleRes: IBuySimpleRes[];
+    last: boolean;
+    pagrNumber: number;
     pageSize: number;
   }
 

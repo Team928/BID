@@ -1,12 +1,20 @@
 import sample from '@/assets/image/sample.png';
 import StateButton from '@/components/@common/StateButton';
+import { useProfile } from '@/hooks/profile/useProfile';
 import { HiHeart } from 'react-icons/hi';
 
 const SaleParticipant = () => {
+
+  const { useSaleParticipant } = useProfile()
+  const {
+    data: saleParticipantInfo,
+  } = useSaleParticipant()
+  
   return (
     // TODO : 실제 데이터로 수정해야함
     <div className="pt-28">
-      <div className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
+      {saleParticipantInfo?.data.saleSimpleResList.map((item, index) => (
+        <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
         <div className="w-32 h-32">
           <img className="w-full h-full rounded-xl" src={sample}></img>
         </div>
@@ -17,15 +25,16 @@ const SaleParticipant = () => {
           </div>
           <div className="py-2">
             <p className="text-sm truncate whitespace-normal line-clamp-2">
-              1년도 안쓴 아이폰 15 프로 팝니다. 상태 좋아요
+              {item.dealSimpleRes.content}
             </p>
             <div className="flex items-center gap-3">
-              <p className="text-lg font-bold text-BID_BLACK">71,000원</p>
-              <p className="text-xs text-BID_BLACK">현재 입찰가</p>
+              <p className="text-lg font-bold text-BID_BLACK">{item.immediatePrice}</p>
+              <p className="text-xs text-BID_BLACK">현재 가격</p>
             </div>
           </div>
         </div>
       </div>
+      ))}
     </div>
   );
 };

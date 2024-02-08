@@ -5,13 +5,12 @@ import sample from '@/assets/image/sample.png'
 
 const SaleHost = () => {
 
-  // 유저 스토어에서 nickName 가져오기
   // const { nickname } = userStore(state => state);
 
   const { useSaleHost } = useProfile()
   const {
     data: saleHostInfo,
-  } = useSaleHost('이승현') // 임의 닉네임
+  } = useSaleHost('짱인사람') // 임의 닉네임
 
     return (
       <div className="pt-28">

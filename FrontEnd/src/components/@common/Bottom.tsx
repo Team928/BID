@@ -3,12 +3,19 @@ import { PiUser } from 'react-icons/pi';
 import { GoHome } from 'react-icons/go';
 import { PiPencilSimpleLine } from 'react-icons/pi';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BsSuitHeart } from 'react-icons/bs';
+import SelectWriteModal from './SelectWirteModal';
 
 const Bottom = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(prevState => !prevState); 
+  };
 
   const menu = [
     {
@@ -21,7 +28,6 @@ const Bottom = () => {
       name: '위시',
       path: '/scrap',
       selectIcon: (
-        // 사이즈를 줄여야 다른 아이콘과 맞아서 <div>태그로 감싸서 해결했습니다
         <div className="w-8 h-8 flex  items-center justify-center">
           <BsSuitHeart size={'1.6rem'} color="#3498DB" />
         </div>
@@ -34,9 +40,9 @@ const Bottom = () => {
     },
     {
       name: '글쓰기',
-      path: '/write',
-      selectIcon: <PiPencilSimpleLine size={'1.8rem'} color="#3498DB" />,
-      defaultIcon: <PiPencilSimpleLine size={'1.8rem'} color="#545454" />,
+      path: '',
+      selectIcon: <PiPencilSimpleLine size={'1.8rem'} color={isModalOpen ? "#3498DB" : "#545454"} />,
+      defaultIcon: <PiPencilSimpleLine onClick={toggleModal}  size={'1.8rem'} color="#545454" />,
     },
     {
       name: '채팅',
@@ -53,7 +59,6 @@ const Bottom = () => {
   ];
 
   useEffect(() => {
-    // #TODO 홈 선택되도록 바꿔야함 (경매탭, 역경매탭 등)
     console.log(pathname);
     console.log(pathname.split('/')[0]);
     console.log(pathname.split('/')[1]);
@@ -61,6 +66,7 @@ const Bottom = () => {
 
   return (
     <>
+    {isModalOpen && <SelectWriteModal closeModal={toggleModal} />}
       <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
         <div className="py-2 flex justify-around items-center">
           <div onClick={() => navigate(`/`)} className="flex flex-col items-center cursor-pointer text-xs">
@@ -89,7 +95,7 @@ const Bottom = () => {
               </>
             )}
           </div>
-          <div onClick={() => navigate(`/write`)} className="flex flex-col items-center cursor-pointer text-xs">
+          <div onClick={() => toggleModal} className="flex flex-col items-center cursor-pointer text-xs">
             {pathname.split('/')[1] == 'write' ? (
               <>
                 {menu[2].selectIcon}

@@ -1,5 +1,7 @@
 package com.qzp.bid.domain.live.controller;
 
+import com.qzp.bid.domain.chat.dto.LiveResultReq;
+import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
 import com.qzp.bid.domain.live.service.LiveService;
 import com.qzp.bid.global.result.ResultCode;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LiveController {
 
     private final LiveService liveService;
+    private final ChatService chatService;
 
 
     @GetMapping("/create/rooms") // 방만들기 & 방참가
@@ -27,6 +30,13 @@ public class LiveController {
         throws OpenViduJavaClientException, OpenViduHttpException {
         LiveRoomRes liveRoom = liveService.JoinLiveRoom(params);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CREATE_LIVE_ROOM_SUCCESS, liveRoom));
+    }
+
+    @GetMapping("/purchase/results") // 역경매 판매자 선택하기 + 채팅방 개설
+    public ResponseEntity<ResultResponse> ChoicePurchaseResult(LiveResultReq resultReq){
+        chatService.createRoom(resultReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
+
     }
 
 }
