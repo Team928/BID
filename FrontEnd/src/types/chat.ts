@@ -23,7 +23,6 @@ export interface IChatRoomListRes {
 // 채팅방 목록 조회 Req
 export interface IChatRoomListReq {
     userId: number;
-
 }
 
 export interface IChatResList {
@@ -58,5 +57,5 @@ export interface IChatLogListRes {
 
 // 채팅로그 조회 Request
 export interface IChatLogListReq {
-    roomId: number;
+    dealId: number;
 }
