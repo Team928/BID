@@ -34,15 +34,15 @@ public class ChatController {
     private final ChatService chatService;
 
     @ResponseBody
-    @MessageMapping("/message/{roomId}")
-    public void sendMessage(@DestinationVariable("roomId") long roomId, @Payload Chat chat) {
-        chatService.sendChat(chat, roomId);
+    @MessageMapping("/message/{dealId}")
+    public void sendMessage(@DestinationVariable("dealId") long dealId, @Payload Chat chat) {
+        chatService.sendChat(chat, dealId);
     }
 
     @ResponseBody
-    @MessageMapping("/message/live/{roomId}")
-    public void sendLiveMessage(@DestinationVariable("roomId") long roomId, @Payload Chat chat) {
-        chatService.sendLiveChat(chat, roomId);
+    @MessageMapping("/message/live/{dealId}")
+    public void sendLiveMessage(@DestinationVariable("dealId") long dealId, @Payload Chat chat) {
+        chatService.sendLiveChat(chat, dealId);
     }
 
 
@@ -53,24 +53,24 @@ public class ChatController {
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATROOMS_SUCCESS, chatRooms));
     }
 
-    @GetMapping("/rooms/{roomId}")
-    public ResponseEntity<ResultResponse> findChats(@PathVariable(name = "roomId") Long roomId) {
-        ChatList chats = chatService.findChats(roomId);
+    @GetMapping("/rooms/{dealId}")
+    public ResponseEntity<ResultResponse> findChats(@PathVariable(name = "dealId") Long dealId) {
+        ChatList chats = chatService.findChats(dealId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATS_SUCCESS, chats));
     }
 
-    @DeleteMapping("/rooms/{roomId}")
+    @DeleteMapping("/rooms/{dealId}")
     public ResponseEntity<ResultResponse> exitChatRooms(
-        @PathVariable(name = "roomId") Long roomId) {
-        chatService.exitChatRooms(roomId);
+        @PathVariable(name = "dealId") Long dealId) {
+        chatService.exitChatRooms(dealId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.EXIT_CHATROOM_SUCCESS));
     }
 
     //거래 확정 버튼 누르기
-    @GetMapping("/confirmed/{roomId}")
+    @GetMapping("/confirmed/{dealId}")
     public ResponseEntity<ResultResponse> dealConfirmed(
-        @PathVariable(name = "roomId") Long roomId) {
-        chatService.dealConfirmed(roomId);
+        @PathVariable(name = "dealId") Long dealId) {
+        chatService.dealConfirmed(dealId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CONFIRMED_DEAL_SUCCESS));
     }
 }
