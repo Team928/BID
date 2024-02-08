@@ -1,11 +1,12 @@
-import sample from '@/assets/image/sample.png';
 import Bottom from '@/components/@common/Bottom';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
-import StateButton from '@/components/@common/StateButton';
 import AuctionTabBar from '@/components/home/AuctionTabBar';
 import NOTIFY from '@/assets/icon/notify.png';
 import useTabStore from '@/stores/auctionTabStore';
-import { HiHeart } from 'react-icons/hi';
+import { useWish } from '@/hooks/scrap/useWish';
+import { useEffect } from 'react';
+import WishSaleItem from '@/components/scrap/WishSaleItem';
+import WishPurchaseItem from '@/components/scrap/WishPurchaseItem';
 
 const ScrapPage = () => {
   const { tab } = useTabStore();
@@ -17,6 +18,18 @@ const ScrapPage = () => {
     right_2: <img src={NOTIFY} />,
   };
 
+  const { useGetWishSaleList, useGetWishPurchaseList } = useWish();
+  const { data: saleList } = useGetWishSaleList(tab);
+  const { data: purchaseList } = useGetWishPurchaseList(tab);
+
+  useEffect(() => {
+    console.log(saleList);
+  }, [saleList]);
+
+  useEffect(() => {
+    console.log(purchaseList);
+  }, [purchaseList]);
+
   return (
     <>
       <div className="w-full h-screen pb-[4.5rem]">
@@ -24,8 +37,7 @@ const ScrapPage = () => {
         <AuctionTabBar />
         <div className="pt-[5.1rem] h-full overflow-y-auto">
           <div className="pt-3 flex flex-col ">
-            {/* map() 으로 구현해야함 */}
-            <div className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
+            {/* <div className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
               <div className="w-32 h-32">
                 <img className="w-full h-full rounded-xl" src={sample}></img>
               </div>
@@ -98,11 +110,17 @@ const ScrapPage = () => {
                   <p className="text-xs text-BID_BLACK">현재 입찰가</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* 탭에 따른 컴포넌트 보여주기 */}
-          {/* {tab === 'sale' ? <SaleTab></SaleTab> : <BuyTab></BuyTab>} */}
+          {tab === 'sale' ? (
+            <>{saleList?.data.saleSimpleResList.map((item, index) => <WishSaleItem key={index} item={item} />)}</>
+          ) : (
+            <>
+              {purchaseList?.data.purchaseSimpleRes.map((item, index) => <WishPurchaseItem key={index} item={item} />)}
+            </>
+          )}
         </div>
       </div>
       <Bottom />

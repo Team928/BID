@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
 interface ITab {
-  tab: 'buy' | 'sale';
-  setTab: (tab: 'buy' | 'sale') => void;
+  tab: 'purchase' | 'sale';
+  setTab: (tab: 'purchase' | 'sale') => void;
 }
 
 const useTabStore = create<ITab>(set => ({
-  tab: 'sale',
+  tab: 'purchase',
   setTab: newTab => set({ tab: newTab }),
 }));
 

@@ -17,6 +17,7 @@ export interface ISaleSimpleRes {
   endTime: string;
   bid: number;
   status: dealStatusType;
+  isWished: boolean;
 }
 
 export interface IDealRes {
