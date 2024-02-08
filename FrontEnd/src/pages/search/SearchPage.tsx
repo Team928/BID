@@ -2,12 +2,10 @@ import Popular from '@/components/search/Popular';
 import Recommend from '@/components/search/Recommend';
 import useKeywordStore from '@/stores/keywordStore';
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SearchPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const prev = location.state.prev;
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   // #TODO 추후 서비스에 맞는 더미데이터로 채워넣기
@@ -18,7 +16,7 @@ const SearchPage = () => {
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      navigate(prev);
+      navigate(-1);
     }
   };
 

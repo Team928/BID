@@ -2,12 +2,12 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import ProfileTabBar from '@/components/profile/ProfileTabBar';
 import GetReviews from '@/components/profile/review/GetReviews';
 import WroteReviews from '@/components/profile/review/WroteReviews';
-import BACK from '@/assets/icon/back.png';
 import useTabStore from '@/stores/auctionTabStore';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const ProfileReviewPage = () => {
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '내 리뷰 내역',
     right_1: null,
     right_2: null,

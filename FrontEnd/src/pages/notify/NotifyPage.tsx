@@ -1,6 +1,6 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import NotifyItem, { IItem } from '@/components/notify/NotifyItem';
-import BACK from '@/assets/icon/back.png';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const NotifyPage = () => {
   // #TODO 실제 데이터로 추후에 수정해야함
@@ -33,7 +33,7 @@ const NotifyPage = () => {
   ];
 
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '알림',
     right_1: null,
     right_2: null,

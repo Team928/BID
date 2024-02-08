@@ -5,7 +5,6 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import SelectModal from '@/components/home/SelectModal';
 import SEARCH from '@/assets/icon/search.png';
 import NOTIFY from '@/assets/icon/notify.png';
-import BACK from '@/assets/icon/back.png';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { useLocation } from 'react-router-dom';
 import { categoryType, dealStatusType } from '@/types/model';
@@ -17,6 +16,7 @@ import userStore from '@/stores/userStore';
 import { FaCheck } from 'react-icons/fa';
 import DaumPostModal from '@/components/@common/DaumPostModal';
 import Toast from '@/components/@common/Toast';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const SaleCategoryPage = () => {
   const { pathname } = useLocation();
@@ -238,7 +238,7 @@ const sort = [
 ];
 
 const info: IHeaderInfo = {
-  left: <img src={BACK} />,
+  left: <IoIosArrowBack />,
   center: '카테고리',
   right_1: <img src={SEARCH} />,
   right_2: <img src={NOTIFY} />,

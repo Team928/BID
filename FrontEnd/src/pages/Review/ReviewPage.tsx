@@ -1,10 +1,10 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
-import BACK from '@/assets/icon/back.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useReview } from '@/hooks/review/useReview';
 import { ICreateReviewReq } from '@/types/review';
 import { BsFillStarFill } from 'react-icons/bs';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const ReviewPage = () => {
   const { dealInfo } = useLocation().state;
@@ -22,7 +22,7 @@ const ReviewPage = () => {
 
   const { mutate } = usePostReview(reviewReq);
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '리뷰',
     right_1: null,
     right_2: null,

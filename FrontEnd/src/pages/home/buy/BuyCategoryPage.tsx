@@ -3,7 +3,6 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import BuyCategoryItem from '@/components/home/buy/BuyCategoryItem';
 import SEARCH from '@/assets/icon/search.png';
 import NOTIFY from '@/assets/icon/notify.png';
-import BACK from '@/assets/icon/back.png';
 import { usePurchase } from '@/hooks/home/usePurchase';
 import useKeywordStore from '@/stores/keywordStore';
 import { categoryType } from '@/types/model';
@@ -11,6 +10,7 @@ import { changeEngToKr } from '@/utils/changeCategorie';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const BuyCategoryPage = () => {
   const { pathname } = useLocation();
@@ -21,7 +21,7 @@ const BuyCategoryPage = () => {
   const { keyword } = useKeywordStore();
 
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '카테고리',
     right_1: <img src={SEARCH} />,
     right_2: <img src={NOTIFY} />,

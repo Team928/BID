@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Client, StompHeaders } from '@stomp/stompjs';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
-import BACK from '@/assets/icon/back.png';
 import MessageInput from '@/components/chat/MessageInput';
 import ChatLogs from '@/components/chat/ChatLogs';
 import DealInfo from '@/components/chat/DealInfo';
 import { useChatLog } from '@/hooks/chat/useChat';
 import { axiosAuthInstance } from '@/apis/axiosInstance';
 import { IChatResList } from '@/types/chat';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const ChatRoomPage = () => {
   const [client, setClient] = useState<Client | null>(null);
@@ -16,7 +16,7 @@ const ChatRoomPage = () => {
 
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '방제목',
     right_1: null,
     right_2: null,

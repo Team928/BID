@@ -1,5 +1,4 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
-import BACK from '@/assets/icon/back.png';
 import useInput from '@/hooks/@common/useInput';
 import userStore from '@/stores/userStore';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -15,6 +14,7 @@ import { categoryType } from '@/types/model';
 import { postSaleWrite } from '@/service/write/api';
 import { changeKrToEng } from '@/utils/changeCategorie';
 import DaumPostModal from '@/components/@common/DaumPostModal';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const SaleWritePage = () => {
   const navigate = useNavigate();
@@ -373,7 +373,7 @@ const categoryInfo: ICategory[] = [
 ];
 
 const info: IHeaderInfo = {
-  left: <img src={BACK} />,
+  left: <IoIosArrowBack />,
   center: '판매',
   right_1: null,
   right_2: null,

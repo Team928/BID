@@ -3,16 +3,16 @@ import ProfileOtherTabBar from '@/components/profile/ProfileOtherTabBar';
 import OtherBuy from '@/components/profile/buy/OtherBuy';
 import OtherReview from '@/components/profile/review/OtherReview';
 import OtherSale from '@/components/profile/sale/OtherSale';
-import BACK from '@/assets/icon/back.png';
 import { useProfile } from '@/hooks/profile/useProfile';
 import useOtherTabStore from '@/stores/profileOtherTab';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const OtherProfilePage = () => {
   const { useUserProfile } = useProfile();
   const { data: userProfileInfo } = useUserProfile('이승현'); // 임의 닉네임
 
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: `${userProfileInfo?.data.nickname}님의 프로필`,
     right_1: null,
     right_2: null,

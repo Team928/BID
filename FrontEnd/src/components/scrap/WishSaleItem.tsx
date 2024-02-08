@@ -11,10 +11,7 @@ const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
   const { status, dealSimpleRes, immediatePrice, startPrice, bid } = props.item;
   const { tab } = useTabStore();
   return (
-    <div
-      onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)}
-      className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]"
-    >
+    <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="px-BID_P py-3 flex gap-4">
       <div className="w-32 h-32 relative">
         <img className="w-full h-full rounded-xl" src={dealSimpleRes.image}></img>
       </div>

@@ -2,12 +2,12 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import ProfileTabBar from '@/components/profile/ProfileTabBar';
 import SaleHost from '@/components/profile/sale/SaleHost';
 import SaleParticipant from '@/components/profile/sale/SaleParticipant';
-import BACK from '@/assets/icon/back.png';
 import useTabStore from '@/stores/auctionTabStore';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const ProfileSalePage = () => {
   const info: IHeaderInfo = {
-    left: <img src={BACK} />,
+    left: <IoIosArrowBack />,
     center: '내 경매 내역',
     right_1: null,
     right_2: null,
