@@ -27,7 +27,7 @@ spring:
       password:
   web:
     resources:
-      static-locations: ENC(XWg1Mlx0pk6BIFJCLbkI3nfp0ZcrYOJkIJaGYKBTwHI=)
+      static-locations: ENC(kZNWgJkZKJ+PiHLC2n9WpVg9mzJnN6urv1WlU9aUWlA=)
 ---
 spring:
   config:
@@ -48,4 +48,4 @@ spring:
       password: ENC(BIPTRfDba7N0Mn2hnckGE+QzoR38SJXN)
   web:
     resources:
-      static-locations: ENC(DChPLIgIiT+LXlg+BayvCQErUKZtlvoeCxvrTGIPyBfQcVSo+e/hZtC/7AxEkRudnomcFdV8Mec=)
+      static-locations: ENC(af+isBISwWfLhsxV2HlPBnawsKp0tRZGLZssUj0/ViP+2zk6h0tk3CYNugXmUeG6GPKeCNY8fkQ=)
