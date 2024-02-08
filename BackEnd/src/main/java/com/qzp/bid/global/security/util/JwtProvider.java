@@ -6,8 +6,8 @@ import static com.qzp.bid.global.result.error.ErrorCode.JWT_MALFORM;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qzp.bid.domain.member.dto.LoginTokenDto;
-import com.qzp.bid.domain.member.dto.LoginTokenRes;
+import com.qzp.bid.domain.auth.dto.LoginTokenDto;
+import com.qzp.bid.domain.auth.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.global.result.error.exception.TokenException;
 import io.jsonwebtoken.Claims;

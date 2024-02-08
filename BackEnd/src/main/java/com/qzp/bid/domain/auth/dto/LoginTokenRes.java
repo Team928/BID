@@ -1,4 +1,4 @@
-package com.qzp.bid.domain.member.dto;
+package com.qzp.bid.domain.auth.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,5 +14,15 @@ public class LoginTokenRes extends LoginTokenDto {
 
     public LoginTokenRes(Long id, String accessToken, String refreshToken) {
         super(id, accessToken, refreshToken);
+    }
+
+    public LoginTokenRes(LoginTokenDto loginTokenDto, String nickname, List<String> area) {
+        super(loginTokenDto);
+        this.nickname = nickname;
+        this.area = area;
+    }
+
+    public LoginTokenRes(LoginTokenDto loginTokenDto) {
+        super(loginTokenDto);
     }
 }

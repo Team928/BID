@@ -1,7 +1,7 @@
 package com.qzp.bid.global.security.oauth;
 
-import com.qzp.bid.domain.member.dto.LoginTokenDto;
-import com.qzp.bid.domain.member.dto.LoginTokenRes;
+import com.qzp.bid.domain.auth.dto.LoginTokenDto;
+import com.qzp.bid.domain.auth.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.repository.MemberRepository;
 import com.qzp.bid.global.security.util.JwtProvider;
