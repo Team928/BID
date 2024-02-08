@@ -60,7 +60,7 @@ const Category = () => {
 
   const navigateHandler = (item: string) => {
     const path = changeKrToEng(item).toLowerCase();
-    if (tab === 'buy') {
+    if (tab === 'purchase') {
       navigate(`/buy/${path}`);
     } else if (tab === 'sale') {
       navigate(`/sale/${path}`);

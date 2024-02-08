@@ -1,7 +1,7 @@
 import kakao from '@/assets/image/kakao.png';
 import logo from '@/assets/image/logo.png';
 import naver from '@/assets/image/naver.png';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   return (
