@@ -4,6 +4,8 @@ import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
+import com.qzp.bid.domain.auth.dto.LoginTokenDto;
+import com.qzp.bid.domain.auth.dto.LoginTokenRes;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
@@ -15,8 +17,6 @@ import com.qzp.bid.domain.deal.sale.entity.Bid;
 import com.qzp.bid.domain.deal.sale.mapper.BidMapper;
 import com.qzp.bid.domain.deal.sale.repository.BidRepository;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
-import com.qzp.bid.domain.member.dto.LoginTokenDto;
-import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
@@ -98,8 +98,8 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         LoginTokenDto loginTokenDto = jwtProvider.getLoginResponse(member);
-        LoginTokenRes loginTokenRes = memberMapper.toLoginTokenRes(member, loginTokenDto);
-
+        LoginTokenRes loginTokenRes = new LoginTokenRes(loginTokenDto, member.getNickname(),
+            member.getArea());
         return loginTokenRes;
     }
 

@@ -10,7 +10,7 @@ const DealInfo = () => {
 
     const {
       data:chatLogInfo,
-    } = useGetChatLogList({ roomId: 1 })
+    } = useGetChatLogList({ dealId: 1 })
 
     const content = chatLogInfo?.data.dealResWithEndPrice.content;
     const endPrice = chatLogInfo?.data.dealResWithEndPrice.endPrice;

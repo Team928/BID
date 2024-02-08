@@ -7,12 +7,16 @@ import DealInfo from '@/components/chat/DealInfo';
 import { useChatLog } from '@/hooks/chat/useChat';
 import { axiosAuthInstance } from '@/apis/axiosInstance';
 import { IChatResList } from '@/types/chat';
+import userStore from '@/stores/userStore';
 import { IoIosArrowBack } from 'react-icons/io';
 
 const ChatRoomPage = () => {
   const [client, setClient] = useState<Client | null>(null);
   const [message, setMessage] = useState<string>('');
   const [chatLogs, setChatLogs] = useState<IChatResList[]>([]);
+
+  // 나중에 prop으로 받아야함
+  const dealId = 1
 
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
@@ -23,8 +27,10 @@ const ChatRoomPage = () => {
   };
 
   const { useGetChatLogList } = useChatLog();
+  const { userId } = userStore()
 
-  const { data: chatLogInfo } = useGetChatLogList({ roomId: 1 });
+  const { data: chatLogInfo } = useGetChatLogList({ dealId });
+  console.log(chatLogInfo)
 
   const accessToken = axiosAuthInstance;
 
@@ -32,16 +38,15 @@ const ChatRoomPage = () => {
     // 웹소켓 연결
     const newClient = new Client();
     newClient.configure({
-      brokerURL: 'ws://i10d208.p.ssafy.io:8081/ws',
+      brokerURL: 'wss://i10d208.p.ssafy.io/api/ws',
       onConnect: () => {
         console.log('웹소켓 연결 완료');
 
-        // '/sub/chat/room/1'로 구독
         const headers: StompHeaders = {
           Authorization: 'Bearer ' + accessToken,
         };
         newClient.subscribe(
-          `/sub/chats/rooms/1`,
+          `/sub/chats/rooms/${dealId}`,
           message => {
             console.log('받은 메시지 :', message.body);
 
@@ -71,13 +76,13 @@ const ChatRoomPage = () => {
   const sendMessage = (message: string) => {
     if (client !== null) {
       const newMessage = {
-        senderId: 1,
+        senderId: userId,
         message: message,
         type: 'TALK',
       };
       const jsonMessage = JSON.stringify(newMessage);
       console.log('보낸 메시지', jsonMessage);
-      client.publish({ destination: '/pub/message/1', body: jsonMessage });
+      client.publish({ destination: `/pub/message/${dealId}`, body: jsonMessage });
     } else {
       console.error('웹소켓 연결 노활성화.');
     }
@@ -88,8 +93,10 @@ const ChatRoomPage = () => {
       <Header info={info} />
       <DealInfo />
       <div className="px-6 pt-40 pb-20">
+        {/* 이전 대화내용 불러오기 */}
         {chatLogInfo &&
-          chatLogInfo.data.chatResList.map((chatLogs, index) => <ChatLogs key={index} chatResList={chatLogs} />)}
+          chatLogInfo.data.chatResList.map((chatLog, index) => <ChatLogs key={index} chatResList={chatLog} />)}
+        {/* 실시간 채팅 내용 불러오기 */}
         {chatLogs.map((chatLog, index) => (
           <ChatLogs key={index} chatResList={chatLog} />
         ))}

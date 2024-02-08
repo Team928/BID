@@ -11,16 +11,16 @@ import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
 import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_NOT_EXIST;
 import static com.qzp.bid.global.result.ResultCode.REGISTER_SUCCESS;
 
+import com.qzp.bid.domain.auth.dto.LoginTokenRes;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
-import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
-import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
+import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.service.MemberService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;

@@ -16,24 +16,24 @@ export const getChatRoomListReq = async ({
 }
 
 // 채팅방 목록 삭제
-export const deleteChatRoomReq = async (roomId: number): Promise<APIResponse<IChatRoomListRes[]>> => {
-    const { data } = await axiosAuthInstance.delete(`chats/rooms/${roomId}`);
+export const deleteChatRoomReq = async (dealId: number): Promise<APIResponse<IChatRoomListRes[]>> => {
+    const { data } = await axiosAuthInstance.delete(`chats/rooms/${dealId}`);
     console.log(data);
     return data;
 }
 
 // 구매확정 전달
-export const confirmedDealReq = async (roomId: number): Promise<APIResponse<IChatRoomListRes[]>> => {
-    const { data } = await axiosAuthInstance.get(`chats/confirmed/${roomId}`);
+export const confirmedDealReq = async (dealId: number): Promise<APIResponse<IChatRoomListRes[]>> => {
+    const { data } = await axiosAuthInstance.get(`chats/confirmed/${dealId}`);
     console.log(data);
     return data;
 }
 
 // 채팅로그 목록
 export const getChatLogLisReq = async ({
-    roomId,
+    dealId,
 }: IChatLogListReq): Promise<APIResponse<IChatLogListRes>> => {
-    const { data } = await axiosAuthInstance.get(`chats/rooms/${roomId}`)
+    const { data } = await axiosAuthInstance.get(`chats/rooms/${dealId}`)
     console.log(data)
     return data
 }
