@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface ModalProps {
@@ -6,13 +6,6 @@ interface ModalProps {
 }
 
 const SelectWriteModal: React.FC<ModalProps> = ({ closeModal }) => {
-  
-    useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
 
   const navigate = useNavigate()
 
@@ -26,19 +19,14 @@ const SelectWriteModal: React.FC<ModalProps> = ({ closeModal }) => {
     closeModal()
   }
 
-
   return (
     <>
-    <div
-      className={`fixed w-screen h-screen top-0 bottom-0 left-0 right-0 transition ease-in-out delay-200 z-[12] `}
-      onClick={closeModal}
-    ></div>
-    <div className="fixed w-screen top-0 bottom-[4.5rem] left-0 right-0 transition ease-in-out delay-200 z-[11] bg-black bg-opacity-50">
+    <div className="fixed w-screen top-0 bottom-[4.5rem] left-0 right-0 transition ease-in-out delay-200 z-[11] bg-black bg-opacity-50" onClick={closeModal}>
       <div className=" fixed w-full h-full flex items-center justify-center">
-        <div className="bg-white  px-2 py-4 rounded-2xl absolute bottom-24 z-[12]">
-          <div className="flex flex-col bg-base-200 w-32">
-            <button className='py-2' onClick={() => goToSaleWrite()}>경매 글쓰기</button>
-            <button className='py-2' onClick={() => goToBuyWrite()}>역경매 글쓰기</button>
+        <div className="p-2 rounded-2xl absolute bottom-20 z-[12]">
+          <div className="flex flex-col bg-base-200 w-40">
+            <button className="animate-sheetOn  bg-white text-BID_MAIN border border-BID_MAIN rounded-2xl text-center p-3" onClick={() => goToSaleWrite()}>경매글 등록하기</button>
+            <button className="animate-sheetOn bg-white text-BID_MAIN border border-BID_MAIN rounded-2xl text-center p-3 mt-2" onClick={() => goToBuyWrite()}>역경매글 등록하기</button>
           </div>
         </div>
       </div>

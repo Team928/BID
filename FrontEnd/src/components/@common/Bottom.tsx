@@ -41,7 +41,7 @@ const Bottom = () => {
     {
       name: '글쓰기',
       path: '',
-      selectIcon: <PiPencilSimpleLine onClick={toggleModal} size={'1.8rem'} color={isModalOpen ? "#3498DB" : "#545454"} />, // 모달이 열릴 때 BID_MAIN 컬러로 변경됩니다.
+      selectIcon: <PiPencilSimpleLine size={'1.8rem'} color={isModalOpen ? "#3498DB" : "#545454"} />,
       defaultIcon: <PiPencilSimpleLine onClick={toggleModal}  size={'1.8rem'} color="#545454" />,
     },
     {
@@ -95,7 +95,7 @@ const Bottom = () => {
               </>
             )}
           </div>
-          <div onClick={() => navigate(`/write`)} className="flex flex-col items-center cursor-pointer text-xs">
+          <div onClick={() => toggleModal} className="flex flex-col items-center cursor-pointer text-xs">
             {pathname.split('/')[1] == 'write' ? (
               <>
                 {menu[2].selectIcon}
