@@ -10,6 +10,7 @@ import { categoryType } from '@/types/model';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 
 const BuyCategoryPage = () => {
   const { pathname } = useLocation();
@@ -26,18 +27,23 @@ const BuyCategoryPage = () => {
     right_2: <img src={NOTIFY} />,
   };
 
-  const { useGetPurchaseList } = usePurchase();
+  const { useGetListPurchaseInfinite } = usePurchase();
+
   const {
-    // isLoading,
-    // error,
     data: categoryInfo,
-  } = useGetPurchaseList({
-    page: '0',
-    size: '10',
+    fetchNextPage,
+    hasNextPage,
+  } = useGetListPurchaseInfinite({
+    size: '5',
     order: order,
     status: 'BEFORE',
     ...(category !== 'ALL' && { catg: category }),
     ...(keyword !== '' && { keyword: keyword }),
+  });
+
+  const { setTarget } = useIntersectionObserver({
+    hasNextPage,
+    fetchNextPage,
   });
 
   return (
@@ -65,10 +71,15 @@ const BuyCategoryPage = () => {
           </div>
         </div>
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
-          {categoryInfo?.data.purchaseSimpleRes.map((item, index) => {
-            return <BuyCategoryItem key={index} item={item} />;
-          })}
+          {categoryInfo?.pages.map(item =>
+            item.data.purchaseSimpleRes.map((value, index) => {
+              return <BuyCategoryItem key={index} item={value} />;
+            }),
+          )}
         </div>
+
+        {/* 페이지 최하단에 작은 div요소 만들어 ref에 setTarget적용 */}
+        <div ref={setTarget} className="h-[1rem]" />
       </div>
       <Bottom />
     </>

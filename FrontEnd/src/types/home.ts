@@ -58,6 +58,16 @@ export interface IDealsListReq {
   keyword?: string;
 }
 
+// 무한스크롤
+export interface IDealsListInfiniteReq {
+  size: string;
+  catg?: categoryType;
+  area?: string;
+  order?: dealOrderType;
+  status?: dealStatusType;
+  keyword?: string;
+}
+
 // 판매글 상세 조회 Response ('deals/sales/{saleID}')
 export interface ISaleDetailRes {
   dealRes: IDealRes;

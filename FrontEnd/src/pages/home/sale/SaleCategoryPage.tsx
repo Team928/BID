@@ -12,6 +12,7 @@ import { categoryType, dealStatusType } from '@/types/model';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { useSale } from '@/hooks/home/useSale';
 import useKeywordStore from '@/stores/keywordStore';
+import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 
 const SaleCategoryPage = () => {
   const { pathname } = useLocation();
@@ -27,26 +28,24 @@ const SaleCategoryPage = () => {
   const [tempState, setTempState] = useState<'경매 시작전' | '경매 진행중' | ''>('');
   // keyword 상태 관리
   const { keyword } = useKeywordStore();
-  const { useGetSaleList } = useSale();
+  const { useGetListInfinite } = useSale();
+
   const {
-    // isLoading,
-    // error,
     data: categoryInfo,
-  } = useGetSaleList({
-    page: '0',
-    size: '10',
+    fetchNextPage,
+    hasNextPage,
+  } = useGetListInfinite({
+    size: '5',
     ...(order === '최신순' || order === '' ? { order: 'asc' } : { order: 'desc' }),
     ...(category !== 'ALL' && { catg: category }),
     ...(state !== '' && { status: state }),
     ...(keyword !== '' && { keyword: keyword }),
   });
 
-  const info: IHeaderInfo = {
-    left: <img src={BACK} />,
-    center: '카테고리',
-    right_1: <img src={SEARCH} />,
-    right_2: <img src={NOTIFY} />,
-  };
+  const { setTarget } = useIntersectionObserver({
+    hasNextPage,
+    fetchNextPage,
+  });
 
   return (
     <>
@@ -111,10 +110,15 @@ const SaleCategoryPage = () => {
         </div>
 
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
-          {categoryInfo?.data.saleSimpleResList.map((item, index) => {
-            return <SaleCategoryItem key={index} item={item} />;
-          })}
+          {categoryInfo?.pages.map(item =>
+            item.data.saleSimpleResList.map((value, index) => {
+              return <SaleCategoryItem key={index} item={value} />;
+            }),
+          )}
         </div>
+
+        {/* 페이지 최하단에 작은 div요소 만들어 ref에 setTarget적용 */}
+        <div ref={setTarget} className="h-[1rem]" />
       </div>
       <Bottom />
     </>
@@ -133,3 +137,10 @@ const sort = [
     lower: ['최신순', '경매 마감 임박'],
   },
 ];
+
+const info: IHeaderInfo = {
+  left: <img src={BACK} />,
+  center: '카테고리',
+  right_1: <img src={SEARCH} />,
+  right_2: <img src={NOTIFY} />,
+};
