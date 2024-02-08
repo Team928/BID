@@ -25,7 +25,9 @@ spring:
       port: ENC(BwBUkunc7Vr8OqDKfeNL/A==)
       username:
       password:
-
+  web:
+    resources:
+      static-locations: ENC(XWg1Mlx0pk6BIFJCLbkI3nfp0ZcrYOJkIJaGYKBTwHI=)
 ---
 spring:
   config:
@@ -44,3 +46,6 @@ spring:
       port: ENC(1TrHMFwQn/O0BP6eIIXNwg==)
       username: ENC(480/GSaOYGTC5M7XUxKucQ==)
       password: ENC(BIPTRfDba7N0Mn2hnckGE+QzoR38SJXN)
+  web:
+    resources:
+      static-locations: ENC(DChPLIgIiT+LXlg+BayvCQErUKZtlvoeCxvrTGIPyBfQcVSo+e/hZtC/7AxEkRudnomcFdV8Mec=)
