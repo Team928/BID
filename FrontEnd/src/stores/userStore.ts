@@ -8,6 +8,7 @@ interface IUserState {
   area: string[];
   accessToken: string;
   refreshToken: string;
+  addArea: (address: string) => void;
   loginUser: ({
     userId,
     nickname,
@@ -33,6 +34,7 @@ const userStore = create(
       area: [],
       accessToken: '',
       refreshToken: '',
+      addArea: (address: string) => set(state => ({ area: [...state.area, address] })),
       loginUser: ({ userId, nickname, area, accessToken, refreshToken }) =>
         set({
           userId,

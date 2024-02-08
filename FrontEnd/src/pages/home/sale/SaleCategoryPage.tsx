@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Bottom from '@/components/@common/Bottom';
 import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
@@ -13,9 +13,14 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { useSale } from '@/hooks/home/useSale';
 import useKeywordStore from '@/stores/keywordStore';
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
+import userStore from '@/stores/userStore';
+import { FaCheck } from 'react-icons/fa';
+import DaumPostModal from '@/components/@common/DaumPostModal';
+import Toast from '@/components/@common/Toast';
 
 const SaleCategoryPage = () => {
   const { pathname } = useLocation();
+  const { area, addArea } = userStore();
   const category = pathname.split('/')[2].toUpperCase() as categoryType;
 
   // 현재 경매 상태를 관리 ( 전체, 경매 시작전, 경매 진행중 )
@@ -30,6 +35,15 @@ const SaleCategoryPage = () => {
   const { keyword } = useKeywordStore();
   const { useGetListInfinite } = useSale();
 
+  // 지역 모달 관리
+  const [isAddressOpen, setIsAddressOpen] = useState<boolean>(false);
+  // 지역 선택 됐는지 상태 관리
+  const [isAddrClick, setIsAddrClick] = useState<boolean>(false);
+  // 지역 선택에 올 text 관리
+  const [addrText, setAddrText] = useState<string>('지역 선택');
+  // 지역 추가 모달
+  const [isDaumModalOpen, setIsDaumModalOpen] = useState<boolean>(false);
+
   const {
     data: categoryInfo,
     fetchNextPage,
@@ -40,12 +54,28 @@ const SaleCategoryPage = () => {
     ...(category !== 'ALL' && { catg: category }),
     ...(state !== '' && { status: state }),
     ...(keyword !== '' && { keyword: keyword }),
+    ...(addrText !== '지역 선택' && { area: addrText }),
   });
 
   const { setTarget } = useIntersectionObserver({
     hasNextPage,
     fetchNextPage,
   });
+
+  const [address, setAddress] = useState<string>('');
+
+  useEffect(() => {
+    if (address) {
+      addArea(address);
+      setAddress('');
+      Toast.success('지역이 추가되었습니다');
+    }
+  }, [address]);
+  useEffect(() => {
+    if (!isAddrClick) {
+      setAddrText('지역 선택');
+    }
+  }, [isAddrClick, addrText]);
 
   return (
     <>
@@ -59,13 +89,72 @@ const SaleCategoryPage = () => {
           sort={tempState === '경매 시작전' ? sort[0] : sort[1]}
         ></SelectModal>
       )}
-
+      {isAddressOpen && (
+        <>
+          <div
+            onClick={() => {
+              if (addrText === '지역 선택') {
+                setIsAddrClick(false);
+              }
+              setIsAddressOpen(false);
+            }}
+            className="w-screen h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30"
+          ></div>
+          <div className="fixed bottom-0 h-72 w-screen pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30">
+            <div className="h-full flex flex-col justify-between font-bold text-xl">
+              <p className="text-center text-lg">지역 선택</p>
+              <div className="flex flex-col gap-5">
+                {area.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setAddrText(item);
+                        setIsAddrClick(true);
+                        setIsAddressOpen(false);
+                      }}
+                      className="flex justify-between"
+                    >
+                      <p className={`${addrText === item && 'text-BID_MAIN'}`}>{item}</p>
+                      {addrText === item && <FaCheck color="#3498DB" />}
+                    </div>
+                  );
+                })}
+                <div
+                  onClick={() => {
+                    setIsDaumModalOpen(true);
+                    setIsAddressOpen(false);
+                    setIsAddrClick(false);
+                  }}
+                  className="flex justify-between"
+                >
+                  <p>지역 추가</p>
+                </div>
+              </div>
+              <div className="border-t pt-5 text-center ">
+                <p
+                  onClick={() => {
+                    if (addrText === '지역 선택') {
+                      setIsAddrClick(false);
+                      setIsAddressOpen(false);
+                    }
+                  }}
+                  className=""
+                >
+                  닫기
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+      {isDaumModalOpen && <DaumPostModal setIsOpen={setIsDaumModalOpen} setAddress={setAddress} />}
       <div className="w-screen h-screen pb-[4.5rem]">
         <Header info={info} />
         <div className="w-full pt-12 pb-4  ">
           <div className="pt-4 px-BID_P">
             <p className="font-bold text-lg">{changeEngToKr(category)}</p>
-            <p className="text-xs text-BID_BLACK">적을꺼 없음 뭐적지?</p>
+            <p className="text-xs text-BID_BLACK">필터링을 통해 원하는 상품을 찾아보세요</p>
           </div>
           <div className="pl-4 pt-4 flex font-bold gap-3 text-center  overflow-x-scroll  whitespace-nowrap">
             <div
@@ -76,6 +165,16 @@ const SaleCategoryPage = () => {
               className={` border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === '' && 'bg-BID_BLACK text-white'}`}
             >
               <p>전체</p>
+            </div>
+            <div
+              onClick={() => {
+                setIsAddressOpen(true);
+                setIsAddrClick(!isAddrClick);
+              }}
+              className={`flex justify-center items-center gap-1 border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${isAddrClick && 'bg-BID_BLACK text-white'}`}
+            >
+              <p>{addrText}</p>
+              <MdKeyboardArrowDown />
             </div>
             <div
               onClick={() => {
