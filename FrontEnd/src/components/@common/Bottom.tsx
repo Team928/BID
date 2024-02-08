@@ -14,7 +14,7 @@ const Bottom = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
-    setIsModalOpen(prevState => !prevState); 
+    setIsModalOpen(prevState => !prevState);
   };
 
   const menu = [
@@ -41,8 +41,8 @@ const Bottom = () => {
     {
       name: '글쓰기',
       path: '',
-      selectIcon: <PiPencilSimpleLine size={'1.8rem'} color={isModalOpen ? "#3498DB" : "#545454"} />,
-      defaultIcon: <PiPencilSimpleLine onClick={toggleModal}  size={'1.8rem'} color="#545454" />,
+      selectIcon: <PiPencilSimpleLine size={'1.8rem'} color={isModalOpen ? '#3498DB' : '#545454'} />,
+      defaultIcon: <PiPencilSimpleLine onClick={toggleModal} size={'1.8rem'} color="#545454" />,
     },
     {
       name: '채팅',
@@ -66,8 +66,8 @@ const Bottom = () => {
 
   return (
     <>
-    {isModalOpen && <SelectWriteModal closeModal={toggleModal} />}
-      <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
+      {isModalOpen && <SelectWriteModal closeModal={toggleModal} />}
+      <div className="fixed px-4 bottom-0 w-full h-[4rem] bg-white z-10 text-[#A9A9A9] text-sm">
         <div className="py-2 flex justify-around items-center">
           <div onClick={() => navigate(`/`)} className="flex flex-col items-center cursor-pointer text-xs">
             {pathname === '/' || pathname.split('/')[1] === 'sale' || pathname.split('/')[1] === 'buy' ? (
