@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class DealResWithEndPrice {
 
-    private long id;
+    private long dealId;
     private String title;
     private String content;
     private String writer;
@@ -20,7 +20,7 @@ public class DealResWithEndPrice {
     private int endPrice;
 
     public DealResWithEndPrice(Deal deal) {
-        this.id = deal.getId();
+        this.dealId = deal.getId();
         this.title = deal.getTitle();
         this.content = deal.getContent();
         this.writer = deal.getWriter().getNickname();

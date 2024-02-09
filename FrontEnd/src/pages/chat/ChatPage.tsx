@@ -2,6 +2,7 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Bottom from '@/components/@common/Bottom';
 import ChatItem from '@/components/chat/ChatItem';
 import { useChatRoom } from '@/hooks/chat/useChat';
+import userStore from '@/stores/userStore';
 
 const ChatPage = () => {
   const info: IHeaderInfo = {
@@ -12,12 +13,15 @@ const ChatPage = () => {
   };
 
   const { useGetChatRoomList } = useChatRoom();
+  const { userId } = userStore()
 
   const {
     data: chatRoomInfo,
     // isLoading,
     // error,
-  } = useGetChatRoomList({ userId: 1 });
+  } = useGetChatRoomList({ userId: userId });
+
+  console.log(userId)
 
   return (
     <>

@@ -7,4 +7,6 @@ public interface ReviewRepositoryQuerydsl {
 
     ReviewListPage getReviewListPageByWriterId(long reviewerId, Pageable pageable);
 
+    ReviewListPage getReviewListPageByTargetId(long targetId, Pageable pageable);
+
 }

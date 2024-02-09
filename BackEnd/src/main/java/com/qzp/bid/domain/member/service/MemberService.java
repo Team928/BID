@@ -1,16 +1,16 @@
 package com.qzp.bid.domain.member.service;
 
+import com.qzp.bid.domain.auth.dto.LoginTokenRes;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
 import com.qzp.bid.domain.deal.sale.dto.SaleListPage;
-import com.qzp.bid.domain.member.dto.LoginTokenRes;
 import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
-import com.qzp.bid.domain.member.dto.PointChargeReq;
-import org.springframework.data.domain.Pageable;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
+import org.springframework.data.domain.Pageable;
 
 public interface MemberService {
 
@@ -36,7 +36,9 @@ public interface MemberService {
 
     PurchaseListPage getPurchaseWish(LookupParam lookupParam);
 
-    ReviewListPage getReviewsIWrote(Pageable pageable);
+    ReviewListPage getWroteReview(Pageable pageable);
+
+    ReviewListPage getReceivedReview(String nickname, Pageable pageable);
 
     void chargePoint(PointChargeReq pointChargeReq);
 }

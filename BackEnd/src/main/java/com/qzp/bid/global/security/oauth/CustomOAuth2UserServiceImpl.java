@@ -62,15 +62,14 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService {
 
 
     private Member saveOrUpdate(String email) {
-        Member member = memberRepository.findMemberByEmail(email);
-        if (member == null) { //멤버가 존재하지 않는다면
-            member = Member.builder()
-                .email(email)
-                .role(Collections.singleton(Role.GUEST))
-                .build();
+        return memberRepository.findMemberByEmail(email)
+            .orElseGet(() -> {
+                Member m = Member.builder()
+                    .email(email)
+                    .role(Collections.singleton(Role.GUEST))
+                    .build();
 
-            return memberRepository.save(member);
-        }
-        return member; //멤버가 존재한다면
+                return memberRepository.save(m);
+            });
     }
 }

@@ -3,6 +3,7 @@ import { Client, StompHeaders } from "@stomp/stompjs";
 import { axiosAuthInstance } from "@/apis/axiosInstance";
 import useChatStore from "@/stores/useChatStore";
 import ChatInput from "./ChatInput";
+import userStore from "@/stores/userStore";
 
 const ChatSection = () => {
     const accessToken = axiosAuthInstance;
@@ -10,6 +11,10 @@ const ChatSection = () => {
     const [client, setClient] = useState<Client | null>(null);
     const { addChatLog, chatLogs, clearChatLogs } = useChatStore(state => state);
     const [message, setMessage] = useState<string>("");
+    const { userId } = userStore()
+
+    // 나중에 prop으로 받아야함
+    const dealId = 1
 
     console.log(chatLogs);
     console.log(client);
@@ -20,7 +25,7 @@ const ChatSection = () => {
         // 웹소켓 연결
         const newClient = new Client();
         newClient.configure({
-            brokerURL: 'ws://localhost:8081/ws',
+            brokerURL: 'wss://i10d208.p.ssafy.io/api/ws',
             onConnect: () => {
                 console.log("웹소켓 연결 완료");
 
@@ -28,7 +33,7 @@ const ChatSection = () => {
                 const headers: StompHeaders = {
                     Authorization: 'Bearer ' + accessToken,
                 };
-                newClient.subscribe(`/sub/chats/rooms/1`, (message) => {
+                newClient.subscribe(`/sub/chats/lives/${dealId}`, (message) => {
                     console.log("받은 메시지 :", message.body);
 
                     const parsedMessage = JSON.parse(message.body);
@@ -63,13 +68,13 @@ const ChatSection = () => {
     const sendMessage = (message: string) => {
         if (client !== null && message.trim() !== "") {
             const newMessage = {
-                senderId: 1,
+                senderId: userId,
                 message: message,
                 type: "TALK",
             };
             const jsonMessage = JSON.stringify(newMessage);
             console.log("보낸 메시지", jsonMessage);
-            client.publish({ destination: '/pub/message/1', body: jsonMessage });
+            client.publish({ destination: `/pub/message/lives/${dealId}`, body: jsonMessage });
             setMessage(""); // 메시지를 보낸 후에 입력란 초기화
         } else {
             console.error('웹소켓 연결 노활성');
@@ -82,7 +87,7 @@ const ChatSection = () => {
                 {chatLogs.map((log, index) => (
                     <div key={index}>
                         <span className="text-BID_MAIN font-bold">{log.senderId}</span> 
-                        <span className="px-2 px-4 font-bold">{log.message}</span>
+                        <span className="px-2 font-bold">{log.message}</span>
                     </div>
                 ))}
             </div>

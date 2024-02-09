@@ -30,10 +30,8 @@ const ReviewPage = () => {
 
   const handleStarClick = (starValue: number) => {
     if (rating === starValue) {
-      // 별점을 다시 클릭하면 0으로
       setRating(0);
     } else {
-      // 별점을 클릭하여 설정하는 경우
       setRating(starValue);
     }
   };
