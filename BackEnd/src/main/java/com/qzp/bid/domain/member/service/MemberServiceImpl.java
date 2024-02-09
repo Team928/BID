@@ -1,5 +1,7 @@
 package com.qzp.bid.domain.member.service;
 
+import static com.qzp.bid.domain.member.entity.ReviewRole.BUYER;
+import static com.qzp.bid.domain.member.entity.ReviewRole.SELLER;
 import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
@@ -28,6 +30,7 @@ import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.PointHistory;
 import com.qzp.bid.domain.member.entity.PointStatus;
 import com.qzp.bid.domain.member.entity.Review;
+import com.qzp.bid.domain.member.entity.ReviewRole;
 import com.qzp.bid.domain.member.entity.Role;
 import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.mapper.ReviewMapper;
@@ -218,21 +221,21 @@ public class MemberServiceImpl implements MemberService {
                 memberReviewReq.getTargetNickname())
             .orElseThrow(() -> (new BusinessException(MEMBER_NICKNAME_NOT_EXIST)));
 
-        String role;
+        ReviewRole role;
 
         if (dealRepository.existsById(memberReviewReq.getDealId())) {
             if (dealRepository.existsByIdAndWriterId(memberReviewReq.getDealId(),
                 reviewerId)) { //경매, 역경매 주최자
                 if (saleRepository.existsById(memberReviewReq.getDealId())) {
-                    role = "seller";
+                    role = SELLER;
                 } else { //sale에 존재하지 않는다면 -> purchase에 존재하는 것 -> buyer
-                    role = "buyer";
+                    role = BUYER;
                 }
             } else { //경매, 역경매 참여자
                 if (reverseAuctionResultRepository.existsBySellerId(reviewerId)) { //역경매 최종 판매자라면
-                    role = "seller";
+                    role = SELLER;
                 } else {
-                    role = "buyer";
+                    role = BUYER;
                 }
             }
 

@@ -25,5 +25,5 @@ public class Review {
     private long dealId; //거래 id
     private long reviewerId; //리뷰 작성자 id
     private long targetId; //리뷰 대상자 id
-    private String role; //거래 role (buyer 또는 seller)
+    private ReviewRole role; //거래 role (buyer 또는 seller)
 }
