@@ -43,13 +43,10 @@ spring:
             client-name: naver
             client-id: ENC(PuOzCnHPlzXLtF2QNi8/df0LUXyrBx4hi8sIGs4/2iY=)
             client-secret: ENC(o16SuX8pfIhOy3RIEfkCcoaUGGVhYmPM)
-            redirect-uri: ENC(ev4qML2hNGi2UbMDCiJnwjERmuBL/nZ6P52Pr1za4Z7skE1FJH/zNTK+wSsXxpUch7WsHaUS9ZE=)
+            redirect-uri: ENC(SwOi0TZSqX4+pw1xt5W6PuNEVzzZ/BcYTD98Rhd1ZCOB2l+2V9UqGTsVRYs3LbKyc2y/3MBpeuIYDb2oARs+Ww==)
             authorization-grant-type: authorization_code
             scope:
               - email
-oauth:
-  redirect:
-    url: ENC(u6gdrDzvpe9miujoUu0DQeCCi78lVP1bDOpVjYzEgPJvFqriPDDbwSUulAEpWRTC)
 
 --- # server
 spring:
@@ -76,7 +73,3 @@ spring:
             authorization-grant-type: authorization_code
             scope:
               - email
-
-oauth:
-  redirect:
-    url: ENC(DBQRLlomPamKLAHdEzoetafGOqzWRHeolbRXmT7e9c234lwJDOvQbLXjbzpMISszWn01ovkUFk4=)

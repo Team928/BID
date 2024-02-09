@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class KakaoTokenRes implements OAuthTokenRes {
+public class NaverTokenRes implements OAuthTokenRes {
 
     @JsonProperty("access_token")
     private String accessToken;
@@ -16,8 +16,4 @@ public class KakaoTokenRes implements OAuthTokenRes {
     private String refreshToken;
     @JsonProperty("expires_in")
     private Long expiresIn;
-    @JsonProperty("refresh_token_expires_in")
-    private Long refreshTokenExpiresIn;
-    @JsonProperty("scope")
-    private String scope;
 }
