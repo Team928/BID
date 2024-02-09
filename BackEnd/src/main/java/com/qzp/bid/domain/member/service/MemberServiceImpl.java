@@ -8,6 +8,7 @@ import com.qzp.bid.domain.auth.dto.LoginTokenDto;
 import com.qzp.bid.domain.auth.dto.LoginTokenRes;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
+import com.qzp.bid.domain.deal.purchase.repository.ReverseAuctionResultRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
@@ -67,6 +68,7 @@ public class MemberServiceImpl implements MemberService {
     private final PointHistoryRepository pointHistoryRepository;
     private final PurchaseRepository purchaseRepository;
     private final BidRepository bidRepository;
+    private final ReverseAuctionResultRepository reverseAuctionResultRepository;
     //Mapper
     private final MemberMapper memberMapper;
     private final ReviewMapper reviewMapper;
@@ -218,16 +220,23 @@ public class MemberServiceImpl implements MemberService {
 
         String role;
 
-        if (dealRepository.existsByIdAndWriterId(memberReviewReq.getDealId(), reviewerId)) {
-            //존재할 때
-            //sale에 존재한다면 -> seller
-            if (saleRepository.existsById(memberReviewReq.getDealId())) {
-                role = "seller";
-            } else { //sale에 존재하지 않는다면 -> purchase에 존재하는 것 -> buyer
-                role = "buyer";
+        if (dealRepository.existsById(memberReviewReq.getDealId())) {
+            if (dealRepository.existsByIdAndWriterId(memberReviewReq.getDealId(),
+                reviewerId)) { //경매, 역경매 주최자
+                if (saleRepository.existsById(memberReviewReq.getDealId())) {
+                    role = "seller";
+                } else { //sale에 존재하지 않는다면 -> purchase에 존재하는 것 -> buyer
+                    role = "buyer";
+                }
+            } else { //경매, 역경매 참여자
+                if (reverseAuctionResultRepository.existsBySellerId(reviewerId)) { //역경매 최종 판매자라면
+                    role = "seller";
+                } else {
+                    role = "buyer";
+                }
             }
-        } else {
-            //(거래 아이디+리뷰 작성자) 맞는 것이 존재하지 않을 때
+
+        } else { // 해당 거래가 존재하지 않을 때
             throw new BusinessException(DEAL_ID_NOT_EXIST);
         }
 
