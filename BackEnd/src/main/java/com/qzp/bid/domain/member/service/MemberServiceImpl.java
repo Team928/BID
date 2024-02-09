@@ -238,11 +238,21 @@ public class MemberServiceImpl implements MemberService {
         reviewRepository.save(review);
     }
 
-    public ReviewListPage getReviewsIWrote(Pageable pageable) {
+    public ReviewListPage getWroteReview(Pageable pageable) {
         Member member = accountUtil.getLoginMember()
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
 
         ReviewListPage reviewListPage = reviewRepository.getReviewListPageByWriterId(member.getId(),
+            pageable);
+        return reviewListPage;
+    }
+
+    @Override
+    public ReviewListPage getReceivedReview(String nickname, Pageable pageable) {
+        Member member = memberRepository.findMemberByNickname(nickname)
+            .orElseThrow(() -> new BusinessException(MEMBER_NICKNAME_NOT_EXIST));
+
+        ReviewListPage reviewListPage = reviewRepository.getReviewListPageByTargetId(member.getId(),
             pageable);
         return reviewListPage;
     }

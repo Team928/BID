@@ -36,7 +36,9 @@ public interface MemberService {
 
     PurchaseListPage getPurchaseWish(LookupParam lookupParam);
 
-    ReviewListPage getReviewsIWrote(Pageable pageable);
+    ReviewListPage getWroteReview(Pageable pageable);
+
+    ReviewListPage getReceivedReview(String nickname, Pageable pageable);
 
     void chargePoint(PointChargeReq pointChargeReq);
 }
