@@ -1,20 +1,28 @@
 import Modal from '@/components/@common/Modal';
 import { MODAL_TITLE } from '@/constants/modalTitle';
 import { useSale } from '@/hooks/home/useSale';
-import { ChangeEvent, useState } from 'react';
+import { useProfile } from '@/hooks/profile/useProfile';
+import userStore from '@/stores/userStore';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ParrarelModalButtons from './ParrarelModalButtons';
 
-const BuyModal = ({ onClose }: { onClose: () => void }) => {
-  const buyModalInfo = {
-    highestPrice: 80000,
-    point: 32000,
-  };
-
+const BuyModal = ({
+  successBid,
+  currentHighestPrice,
+  onClose,
+}: {
+  successBid: (bidPrice: number) => void;
+  currentHighestPrice: number;
+  onClose: () => void;
+}) => {
   const [bidPrice, setBidPrice] = useState<number>(0);
   const { id } = useParams();
   const { usePostSaleBid } = useSale();
-  const { mutate: bidMuate } = usePostSaleBid(Number(id), String(bidPrice));
+  const { useUserProfile } = useProfile();
+  const { nickname } = userStore();
+  const { data: userProfileInfo } = useUserProfile(nickname);
+  const { mutate: bidMuate, isSuccess } = usePostSaleBid(Number(id), String(bidPrice));
 
   const handleChangeBid = (e: ChangeEvent<HTMLInputElement>) => {
     setBidPrice(Number(e.target.value));
@@ -22,8 +30,15 @@ const BuyModal = ({ onClose }: { onClose: () => void }) => {
 
   const sendBid = () => {
     bidMuate();
-    onClose();
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      successBid(bidPrice);
+    } else {
+      console.log('실패');
+    }
+  }, [isSuccess]);
 
   // @TODO: 포인트 충전 함수
   const handleCharging = () => {};
@@ -33,11 +48,11 @@ const BuyModal = ({ onClose }: { onClose: () => void }) => {
       <div className="w-full h-full px-8">
         <div className="grid grid-cols-2 py-1 place-items-center">
           <div className="col-span-1">현재 최고가</div>
-          <div className="col-span-1 mx-auto font-semibold text-BID_HOVER_MAIN">{buyModalInfo.highestPrice}원</div>
+          <div className="col-span-1 mx-auto font-semibold text-BID_HOVER_MAIN">{currentHighestPrice}원</div>
         </div>
         <div className="grid grid-cols-2 py-1 place-items-center">
           <div className="col-span-1">내 포인트</div>
-          <div className="col-span-1 mx-auto font-semibold text-BID_HOVER_MAIN">{buyModalInfo.point}원</div>
+          <div className="col-span-1 mx-auto font-semibold text-BID_HOVER_MAIN">{userProfileInfo?.data.point}원</div>
         </div>
         <div className="text-xs pt-2 pb-4 text-center">
           입찰 금액이 부족하신가요?&nbsp;&nbsp;

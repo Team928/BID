@@ -1,6 +1,7 @@
+import Toast from '@/components/@common/Toast';
 import LivePermissonModal from '@/components/live/Modal/LivePermissonModal';
 import { PARTICIPANT_TYPE } from '@/constants/liveType';
-import { createToken, getToken } from '@/service/live';
+import { getSession } from '@/service/live/api';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
 import { Device, OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
@@ -12,20 +13,18 @@ import SaleSeller from './Sale/SaleSeller';
 // 경매 라이브 페이지
 const SaleLivePage = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const { id } = useParams();
-  const { onCamera, onMike } = useLiveStore();
-  const pType = 'seller';
-  const { nickname } = userStore();
-  const [sellerStatus, setSellerStatus] = useState<'beforeLive' | 'onLive' | 'endLive'>('beforeLive');
-  const [buyerStatus, setBuyerStatus] = useState<'onLive' | 'endLive'>('onLive');
-  const [mySessionId, setMySessionId] = useState(id || '');
-  const [myUserName, setMyUserName] = useState(nickname);
-  const [currentBid, setCurrentBid] = useState<number>(0); // 현재 입찰가
-
-  console.log(setCurrentBid);
   const OV = useRef(new OpenVidu());
   OV.current.enableProdMode();
+
+  const { state } = useLocation();
+  const { id } = useParams();
+  const [mySessionId, setMySessionId] = useState<string>(id || '');
+  const { pType, onCamera, onMike } = useLiveStore();
+  const { userId, nickname } = userStore();
+  const [myUserName, setMyUserName] = useState(nickname);
+  const [currentBid, setCurrentBid] = useState<number>(state.startPrice); // 현재 입찰가
+  const [isShowLivePermissionModal, setIsShowaLivePermissionModal] = useState<boolean>(false);
+  const [isAllowed, setIsAllowed] = useState<boolean>(false);
 
   const [session, setSession] = useState<Session | null>(null);
   const [publisher, setPublisher] = useState<Publisher>();
@@ -33,84 +32,91 @@ const SaleLivePage = () => {
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager>();
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device | undefined>(undefined);
 
-  console.log(myUserName, setMySessionId);
-
-  const joinSession = useCallback(async () => {
+  // 판매자 이벤트 핸들러 정의
+  const sellerJoinSession = useCallback(async () => {
     const newSession = OV.current.initSession();
-    console.log('현재 세션', newSession);
     setSession(newSession);
 
-    // 누군가 stream 생성 후 publish 호출하면 발생
+    newSession.on('signal:successBid', e => {
+      if (!e.data) return;
+
+      const receiveData = JSON.parse(e.data);
+      Toast.info(`${receiveData.userName}님이 ${receiveData.bidPrice}원을 입찰했습니다.`);
+
+      setCurrentBid(receiveData.bidPrice);
+    });
+  }, []);
+
+  // 구매자 이벤트 핸들러 정의
+  const buyerJoinSession = useCallback(async () => {
+    const newSession = OV.current.initSession();
+    setSession(newSession);
+
+    // 판매자가 publish 하면 그 스트림 구독
     newSession.on('streamCreated', event => {
-      console.log('누구냐?', event);
-
-      if (pType === PARTICIPANT_TYPE.BUYER) {
-        let subscriber = newSession.subscribe(event.stream, undefined);
-        console.log('sub', subscriber);
-        setSubscriber(subscriber);
-      }
+      let subscriber = newSession.subscribe(event.stream, undefined);
+      setSubscriber(subscriber);
     });
 
-    // 누군가 disconnect 호출하면 발생
-    newSession.on('streamDestroyed', () => {
-      if (pType === PARTICIPANT_TYPE.BUYER) {
-        setTimeout(() => {
-          navigate('/live/end');
-        }, 5000);
+    // 누군가 입찰하면 최고가 갱신
+    newSession.on('signal:successBid', e => {
+      if (!e.data) return;
+
+      const receiveData = JSON.parse(e.data);
+
+      if (receiveData.userName !== nickname) {
+        Toast.info(`${receiveData.userName}님이 ${receiveData.bidPrice}원을 입찰했습니다.`);
       }
+
+      setCurrentBid(receiveData.bidPrice);
     });
 
-    if (pType === PARTICIPANT_TYPE.BUYER) {
-      newSession.on('signal:live', event => {
-        // console.log('라이브 이벤트 받음', event);
-        if (event.data === 'onLive') {
-          setBuyerStatus('onLive');
-        }
+    // 방송 종료
+    newSession.on('signal:endLive', () => {
+      Toast.info('라이브 방송이 종료되었습니다.');
 
-        if (event.data === 'endLive') {
-          setBuyerStatus('endLive');
-        }
-      });
-    }
+      setTimeout(() => {
+        navigate('/live/end');
+      }, 3000);
+    });
   }, []);
 
   useEffect(() => {
-    if (session) {
-      if (pType === PARTICIPANT_TYPE.BUYER) {
-        createToken(mySessionId).then(async token => {
+    if (!id) return;
+
+    if (session && mySessionId) {
+      try {
+        getSession(id, userId).then(async data => {
+          const token = data.data.token;
           await session.connect(token, { clientData: myUserName });
+
+          if (pType === PARTICIPANT_TYPE.SELLER) {
+            const devices = await OV.current.getDevices();
+            console.log(devices);
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+            const publisher = await OV.current.initPublisherAsync(undefined, {
+              audioSource: undefined,
+              videoSource: videoDevices[0].deviceId,
+              publishAudio: onMike,
+              publishVideo: onCamera,
+              resolution: '600X900',
+              frameRate: 30,
+              insertMode: 'APPEND',
+              mirror: true,
+            });
+            const currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
+            const currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
+
+            session.publish(publisher);
+            setPublisher(publisher);
+            setMainStreamManager(publisher);
+            setCurrentVideoDevice(currentVideoDevice);
+          }
         });
-
-        return;
+      } catch (e) {
+        console.log(e);
       }
-
-      // seisson 연결
-      getToken(mySessionId).then(async token => {
-        await session.connect(token, { clientData: myUserName });
-
-        if (pType === PARTICIPANT_TYPE.SELLER) {
-          let devices = await OV.current.getDevices();
-          let videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-          let publisher = await OV.current.initPublisherAsync(undefined, {
-            audioSource: undefined,
-            videoSource: videoDevices[0].deviceId,
-            publishAudio: onMike,
-            publishVideo: onCamera,
-            resolution: '600X900',
-            frameRate: 30,
-            insertMode: 'APPEND',
-            mirror: true,
-          });
-          const currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
-          const currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
-
-          session.publish(publisher);
-          setPublisher(publisher);
-          setMainStreamManager(publisher);
-          setCurrentVideoDevice(currentVideoDevice);
-        }
-      });
     }
   }, [session]);
 
@@ -169,14 +175,14 @@ const SaleLivePage = () => {
     setPublisher(undefined);
   }, [session]);
 
-  const [isShowLivePermissionModal, setIsShowaLivePermissionModal] = useState<boolean>(false);
-
   useEffect(() => {
-    // 판매자일때는 일단 실행x
+    // 판매자
     if (pType === PARTICIPANT_TYPE.SELLER) {
       setIsShowaLivePermissionModal(true);
-    } else {
-      joinSession();
+    }
+    // 구매자
+    else if (pType === PARTICIPANT_TYPE.BUYER) {
+      buyerJoinSession();
     }
 
     return () => {
@@ -185,29 +191,15 @@ const SaleLivePage = () => {
   }, []);
 
   useEffect(() => {
-    if (sellerStatus === 'onLive') {
-      joinSession();
+    if (isAllowed) {
+      sellerJoinSession();
     }
-  }, [sellerStatus]);
+  }, [isAllowed]);
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      leaveSession();
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [leaveSession]);
-
-  // 판매자는 옵션바, 본인 화면 볼 수 있음
   if (pType === PARTICIPANT_TYPE.SELLER) {
     return (
       <>
         <SaleSeller
-          sellerStatus={sellerStatus}
-          setSellerStatus={setSellerStatus}
           publisher={publisher}
           session={session}
           mainStreamManager={mainStreamManager}
@@ -217,13 +209,15 @@ const SaleLivePage = () => {
           state={state}
           currentBid={currentBid}
         />
-        {isShowLivePermissionModal && <LivePermissonModal onClose={() => setIsShowaLivePermissionModal(false)} />}
+        {isShowLivePermissionModal && (
+          <LivePermissonModal onClose={() => setIsShowaLivePermissionModal(false)} setIsAllowed={setIsAllowed} />
+        )}
       </>
     );
   } else if (pType === PARTICIPANT_TYPE.BUYER) {
     return (
       <SaleBuyer
-        buyerStatus={buyerStatus}
+        session={session}
         subscriber={subscriber}
         leaveSession={leaveSession}
         handleMainVideoStream={handleMainVideoStream}

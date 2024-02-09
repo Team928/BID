@@ -1,7 +1,6 @@
-import iphone from '@/assets/image/iphone.png';
 import Accordian from '@/components/@common/Accordian';
 import BottomSheet from '@/components/@common/BottomSheet';
-import { ISellerInfo } from '@/pages/live/PurchaseLivePage';
+import { ISellerInfo } from '@/types/live';
 
 const ParticipantsBottomSheet = ({
   onClose,
@@ -14,12 +13,13 @@ const ParticipantsBottomSheet = ({
 }) => {
   return (
     <BottomSheet height="600px" title="현재 참여중인 판매자" onClose={onClose}>
+      <div className="pl-6 pb-2 text-sm text-gray-500">전체 {participants.length}명</div>
       {participants.map((info, idx) => {
         return (
           <div key={idx}>
-            <Accordian titleContent={'중고 짱좋아'}>
-              <div className="grid grid-cols-3 px-3 py-6">
-                <div className="col-span-2">
+            <Accordian titleContent={info.nickName}>
+              <div className="grid grid-cols-4 px-3 py-6">
+                <div className="col-span-3">
                   <div>
                     <span>판매 희망 가격</span>&nbsp;<span className="text-BID_MAIN">{info.offerPrice}</span>
                   </div>
@@ -28,7 +28,7 @@ const ParticipantsBottomSheet = ({
                   </div>
                 </div>
                 <div className="col-span-1">
-                  <img src={iphone} alt="물건 사진" />
+                  <img src={info.image} alt="물건 사진" />
                 </div>
               </div>
               <div className="text-right p-2">

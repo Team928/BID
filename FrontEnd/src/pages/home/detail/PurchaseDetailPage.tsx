@@ -1,15 +1,28 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
+import Toast from '@/components/@common/Toast';
 import PurchaseDetail from '@/components/home/detail/PurchaseDetail';
 import { usePurchase } from '@/hooks/home/usePurchase';
 import { useSale } from '@/hooks/home/useSale';
+import useLiveStore from '@/stores/userLiveStore';
+import userStore from '@/stores/userStore';
 import { useState } from 'react';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useParams } from 'react-router-dom';
+import { MdLiveTv } from 'react-icons/md';
+import { useNavigate, useParams } from 'react-router-dom';
 import PurchaseApplyFromModal from './PurchaseApplyFromModal';
+
+interface IApplyForm {
+  content: string;
+  id: number;
+  image: number;
+  offerPrice: number;
+  sellerId: number;
+}
 
 const PurchaseDetailPage = () => {
   const { id } = useParams();
+  const { nickname, userId } = userStore();
 
   const { useGetPurchaseDetail } = usePurchase();
   const {
@@ -17,6 +30,9 @@ const PurchaseDetailPage = () => {
     // error,
     data: purchaseDetailInfo,
   } = useGetPurchaseDetail(Number(id));
+  const isBuyer = purchaseDetailInfo?.data.dealRes.writer === nickname ? true : false;
+  const status = purchaseDetailInfo?.data.status;
+  const dealRes = purchaseDetailInfo?.data.dealRes;
 
   const info: IHeaderInfo = {
     left: <IoIosArrowBack />,
@@ -28,6 +44,106 @@ const PurchaseDetailPage = () => {
   const { mutate: wishAddMuate } = usePostDealWishAdd(Number(id));
   const { mutate: wishDeleteMuate } = useDeleteDealWish(Number(id));
   const [showModal, setShowModal] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { setTType, setPType } = useLiveStore();
+
+  // #TODO 라이브방 진입하는 함수
+  const approachLive = () => {
+    if (!dealRes) return;
+
+    setTType('purchase');
+    setPType(isBuyer ? 'buyer' : 'seller');
+
+    // 구매자 로직
+    if (isBuyer) {
+      if (status !== 'END') {
+        navigate(`/live/purchase/${dealRes.id}`, {
+          state: {
+            title: dealRes.title,
+          },
+        });
+      }
+    }
+    // 판매자 로직
+    else {
+      if (status === 'END') {
+        Toast.error('라이브 방송 진행중이 아닙니다.');
+        return;
+      }
+
+      // 본인이 신청했는지 확인하는 함수
+      const applyForms: IApplyForm[] = purchaseDetailInfo.data.applyForms;
+      let isExistForm = false;
+      let myForm;
+
+      for (let i = 0; i < applyForms.length; i++) {
+        const currentForm = applyForms[i];
+        if (currentForm.sellerId === userId) {
+          isExistForm = true;
+          myForm = currentForm;
+          break;
+        }
+      }
+
+      if (!isExistForm) {
+        Toast.error('라이브 신청 내역이 없습니다.');
+        return;
+      }
+
+      // @TODO: 판매자가 경매 진행 중 필요한 데이터를 넘김
+      navigate(`/live/purchase/${dealRes.id}`, {
+        state: {
+          title: dealRes.title,
+          myForm: myForm,
+        },
+      });
+    }
+  };
+
+  const setButton = () => {
+    if (status === 'BEFORE') {
+      if (isBuyer) {
+        return (
+          <button onClick={() => approachLive()} className="detailLiveRedBtn">
+            <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
+            <p className="text-lg text-red-500">라이브 시작하기</p>
+          </button>
+        );
+      } else {
+        if (purchaseDetailInfo?.data.applyForms.length === purchaseDetailInfo?.data.memberLimit) {
+          return (
+            <div onClick={() => setShowModal(true)} className={`detailBtn bg-BID_BLACK`}>
+              이미 최대 인원에 도달하였습니다
+            </div>
+          );
+        } else {
+          return (
+            <div onClick={() => setShowModal(true)} className={`detailBtn bg-BID_MAIN`}>
+              역경매 참여 신청하기
+            </div>
+          );
+        }
+      }
+    } else if (status === 'LIVE') {
+      if (isBuyer) {
+        return (
+          <button onClick={() => approachLive()} className="detailLiveRedBtn">
+            <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
+            <p className="text-lg text-red-500">라이브 시작하기</p>
+          </button>
+        );
+      } else {
+        return (
+          <button onClick={() => approachLive()} className="detailLiveRedBtn">
+            <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
+            <p className="text-lg text-red-500">라이브 참가하기</p>
+          </button>
+        );
+      }
+    } else if (status === 'END') {
+      return <div className={`detailBtn bg-BID_MAIN`}>역경매가 종료되었습니다</div>;
+    }
+  };
 
   if (purchaseDetailInfo)
     return (
@@ -40,28 +156,14 @@ const PurchaseDetailPage = () => {
             <PurchaseDetail info={purchaseDetailInfo.data} />
           </div>
         </div>
-        <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
+        <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm max-w-[500px]">
           <div className="w-full h-full py-2 flex items-center gap-3">
             {purchaseDetailInfo.data.isWished ? (
               <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />
             ) : (
               <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />
             )}
-            {purchaseDetailInfo.data.applyForms.length === purchaseDetailInfo.data.memberLimit ? (
-              <div
-                onClick={() => setShowModal(true)}
-                className={`w-full py-3  text-white rounded-xl text-center text-base font-bold bg-BID_BLACK`}
-              >
-                이미 최대 인원에 도달하였습니다
-              </div>
-            ) : (
-              <div
-                onClick={() => setShowModal(true)}
-                className={`w-full py-3  text-white rounded-xl text-center text-base font-bold bg-BID_MAIN`}
-              >
-                역경매 참여 신청하기
-              </div>
-            )}
+            {setButton()}
           </div>
         </div>
       </>
