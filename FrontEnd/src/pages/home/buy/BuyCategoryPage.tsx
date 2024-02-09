@@ -53,7 +53,7 @@ const BuyCategoryPage = () => {
         <div className="pt-12 pb-4 px-BID_P ">
           <div className="pt-4 ">
             <p className="font-bold text-lg">{changeEngToKr(pathname.split('/')[2].toUpperCase())}</p>
-            <p className="text-xs text-BID_BLACK">적을꺼 없음 뭐적지?</p>
+            <p className="text-xs text-BID_BLACK">필터링을 통해 원하는 상품을 찾아보세요</p>
           </div>
           <div className="pt-4 flex font-bold gap-3 text-center">
             <div
