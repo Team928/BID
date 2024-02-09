@@ -1,4 +1,3 @@
-import sample from '@/assets/image/sample.png';
 import { ISaleSimpleRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
@@ -16,7 +15,10 @@ const SaleListItem = (props: { item: ISaleSimpleRes }) => {
   return (
     <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
-        <img src={sample} className="w-full h-full rounded-2xl object-cover" />
+        <img
+          src={`${import.meta.env.VITE_OPEN_URL}static${sale.image}`}
+          className="w-full h-full rounded-2xl object-cover"
+        />
         {/* 경매 진행전이라면 라이브 일정 보여주기 */}
         {item.status === 'BEFORE' && (
           <>

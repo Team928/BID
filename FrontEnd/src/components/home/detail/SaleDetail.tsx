@@ -35,9 +35,10 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
     setTType('sale');
     setPType(isSeller ? 'seller' : 'buyer');
 
+    console.log(isSeller);
     // 판매자 로직
     if (isSeller) {
-      if (status === 'BEFORE') {
+      if (status === 'BEFORE' || status === 'LIVE') {
         navigate(`/live/sale/${dealRes.id}`, {
           state: {
             title: dealRes.title,
@@ -103,7 +104,10 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
       <div className="w-full h-full ">
         {/* 사진 */}
         <div className="relative w-full h-2/5">
-          <img src={dealRes.images[0]} className="object-cover w-full h-full"></img>
+          <img
+            src={`${import.meta.env.VITE_OPEN_URL}static${dealRes.images[0]}`}
+            className="object-cover w-full h-full"
+          ></img>
           {/* #TODO 이미지 캐러셀 해야함 */}
           {dealRes.images.length !== 1 && <p className="absolute right-0 bottom-0 text-white p-5 text-lg">1/3</p>}
 
