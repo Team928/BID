@@ -19,8 +19,8 @@ import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
-import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
+import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.service.MemberService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
@@ -118,10 +118,8 @@ public class MemberController {
             ResultResponse.of(GET_PARTICIPATEPURCHASE_SUCCESS, purchaseListPage));
     }
 
-    //TODO: 거래 성사된 역경매 조회
-
     @Operation(summary = "나의 찜 목록 조회")
-    @GetMapping("/profiles/wish")
+    @GetMapping("/profiles/wishes")
     public ResponseEntity<ResultResponse> getWish(LookupParam lookupParam) {
         if (lookupParam.getType().equals("sale")) { //경매
             SaleListPage saleListPage = memberService.getSaleWish(lookupParam);
@@ -134,7 +132,8 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_MYWISH_SUCCESS));
     }
 
-    @PostMapping("/review")
+    @Operation(summary = "리뷰 작성하기")
+    @PostMapping("/reviews")
     public ResponseEntity<ResultResponse> createReview(
         @RequestBody MemberReviewReq memberReviewReq) {
         memberService.createReview(memberReviewReq);
@@ -143,9 +142,18 @@ public class MemberController {
     }
 
     @Operation(summary = "내가 작성한 리뷰 조회")
-    @GetMapping("/review")
-    public ResponseEntity<ResultResponse> getReviewIWorte(Pageable pageable) {
-        ReviewListPage reviewListPage = memberService.getReviewsIWrote(pageable);
+    @GetMapping("/reviews")
+    public ResponseEntity<ResultResponse> getWroteReview(Pageable pageable) {
+        ReviewListPage reviewListPage = memberService.getWroteReview(pageable);
+        return ResponseEntity.ok(
+            ResultResponse.of(ResultCode.GET_REVIEW_SUCCESS, reviewListPage));
+    }
+
+    @Operation(summary = "받은 리뷰 조회")
+    @GetMapping("/{nickname}/reviews")
+    public ResponseEntity<ResultResponse> getReceivedReview(
+        @PathVariable("nickname") String nickname, Pageable pageable) {
+        ReviewListPage reviewListPage = memberService.getReceivedReview(nickname, pageable);
         return ResponseEntity.ok(
             ResultResponse.of(ResultCode.GET_REVIEW_SUCCESS, reviewListPage));
     }
