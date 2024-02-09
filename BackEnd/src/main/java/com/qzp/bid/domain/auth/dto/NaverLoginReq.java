@@ -5,12 +5,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class KakaoLoginReq implements OAuthLoginReq {
+public class NaverLoginReq implements OAuthLoginReq {
 
     private String authorizationCode;
+    private String state;
 
     @Override
     public SocialType getProviderName() {
-        return SocialType.kakao;
+        return SocialType.naver;
     }
 }

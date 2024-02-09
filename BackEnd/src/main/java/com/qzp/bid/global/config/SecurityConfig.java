@@ -1,8 +1,6 @@
 package com.qzp.bid.global.config;
 
 import com.qzp.bid.global.security.filter.JWTFilter;
-import com.qzp.bid.global.security.oauth.CustomOAuth2UserServiceImpl;
-import com.qzp.bid.global.security.oauth.OAuth2SuccessHandler;
 import com.qzp.bid.global.security.util.JwtProvider;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +23,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomOAuth2UserServiceImpl oAuth2UserService;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final RedisTemplate redisTemplate;
     private final JwtProvider jwtProvider;
     @Value("${auth.whiteList}")
@@ -43,16 +39,6 @@ public class SecurityConfig {
 
         http
             .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        //userInfoEndpoint 설정
-        // -> 데이터를 받을 수 있는 userdetail service를 등록해주는 endpoint라는 뜻
-        http
-            .oauth2Login(oauth2 -> oauth2
-                .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/code/*"))
-                .userInfoEndpoint(endpoint -> endpoint.userService(
-                    oAuth2UserService)) //로그인 성공 시 CustomOAuthUserServiceImpl에서 후처리
-                .successHandler(oAuth2SuccessHandler));
-
         http
             .authorizeHttpRequests((auth) -> auth
                 .requestMatchers(whiteList).permitAll()

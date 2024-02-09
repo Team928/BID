@@ -4,6 +4,7 @@ import static com.qzp.bid.global.result.ResultCode.LOGIN_SUCCESS;
 
 import com.qzp.bid.domain.auth.dto.KakaoLoginReq;
 import com.qzp.bid.domain.auth.dto.LoginTokenRes;
+import com.qzp.bid.domain.auth.dto.NaverLoginReq;
 import com.qzp.bid.domain.auth.service.AuthService;
 import com.qzp.bid.global.result.ResultResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +26,12 @@ public class AuthController {
     @PostMapping("/login/kakao")
     public ResponseEntity<ResultResponse> loginOauth(@RequestBody KakaoLoginReq kakaoLoginReq) {
         LoginTokenRes loginOauth = authService.loginOauth(kakaoLoginReq);
+        return ResponseEntity.ok(ResultResponse.of(LOGIN_SUCCESS, loginOauth));
+    }
+
+    @PostMapping("/login/naver")
+    public ResponseEntity<ResultResponse> loginOauth(@RequestBody NaverLoginReq naverLoginReq) {
+        LoginTokenRes loginOauth = authService.loginOauth(naverLoginReq);
         return ResponseEntity.ok(ResultResponse.of(LOGIN_SUCCESS, loginOauth));
     }
 }
