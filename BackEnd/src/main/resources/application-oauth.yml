@@ -60,7 +60,7 @@ spring:
           kakao:
             client-name: kakao
             client-id: ENC(C1BmOi7lmh67oOzRMKHI3pnNIHfXljSE4HiMOVYMJpi5aO3ok3G1TWW4x1Tl7suB)
-            redirect-uri: ENC(EkZzCLO3eZhKE2TWrXi5oRIkn3uoS9/S1+njxedG2i/sLvH+d/jhVwrjbXx4lC1o+LWbjQTYX5caAt9Mxl30WQ==)
+            redirect-uri: ENC(DXQPeCU88Dui1O67yubOE3ymYp/uMpN6cu9yOwHF0STxcqA2uQpZndFcGWjojI6jdpubkwjaA8A=)
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             scope:
@@ -69,7 +69,7 @@ spring:
             client-name: naver
             client-id: ENC(PuOzCnHPlzXLtF2QNi8/df0LUXyrBx4hi8sIGs4/2iY=)
             client-secret: ENC(o16SuX8pfIhOy3RIEfkCcoaUGGVhYmPM)
-            redirect-uri: ENC(KHvGQrSzo4baACAUqvZz6MyOEp+B6IVI2ib3VzC2/Y58YT06yvW9DTFrgiNwxLYvJJGmLqrI9UbeDLkUGBrlKA==)
+            redirect-uri: ENC(8EBYCxxHdMUUGkp+1++eJZCMfRMWQ77RPZ5ysufiTCTT1PK/2sfZnYYrhatBtGdZElgAep7tGGA=)
             authorization-grant-type: authorization_code
             scope:
               - email
