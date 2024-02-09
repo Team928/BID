@@ -32,6 +32,8 @@ const SaleLivePage = () => {
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager>();
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device | undefined>(undefined);
 
+  console.log(setMySessionId);
+
   // 판매자 이벤트 핸들러 정의
   const sellerJoinSession = useCallback(async () => {
     const newSession = OV.current.initSession();

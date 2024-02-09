@@ -1,6 +1,7 @@
 import Toast from '@/components/@common/Toast';
 import ParticipantsBottomSheet from '@/components/live/BottomSheet/ParticipantsBottomSheet';
 import SpeakListBottomSheet from '@/components/live/BottomSheet/SpeakListBottomSheet';
+import CameraItem from '@/components/live/CameraItem';
 import LiveOptionTab from '@/components/live/LiveOptionTab';
 import MatchConfirmModal from '@/components/live/Modal/MatchConfirmModal';
 import MatchModal from '@/components/live/Modal/MatchModal';
@@ -599,23 +600,23 @@ const PurchaseLivePage = () => {
           {displayInfo.length &&
             displayInfo.map((info, idx) => {
               if (info) {
-                // const data = JSON.parse(info.stream.connection.data);
-                // return (
-                //   <div key={idx} className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">
-                //     <div className="relative w-full h-full" onClick={() => handleMainVideoStream(info)}>
-                //       <div className="absolute text-white/50 text-xs left-2 top-2  px-1.5 py-0.5">
-                //         {data.type === 'buyer' ? '구매자' : '판매자'}
-                //       </div>
-                //       <CameraItem streamManager={info} />
-                //     </div>
-                //     <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black/40 to-black/0 rounded-md">
-                //       &nbsp;
-                //     </div>
-                //     <span className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/80">
-                //       {data.nickName}
-                //     </span>
-                //   </div>
-                // );
+                const data = JSON.parse(info.stream.connection.data);
+                return (
+                  <div key={idx} className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">
+                    <div className="relative w-full h-full" onClick={() => handleMainVideoStream(info)}>
+                      <div className="absolute text-white/50 text-xs left-2 top-2  px-1.5 py-0.5">
+                        {data.type === 'buyer' ? '구매자' : '판매자'}
+                      </div>
+                      <CameraItem streamManager={info} />
+                    </div>
+                    <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black/40 to-black/0 rounded-md">
+                      &nbsp;
+                    </div>
+                    <span className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/80">
+                      {data.nickName}
+                    </span>
+                  </div>
+                );
               } else {
                 return <div className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">&nbsp;</div>;
               }
