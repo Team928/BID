@@ -1,15 +1,11 @@
 import useTabStore from '@/stores/auctionTabStore';
 import { changeKrToEng } from '@/utils/changeCategorie';
-import { useNavigate } from 'react-router-dom';
-import { BsBook } from 'react-icons/bs';
+import { BsBook, BsThreeDots } from 'react-icons/bs';
 import { FaDribbble } from 'react-icons/fa';
-import { IoPawOutline } from 'react-icons/io5';
-import { PiTShirt } from 'react-icons/pi';
-import { PiBaby } from 'react-icons/pi';
-import { PiArmchair } from 'react-icons/pi';
-import { BsThreeDots } from 'react-icons/bs';
-import { PiFlowerTulip } from 'react-icons/pi';
 import { FiMonitor } from 'react-icons/fi';
+import { IoPawOutline } from 'react-icons/io5';
+import { PiArmchair, PiBaby, PiFlowerTulip, PiTShirt } from 'react-icons/pi';
+import { useNavigate } from 'react-router-dom';
 
 const Category = () => {
   const navigate = useNavigate();
@@ -76,7 +72,7 @@ const Category = () => {
             onClick={() => navigateHandler(item.name)}
             className="flex flex-col justify-center items-center gap-1"
           >
-            <div className="flex justify-center items-center rounded-full w-[3.75rem] h-[3.75rem] border">
+            <div className="flex justify-center items-center rounded-full w-[3.75rem] h-[3.75rem] border cursor-pointer">
               {item.icon}
             </div>
             <p>{item.name}</p>

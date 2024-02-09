@@ -1,7 +1,7 @@
 import notify from '@/assets/icon/notify.png';
 import search from '@/assets/icon/search.png';
-import { useNavigate } from 'react-router-dom';
 import bid from '@/assets/image/BID.png';
+import { useNavigate } from 'react-router-dom';
 export interface IHeaderInfo {
   left: JSX.Element | null;
   center: string | null;
@@ -15,10 +15,10 @@ const Header = (props: { info: IHeaderInfo }) => {
   const { left, center, right_1, right_2 } = props.info;
 
   return (
-    <div className="bg-white w-full px-BID_P h-12 flex justify-between items-center fixed top-0 z-10">
+    <div className="bg-white w-full px-BID_P h-12 flex justify-between items-center fixed top-0 z-10 max-w-[500px]">
       {!left && !center && (
         <div className="h-full w-full">
-          <img src={bid} className="h-full py-[0.9rem]" />
+          <img src={bid} className="h-full py-[0.9rem] cursor-pointer" />
 
           {/* <p className="text-xl font-bold">BID</p> */}
         </div>

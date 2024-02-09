@@ -20,12 +20,12 @@ import LivePage from './pages/live/LivePage';
 import PurchaseLivePage from './pages/live/PurchaseLivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
 import LoginRedirectPage from './pages/login/LoginRedirectPage';
+import OtherProfilePage from './pages/profile/OtherProfilePage';
 import ProfileBuyPage from './pages/profile/buy/ProfileBuyPage';
 import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
 import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import BuyWritePage from './pages/write/BuyWritePage';
 import SaleWritePage from './pages/write/SaleWritePage';
-import OtherProfilePage from './pages/profile/OtherProfilePage';
 
 const router = createBrowserRouter([
   {

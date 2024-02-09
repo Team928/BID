@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
-import Bottom from '@/components/@common/Bottom';
-import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
-import Header, { IHeaderInfo } from '@/components/@common/Header';
-import SelectModal from '@/components/home/SelectModal';
-import SEARCH from '@/assets/icon/search.png';
 import NOTIFY from '@/assets/icon/notify.png';
-import { changeEngToKr } from '@/utils/changeCategorie';
-import { useLocation } from 'react-router-dom';
-import { categoryType, dealStatusType } from '@/types/model';
-import { MdKeyboardArrowDown } from 'react-icons/md';
+import SEARCH from '@/assets/icon/search.png';
+import Bottom from '@/components/@common/Bottom';
+import DaumPostModal from '@/components/@common/DaumPostModal';
+import Header, { IHeaderInfo } from '@/components/@common/Header';
+import Toast from '@/components/@common/Toast';
+import SelectModal from '@/components/home/SelectModal';
+import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
+import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 import { useSale } from '@/hooks/home/useSale';
 import useKeywordStore from '@/stores/keywordStore';
-import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 import userStore from '@/stores/userStore';
+import { categoryType, dealStatusType } from '@/types/model';
+import { changeEngToKr } from '@/utils/changeCategorie';
+import { useEffect, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
-import DaumPostModal from '@/components/@common/DaumPostModal';
-import Toast from '@/components/@common/Toast';
 import { IoIosArrowBack } from 'react-icons/io';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+import { useLocation } from 'react-router-dom';
 
 const SaleCategoryPage = () => {
   const { pathname } = useLocation();
@@ -98,9 +98,9 @@ const SaleCategoryPage = () => {
               }
               setIsAddressOpen(false);
             }}
-            className="w-screen h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30"
+            className="w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30"
           ></div>
-          <div className="fixed bottom-0 h-72 w-screen pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30">
+          <div className="fixed bottom-0 h-72 w-full pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30">
             <div className="h-full flex flex-col justify-between font-bold text-xl">
               <p className="text-center text-lg">지역 선택</p>
               <div className="flex flex-col gap-5">
@@ -149,7 +149,7 @@ const SaleCategoryPage = () => {
         </>
       )}
       {isDaumModalOpen && <DaumPostModal setIsOpen={setIsDaumModalOpen} setAddress={setAddress} />}
-      <div className="w-screen h-screen pb-[4.5rem]">
+      <div className="w-full h-screen pb-[4.5rem]">
         <Header info={info} />
         <div className="w-full pt-12 pb-4  ">
           <div className="pt-4 px-BID_P">

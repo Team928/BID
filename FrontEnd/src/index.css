@@ -14,6 +14,14 @@
   .liveRedBtn {
     @apply px-2.5 py-0.5 bg-[#FF0000] text-white rounded-[3px] italic font-semibold text-sm;
   }
+
+  .detailLiveRedBtn {
+    @apply w-full border rounded-xl border-red-500 font-bold flex p-3 justify-center items-center gap-2;
+  }
+
+  .detailBtn {
+    @apply w-full py-3 text-white rounded-xl text-center text-base font-bold;
+  }
 }
 
 @font-face {
@@ -25,6 +33,8 @@
 
 body {
   font-family: 'KOTRA_GOTHIC';
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .Toastify__toast {
@@ -53,4 +63,8 @@ body {
 
 .Toastify__toast--error {
   background-color: rgb(255, 114, 114);
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }
