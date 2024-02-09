@@ -1,6 +1,7 @@
 import logo from '@/assets/image/logo.png';
 import naver from '@/assets/image/naver.png';
-import KakaoLogin from '@/components/login/kakaoLogin';
+import KakaoLogin from '@/components/login/KakaoLogin';
+
 
 const LoginPage = () => {
 
