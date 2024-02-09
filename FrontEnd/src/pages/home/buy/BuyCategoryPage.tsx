@@ -1,16 +1,16 @@
+import NOTIFY from '@/assets/icon/notify.png';
+import SEARCH from '@/assets/icon/search.png';
 import Bottom from '@/components/@common/Bottom';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import BuyCategoryItem from '@/components/home/buy/BuyCategoryItem';
-import SEARCH from '@/assets/icon/search.png';
-import NOTIFY from '@/assets/icon/notify.png';
+import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 import { usePurchase } from '@/hooks/home/usePurchase';
 import useKeywordStore from '@/stores/keywordStore';
 import { categoryType } from '@/types/model';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 import { IoIosArrowBack } from 'react-icons/io';
+import { useLocation } from 'react-router-dom';
 
 const BuyCategoryPage = () => {
   const { pathname } = useLocation();
@@ -36,7 +36,6 @@ const BuyCategoryPage = () => {
   } = useGetListPurchaseInfinite({
     size: '5',
     order: order,
-    status: 'BEFORE',
     ...(category !== 'ALL' && { catg: category }),
     ...(keyword !== '' && { keyword: keyword }),
   });

@@ -19,12 +19,12 @@ const BottomSheet = ({ height, title, onClose, children }: IBottomSheetProps) =>
 
   return (
     <div
-      className={`fixed w-screen h-screen top-0 bottom-0 left-0 right-0 transition ease-in-out delay-200 z-[11] ${isRendering ? 'bg-black/50' : 'bg-black/0'}`}
+      className={`fixed w-full h-screen top-0 bottom-0 left-0 right-0 transition ease-in-out delay-200 z-[11] ${isRendering ? 'bg-black/50' : 'bg-black/0'}`}
       onClick={handleClose}
     >
       {/* bottom wrapper */}
       <div
-        className={`fixed bottom-0 left-0 right-0 rounded-2xl z-[12] drop-shadow-lg bg-white ${isRendering ? 'animate-sheetOn' : 'animate-sheetOff'}`}
+        className={`fixed bottom-0 left-0 right-0 rounded-xl z-[12] drop-shadow-lg bg-white ${isRendering ? 'animate-sheetOn' : 'animate-sheetOff'}`}
       >
         {/* bottom sheet */}
         <div

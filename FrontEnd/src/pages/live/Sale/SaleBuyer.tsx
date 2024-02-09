@@ -1,23 +1,23 @@
 import Toast from '@/components/@common/Toast';
 import FullCameraItem from '@/components/live/FullCameraItem';
 import BuyModal from '@/components/live/Modal/BuyModal';
-import { Subscriber } from 'openvidu-browser';
+import userStore from '@/stores/userStore';
+import { Session, Subscriber } from 'openvidu-browser';
 import { useEffect, useState } from 'react';
 import { BsXLg } from 'react-icons/bs';
 import { FiSend } from 'react-icons/fi';
 import { RiAuctionFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 const SaleBuyer = ({
-  buyerStatus,
+  session,
   subscriber,
   leaveSession,
   handleMainVideoStream,
   state,
   currentBid,
 }: {
-  buyerStatus: string;
+  session: Session | null;
   subscriber: Subscriber | undefined;
   leaveSession: () => void;
   handleMainVideoStream: (stream: any) => void;
@@ -25,11 +25,25 @@ const SaleBuyer = ({
   currentBid: number;
 }) => {
   const navigate = useNavigate();
+  const { nickname } = userStore();
   const [openVidModal, setOpenVidModal] = useState<boolean>(false);
+
   const handleBid = () => {
     setOpenVidModal(!openVidModal);
   };
-  console.log(state);
+
+  // 입찰 성공 시 수행하는 콜백 함수
+  const successBid = (bidPrice: number) => {
+    const sendData = {
+      userName: nickname,
+      bidPrice: bidPrice,
+    };
+
+    session?.signal({
+      data: JSON.stringify(sendData),
+      type: 'successBid',
+    });
+  };
 
   const handleExit = () => {
     //   @TODO: 컴포넌트 만들기
@@ -44,23 +58,13 @@ const SaleBuyer = ({
   };
 
   useEffect(() => {
-    if (buyerStatus === 'onLive') {
-      Toast.success('라이브 방송에 입장했습니다.');
-    }
+    Toast.success('라이브 방송에 입장했습니다.');
   }, []);
 
-  useEffect(() => {
-    if (buyerStatus === 'endLive') {
-      toast.dark('라이브 방송이 종료되었습니다.');
-    }
-  }, [buyerStatus]);
-
-  const test = {
-    title: '테스트',
-    startPrice: 30000,
-  };
-
-  console.log('steam', subscriber);
+  // const test = {
+  //   title: 'test',
+  //   startPrice: 3000,
+  // };
 
   return (
     <div className="relative">
@@ -75,20 +79,21 @@ const SaleBuyer = ({
           <div className="absolute w-full h-36 bg-gradient-to-b from-black/35 to-black/0">&nbsp;</div>
           <div className="absolute w-full flex p-3 items-center">
             <div className="liveRedBtn">LIVE</div>
-            <div className="flex-1 font-semibold text-sm pl-2 text-white truncate">{test.title}</div>
+            <div className="flex-1 font-semibold text-sm pl-2 text-white truncate">{state.title}</div>
             <div onClick={handleExit}>
               <BsXLg color="white" size="30" />
             </div>
           </div>
-          <div className="absolute top-12 px-4 text-white text-sm">
-            <div>
-              <span className="text-black/70 font-semibold">경매 시작가</span> {test.startPrice}원
+          <div className="absolute top-12 px-4 text-white text-xs">
+            <div className="mb-3">
+              <span className="text-white font-semibold bg-black/10 px-2 py-1 mr-1 rounded-full">경매 시작가</span>
+              {state.startPrice}원
             </div>
             <div>
-              <span className="text-black/70  font-semibold">현재 입찰가</span> {currentBid}원
+              <span className="text-white font-semibold bg-black/10 px-2 py-1 mr-1 rounded-full">현재 최고입찰가</span>{' '}
+              {currentBid}원
             </div>
           </div>
-
           {/* 나머지 얼굴 보이는 부분*/}
           <div className="absolute top-24 left-4 right-4 bottom-0 z-[10] flex justify-center items-center">
             <div className="absolute bottom-0 h-20 left-0 right-0 flex justify-center flex items-center">
@@ -109,11 +114,17 @@ const SaleBuyer = ({
                 </button>
               </div>
             </div>
+            {/* 채팅 웹소켓 */}
+            {/* <div className="w-full h-40vh">
+              <SaleBuyerChat handleBid={handleBid} />
+            </div> */}
           </div>
         </div>
       </div>
       <div className="absolute bottom-0 w-full h-120 bg-gradient-to-b from-black/0 to-black/60">&nbsp;</div>
-      {openVidModal && <BuyModal onClose={() => setOpenVidModal(false)} />}
+      {openVidModal && (
+        <BuyModal successBid={successBid} currentHighestPrice={currentBid} onClose={() => setOpenVidModal(false)} />
+      )}
     </div>
   );
 };

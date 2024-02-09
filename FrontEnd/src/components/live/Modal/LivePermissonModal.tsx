@@ -4,13 +4,21 @@ import { MODAL_TITLE } from '@/constants/modalTitle';
 import { AiOutlineAudio } from 'react-icons/ai';
 import { IoCameraOutline } from 'react-icons/io5';
 
-const LivePermissonModal = ({ onClose }: { onClose: () => void }) => {
+const LivePermissonModal = ({
+  onClose,
+  setIsAllowed,
+}: {
+  onClose: () => void;
+  setIsAllowed: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const requestPermissions = async () => {
     try {
       await navigator.mediaDevices.getUserMedia({ video: true });
       Toast.success('접근 권한이 허용되었습니다.');
+      setIsAllowed(true);
     } catch (error) {
       Toast.error('접근 권한이 허용되지 않았습니다. 서비스 이용에 제한이 있을 수 있습니다.');
+      setIsAllowed(false);
     }
 
     onClose();

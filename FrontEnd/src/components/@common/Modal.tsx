@@ -21,7 +21,7 @@ const Modal = ({ width, height, title, onClose, children }: IModalProps) => {
 
   return (
     <div
-      className={`fixed w-screen h-screen top-0 bottom-0 left-0 right-0 transition ease-in-out delay-200 z-[11] ${isRendering ? 'bg-black/30' : 'bg-black/0'}`}
+      className={`fixed w-full h-screen top-0 bottom-0 left-0 right-0 transition ease-in-out delay-200 z-[11] ${isRendering ? 'bg-black/30' : 'bg-black/0'}`}
       onClick={handleClose}
     >
       {/* modal wrapper */}

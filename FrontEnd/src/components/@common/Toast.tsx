@@ -1,6 +1,6 @@
+import '@/index.css';
 import { ReactNode } from 'react';
 import { Flip, ToastOptions, toast } from 'react-toastify';
-import '../../index.css';
 
 const defaultToastOption: ToastOptions = {
   // position: 'top-right',

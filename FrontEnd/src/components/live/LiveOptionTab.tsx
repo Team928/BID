@@ -17,6 +17,7 @@ const LiveOptionTab = ({
   handleSpeak,
   handleRequestSalePrice,
   handleParticipants,
+  handleMatch,
 }: {
   pType: string;
   handleMike: () => void;
@@ -24,6 +25,7 @@ const LiveOptionTab = ({
   handleSpeak: () => void;
   handleRequestSalePrice?: () => void;
   handleParticipants?: () => void;
+  handleMatch?: () => void;
 }) => {
   const { onCamera, onMike } = useLiveStore();
 
@@ -104,6 +106,12 @@ const LiveOptionTab = ({
       case 'auction': {
         if (handleRequestSalePrice) {
           handleRequestSalePrice();
+        }
+        break;
+      }
+      case 'match': {
+        if (handleMatch) {
+          handleMatch();
         }
         break;
       }

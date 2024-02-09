@@ -43,15 +43,24 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
     setTType('sale');
     setPType(isSeller ? 'seller' : 'buyer');
 
+    console.log(isSeller, status);
     // 판매자 로직
-    if (isSeller && status === 'BEFORE') {
+    if (isSeller) {
       navigate(`/live/sale/${dealRes.id}`, {
         state: {
           title: dealRes.title,
           startPrice: startPrice,
-          image: dealRes.images[0],
         },
       });
+
+      if (status !== 'END') {
+        navigate(`/live/sale/${dealRes.id}`, {
+          state: {
+            title: dealRes.title,
+            startPrice: startPrice,
+          },
+        });
+      }
     }
     // 구매자 로직
     else {
@@ -151,7 +160,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
           </div>
         </Modal>
       )}
-      <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm">
+      <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm max-w-[500px]">
         <div className="w-full h-full py-2 flex items-center gap-3">
           {isWished ? (
             <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />

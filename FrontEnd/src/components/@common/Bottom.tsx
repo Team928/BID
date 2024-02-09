@@ -1,10 +1,8 @@
-import { PiChatsCircle } from 'react-icons/pi';
-import { PiUser } from 'react-icons/pi';
-import { GoHome } from 'react-icons/go';
-import { PiPencilSimpleLine } from 'react-icons/pi';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BsSuitHeart } from 'react-icons/bs';
+import { GoHome } from 'react-icons/go';
+import { PiChatsCircle, PiPencilSimpleLine, PiUser } from 'react-icons/pi';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SelectWriteModal from './SelectWirteModal';
 
 const Bottom = () => {
@@ -67,7 +65,7 @@ const Bottom = () => {
   return (
     <>
       {isModalOpen && <SelectWriteModal closeModal={toggleModal} />}
-      <div className="fixed px-4 bottom-0 w-full h-[4rem] bg-white z-10 text-[#A9A9A9] text-sm">
+      <div className="fixed px-4 bottom-0 w-full h-[4rem] bg-white z-10 text-[#A9A9A9] text-sm max-w-[500px]">
         <div className="py-2 flex justify-around items-center">
           <div onClick={() => navigate(`/`)} className="flex flex-col items-center cursor-pointer text-xs">
             {pathname === '/' || pathname.split('/')[1] === 'sale' || pathname.split('/')[1] === 'buy' ? (

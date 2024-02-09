@@ -11,7 +11,7 @@ const FullCameraItem = ({ streamManager }: { streamManager: StreamManager }) => 
   }, [streamManager, videoRef]);
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-full h-screen">
       <video className="w-full h-full object-cover" autoPlay={true} ref={videoRef} />
     </div>
   );

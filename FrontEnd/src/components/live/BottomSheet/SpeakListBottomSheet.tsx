@@ -1,4 +1,4 @@
-import { ISellerInfo } from '@/pages/live/PurchaseLivePage';
+import { ISellerInfo } from '@/types/live';
 import { AiOutlineAudio, AiOutlineAudioMuted } from 'react-icons/ai';
 import { LuHand } from 'react-icons/lu';
 import BottomSheet from '../../@common/BottomSheet';
@@ -22,7 +22,7 @@ const SpeakListBottomSheet = ({
   };
 
   return (
-    <BottomSheet height="400px" title="발언권" onClose={onClose}>
+    <BottomSheet height="600px" title="발언권" onClose={onClose}>
       <div className="w-full px-8">
         {speakInfo.map((info, idx) => {
           return (
