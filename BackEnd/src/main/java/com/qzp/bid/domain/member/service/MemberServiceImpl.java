@@ -281,6 +281,9 @@ public class MemberServiceImpl implements MemberService {
         review.setTargetId(targetMember.getId());
         review.setRole(role);
         reviewRepository.save(review);
+
+        targetMember.addReview(review);
+        targetMember.setScore(targetMember.getAverageScore());
     }
 
     public ReviewListPage getWroteReview(Pageable pageable) {

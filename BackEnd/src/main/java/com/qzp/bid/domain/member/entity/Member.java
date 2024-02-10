@@ -47,6 +47,8 @@ public class Member {
     @Builder.Default
     private List<String> area = new ArrayList<>();
     private double score;
+    private int reviewCount; // 리뷰 개수
+    private double totalScore; // 총 점수
     private long point;
     private long holdingPoint;
     @ElementCollection(fetch = FetchType.LAZY)
@@ -69,5 +71,17 @@ public class Member {
 
     public void chargePoint(int point) {
         this.point += point;
+    }
+
+    public void addReview(Review review) {
+        this.reviewCount += 1;
+        this.totalScore += review.getScore();
+    }
+
+    public double getAverageScore() {
+        if (this.reviewCount == 0) {
+            return 0;
+        }
+        return this.totalScore / (double) this.reviewCount;
     }
 }
