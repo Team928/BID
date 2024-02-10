@@ -27,6 +27,7 @@ import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import BuyWritePage from './pages/write/BuyWritePage';
 import SaleWritePage from './pages/write/SaleWritePage';
 import KakaoLoginRedirect from './components/login/KakaoLoginRedirect';
+import NaverLoginRedirect from './components/login/NaverLoginRedirect';
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
   {
     path: '/login/redirect/kakao',
     element: <KakaoLoginRedirect />,
+  },
+  {
+    path: '/login/redirect/naver',
+    element: <NaverLoginRedirect />,
   },
   {
     path: '/notify',

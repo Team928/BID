@@ -4,19 +4,21 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"
 
 
-export default function KakaoLoginRedirect() {
+export default function NaverLoginRedirect() {
 
     const queryParams = new URLSearchParams(location.search);
-    const kakaocode = queryParams.get("code"); // 인가 코드
+    const naverCode = queryParams.get("code"); // 인가 코드
+    const state = queryParams.get("code"); // state 값
     const navigate = useNavigate();
     const { loginUser } = userStore();
     
     useEffect(() => {
-        console.log(kakaocode)
-        if (kakaocode) {
+        console.log(naverCode)
+        if (naverCode) {
             axios.post(
-                `${import.meta.env.VITE_BASE_URL}auth/login/kakao`,
-                { authorizationCode: kakaocode }
+                `${import.meta.env.VITE_BASE_URL}auth/login/naver`,
+                { authorizationCode: naverCode, state: state }
+
             ).then((res) => {
                 console.log(res.data)
                 
