@@ -48,6 +48,7 @@ const HomePage = () => {
 
   // 캐러셀 이미지 배열
   const images = [image1, image2, image3];
+
   const { userId } = userStore();
   const [message, setMessage] = useState();
   useEffect(() => {
