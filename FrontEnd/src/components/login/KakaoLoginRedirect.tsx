@@ -12,15 +12,17 @@ export default function KakaoLoginRedirect() {
     const { loginUser } = userStore();
     
     useEffect(() => {
+        console.log(kakaocode)
         if (kakaocode) {
-            axios.get(
-                `${import.meta.env.VITE_BASE_URL}login/oauth2/code/kakao?code=${kakaocode}`
+            axios.post(
+                `${import.meta.env.BASE_URL}auth/login/kakao`,
+                { authorizationCode: kakaocode }
             ).then((res) => {
                 console.log(res)
                 
                 const { id, accessToken, refreshToken, nickname, area } = res.data
-                // console.log('accessToken', accessToken)
-                // console.log('refreshToken', refreshToken)
+                console.log('accessToken', accessToken)
+                console.log('refreshToken', refreshToken)
                 const userId = Number(id)
 
                 if (nickname) {
