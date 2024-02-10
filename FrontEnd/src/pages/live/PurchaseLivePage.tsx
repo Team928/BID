@@ -12,7 +12,7 @@ import { useLive } from '@/hooks/live/useLive';
 import { getSession } from '@/service/live/api';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
-import { IBuyerInfo, IMatchReqInfo, ISellerInfo } from '@/types/live';
+import { IMatchReqInfo, ISellerInfo } from '@/types/live';
 import { Device, OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -57,12 +57,6 @@ const PurchaseLivePage = () => {
     onMike: false,
     possibleSpeak: false,
   });
-
-  const buyerInfo: IBuyerInfo = {
-    type: pType,
-    userId: userId,
-    nickName: nickname,
-  };
 
   // 매칭 요청 시 모달에 띄울 정보
   const [matchRequestInfo, setMatchRequestInfo] = useState<IMatchReqInfo>({

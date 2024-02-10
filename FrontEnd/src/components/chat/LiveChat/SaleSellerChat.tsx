@@ -1,6 +1,5 @@
 import { axiosAuthInstance } from '@/apis/axiosInstance';
 import useChatStore from '@/stores/useChatStore';
-import userStore from '@/stores/userStore';
 import { Client, StompHeaders } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -10,8 +9,8 @@ const SaleSellerChat = () => {
 
   const [client, setClient] = useState<Client | null>(null);
   const { addChatLog, chatLogs, clearChatLogs } = useChatStore(state => state);
-  const [message, setMessage] = useState<string>('');
-  const { userId } = userStore();
+  // const [message, setMessage] = useState<string>('');
+  // const { userId } = userStore();
   const { id: dealId } = useParams();
 
   console.log(chatLogs);
