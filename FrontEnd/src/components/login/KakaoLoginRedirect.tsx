@@ -8,17 +8,18 @@ export default function KakaoLoginRedirect() {
   const kakaocode = queryParams.get('code'); // 인가 코드
   const navigate = useNavigate();
   const { loginUser } = userStore();
-
-  useEffect(() => {
-    console.log(kakaocode);
-    if (kakaocode) {
-      axios
-        .post(`${import.meta.env.VITE_BASE_URL}auth/login/kakao`, { authorizationCode: kakaocode })
-        .then(res => {
-          const { id, accessToken, refreshToken, nickname, area } = res.data.data;
-          console.log('accessToken', accessToken);
-          console.log('refreshToken', refreshToken);
-          const userId = Number(id);
+    
+    useEffect(() => {
+        console.log(kakaocode)
+        if (kakaocode) {
+            axios.post(
+                `${import.meta.env.VITE_BASE_URL}auth/login/kakao`,
+                { authorizationCode: kakaocode }
+            ).then((res) => {
+                console.log(res.data)
+                
+                const { id, accessToken, refreshToken, nickname, area } = res.data
+                const userId = Number(id)
 
           if (nickname) {
             loginUser({
