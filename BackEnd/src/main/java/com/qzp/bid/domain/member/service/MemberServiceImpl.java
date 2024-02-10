@@ -1,13 +1,17 @@
 package com.qzp.bid.domain.member.service;
 
+import static com.qzp.bid.domain.member.entity.ReviewRole.BUYER;
+import static com.qzp.bid.domain.member.entity.ReviewRole.SELLER;
 import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
 import com.qzp.bid.domain.auth.dto.LoginTokenDto;
 import com.qzp.bid.domain.auth.dto.LoginTokenRes;
+import com.qzp.bid.domain.deal.dto.ImageDto;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
+import com.qzp.bid.domain.deal.purchase.repository.ReverseAuctionResultRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.dto.BidHistoryListPage;
@@ -21,12 +25,14 @@ import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.MemberUpdateProfileReq;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.PointHistory;
 import com.qzp.bid.domain.member.entity.PointStatus;
 import com.qzp.bid.domain.member.entity.Review;
+import com.qzp.bid.domain.member.entity.ReviewRole;
 import com.qzp.bid.domain.member.entity.Role;
 import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.mapper.ReviewMapper;
@@ -36,6 +42,8 @@ import com.qzp.bid.domain.member.repository.ReviewRepository;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.security.util.JwtProvider;
+import com.qzp.bid.global.util.ImageUploader;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +59,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -67,6 +76,7 @@ public class MemberServiceImpl implements MemberService {
     private final PointHistoryRepository pointHistoryRepository;
     private final PurchaseRepository purchaseRepository;
     private final BidRepository bidRepository;
+    private final ReverseAuctionResultRepository reverseAuctionResultRepository;
     //Mapper
     private final MemberMapper memberMapper;
     private final ReviewMapper reviewMapper;
@@ -75,6 +85,7 @@ public class MemberServiceImpl implements MemberService {
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
     private final AccountUtil accountUtil;
+    private final ImageUploader imageUploader;
 
     @Override
     public boolean checkNickname(String nickname) {
@@ -121,6 +132,33 @@ public class MemberServiceImpl implements MemberService {
             memberProfileRes.setPoint(-1);
         }
         return memberProfileRes;
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(MemberUpdateProfileReq memberUpdateProfileReq,
+        MultipartFile profileImage) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        if (memberUpdateProfileReq.getNickname() != null && !memberUpdateProfileReq.getNickname()
+            .isEmpty()) {
+            member.setNickname(memberUpdateProfileReq.getNickname());
+        }
+        if (memberUpdateProfileReq.getArea() != null && !memberUpdateProfileReq.getArea()
+            .isEmpty()) {
+            member.setArea(memberUpdateProfileReq.getArea());
+        }
+        if (!profileImage.isEmpty()) {
+            ImageDto imagePath = imageUploader.uploadOne(profileImage);
+            if (member.getProfileImage() != null) {
+                File imageFile = new File(imageUploader.getUploadPath() + member.getProfileImage()
+                    .substring("/images".length()));
+                imageUploader.removeOriginalFile(imageFile);
+            }
+
+            member.setProfileImage(imagePath.getImagePath());
+        }
     }
 
     @Override
@@ -216,18 +254,25 @@ public class MemberServiceImpl implements MemberService {
                 memberReviewReq.getTargetNickname())
             .orElseThrow(() -> (new BusinessException(MEMBER_NICKNAME_NOT_EXIST)));
 
-        String role;
+        ReviewRole role;
 
-        if (dealRepository.existsByIdAndWriterId(memberReviewReq.getDealId(), reviewerId)) {
-            //존재할 때
-            //sale에 존재한다면 -> seller
-            if (saleRepository.existsById(memberReviewReq.getDealId())) {
-                role = "seller";
-            } else { //sale에 존재하지 않는다면 -> purchase에 존재하는 것 -> buyer
-                role = "buyer";
+        if (dealRepository.existsById(memberReviewReq.getDealId())) {
+            if (dealRepository.existsByIdAndWriterId(memberReviewReq.getDealId(),
+                reviewerId)) { //경매, 역경매 주최자
+                if (saleRepository.existsById(memberReviewReq.getDealId())) {
+                    role = SELLER;
+                } else { //sale에 존재하지 않는다면 -> purchase에 존재하는 것 -> buyer
+                    role = BUYER;
+                }
+            } else { //경매, 역경매 참여자
+                if (reverseAuctionResultRepository.existsBySellerId(reviewerId)) { //역경매 최종 판매자라면
+                    role = SELLER;
+                } else {
+                    role = BUYER;
+                }
             }
-        } else {
-            //(거래 아이디+리뷰 작성자) 맞는 것이 존재하지 않을 때
+
+        } else { // 해당 거래가 존재하지 않을 때
             throw new BusinessException(DEAL_ID_NOT_EXIST);
         }
 
@@ -236,6 +281,9 @@ public class MemberServiceImpl implements MemberService {
         review.setTargetId(targetMember.getId());
         review.setRole(role);
         reviewRepository.save(review);
+
+        targetMember.addReview(review);
+        targetMember.setScore(targetMember.getAverageScore());
     }
 
     public ReviewListPage getWroteReview(Pageable pageable) {

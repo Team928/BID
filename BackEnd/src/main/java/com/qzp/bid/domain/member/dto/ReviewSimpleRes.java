@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.member.dto;
 
+import com.qzp.bid.domain.member.entity.ReviewRole;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,6 @@ public class ReviewSimpleRes {
     private String content;
     private int score;
     private LocalDateTime createTime;
-    private String role;
+    private ReviewRole role;
 
 }

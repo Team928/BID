@@ -24,4 +24,6 @@ public interface DealRepository<T extends Deal> extends JpaRepository<T, Long> {
         @Param("dealId") long dealId); // dealId로 역경매 낙찰자가 있으면 테이블 반환
 
     boolean existsByIdAndWriterId(Long dealId, Long writerId);
+
+    boolean existsById(long dealId);
 }

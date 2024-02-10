@@ -26,6 +26,10 @@ public class ImageUploader {
         this.uploadPath = uploadPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
     }
 
+    public String getUploadPath() {
+        return uploadPath;
+    }
+
     public List<ImageDto> upload(List<MultipartFile> multipartFiles) {
         if (multipartFiles == null || multipartFiles.isEmpty()) {
             return null;
@@ -57,7 +61,7 @@ public class ImageUploader {
             multipartFile.getOriginalFilename());
     }
 
-    private void removeOriginalFile(File targetFile) {
+    public void removeOriginalFile(File targetFile) {
         if (targetFile.exists() && targetFile.delete()) {
             log.info("File delete success");
             return;

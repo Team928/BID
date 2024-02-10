@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReverseAuctionResultRepository extends JpaRepository<ReverseAuctionResult, Long> {
 
+    boolean existsBySellerId(long sellerId);
+
 }
