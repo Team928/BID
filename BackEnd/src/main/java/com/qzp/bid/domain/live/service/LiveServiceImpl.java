@@ -66,6 +66,7 @@ public class LiveServiceImpl implements LiveService {
 
         String sessionId = String.valueOf(redisTemplate.opsForHash().get("OpenVidu_SessionId",dealId));
 
+        openVidu.fetch();
         Session session = null;
         for (Session s : openVidu.getActiveSessions()) {
             if (sessionId != null && s.getSessionId().equals(sessionId)) {
