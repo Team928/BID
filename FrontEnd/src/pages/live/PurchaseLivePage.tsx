@@ -86,8 +86,7 @@ const PurchaseLivePage = () => {
     setSession(mySession);
 
     mySession.on('streamCreated', event => {
-      const clientData = JSON.parse(event.stream.connection.data);
-
+      const clientData = JSON.parse(event.stream.connection.data.split('%/%')[0]);
       Toast.info(`${clientData.nickName}님이 라이브에 참여했습니다.`);
 
       // 내가 구매자일 때 판매자가 들어오면 sellerList에 정보 저장
@@ -226,6 +225,8 @@ const PurchaseLivePage = () => {
 
   // leaveSession
   const leaveSession = useCallback(() => {
+    alert('leave');
+
     if (session && publisher) {
       session.disconnect();
       session.unpublish(publisher);
@@ -256,7 +257,26 @@ const PurchaseLivePage = () => {
   // publish
   useEffect(() => {
     if (session && mySessionId) {
-      const send = pType === PARTICIPANT_TYPE.BUYER ? buyerInfo : sellerInfo;
+      const seller = {
+        type: sellerInfo.type,
+        userId: sellerInfo.userId,
+        nickName: sellerInfo.nickName,
+        offerPrice: sellerInfo.offerPrice,
+        image: sellerInfo.image,
+        content: sellerInfo.content,
+        formId: sellerInfo.formId,
+        isRequestSpeak: sellerInfo.isRequestSpeak,
+        onMike: sellerInfo.onMike,
+        possibleSpeak: sellerInfo.possibleSpeak,
+      };
+
+      const buyer = {
+        type: pType,
+        userId: userId,
+        nickName: nickname,
+      };
+
+      const send = pType === PARTICIPANT_TYPE.BUYER ? buyer : seller;
 
       try {
         getSession(mySessionId, userId).then(async data => {
@@ -264,7 +284,6 @@ const PurchaseLivePage = () => {
           await session.connect(token, send);
 
           const devices = await OV.current.getDevices();
-          console.log(devices);
           const videoDevices = devices.filter(device => device.kind === 'videoinput');
           let publisher = await OV.current.initPublisherAsync(undefined, {
             audioSource: undefined,
@@ -349,15 +368,12 @@ const PurchaseLivePage = () => {
   }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      leaveSession();
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('beforeunload', leaveSession);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('beforeunload', leaveSession);
     };
-  }, [leaveSession]);
+  }, []);
 
   const handleCamera = () => {
     const nCameraFlag = !onCamera;
@@ -561,6 +577,14 @@ const PurchaseLivePage = () => {
     }, 2000);
   };
 
+  useEffect(() => {
+    window.addEventListener('beforeunload', leaveSession);
+
+    return () => {
+      window.removeEventListener('beforeunload', leaveSession);
+    };
+  }, []);
+
   return (
     <div className="w-full h-screen bg-black/80 relative">
       <div className="absolute bottom-0 top-0 flex justify-between items-center left-0 right-0 p-1 z-[1]">
@@ -600,7 +624,8 @@ const PurchaseLivePage = () => {
           {displayInfo.length &&
             displayInfo.map((info, idx) => {
               if (info) {
-                const data = JSON.parse(info.stream.connection.data);
+                const data = JSON.parse(info.stream.connection.data.split('%/%')[0]);
+
                 return (
                   <div key={idx} className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">
                     <div className="relative w-full h-full" onClick={() => handleMainVideoStream(info)}>

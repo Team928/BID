@@ -70,10 +70,12 @@ const BuyCategoryPage = () => {
           </div>
         </div>
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
-          {categoryInfo?.pages.map(item =>
-            item.data.purchaseSimpleRes.map((value, index) => {
-              return <BuyCategoryItem key={index} item={value} />;
-            }),
+          {categoryInfo?.pages.map(
+            item =>
+              item.data.purchaseSimpleRes &&
+              item.data.purchaseSimpleRes.map((value, index) => {
+                return <BuyCategoryItem key={index} item={value} />;
+              }),
           )}
         </div>
 

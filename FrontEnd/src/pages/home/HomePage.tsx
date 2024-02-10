@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react';
 const HomePage = () => {
   const { tab } = useTabStore();
   const { init } = useKeywordStore();
-  const { loginUser } = userStore();
   const info: IHeaderInfo = {
     left: null,
     center: null,
@@ -27,14 +26,6 @@ const HomePage = () => {
 
   useEffect(() => {
     init();
-    loginUser({
-      accessToken:
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwianRpIjoiQVRLIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg1Njc0NTJ9.uTeuYI8DiUtbkMOeRDfAe6U61oSeV0d2fqeOZCJl4is',
-      area: '구미시 진평동',
-      nickname: '승현',
-      refreshToken: '',
-      userId: 1,
-    });
   }, []);
 
   // 캐러셀 설정

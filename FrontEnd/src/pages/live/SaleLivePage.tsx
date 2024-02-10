@@ -18,7 +18,7 @@ const SaleLivePage = () => {
 
   const { state } = useLocation();
   const { id } = useParams();
-  const [mySessionId, setMySessionId] = useState<string>(id || '');
+  const mySessionId = id;
   const { pType, onCamera, onMike } = useLiveStore();
   const { userId, nickname } = userStore();
   const [myUserName, setMyUserName] = useState(nickname);
@@ -32,11 +32,20 @@ const SaleLivePage = () => {
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager>();
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device | undefined>(undefined);
 
-  console.log(setMySessionId);
+  useEffect(() => {
+    window.addEventListener('beforeunload', leaveSession);
+
+    return () => {
+      window.removeEventListener('beforeunload', leaveSession);
+    };
+  }, []);
 
   // 판매자 이벤트 핸들러 정의
   const sellerJoinSession = useCallback(async () => {
     const newSession = OV.current.initSession();
+
+    console.log(newSession);
+
     setSession(newSession);
 
     newSession.on('signal:successBid', e => {
@@ -79,7 +88,7 @@ const SaleLivePage = () => {
 
       setTimeout(() => {
         navigate('/live/end');
-      }, 3000);
+      }, 500);
     });
   }, []);
 
@@ -94,7 +103,6 @@ const SaleLivePage = () => {
 
           if (pType === PARTICIPANT_TYPE.SELLER) {
             const devices = await OV.current.getDevices();
-            console.log(devices);
             const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
             const publisher = await OV.current.initPublisherAsync(undefined, {
@@ -107,6 +115,7 @@ const SaleLivePage = () => {
               insertMode: 'APPEND',
               mirror: true,
             });
+
             const currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
             const currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
 
@@ -207,7 +216,14 @@ const SaleLivePage = () => {
           mainStreamManager={mainStreamManager}
           leaveSession={leaveSession}
           handleMainVideoStream={handleMainVideoStream}
-          switchCamera={switchCamera}
+          switchCamera={() => {
+            if (!onCamera) {
+              Toast.error('카메라를 켜주세요.');
+              return;
+            }
+
+            switchCamera();
+          }}
           state={state}
           currentBid={currentBid}
         />

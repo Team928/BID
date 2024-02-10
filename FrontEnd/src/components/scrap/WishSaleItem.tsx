@@ -1,10 +1,10 @@
-import { ISaleSimpleRes } from '@/types/home';
-import StateButton from '../@common/StateButton';
-import { HiHeart } from 'react-icons/hi';
 import useTabStore from '@/stores/auctionTabStore';
-import { getPriceName } from '@/utils/getPriceName';
+import { ISaleSimpleRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';
+import { getPriceName } from '@/utils/getPriceName';
+import { HiHeart } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
+import StateButton from '../@common/StateButton';
 
 const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
   const navigate = useNavigate();
@@ -13,7 +13,10 @@ const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
   return (
     <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="px-BID_P py-3 flex gap-4">
       <div className="w-32 h-32 relative">
-        <img className="w-full h-full rounded-xl" src={dealSimpleRes.image}></img>
+        <img
+          className="w-full h-full rounded-xl"
+          src={`${import.meta.env.VITE_OPEN_URL}static${dealSimpleRes.image}`}
+        ></img>
       </div>
       <div className="flex-1 flex flex-col justify-between py-2">
         <div className="flex items-center justify-between">

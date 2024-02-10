@@ -8,6 +8,7 @@ import { changeEngToKr } from '@/utils/changeCategorie';
 import { getDate } from '@/utils/getDate';
 import { getPriceName } from '@/utils/getPriceName';
 import { useState } from 'react';
+import { IoIosArrowForward } from 'react-icons/io';
 import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +27,6 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   // #TODO 프로필 파람 해야함
   // 작성자로 사용자 정보 조회
   const getMemberInfo = () => {
-    console.log(dealRes.writer);
     navigate(`/profile/${dealRes.writer}`);
   };
 
@@ -35,34 +35,18 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
     setTType('sale');
     setPType(isSeller ? 'seller' : 'buyer');
 
-    console.log(isSeller);
-    // 판매자 로직
-    if (isSeller) {
-      if (status === 'BEFORE' || status === 'LIVE') {
-        navigate(`/live/sale/${dealRes.id}`, {
-          state: {
-            title: dealRes.title,
-            startPrice: startPrice,
-            image: dealRes.images[0],
-          },
-        });
-      }
+    if (status !== 'LIVE') {
+      Toast.error('라이브 방송 진행중이 아닙니다.');
+      return;
     }
-    // 구매자 로직
-    else {
-      if (status !== 'LIVE') {
-        Toast.error('라이브 방송 진행중이 아닙니다.');
-        return;
-      }
 
-      // @TODO: 구매자가 경매 진행 중 필요한 데이터를 넘김
-      navigate(`/live/sale/${dealRes.id}`, {
-        state: {
-          title: dealRes.title,
-          startPrice: startPrice,
-        },
-      });
-    }
+    // @TODO: 구매자가 경매 진행 중 필요한 데이터를 넘김
+    navigate(`/live/sale/${dealRes.id}`, {
+      state: {
+        title: dealRes.title,
+        startPrice: startPrice,
+      },
+    });
   };
 
   // #TODO 녹화 영상 볼 수 있는 함수
@@ -152,21 +136,22 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             <p className="text-BID_BLACK pt-2">{dealRes.content}</p>
           </div>
           {/* 판매자 정보 */}
-          <div className="pt-2">
-            <button
-              onClick={() => getMemberInfo()}
-              className="w-full border rounded-xl border-BID_SUB_GRAY font-bold flex p-3 justify-center items-center gap-2"
-            >
-              <PiUser size={'1.8rem'} color="#545454" />
-              <p className="text-lg">판매자 정보</p>
+          <div className="py-2 border-b-[1px]">
+            <button onClick={() => getMemberInfo()} className="w-full flex flex-col">
+              <div className="text-xs pl-2 text-BID_BLACK">판매자</div>
+              <div className="p-2 flex justify-center items-center">
+                <PiUser size={'1.8rem'} color="#545454" />
+                <div className="pl-2">{dealRes.writer}</div>&nbsp;&nbsp;
+                <IoIosArrowForward size={'16px'} color="#666666" />
+              </div>
             </button>
           </div>
           {status === 'LIVE' && !isSeller && (
             <button
               onClick={() => approachLive()}
-              className="border rounded-xl border-BID_SUB_GRAY font-bold flex p-3 justify-center items-center gap-2"
+              className="border rounded-xl border-red-500 text-red-500 font-bold flex p-3 justify-center items-center gap-2"
             >
-              <MdLiveTv size={'1.8rem'} color="#545454" />
+              <MdLiveTv size={'1.8rem'} color="#text-red-500" />
               <p className="text-lg">라이브 보러가기</p>
             </button>
           )}
@@ -180,7 +165,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             </button>
           )}
 
-          <div className="pt-8 pb-10 w-full">
+          <div className="pt-4 pb-10 w-full">
             <p className="text-lg font-bold">입찰 로그</p>
             <p className="pt-1 text-sm text-BID_SUB_GRAY">현재까지의 입찰 로그를 확인해보세요</p>
             <div className="px-5">
@@ -189,17 +174,24 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 <p className="w-1/3">입찰가격</p>
                 <p className="w-1/2">입찰시간</p>
               </div>
-              <div className="pt-2 text-sm text-BID_SUB_GRAY max-h-28 overflow-y-scroll pb-2  border-b">
-                {bidList.map(item => {
-                  return (
-                    <div key={item.id} className="flex justify-between gap-3 text-center">
-                      <p className="w-1/6">{item.bidder}</p>
-                      <p className="w-1/3">{item.bidPrice}원</p>
-                      <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
-                    </div>
-                  );
-                })}
-              </div>
+              {bidList.length > 0 ? (
+                <div className="py-2 text-sm text-BID_SUB_GRAY max-h-28 overflow-y-scroll border-b">
+                  {bidList.map(item => {
+                    return (
+                      <div key={item.id} className="flex justify-between gap-3 text-center py-1">
+                        <p className="w-1/6">{item.bidder}</p>
+                        <p className="w-1/3">{item.bidPrice}원</p>
+                        <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex w-full h-36 justify-center items-center text-gray-400 text-center">
+                  입찰 기록이 없습니다.
+                  <br />첫 입찰 기록을 남겨보는건 어떨까요?
+                </div>
+              )}
             </div>
           </div>
         </div>
