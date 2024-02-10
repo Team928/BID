@@ -19,53 +19,23 @@ public class ReviewRepositoryQuerydslImpl implements ReviewRepositoryQuerydsl {
 
     @Override
     public ReviewListPage getReviewListPageByWriterId(long reviewerId, Pageable pageable) {
-        QReview review = QReview.review;
-        QMember member = QMember.member;
-
-        List<ReviewSimpleRes> reviewSimpleResList = jpaQueryFactory.select(Projections.fields(
-                ReviewSimpleRes.class,
-                review.id,
-                review.content,
-                review.score,
-                review.createTime,
-                review.role,
-
-                ExpressionUtils.as(
-                    JPAExpressions.select(member.nickname)
-                        .from(member)
-                        .where(member.id.eq(review.reviewerId)),
-                    "reviewerNickname"
-                ),
-                ExpressionUtils.as(
-                    JPAExpressions.select(member.nickname)
-                        .from(member)
-                        .where(member.id.eq(review.targetId)),
-                    "tergetNickname"
-                )
-            ))
-            .from(review)
-            .where(
-                review.reviewerId.eq(reviewerId)
-            )
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize() + 1)
-            .orderBy(review.createTime.desc())
-            .fetch();
-
-        boolean hasNext = false;
-        if (reviewSimpleResList.size() > pageable.getPageSize()) {
-            reviewSimpleResList.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new ReviewListPage(reviewSimpleResList, pageable.getPageNumber(),
-            pageable.getPageSize(), !hasNext);
+        return getReviewListPageByMemberId(reviewerId, pageable, true);
     }
 
-    //TODO: 중복 코드 리팩토링
     @Override
     public ReviewListPage getReviewListPageByTargetId(long targetId, Pageable pageable) {
+        return getReviewListPageByMemberId(targetId, pageable, false);
+    }
+
+    private ReviewListPage getReviewListPageByMemberId(long memberId, Pageable pageable,
+        boolean isReviewer) {
         QReview review = QReview.review;
         QMember member = QMember.member;
+
+        long total = jpaQueryFactory.select(review.count())
+            .from(review)
+            .where(isReviewer ? review.reviewerId.eq(memberId) : review.targetId.eq(memberId))
+            .fetchOne();
 
         List<ReviewSimpleRes> reviewSimpleResList = jpaQueryFactory.select(Projections.fields(
                 ReviewSimpleRes.class,
@@ -89,9 +59,7 @@ public class ReviewRepositoryQuerydslImpl implements ReviewRepositoryQuerydsl {
                 )
             ))
             .from(review)
-            .where(
-                review.targetId.eq(targetId)
-            )
+            .where(isReviewer ? review.reviewerId.eq(memberId) : review.targetId.eq(memberId))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
             .orderBy(review.createTime.desc())
@@ -103,6 +71,6 @@ public class ReviewRepositoryQuerydslImpl implements ReviewRepositoryQuerydsl {
             hasNext = true;
         }
         return new ReviewListPage(reviewSimpleResList, pageable.getPageNumber(),
-            pageable.getPageSize(), !hasNext);
+            pageable.getPageSize(), !hasNext, total);
     }
 }
