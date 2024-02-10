@@ -8,9 +8,11 @@ import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.MemberUpdateProfileReq;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
@@ -19,6 +21,8 @@ public interface MemberService {
     LoginTokenRes register(MemberJoinReq memberJoinReq);
 
     MemberProfileRes getProfile(String nickname);
+
+    void updateProfile(MemberUpdateProfileReq memberUpdateProfileReq, MultipartFile profileImage);
 
     SaleListPage getSaleByHost(String nickname, Pageable pageable);
 

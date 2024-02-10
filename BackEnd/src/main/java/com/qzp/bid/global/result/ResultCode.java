@@ -20,6 +20,7 @@ public enum ResultCode {
     GET_MYWISH_SUCCESS(200, "나의 찜 목록 조회에 성공하였습니다."),
     CREATE_REVIEW_SUCCESS(200, "리뷰 등록에 성공하였습니다."),
     GET_REVIEW_SUCCESS(200, "리뷰 조회에 성공하였습니다."),
+    UPDATE_PROFILE_SUCCESS(200, "프로필 수정에 성공하였습니다."),
 
     POINT_CHARGE_SUCCESS(200, "포인트 충전에 성공하였습니다."),
     //deal

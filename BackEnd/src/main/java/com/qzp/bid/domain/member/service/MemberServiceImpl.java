@@ -8,6 +8,7 @@ import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIS
 
 import com.qzp.bid.domain.auth.dto.LoginTokenDto;
 import com.qzp.bid.domain.auth.dto.LoginTokenRes;
+import com.qzp.bid.domain.deal.dto.ImageDto;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.purchase.repository.ReverseAuctionResultRepository;
@@ -24,6 +25,7 @@ import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.MemberUpdateProfileReq;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.entity.Member;
@@ -40,6 +42,8 @@ import com.qzp.bid.domain.member.repository.ReviewRepository;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.security.util.JwtProvider;
+import com.qzp.bid.global.util.ImageUploader;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +59,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -80,6 +85,7 @@ public class MemberServiceImpl implements MemberService {
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
     private final AccountUtil accountUtil;
+    private final ImageUploader imageUploader;
 
     @Override
     public boolean checkNickname(String nickname) {
@@ -126,6 +132,33 @@ public class MemberServiceImpl implements MemberService {
             memberProfileRes.setPoint(-1);
         }
         return memberProfileRes;
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(MemberUpdateProfileReq memberUpdateProfileReq,
+        MultipartFile profileImage) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        if (memberUpdateProfileReq.getNickname() != null && !memberUpdateProfileReq.getNickname()
+            .isEmpty()) {
+            member.setNickname(memberUpdateProfileReq.getNickname());
+        }
+        if (memberUpdateProfileReq.getArea() != null && !memberUpdateProfileReq.getArea()
+            .isEmpty()) {
+            member.setArea(memberUpdateProfileReq.getArea());
+        }
+        if (!profileImage.isEmpty()) {
+            ImageDto imagePath = imageUploader.uploadOne(profileImage);
+            if (member.getProfileImage() != null) {
+                File imageFile = new File(imageUploader.getUploadPath() + member.getProfileImage()
+                    .substring("/images".length()));
+                imageUploader.removeOriginalFile(imageFile);
+            }
+
+            member.setProfileImage(imagePath.getImagePath());
+        }
     }
 
     @Override

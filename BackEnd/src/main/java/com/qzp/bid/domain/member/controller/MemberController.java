@@ -10,6 +10,7 @@ import static com.qzp.bid.global.result.ResultCode.GET_SALEHOST_SUCCESS;
 import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_EXIST;
 import static com.qzp.bid.global.result.ResultCode.NICKNAME_DO_NOT_EXIST;
 import static com.qzp.bid.global.result.ResultCode.REGISTER_SUCCESS;
+import static com.qzp.bid.global.result.ResultCode.UPDATE_PROFILE_SUCCESS;
 
 import com.qzp.bid.domain.auth.dto.LoginTokenRes;
 import com.qzp.bid.domain.deal.purchase.dto.PurchaseListPage;
@@ -19,6 +20,7 @@ import com.qzp.bid.domain.member.dto.LookupParam;
 import com.qzp.bid.domain.member.dto.MemberJoinReq;
 import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
+import com.qzp.bid.domain.member.dto.MemberUpdateProfileReq;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.service.MemberService;
@@ -30,13 +32,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -76,6 +82,15 @@ public class MemberController {
     public ResponseEntity<ResultResponse> getProfile(@PathVariable("nickname") String nickname) {
         MemberProfileRes memberProfileRes = memberService.getProfile(nickname);
         return ResponseEntity.ok(ResultResponse.of(GET_MYPAGE_SUCCESS, memberProfileRes));
+    }
+
+    @Operation(summary = "프로필 수정")
+    @PatchMapping(value = "/profiles", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResultResponse> updateProfile(
+        @RequestPart(value = "memberUpdateProfileReq") MemberUpdateProfileReq memberUpdateProfileReq,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        memberService.updateProfile(memberUpdateProfileReq, profileImage);
+        return ResponseEntity.ok(ResultResponse.of(UPDATE_PROFILE_SUCCESS));
     }
 
     @Operation(summary = "경매 내역 - 주최한 경매")
