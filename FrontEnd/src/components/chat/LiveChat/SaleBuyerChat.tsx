@@ -63,7 +63,7 @@ const SaleBuyerChat = ({ handleBid }: { handleBid: () => void }) => {
         type: 'TALK',
       };
       const jsonMessage = JSON.stringify(newMessage);
-      client.publish({ destination: `/pub/message/live/${dealId}`, body: jsonMessage });
+      client.publish({ destination: `/pub/message/lives/${dealId}`, body: jsonMessage });
       setMessage('');
     } else {
       console.error('웹소켓 연결 노활성');
