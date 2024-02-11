@@ -1,4 +1,5 @@
 import Toast from '@/components/@common/Toast';
+import ChattingBottomSheet from '@/components/live/BottomSheet/ChattingBottomSheet';
 import ParticipantsBottomSheet from '@/components/live/BottomSheet/ParticipantsBottomSheet';
 import SpeakListBottomSheet from '@/components/live/BottomSheet/SpeakListBottomSheet';
 import CameraItem from '@/components/live/CameraItem';
@@ -10,6 +11,7 @@ import RequestSpeakModal from '@/components/live/Modal/RequestSpeakModal';
 import { PARTICIPANT_TYPE } from '@/constants/liveType';
 import { useLive } from '@/hooks/live/useLive';
 import { getSession } from '@/service/live/api';
+import useChatStore from '@/stores/useChatStore';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
 import { IMatchReqInfo, ISellerInfo } from '@/types/live';
@@ -29,6 +31,7 @@ const PurchaseLivePage = () => {
   const { userId, nickname } = userStore();
   const { usePostLiveMatch } = useLive();
   const { mutate } = usePostLiveMatch();
+  const { clearChatLogs } = useChatStore(state => state);
 
   // 오픈 비두
   const OV = useRef(new OpenVidu());
@@ -73,6 +76,7 @@ const PurchaseLivePage = () => {
   const [isOpenParticipantModal, setIsOpenParticipantModal] = useState<boolean>(false);
   const [isOpenMatchList, setIsOpenMatchList] = useState<boolean>(false);
   const [isOpenMatchConfirmModal, setIsOpenMatchConfirmModal] = useState<boolean>(false);
+  const [isOpenChattingBottomSheet, setIsOpenChattingBottomSheet] = useState<boolean>(false);
 
   // joinSession
   const joinSession = useCallback(() => {
@@ -230,6 +234,7 @@ const PurchaseLivePage = () => {
     setMySessionId('');
     setMainStreamManager(undefined);
     setPublisher(undefined);
+    clearChatLogs();
   }, [session]);
 
   useEffect(() => {
@@ -670,6 +675,7 @@ const PurchaseLivePage = () => {
             pType={pType}
             handleMike={handleMike}
             handleCamera={handleCamera}
+            handleChat={() => setIsOpenChattingBottomSheet(true)}
             handleSpeak={() => setIsOpenSpeakBottomSheet(true)}
             handleParticipants={() => setIsOpenParticipantModal(true)}
             handleMatch={() => setIsOpenMatchList(true)}
@@ -680,6 +686,7 @@ const PurchaseLivePage = () => {
             pType={pType}
             handleMike={handleMike}
             handleCamera={handleCamera}
+            handleChat={() => setIsOpenChattingBottomSheet(true)}
             handleSpeak={() => setIsOpenRequestSpeakModal(true)}
             handleRequestSalePrice={() => setIsOpenRequestSalePriceModal(true)}
           />
@@ -719,6 +726,7 @@ const PurchaseLivePage = () => {
           sendMatchConfirm={sendMatchConfirm}
         />
       )}
+      {isOpenChattingBottomSheet && <ChattingBottomSheet onClose={() => setIsOpenChattingBottomSheet(false)} />}
     </div>
   );
 };

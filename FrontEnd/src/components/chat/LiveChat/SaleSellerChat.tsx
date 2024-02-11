@@ -9,11 +9,8 @@ const SaleSellerChat = () => {
 
   const [client, setClient] = useState<Client | null>(null);
   const { addChatLog, chatLogs, clearChatLogs } = useChatStore(state => state);
-  // const [message, setMessage] = useState<string>('');
-  // const { userId } = userStore();
   const { id: dealId } = useParams();
 
-  console.log(chatLogs);
   console.log(client);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -22,23 +19,18 @@ const SaleSellerChat = () => {
     // 웹소켓 연결
     const newClient = new Client();
     newClient.configure({
-      brokerURL: 'wss://i10d208.p.ssafy.io/api/ws',
+      brokerURL: import.meta.env.VITE_CHAT_URL,
       onConnect: () => {
-        console.log('웹소켓 연결 완료');
-
-        // '/sub/chat/room/1'로 구독
         const headers: StompHeaders = {
           Authorization: 'Bearer ' + accessToken,
         };
+
         newClient.subscribe(
           `/sub/chats/lives/${dealId}`,
           message => {
-            console.log('받은 메시지 :', message.body);
-
             const parsedMessage = JSON.parse(message.body);
             addChatLog(parsedMessage.body.data);
 
-            // 대화 내용 로컬 스토리지에 저장
             localStorage.setItem('chatLogs', JSON.stringify([...chatLogs, parsedMessage.body.data]));
 
             if (chatContainerRef.current) {
@@ -51,7 +43,6 @@ const SaleSellerChat = () => {
 
       onDisconnect: () => {
         clearChatLogs();
-        console.log('웹소켓 연결 종료');
       },
     });
 
@@ -66,10 +57,10 @@ const SaleSellerChat = () => {
 
   return (
     <div>
-      <div className="px-6 max-h-60 overflow-y-auto pt-2 pb-28 relative bg-black bg-opacity-10" ref={chatContainerRef}>
+      <div className="px-2 max-h-60 overflow-y-auto py-2 relative text-white" ref={chatContainerRef}>
         {chatLogs.map((log, index) => (
-          <div key={index}>
-            <span className="text-BID_MAIN font-bold">{log.senderId}</span>
+          <div key={index} className="py-1">
+            <span className="font-bold text-white/90">{log.sender}</span>
             <span className="px-2 font-bold">{log.message}</span>
           </div>
         ))}
@@ -79,14 +70,3 @@ const SaleSellerChat = () => {
 };
 
 export default SaleSellerChat;
-
-/*
-컴포넌트 불러올 때 ....
-
-<div className="h-screen flex items-end">
-    <div className="w-full h-40vh">
-        <ChatSection />
-    </div>
-</div>;
-
-*/
