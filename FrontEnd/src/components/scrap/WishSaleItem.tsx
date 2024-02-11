@@ -15,7 +15,7 @@ const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
       <div className="w-32 h-32 relative">
         <img
           className="w-full h-full rounded-xl"
-          src={`${import.meta.env.VITE_OPEN_URL}static${dealSimpleRes.image}`}
+          src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`}
         ></img>
       </div>
       <div className="flex-1 flex flex-col justify-between py-2">

@@ -22,7 +22,7 @@ const OtherSale = () => {
             <div className="w-32 h-32">
               <img
                 className="w-full h-full rounded-xl"
-                src={`${import.meta.env.VITE_OPEN_URL}static${item.dealSimpleRes.image}`}
+                src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
               ></img>
             </div>
             <div className="flex-1 flex flex-col py-2">

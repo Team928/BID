@@ -1,4 +1,5 @@
 import { useSale } from '@/hooks/home/useSale';
+import useLiveStore from '@/stores/userLiveStore';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ const Live = () => {
     data: liveInfo,
   } = useGetSaleList({ page: '0', size: '10', order: 'asc', status: 'LIVE' });
 
+  const { setTType, setPType } = useLiveStore();
   const navigate = useNavigate();
 
   return (
@@ -26,6 +28,8 @@ const Live = () => {
                 key={item.dealSimpleRes.id}
                 className="w-44 text-xs flex flex-col gap-1 cursor-pointer"
                 onClick={() => {
+                  setTType('sale');
+                  setPType('buyer');
                   navigate(`/live/sale/${item.dealSimpleRes.id}`, {
                     state: {
                       startPrice: item.startPrice,
@@ -36,7 +40,7 @@ const Live = () => {
                 <div className="relative">
                   <img
                     className="w-44 h-32"
-                    src={`${import.meta.env.VITE_OPEN_URL}static${item.dealSimpleRes.image}`}
+                    src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
                   />
                   <div className="absolute top-2 left-2 text-center bg-[#FF0000] pr-[0.4rem] pl-1 rounded-sm">
                     <p className="text-white text-xs font-bold italic">LIVE</p>

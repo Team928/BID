@@ -89,7 +89,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         {/* 사진 */}
         <div className="relative w-full h-2/5">
           <img
-            src={`${import.meta.env.VITE_OPEN_URL}static${dealRes.images[0]}`}
+            src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images[0]}`}
             className="object-cover w-full h-full"
           ></img>
           {/* #TODO 이미지 캐러셀 해야함 */}

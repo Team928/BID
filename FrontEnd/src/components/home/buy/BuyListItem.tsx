@@ -15,7 +15,7 @@ const BuyListItem = (props: { item: IPurchaseSimpleRes }) => {
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
         <div className="w-full h-full absolute bg-black/10 rounded-2xl"></div>
         <img
-          src={`${import.meta.env.VITE_OPEN_URL}static${image}`}
+          src={`${import.meta.env.VITE_BASE_URL}static${image}`}
           className="w-full h-full rounded-2xl object-cover"
         />
         <div className="absolute top-9 left-8">
