@@ -81,7 +81,7 @@ const PurchaseLivePage = () => {
 
     mySession.on('streamCreated', event => {
       const clientData = JSON.parse(event.stream.connection.data.split('%/%')[0]);
-      Toast.info(`${clientData.nickName}님이 라이브에 참여했습니다.`);
+      // Toast.info(`${clientData.nickName}님이 라이브에 참여했습니다.`);
 
       // 내가 구매자일 때 판매자가 들어오면 sellerList에 정보 저장
       if (pType === PARTICIPANT_TYPE.BUYER) {
@@ -219,8 +219,6 @@ const PurchaseLivePage = () => {
 
   // leaveSession
   const leaveSession = useCallback(() => {
-    alert('leave');
-
     if (session && publisher) {
       session.disconnect();
       session.unpublish(publisher);
@@ -317,19 +315,23 @@ const PurchaseLivePage = () => {
     try {
       const devices = await OV.current.getDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
       if (videoDevices && videoDevices.length > 1) {
         const newVideoDevice = videoDevices.filter(device => device.deviceId !== currentVideoDevice?.deviceId);
 
         if (newVideoDevice.length > 0) {
           const newPublisher = OV.current.initPublisher(undefined, {
             videoSource: newVideoDevice[0].deviceId,
-            publishAudio: onCamera,
-            publishVideo: onMike,
+            publishAudio: onMike,
+            publishVideo: onCamera,
+            resolution: '600X900',
+            frameRate: 30,
+            insertMode: 'APPEND',
             mirror: true,
           });
 
-          if (session) {
-            await session.unpublish(mainStreamManager);
+          if (session && publisher) {
+            await session.unpublish(publisher);
             await session.publish(newPublisher);
             setCurrentVideoDevice(newVideoDevice[0]);
             setMainStreamManager(newPublisher);
@@ -340,7 +342,7 @@ const PurchaseLivePage = () => {
     } catch (e) {
       console.error(e);
     }
-  }, [currentVideoDevice, session, mainStreamManager]);
+  }, [currentVideoDevice, session, mainStreamManager, onMike, onCamera]);
 
   const deleteSubscriber = useCallback((streamManager: any) => {
     setSubscribers(prevSubscribers => {
@@ -593,7 +595,17 @@ const PurchaseLivePage = () => {
         <div className="w-[20%]">
           {pType === PARTICIPANT_TYPE.BUYER ? (
             <div className="flex">
-              <button className="mx-3 z-10" onClick={switchCamera}>
+              <button
+                className="mx-3 z-10"
+                onClick={() => {
+                  if (!onCamera) {
+                    Toast.error('카메라를 켜주세요.');
+                    return;
+                  }
+
+                  switchCamera();
+                }}
+              >
                 <IoCameraReverseOutline size={25} color="#D9D9D9" />
               </button>
               <button onClick={handleCamera} className="z-10">
@@ -605,7 +617,17 @@ const PurchaseLivePage = () => {
               </button>
             </div>
           ) : (
-            <button className="mx-3 z-10" onClick={switchCamera}>
+            <button
+              className="mx-3 z-10"
+              onClick={() => {
+                if (!onCamera) {
+                  Toast.error('카메라를 켜주세요.');
+                  return;
+                }
+
+                switchCamera();
+              }}
+            >
               <IoCameraReverseOutline size={25} color="#D9D9D9" />
             </button>
           )}
