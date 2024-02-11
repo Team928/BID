@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const APPLICATION_SERVER_URL =
-  import.meta.env.VITE_NODE_ENV === 'develop' ? import.meta.env.VITE_OPENVIDU_URL : 'https://demos.openvidu.io/';
+  import.meta.env.VITE_NODE_ENV === 'develop' ? import.meta.env.VITE_BASE_URL : 'https://demos.openvidu.io/';
 
 export const getToken = async (mySessionId: string) => {
   const sessionId = await createSession(mySessionId);

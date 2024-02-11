@@ -9,6 +9,8 @@ import SearchPage from '@/pages/search/SearchPage';
 import SignupPage from '@/pages/signup/SignupPage';
 import WritePage from '@/pages/write/WritePage';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import KakaoLoginRedirect from './components/login/KakaoLoginRedirect';
+import NaverLoginRedirect from './components/login/NaverLoginRedirect';
 import ReviewPage from './pages/Review/ReviewPage';
 import BuyCategoryPage from './pages/home/buy/BuyCategoryPage';
 import PurchaseDetailPage from './pages/home/detail/PurchaseDetailPage';
@@ -16,7 +18,6 @@ import SaleDetailPage from './pages/home/detail/SaleDetailPage';
 import SaleCategoryPage from './pages/home/sale/SaleCategoryPage';
 import LiveEndPage from './pages/live/LiveEndPage';
 import LiveEntrancePage from './pages/live/LiveEntrancePage';
-import LivePage from './pages/live/LivePage';
 import PurchaseLivePage from './pages/live/PurchaseLivePage';
 import SaleLivePage from './pages/live/SaleLivePage';
 import LoginRedirectPage from './pages/login/LoginRedirectPage';
@@ -26,8 +27,6 @@ import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
 import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import BuyWritePage from './pages/write/BuyWritePage';
 import SaleWritePage from './pages/write/SaleWritePage';
-import KakaoLoginRedirect from './components/login/KakaoLoginRedirect';
-import NaverLoginRedirect from './components/login/NaverLoginRedirect';
 
 const router = createBrowserRouter([
   {
@@ -127,11 +126,7 @@ const router = createBrowserRouter([
     element: <BuyWritePage />,
   },
   {
-    path: '/live/:id',
-    element: <LivePage />,
-  },
-  {
-    path: '/live/entrance',
+    path: '/live/entrance/:id',
     element: <LiveEntrancePage />,
   },
   {
