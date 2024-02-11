@@ -14,7 +14,7 @@ const BottomSheet = ({ height, title, onClose, children }: IBottomSheetProps) =>
     setIsRendering(false);
     setTimeout(() => {
       onClose();
-    }, 300);
+    }, 250);
   };
 
   return (
