@@ -40,7 +40,7 @@ public class ChatController {
     }
 
     @ResponseBody
-    @MessageMapping("/message/live/{dealId}")
+    @MessageMapping("/message/lives/{dealId}")
     public void sendLiveMessage(@DestinationVariable("dealId") long dealId, @Payload Chat chat) {
         chatService.sendLiveChat(chat, dealId);
     }
