@@ -16,10 +16,11 @@ export interface IReviewSimpleRes {
     role: string;
 }
 
-// 내가 작성한 리뷰 조회 Res
+// 리뷰 조회 Res
 export interface IReviewListReq {
     reviewSimpleRes: IReviewSimpleRes[];
     pageNumber: number;
     pageSize: number;
     last: boolean;
+    total: number;
 }
