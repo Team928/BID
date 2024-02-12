@@ -120,6 +120,7 @@ public class LiveServiceImpl implements LiveService {
                 for (Wish wish : wishes.get()) {
                     sseService.send(
                         SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
+                            wish.getDeal().getClass().getSimpleName(),
                             SseType.START_LIVE,
                             LocalDateTime.now()));
                 }

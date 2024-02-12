@@ -170,8 +170,9 @@ public class SaleServiceImpl implements SaleService {
             Bid highestBid = sale.getHighestBid();
             highestBid.cancelBidding();
             //상위 입찰 등장 푸시알람
-            sseService.send(SseDto.of(highestBid.getBidder().getId(), saleId, SseType.CANCEL_BID,
-                LocalDateTime.now()));
+            sseService.send(
+                SseDto.of(highestBid.getBidder().getId(), saleId, "sale", SseType.CANCEL_BID,
+                    LocalDateTime.now()));
 
             PointHistory free = PointHistory.builder()
                 .amount(highestBid.getBidPrice())
@@ -221,7 +222,8 @@ public class SaleServiceImpl implements SaleService {
                 highestBid.setSuccess(true);
 
                 sseService.send(
-                    SseDto.of(highestBid.getBidder().getId(), sale.getId(), SseType.SUCCESS_BID,
+                    SseDto.of(highestBid.getBidder().getId(), sale.getId(), "sale",
+                        SseType.SUCCESS_BID,
                         LocalDateTime.now()));
             }
             //TODO: 구매자 판매자 채팅방 생성

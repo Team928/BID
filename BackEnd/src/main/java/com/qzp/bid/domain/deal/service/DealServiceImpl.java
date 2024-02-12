@@ -65,6 +65,7 @@ public class DealServiceImpl implements DealService {
                 .isAfter(LocalDateTime.now().minusMinutes(ALARM_TIME))) {
                 sseService.send(
                     SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
+                        wish.getDeal().getClass().getSimpleName(),
                         SseType.START_AUCTION_BEFORE,
                         LocalDateTime.now()));
                 wish.setBeforeAlarm(true);
