@@ -3,48 +3,34 @@ import useChatStore from '@/stores/useChatStore';
 import userStore from '@/stores/userStore';
 import { Client, StompHeaders } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
-import ChatInput from './ChatInput';
+import { FiSend } from 'react-icons/fi';
+import { RiAuctionFill } from 'react-icons/ri';
+import { useParams } from 'react-router-dom';
 
-const ChatSection = () => {
+const SaleBuyerChat = ({ handleBid }: { handleBid: () => void }) => {
   const accessToken = axiosAuthInstance;
 
   const [client, setClient] = useState<Client | null>(null);
   const { addChatLog, chatLogs, clearChatLogs } = useChatStore(state => state);
   const [message, setMessage] = useState<string>('');
   const { userId } = userStore();
-
-  // 나중에 prop으로 받아야함
-  const dealId = 1;
-
-  console.log(chatLogs);
-  console.log(client);
-
+  const { id: dealId } = useParams();
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // sub : /sub/chats/lives/{dealId}
-  // pub : /pub/message/live/{dealId}
-
   useEffect(() => {
-    // 웹소켓 연결
     const newClient = new Client();
     newClient.configure({
       brokerURL: import.meta.env.VITE_CHAT_URL,
       onConnect: () => {
-        console.log('웹소켓 연결 완료');
-
-        // '/sub/chat/room/1'로 구독
         const headers: StompHeaders = {
           Authorization: 'Bearer ' + accessToken,
         };
         newClient.subscribe(
           `/sub/chats/lives/${dealId}`,
           message => {
-            console.log('받은 메시지 :', message.body);
-
             const parsedMessage = JSON.parse(message.body);
             addChatLog(parsedMessage.body.data);
 
-            // 대화 내용 로컬 스토리지에 저장
             localStorage.setItem('chatLogs', JSON.stringify([...chatLogs, parsedMessage.body.data]));
 
             if (chatContainerRef.current) {
@@ -57,7 +43,6 @@ const ChatSection = () => {
 
       onDisconnect: () => {
         clearChatLogs();
-        console.log('웹소켓 연결 종료');
       },
     });
 
@@ -78,47 +63,58 @@ const ChatSection = () => {
         type: 'TALK',
       };
       const jsonMessage = JSON.stringify(newMessage);
-      console.log('보낸 메시지', jsonMessage);
       client.publish({ destination: `/pub/message/lives/${dealId}`, body: jsonMessage });
-      setMessage(''); // 메시지를 보낸 후에 입력란 초기화
+      setMessage('');
     } else {
       console.error('웹소켓 연결 노활성');
     }
   };
 
+  const handleSendMessage = () => {
+    if (message.trim() !== '') {
+      sendMessage(message);
+      setMessage('');
+    }
+  };
+
   return (
     <div>
-      <div className="px-6 max-h-60 overflow-y-auto pt-2 pb-28 relative bg-black bg-opacity-10" ref={chatContainerRef}>
+      <div className="px-2 w-full max-h-60 overflow-y-auto py-2 absolute bottom-20 text-white" ref={chatContainerRef}>
         {chatLogs.map((log, index) => (
-          <div key={index}>
-            <span className="text-BID_MAIN font-bold">{log.senderId}</span>
+          <div key={index} className="py-1">
+            <span className="font-bold text-white/90">{log.sender}</span>
             <span className="px-2 font-bold">{log.message}</span>
           </div>
         ))}
       </div>
-      <div>
-        <ChatInput
-          message={message}
-          setMessage={setMessage}
-          sendMessage={message => {
-            sendMessage(message);
-            setMessage('');
-          }}
-        />
+      <div className="absolute bottom-0 h-20 left-0 right-0 flex justify-center flex items-center">
+        <button
+          type="button"
+          className="bg-BID_MAIN w-[50px] h-[50px] rounded-full flex justify-center items-center hover:bg-BID_HOVER_MAIN"
+          onClick={handleBid}
+        >
+          <RiAuctionFill color="white" size="25" />
+        </button>
+        <div className="flex-1 ml-2 h-12 rounded-full border border-[1px] border-BID_SUB_GRAY bg-BID_SUB_GRAY/20 flex">
+          <input
+            type="text"
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            placeholder="채팅을 입력해주세요"
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                handleSendMessage();
+              }
+            }}
+            className="w-full h-full px-4 bg-white/0 focus:outline-none text-white"
+          />
+          <button type="button" className="w-12" onClick={handleSendMessage}>
+            <FiSend color="#969696" size="28" />
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ChatSection;
-
-/*
-컴포넌트 불러올 때 ....
-
-<div className="h-screen flex items-end">
-    <div className="w-full h-40vh">
-        <ChatSection />
-    </div>
-</div>;
-
-*/
+export default SaleBuyerChat;

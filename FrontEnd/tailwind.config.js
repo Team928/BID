@@ -23,19 +23,19 @@ export default {
           to: { opacity: 0, transform: 'translate(-50%, -45%)' },
         },
         sheetOn: {
-          from: { opacity: 0, transform: 'translateY(30px)' },
+          from: { opacity: 0, transform: 'translateY(80px)' },
           to: { opacity: 1 },
         },
         sheetOff: {
           from: { opacity: 1 },
-          to: { opacity: 0, transform: 'translateY(30px)' },
+          to: { opacity: 0, transform: 'translateY(80px)' },
         },
       },
       animation: {
         modalOn: 'modalOn 0.5s ease-in-out',
         modalOff: 'modalOff 0.5s ease-in',
-        sheetOn: 'sheetOn 0.4s ease-in-out',
-        sheetOff: 'sheetOff 0.4s ease-in',
+        sheetOn: 'sheetOn 0.3s ease-in-out',
+        sheetOff: 'sheetOff 0.3s ease-in',
       },
       padding: {
         BID_P: '1rem',

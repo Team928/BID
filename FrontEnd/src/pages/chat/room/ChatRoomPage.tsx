@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Client, StompHeaders } from '@stomp/stompjs';
+import { axiosAuthInstance } from '@/apis/axiosInstance';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
-import MessageInput from '@/components/chat/MessageInput';
 import ChatLogs from '@/components/chat/ChatLogs';
 import DealInfo from '@/components/chat/DealInfo';
+import MessageInput from '@/components/chat/MessageInput';
 import { useChatLog } from '@/hooks/chat/useChat';
-import { axiosAuthInstance } from '@/apis/axiosInstance';
-import { IChatResList } from '@/types/chat';
 import userStore from '@/stores/userStore';
+import { IChatResList } from '@/types/chat';
+import { Client, StompHeaders } from '@stomp/stompjs';
+import { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
 const ChatRoomPage = () => {
@@ -16,7 +16,7 @@ const ChatRoomPage = () => {
   const [chatLogs, setChatLogs] = useState<IChatResList[]>([]);
 
   // 나중에 prop으로 받아야함
-  const dealId = 1
+  const dealId = 1;
 
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
@@ -27,10 +27,10 @@ const ChatRoomPage = () => {
   };
 
   const { useGetChatLogList } = useChatLog();
-  const { userId } = userStore()
+  const { userId } = userStore();
 
   const { data: chatLogInfo } = useGetChatLogList({ dealId });
-  console.log(chatLogInfo)
+  console.log(chatLogInfo);
 
   const accessToken = axiosAuthInstance;
 
@@ -38,7 +38,7 @@ const ChatRoomPage = () => {
     // 웹소켓 연결
     const newClient = new Client();
     newClient.configure({
-      brokerURL: 'wss://i10d208.p.ssafy.io/api/ws',
+      brokerURL: import.meta.env.VITE_CHAT_URL,
       onConnect: () => {
         console.log('웹소켓 연결 완료');
 

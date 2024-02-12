@@ -98,9 +98,9 @@ const SaleCategoryPage = () => {
               }
               setIsAddressOpen(false);
             }}
-            className="w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30"
+            className="w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30 "
           ></div>
-          <div className="fixed bottom-0 h-72 w-full pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30">
+          <div className="fixed bottom-0 h-72 w-full pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30 max-w-[500px]">
             <div className="h-full flex flex-col justify-between font-bold text-xl">
               <p className="text-center text-lg">지역 선택</p>
               <div className="flex flex-col gap-5">
@@ -149,7 +149,7 @@ const SaleCategoryPage = () => {
         </>
       )}
       {isDaumModalOpen && <DaumPostModal setIsOpen={setIsDaumModalOpen} setAddress={setAddress} />}
-      <div className="w-full h-screen pb-[4.5rem]">
+      <div className="w-full h-screen pb-[4.5rem] max-w-[500px]">
         <Header info={info} />
         <div className="w-full pt-12 pb-4  ">
           <div className="pt-4 px-BID_P">
@@ -209,10 +209,12 @@ const SaleCategoryPage = () => {
         </div>
 
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
-          {categoryInfo?.pages.map(item =>
-            item.data.saleSimpleResList.map((value, index) => {
-              return <SaleCategoryItem key={index} item={value} />;
-            }),
+          {categoryInfo?.pages.map(
+            item =>
+              item.data.saleSimpleResList &&
+              item.data.saleSimpleResList.map((value, index) => {
+                return <SaleCategoryItem key={index} item={value} />;
+              }),
           )}
         </div>
 

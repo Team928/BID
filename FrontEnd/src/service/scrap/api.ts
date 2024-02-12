@@ -9,7 +9,7 @@ export const getProfileWishSaleReq = async (type: dealType): Promise<APIResponse
     size: 10,
     type: type,
   };
-  const { data } = await axiosAuthInstance.get(`members/profiles/wish`, {
+  const { data } = await axiosAuthInstance.get(`members/profiles/wishes`, {
     params: lookupParam,
   });
   console.log(data);
@@ -17,7 +17,7 @@ export const getProfileWishSaleReq = async (type: dealType): Promise<APIResponse
 };
 
 export const getProfileWishPurchaseReq = async (type: dealType): Promise<APIResponse<IPurchaseListRes>> => {
-  const { data } = await axiosAuthInstance.get(`members/profiles/wish`, {
+  const { data } = await axiosAuthInstance.get(`members/profiles/wishes`, {
     params: {
       lookupParam: {
         page: 0,

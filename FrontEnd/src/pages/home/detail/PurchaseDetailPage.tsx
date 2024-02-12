@@ -57,7 +57,7 @@ const PurchaseDetailPage = () => {
     // 구매자 로직
     if (isBuyer) {
       if (status !== 'END') {
-        navigate(`/live/purchase/${dealRes.id}`, {
+        navigate(`/live/entrance/${dealRes.id}`, {
           state: {
             title: dealRes.title,
           },
@@ -71,7 +71,6 @@ const PurchaseDetailPage = () => {
         return;
       }
 
-      // 본인이 신청했는지 확인하는 함수
       const applyForms: IApplyForm[] = purchaseDetailInfo.data.applyForms;
       let isExistForm = false;
       let myForm;
@@ -90,8 +89,7 @@ const PurchaseDetailPage = () => {
         return;
       }
 
-      // @TODO: 판매자가 경매 진행 중 필요한 데이터를 넘김
-      navigate(`/live/purchase/${dealRes.id}`, {
+      navigate(`/live/entrance/${dealRes.id}`, {
         state: {
           title: dealRes.title,
           myForm: myForm,

@@ -6,10 +6,14 @@ import OtherSale from '@/components/profile/sale/OtherSale';
 import { useProfile } from '@/hooks/profile/useProfile';
 import useOtherTabStore from '@/stores/profileOtherTab';
 import { IoIosArrowBack } from 'react-icons/io';
+import { useParams } from 'react-router-dom';
 
 const OtherProfilePage = () => {
   const { useUserProfile } = useProfile();
-  const { data: userProfileInfo } = useUserProfile('이승현'); // 임의 닉네임
+  const { nickname } = useParams();
+  if (!nickname) return <div>유저 조회 불가</div>;
+
+  const { data: userProfileInfo } = useUserProfile(nickname);
 
   const info: IHeaderInfo = {
     left: <IoIosArrowBack />,

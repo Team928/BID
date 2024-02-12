@@ -1,10 +1,11 @@
 import Modal from '@/components/@common/Modal';
-import Toast from '@/components/@common/Toast';
+import PointChargeModal from '@/components/@common/PointChargeModal';
 import { useSale } from '@/hooks/home/useSale';
 import { useProfile } from '@/hooks/profile/useProfile';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
 import { ISaleDetailRes } from '@/types/home';
+import { getDate } from '@/utils/getDate';
 import { useState } from 'react';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 import { MdLiveTv } from 'react-icons/md';
@@ -43,43 +44,21 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
     setTType('sale');
     setPType(isSeller ? 'seller' : 'buyer');
 
-    console.log(isSeller, status);
     // 판매자 로직
     if (isSeller) {
-      navigate(`/live/sale/${dealRes.id}`, {
-        state: {
-          title: dealRes.title,
-          startPrice: startPrice,
-        },
-      });
-
       if (status !== 'END') {
         navigate(`/live/sale/${dealRes.id}`, {
           state: {
             title: dealRes.title,
             startPrice: startPrice,
+            startTime: getDate(dealRes.startTime).fullDate3,
           },
         });
       }
     }
-    // 구매자 로직
-    else {
-      if (status !== 'LIVE') {
-        Toast.error('라이브 방송 진행중이 아닙니다.');
-        return;
-      }
-
-      // @TODO: 구매자가 경매 진행 중 필요한 데이터를 넘김
-      navigate(`/live/sale/${dealRes.id}`, {
-        state: {
-          title: dealRes.title,
-          startPrice: startPrice,
-        },
-      });
-    }
   };
+  const [showChargeModal, setShowChargeModal] = useState<boolean>(false);
 
-  // #TODO 내 포인트 조회 해야함
   return (
     <>
       {/* 입찰하기 모달 */}
@@ -137,8 +116,10 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             <div className="w-full flex gap-3 items-center">
               <p className="">내 포인트</p>
               {/* 내포인트 조회해야함 */}
-              <p className="text-BID_MAIN">32,000원</p>
-              <span className="text-BID_SUB_GRAY border-b text-xs">충전하기</span>
+              <p className="text-BID_MAIN">{userProfileInfo?.data.point}</p>
+              <span onClick={() => setShowChargeModal(true)} className="text-BID_SUB_GRAY border-b text-xs">
+                충전하기
+              </span>
             </div>
             <div className="w-full flex gap-5 py-4">
               <button
@@ -160,7 +141,11 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
           </div>
         </Modal>
       )}
-      <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm max-w-[500px]">
+      {/* 포인트 충전 모달 */}
+      {showChargeModal && (
+        <PointChargeModal setShowChargeModal={setShowChargeModal} userProfileInfo={userProfileInfo?.data} />
+      )}
+      <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] text-sm max-w-[500px]">
         <div className="w-full h-full py-2 flex items-center gap-3">
           {isWished ? (
             <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />

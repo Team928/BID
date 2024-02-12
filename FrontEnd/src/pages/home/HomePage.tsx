@@ -11,13 +11,13 @@ import Category from '@/components/home/Category';
 import SaleTab from '@/components/home/SaleTab';
 import useTabStore from '@/stores/auctionTabStore';
 import useKeywordStore from '@/stores/keywordStore';
+import useNotifyStore from '@/stores/useNotifyStore';
 import userStore from '@/stores/userStore';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const HomePage = () => {
   const { tab } = useTabStore();
   const { init } = useKeywordStore();
-  const { loginUser } = userStore();
   const info: IHeaderInfo = {
     left: null,
     center: null,
@@ -27,14 +27,6 @@ const HomePage = () => {
 
   useEffect(() => {
     init();
-    loginUser({
-      accessToken:
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwianRpIjoiQVRLIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg1Njc0NTJ9.uTeuYI8DiUtbkMOeRDfAe6U61oSeV0d2fqeOZCJl4is',
-      area: '구미시 진평동',
-      nickname: '승현',
-      refreshToken: '',
-      userId: 1,
-    });
   }, []);
 
   // 캐러셀 설정
@@ -49,8 +41,8 @@ const HomePage = () => {
   // 캐러셀 이미지 배열
   const images = [image1, image2, image3];
 
+  const { addNotification } = useNotifyStore();
   const { userId } = userStore();
-  const [message, setMessage] = useState();
   useEffect(() => {
     // eventSource 객체 생성
     const eventSource = new EventSource(import.meta.env.VITE_SSE_URL + userId);
@@ -69,25 +61,23 @@ const HomePage = () => {
     // // eventSource 연결 시 할 일
     eventSource.onmessage = async event => {
       console.log(event);
-      const res = await event.data;
-      setMessage(res);
-      console.log(res);
     };
 
     eventSource.addEventListener('test', async function (event) {
       const data = JSON.parse(event.data);
+      addNotification(data);
+      console.log(data);
+    });
 
-      setMessage(data);
+    eventSource.addEventListener('auction', async function (event) {
+      const data = JSON.parse(event.data);
+      addNotification(data);
       console.log(data);
     });
     return () => {
       eventSource.close();
     };
   }, []);
-
-  useEffect(() => {
-    console.log(message);
-  }, [message]);
 
   return (
     <>

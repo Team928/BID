@@ -1,12 +1,11 @@
 import Toast from '@/components/@common/Toast';
+import SaleBuyerChat from '@/components/chat/LiveChat/SaleBuyerChat';
 import FullCameraItem from '@/components/live/FullCameraItem';
 import BuyModal from '@/components/live/Modal/BuyModal';
 import userStore from '@/stores/userStore';
 import { Session, Subscriber } from 'openvidu-browser';
 import { useEffect, useState } from 'react';
 import { BsXLg } from 'react-icons/bs';
-import { FiSend } from 'react-icons/fi';
-import { RiAuctionFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
 const SaleBuyer = ({
@@ -61,11 +60,6 @@ const SaleBuyer = ({
     Toast.success('라이브 방송에 입장했습니다.');
   }, []);
 
-  // const test = {
-  //   title: 'test',
-  //   startPrice: 3000,
-  // };
-
   return (
     <div className="relative">
       {subscriber && (
@@ -96,28 +90,10 @@ const SaleBuyer = ({
           </div>
           {/* 나머지 얼굴 보이는 부분*/}
           <div className="absolute top-24 left-4 right-4 bottom-0 z-[10] flex justify-center items-center">
-            <div className="absolute bottom-0 h-20 left-0 right-0 flex justify-center flex items-center">
-              <button
-                type="button"
-                className="bg-BID_MAIN w-[50px] h-[50px] rounded-full flex justify-center items-center hover:bg-BID_HOVER_MAIN"
-                onClick={handleBid}
-              >
-                <RiAuctionFill color="white" size="25" />
-              </button>
-              <div className="flex-1 ml-2 h-12 rounded-full border border-[1px] border-BID_SUB_GRAY bg-BID_SUB_GRAY/20 flex">
-                <input
-                  placeholder="채팅을 입력해주세요"
-                  className="w-full h-full px-4 bg-white/0 focus:outline-none text-white"
-                />
-                <button type="button" className="w-12">
-                  <FiSend color="#969696" size="28" />
-                </button>
-              </div>
-            </div>
             {/* 채팅 웹소켓 */}
-            {/* <div className="w-full h-40vh">
+            <div className="w-full h-40vh">
               <SaleBuyerChat handleBid={handleBid} />
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

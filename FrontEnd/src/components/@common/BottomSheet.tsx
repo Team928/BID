@@ -14,7 +14,7 @@ const BottomSheet = ({ height, title, onClose, children }: IBottomSheetProps) =>
     setIsRendering(false);
     setTimeout(() => {
       onClose();
-    }, 300);
+    }, 250);
   };
 
   return (
@@ -24,7 +24,7 @@ const BottomSheet = ({ height, title, onClose, children }: IBottomSheetProps) =>
     >
       {/* bottom wrapper */}
       <div
-        className={`fixed bottom-0 left-0 right-0 rounded-xl z-[12] drop-shadow-lg bg-white ${isRendering ? 'animate-sheetOn' : 'animate-sheetOff'}`}
+        className={`max-w-[500px] m-auto fixed bottom-0 left-0 right-0 rounded-xl z-[12] drop-shadow-lg bg-white ${isRendering ? 'animate-sheetOn' : 'animate-sheetOff'}`}
       >
         {/* bottom sheet */}
         <div

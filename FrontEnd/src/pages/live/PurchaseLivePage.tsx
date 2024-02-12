@@ -1,4 +1,5 @@
 import Toast from '@/components/@common/Toast';
+import ChattingBottomSheet from '@/components/live/BottomSheet/ChattingBottomSheet';
 import ParticipantsBottomSheet from '@/components/live/BottomSheet/ParticipantsBottomSheet';
 import SpeakListBottomSheet from '@/components/live/BottomSheet/SpeakListBottomSheet';
 import CameraItem from '@/components/live/CameraItem';
@@ -10,9 +11,10 @@ import RequestSpeakModal from '@/components/live/Modal/RequestSpeakModal';
 import { PARTICIPANT_TYPE } from '@/constants/liveType';
 import { useLive } from '@/hooks/live/useLive';
 import { getSession } from '@/service/live/api';
+import useChatStore from '@/stores/useChatStore';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
-import { IBuyerInfo, IMatchReqInfo, ISellerInfo } from '@/types/live';
+import { IMatchReqInfo, ISellerInfo } from '@/types/live';
 import { Device, OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -29,6 +31,7 @@ const PurchaseLivePage = () => {
   const { userId, nickname } = userStore();
   const { usePostLiveMatch } = useLive();
   const { mutate } = usePostLiveMatch();
+  const { clearChatLogs } = useChatStore(state => state);
 
   // 오픈 비두
   const OV = useRef(new OpenVidu());
@@ -58,12 +61,6 @@ const PurchaseLivePage = () => {
     possibleSpeak: false,
   });
 
-  const buyerInfo: IBuyerInfo = {
-    type: pType,
-    userId: userId,
-    nickName: nickname,
-  };
-
   // 매칭 요청 시 모달에 띄울 정보
   const [matchRequestInfo, setMatchRequestInfo] = useState<IMatchReqInfo>({
     dealId: id || '',
@@ -79,6 +76,7 @@ const PurchaseLivePage = () => {
   const [isOpenParticipantModal, setIsOpenParticipantModal] = useState<boolean>(false);
   const [isOpenMatchList, setIsOpenMatchList] = useState<boolean>(false);
   const [isOpenMatchConfirmModal, setIsOpenMatchConfirmModal] = useState<boolean>(false);
+  const [isOpenChattingBottomSheet, setIsOpenChattingBottomSheet] = useState<boolean>(false);
 
   // joinSession
   const joinSession = useCallback(() => {
@@ -86,9 +84,8 @@ const PurchaseLivePage = () => {
     setSession(mySession);
 
     mySession.on('streamCreated', event => {
-      const clientData = JSON.parse(event.stream.connection.data);
-
-      Toast.info(`${clientData.nickName}님이 라이브에 참여했습니다.`);
+      const clientData = JSON.parse(event.stream.connection.data.split('%/%')[0]);
+      // Toast.info(`${clientData.nickName}님이 라이브에 참여했습니다.`);
 
       // 내가 구매자일 때 판매자가 들어오면 sellerList에 정보 저장
       if (pType === PARTICIPANT_TYPE.BUYER) {
@@ -237,6 +234,7 @@ const PurchaseLivePage = () => {
     setMySessionId('');
     setMainStreamManager(undefined);
     setPublisher(undefined);
+    clearChatLogs();
   }, [session]);
 
   useEffect(() => {
@@ -256,7 +254,26 @@ const PurchaseLivePage = () => {
   // publish
   useEffect(() => {
     if (session && mySessionId) {
-      const send = pType === PARTICIPANT_TYPE.BUYER ? buyerInfo : sellerInfo;
+      const seller = {
+        type: sellerInfo.type,
+        userId: sellerInfo.userId,
+        nickName: sellerInfo.nickName,
+        offerPrice: sellerInfo.offerPrice,
+        image: sellerInfo.image,
+        content: sellerInfo.content,
+        formId: sellerInfo.formId,
+        isRequestSpeak: sellerInfo.isRequestSpeak,
+        onMike: sellerInfo.onMike,
+        possibleSpeak: sellerInfo.possibleSpeak,
+      };
+
+      const buyer = {
+        type: pType,
+        userId: userId,
+        nickName: nickname,
+      };
+
+      const send = pType === PARTICIPANT_TYPE.BUYER ? buyer : seller;
 
       try {
         getSession(mySessionId, userId).then(async data => {
@@ -264,7 +281,6 @@ const PurchaseLivePage = () => {
           await session.connect(token, send);
 
           const devices = await OV.current.getDevices();
-          console.log(devices);
           const videoDevices = devices.filter(device => device.kind === 'videoinput');
           let publisher = await OV.current.initPublisherAsync(undefined, {
             audioSource: undefined,
@@ -304,19 +320,23 @@ const PurchaseLivePage = () => {
     try {
       const devices = await OV.current.getDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
       if (videoDevices && videoDevices.length > 1) {
         const newVideoDevice = videoDevices.filter(device => device.deviceId !== currentVideoDevice?.deviceId);
 
         if (newVideoDevice.length > 0) {
           const newPublisher = OV.current.initPublisher(undefined, {
             videoSource: newVideoDevice[0].deviceId,
-            publishAudio: onCamera,
-            publishVideo: onMike,
+            publishAudio: onMike,
+            publishVideo: onCamera,
+            resolution: '600X900',
+            frameRate: 30,
+            insertMode: 'APPEND',
             mirror: true,
           });
 
-          if (session) {
-            await session.unpublish(mainStreamManager);
+          if (session && publisher) {
+            await session.unpublish(publisher);
             await session.publish(newPublisher);
             setCurrentVideoDevice(newVideoDevice[0]);
             setMainStreamManager(newPublisher);
@@ -327,7 +347,7 @@ const PurchaseLivePage = () => {
     } catch (e) {
       console.error(e);
     }
-  }, [currentVideoDevice, session, mainStreamManager]);
+  }, [currentVideoDevice, session, mainStreamManager, onMike, onCamera]);
 
   const deleteSubscriber = useCallback((streamManager: any) => {
     setSubscribers(prevSubscribers => {
@@ -349,15 +369,12 @@ const PurchaseLivePage = () => {
   }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      leaveSession();
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('beforeunload', leaveSession);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('beforeunload', leaveSession);
     };
-  }, [leaveSession]);
+  }, []);
 
   const handleCamera = () => {
     const nCameraFlag = !onCamera;
@@ -561,6 +578,14 @@ const PurchaseLivePage = () => {
     }, 2000);
   };
 
+  useEffect(() => {
+    window.addEventListener('beforeunload', leaveSession);
+
+    return () => {
+      window.removeEventListener('beforeunload', leaveSession);
+    };
+  }, []);
+
   return (
     <div className="w-full h-screen bg-black/80 relative">
       <div className="absolute bottom-0 top-0 flex justify-between items-center left-0 right-0 p-1 z-[1]">
@@ -575,7 +600,17 @@ const PurchaseLivePage = () => {
         <div className="w-[20%]">
           {pType === PARTICIPANT_TYPE.BUYER ? (
             <div className="flex">
-              <button className="mx-3 z-10" onClick={switchCamera}>
+              <button
+                className="mx-3 z-10"
+                onClick={() => {
+                  if (!onCamera) {
+                    Toast.error('카메라를 켜주세요.');
+                    return;
+                  }
+
+                  switchCamera();
+                }}
+              >
                 <IoCameraReverseOutline size={25} color="#D9D9D9" />
               </button>
               <button onClick={handleCamera} className="z-10">
@@ -587,7 +622,17 @@ const PurchaseLivePage = () => {
               </button>
             </div>
           ) : (
-            <button className="mx-3 z-10" onClick={switchCamera}>
+            <button
+              className="mx-3 z-10"
+              onClick={() => {
+                if (!onCamera) {
+                  Toast.error('카메라를 켜주세요.');
+                  return;
+                }
+
+                switchCamera();
+              }}
+            >
               <IoCameraReverseOutline size={25} color="#D9D9D9" />
             </button>
           )}
@@ -600,7 +645,8 @@ const PurchaseLivePage = () => {
           {displayInfo.length &&
             displayInfo.map((info, idx) => {
               if (info) {
-                const data = JSON.parse(info.stream.connection.data);
+                const data = JSON.parse(info.stream.connection.data.split('%/%')[0]);
+
                 return (
                   <div key={idx} className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">
                     <div className="relative w-full h-full" onClick={() => handleMainVideoStream(info)}>
@@ -629,6 +675,7 @@ const PurchaseLivePage = () => {
             pType={pType}
             handleMike={handleMike}
             handleCamera={handleCamera}
+            handleChat={() => setIsOpenChattingBottomSheet(true)}
             handleSpeak={() => setIsOpenSpeakBottomSheet(true)}
             handleParticipants={() => setIsOpenParticipantModal(true)}
             handleMatch={() => setIsOpenMatchList(true)}
@@ -639,6 +686,7 @@ const PurchaseLivePage = () => {
             pType={pType}
             handleMike={handleMike}
             handleCamera={handleCamera}
+            handleChat={() => setIsOpenChattingBottomSheet(true)}
             handleSpeak={() => setIsOpenRequestSpeakModal(true)}
             handleRequestSalePrice={() => setIsOpenRequestSalePriceModal(true)}
           />
@@ -678,6 +726,7 @@ const PurchaseLivePage = () => {
           sendMatchConfirm={sendMatchConfirm}
         />
       )}
+      {isOpenChattingBottomSheet && <ChattingBottomSheet onClose={() => setIsOpenChattingBottomSheet(false)} />}
     </div>
   );
 };

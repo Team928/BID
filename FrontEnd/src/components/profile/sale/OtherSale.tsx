@@ -1,12 +1,16 @@
 import StateButton from '@/components/@common/StateButton';
 import { useProfile } from '@/hooks/profile/useProfile';
+import { useParams } from 'react-router-dom';
 
 const OtherSale = () => {
   const { useSaleHost } = useProfile();
   const { useUserProfile } = useProfile();
 
-  const { data: userProfileInfo } = useUserProfile('이승현'); // 임의 닉네임
+  const { nickname } = useParams();
 
+  if (!nickname) return <div>유저 조회 불가</div>;
+
+  const { data: userProfileInfo } = useUserProfile(nickname);
   const { data: saleHostInfo } = useSaleHost(`${userProfileInfo?.data.nickname}`);
 
   return (
@@ -18,7 +22,7 @@ const OtherSale = () => {
             <div className="w-32 h-32">
               <img
                 className="w-full h-full rounded-xl"
-                src={`${import.meta.env.VITE_OPEN_URL}static${item.dealSimpleRes.image}`}
+                src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
               ></img>
             </div>
             <div className="flex-1 flex flex-col py-2">

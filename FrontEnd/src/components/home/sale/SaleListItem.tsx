@@ -16,7 +16,7 @@ const SaleListItem = (props: { item: ISaleSimpleRes }) => {
     <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
         <img
-          src={`${import.meta.env.VITE_OPEN_URL}static${sale.image}`}
+          src={`${import.meta.env.VITE_BASE_URL}static${sale.image}`}
           className="w-full h-full rounded-2xl object-cover"
         />
         {/* 경매 진행전이라면 라이브 일정 보여주기 */}

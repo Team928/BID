@@ -1,4 +1,4 @@
-import { axiosAuthInstance, axiosOpenviduInstance } from '@/apis/axiosInstance';
+import { axiosAuthInstance } from '@/apis/axiosInstance';
 import { APIResponse } from '@/types/model';
 
 export interface ISessionRes {
@@ -9,7 +9,7 @@ export interface ISessionRes {
 
 export const getSession = async (dealId: string, userId: number): Promise<APIResponse<ISessionRes>> => {
   try {
-    const { data } = await axiosOpenviduInstance.get(`lives/create/rooms?dealId=${dealId}&userId=${userId}`);
+    const { data } = await axiosAuthInstance.get(`lives/create/rooms?dealId=${dealId}&userId=${userId}`);
     return data;
   } catch (err) {
     console.log(err);

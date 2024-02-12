@@ -1,4 +1,5 @@
 import Toast from '@/components/@common/Toast';
+import SaleSellerChat from '@/components/chat/LiveChat/SaleSellerChat';
 import FullCameraItem from '@/components/live/FullCameraItem';
 import LiveSettingModal from '@/components/live/Modal/LiveSettingModal';
 import useLiveStore from '@/stores/userLiveStore';
@@ -75,10 +76,8 @@ const SaleSeller = ({
 
     setTimeout(() => {
       navigate('/live/end');
-    }, 3000);
+    }, 500);
   };
-
-  console.log(sellerStatus);
 
   return (
     <div className="relative">
@@ -121,9 +120,14 @@ const SaleSeller = ({
             {sellerStatus === 'beforeLive' && (
               <div className="w-full flex flex-col justify-center items-center">
                 <div className="w-full flex flex-col justify-center items-center absolute top-0 bottom-24">
-                  <span className="text-white text-sm">라이브 예정 시간</span>
-                  <span className="text-[50px] text-white">00:05:47</span>
-                  <span className="text-white/60 text-sm pb-5 ">라이브 방송 예정 전입니다</span>
+                  <span className="text-white/70 text-sm">라이브 예정 시간</span>
+                  <span className="text-[20px] text-white pt-1">
+                    {state.startTime[0]}월 {state.startTime[1]}일
+                  </span>
+                  <span className="text-[50px] text-white font-bold">
+                    {state.startTime[2]} : {state.startTime[3]}
+                  </span>
+                  <span className="text-white/60 text-sm pb-5">라이브 방송 예정 전입니다</span>
                   <button className="bg-red-600 text-white px-4 py-2 rounded-full flex items-center hover:bg-red-700">
                     <GoBroadcast size="20" style={{ border: '1px' }} />
                     <span className="pl-2" onClick={startLive}>
@@ -153,38 +157,57 @@ const SaleSeller = ({
             )}
             {/* 녹화 끝나고 라이브 진행 중 */}
             {sellerStatus === 'onLive' && (
-              <div className="w-full absolute bottom-2 flex justify-between z-20">
-                <div className="flex w-20">
-                  <button className="mx-2" onClick={handleCamera}>
-                    {onCamera ? (
-                      <TbCamera size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
-                    ) : (
-                      <TbCameraOff size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
-                    )}
-                  </button>
-                  <button className="mx-2" onClick={handleMike}>
-                    {onMike ? (
-                      <TbMicrophone size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
-                    ) : (
-                      <TbMicrophoneOff size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
-                    )}
-                  </button>
+              <div className="w-full absolute bottom-2 flex justify-between z-20 flex-col">
+                <div className="w-full h-40vh">
+                  <SaleSellerChat />
                 </div>
-                <button
-                  className="bg-red-600 text-white px-4 py-4 rounded-full flex items-center hover:bg-red-700"
-                  onClick={handleExit}
-                >
-                  <RiCheckboxBlankFill size={20} />
-                </button>
-                <div className="flex w-20 justify-end">
-                  <button className="mx-2" onClick={switchCamera}>
-                    <div className="w-6">
-                      <FaRotate size={25} color="white" />
-                    </div>
-                  </button>
-                  <button className="mx-2" onClick={handleMoreSetting}>
-                    <HiDotsHorizontal color="white" size={32} style={{ strokeWidth: '0px' }} />
-                  </button>
+                <div className="w-full flex">
+                  <div className="flex w-20">
+                    <button className="mx-2" onClick={handleCamera}>
+                      {onCamera ? (
+                        <TbCamera size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
+                      ) : (
+                        <TbCameraOff size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
+                      )}
+                    </button>
+                    <button className="mx-2" onClick={handleMike}>
+                      {onMike ? (
+                        <TbMicrophone size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
+                      ) : (
+                        <TbMicrophoneOff size={32} color={'white'} style={{ strokeWidth: '1.3px' }} />
+                      )}
+                    </button>
+                  </div>
+                  <div className="flex-1 flex justify-center pb-2">
+                    <button
+                      className="bg-red-600 text-white px-4 py-4 rounded-full flex items-center hover:bg-red-700"
+                      onClick={handleExit}
+                    >
+                      <RiCheckboxBlankFill size={20} />
+                    </button>
+                  </div>
+
+                  <div className="flex w-20 justify-end">
+                    <button
+                      className="mx-2"
+                      onClick={() => {
+                        console.log(onCamera);
+                        if (!onCamera) {
+                          Toast.error('카메라를 켜주세요.');
+                          return;
+                        }
+
+                        switchCamera();
+                      }}
+                    >
+                      <div className="w-6">
+                        <FaRotate size={25} color="white" />
+                      </div>
+                    </button>
+                    <button className="mx-2" onClick={handleMoreSetting}>
+                      <HiDotsHorizontal color="white" size={32} style={{ strokeWidth: '0px' }} />
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

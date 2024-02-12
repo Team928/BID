@@ -15,6 +15,7 @@ const LiveOptionTab = ({
   handleMike,
   handleCamera,
   handleSpeak,
+  handleChat,
   handleRequestSalePrice,
   handleParticipants,
   handleMatch,
@@ -23,6 +24,7 @@ const LiveOptionTab = ({
   handleMike: () => void;
   handleCamera: () => void;
   handleSpeak: () => void;
+  handleChat: () => void;
   handleRequestSalePrice?: () => void;
   handleParticipants?: () => void;
   handleMatch?: () => void;
@@ -90,7 +92,7 @@ const LiveOptionTab = ({
         break;
       }
       case 'chat': {
-        // @TODO: 채팅창 on
+        handleChat();
         break;
       }
       case 'participants': {

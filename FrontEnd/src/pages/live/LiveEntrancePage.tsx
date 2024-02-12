@@ -1,10 +1,8 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Toggle from '@/components/@common/Toggle';
-import { PARTICIPANT_TYPE, TRANSACTION_TYPE } from '@/constants/liveType';
 import useLiveStore from '@/stores/userLiveStore';
-import { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export interface IBeforeLiveOptionFlag {
   video: boolean;
@@ -13,16 +11,9 @@ export interface IBeforeLiveOptionFlag {
 
 const LiveEntrancePage = () => {
   const navigate = useNavigate();
-  const { onMike, onCamera, setOnCamera, setOnMike } = useLiveStore();
-
-  // 일단 테스트 할때는 여기서 변경
-  const tType = 'sale';
-  const pType = 'saler';
-
-  const [isPossibleToggle, setIsPossibleToggle] = useState<IBeforeLiveOptionFlag>({
-    video: false,
-    audio: false,
-  });
+  const { id } = useParams();
+  const { state } = useLocation();
+  const { onMike, onCamera, pType, setOnCamera, setOnMike } = useLiveStore();
 
   const handleToggle = (type: 'camera' | 'mike') => {
     if (type === 'camera') {
@@ -39,71 +30,41 @@ const LiveEntrancePage = () => {
     right_2: null,
   };
 
-  const checkType = () => {
-    if (tType === TRANSACTION_TYPE.PURCHASE) {
-      if (pType === PARTICIPANT_TYPE.SELLER) {
-        setIsPossibleToggle(prev => {
-          return {
-            ...prev,
-            audio: true,
-            video: true,
-          };
-        });
-      }
-    } else if (tType === TRANSACTION_TYPE.SALE) {
-      if (pType === PARTICIPANT_TYPE.SELLER) {
-        setIsPossibleToggle(prev => {
-          return {
-            ...prev,
-            video: true,
-          };
-        });
-      } else if (pType === PARTICIPANT_TYPE.BUYER) {
-        setIsPossibleToggle(prev => {
-          return {
-            ...prev,
-            audio: true,
-            video: true,
-          };
-        });
-      }
-    }
-  };
-
   const handleEnterLive = () => {
-    if (tType === TRANSACTION_TYPE.PURCHASE) {
-      navigate('/live/buy/1');
-    } else if (tType === TRANSACTION_TYPE.SALE) {
-      navigate('/live/sale/1');
+    if (pType === 'buyer') {
+      navigate(`/live/purchase/${id}`, {
+        state: {
+          title: state.title,
+        },
+      });
+    } else {
+      navigate(`/live/purchase/${id}`, {
+        state: {
+          title: state.title,
+          myForm: state.myForm,
+        },
+      });
     }
   };
-
-  useEffect(() => {
-    checkType();
-  }, []);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full max-w-[500px]">
       <Header info={info} />
       <div className="w-full h-auto px-8 py-4 relative top-12">
-        {isPossibleToggle.video && (
-          <div className="flex justify-between py-1">
-            <div className="flex items-center">
-              <span className="pl-2">비디오 켜짐</span>
-            </div>
-            <Toggle isOn={onCamera} handleToggle={() => handleToggle('camera')} />
+        <div className="flex justify-between py-1">
+          <div className="flex items-center">
+            <span className="pl-2">비디오 켜짐</span>
           </div>
-        )}
-        {isPossibleToggle.audio && (
-          <div className="flex justify-between py-1">
-            <div className="flex items-center">
-              <span className="pl-2">오디오 켜짐</span>
-            </div>
-            <Toggle isOn={onMike} handleToggle={() => handleToggle('mike')} />
+          <Toggle isOn={onCamera} handleToggle={() => handleToggle('camera')} />
+        </div>
+        <div className="flex justify-between py-1">
+          <div className="flex items-center">
+            <span className="pl-2">오디오 켜짐</span>
           </div>
-        )}
+          <Toggle isOn={onMike} handleToggle={() => handleToggle('mike')} />
+        </div>
       </div>
-      <div className="w-full h-[52px] px-8 mb-4 absolute bottom-2">
+      <div className="w-full h-[52px] px-8 mb-4 absolute bottom-2 max-w-[500px]">
         <button type="button" className="blueBtn" onClick={handleEnterLive}>
           입장하기
         </button>
