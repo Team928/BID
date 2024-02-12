@@ -122,7 +122,7 @@ const SignupPage = () => {
             </div>
           </div>
           {/* #TODO 버튼 유효성 검사후 색깔 바꾸기 */}
-          <div onClick={handleSignup} className="fixed bottom-0 left-0 w-full p-7">
+          <div onClick={handleSignup} className="fixed bottom-0 left-0 right-0 w-full p-7 max-w-[500px] m-auto">
             <button
               className={`w-full text-white rounded-2xl p-4 font-bold text-xl ${confirmSignup({ address, nickname }) ? 'bg-BID_MAIN' : 'bg-BID_SUB_GRAY'}`}
             >

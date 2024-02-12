@@ -37,34 +37,6 @@ body {
   margin: 0 auto;
 }
 
-.Toastify__toast {
-  position: fixed;
-  top: 25px;
-  left: 0px;
-  right: 0px;
-  border-radius: 20px;
-  color: white;
-  text-align: center;
-  margin: auto;
-  width: 280px;
-  padding: 0px 10px;
-  height: auto;
-  font-size: 15px;
-  font-family: 'KOTRA_GOTHIC';
-}
-
-.Toastify__toast--info {
-  background-color: rgb(73, 73, 73);
-}
-
-.Toastify__toast--success {
-  background-color: rgb(40, 179, 66);
-}
-
-.Toastify__toast--error {
-  background-color: rgb(255, 114, 114);
-}
-
 ::-webkit-scrollbar {
   width: 0px;
 }

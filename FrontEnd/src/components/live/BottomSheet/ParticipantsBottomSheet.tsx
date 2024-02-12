@@ -12,7 +12,7 @@ const ParticipantsBottomSheet = ({
   participants: ISellerInfo[];
 }) => {
   return (
-    <BottomSheet height="600px" title="현재 참여중인 판매자" onClose={onClose}>
+    <BottomSheet height="600px" title="채팅하기" onClose={onClose}>
       <div className="pl-6 pb-2 text-sm text-gray-500">전체 {participants.length}명</div>
       {participants.map((info, idx) => {
         return (
