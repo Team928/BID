@@ -11,7 +11,6 @@ const SaleParticipant = () => {
   } = useSaleParticipant()
   
   return (
-    // TODO : 실제 데이터로 수정해야함
     <div className="pt-28">
       {saleParticipantInfo?.data.saleSimpleResList.map((item, index) => (
         <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
@@ -20,10 +19,13 @@ const SaleParticipant = () => {
         </div>
         <div className="flex-1 flex flex-col py-2">
           <div className="flex items-center justify-between">
-            <StateButton deals={'sale'} status={'AUCTION'} />
+            <StateButton deals={'sale'} status={`${item.status}`} />
             <HiHeart size={'1.6rem'} color="#FF0000" />
           </div>
           <div className="py-2">
+          <p className="text-md">
+                {item.dealSimpleRes.title}
+              </p>
             <p className="text-sm truncate whitespace-normal line-clamp-2">
               {item.dealSimpleRes.content}
             </p>

@@ -10,6 +10,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useProfile = () => {
+  
   const useSaleHost = (nickName: string) => {
     return useQuery({
       queryKey: ['sale', 'host', nickName],
