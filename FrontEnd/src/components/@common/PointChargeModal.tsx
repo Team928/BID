@@ -31,7 +31,7 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       amount: amount,
       buyer_name: userProfileInfo!.nickname,
       buyer_email: userProfileInfo!.email,
-      // m_redirect_url: '/', 모바일 환경에서는 리다이렉트 url이 필수라 혹시몰라 주석처리
+      m_redirect_url: 'https://i10d208.p.ssafy.io/profile',
     };
 
     const callback = (response: RequestPayResponse) => {
