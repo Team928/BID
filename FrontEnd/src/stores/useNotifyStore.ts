@@ -11,7 +11,7 @@ interface INotifyStore {
 const useNotifyStore = create(
   persist<INotifyStore>(
     set => ({
-      notifyList: JSON.parse(localStorage.getItem('notify-store') || '').state, // 데이터 기본값은 localStorage에 저장되어있는 객체
+      notifyList: JSON.parse(localStorage.getItem('notify-store') || '')?.state || [], // 데이터 기본값은 localStorage에 저장되어있는 객체
 
       // 기존 데이터 배열에 새 데이터 추가
       addNotification: (notify: INotifyInfo) => {
