@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ConfirmModal from './Modal/ConfirmModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { confirmedDealReq } from '@/service/chat/api';
 import { useChatLog } from '@/hooks/chat/useChat';
 
@@ -8,9 +8,11 @@ const DealInfo = () => {
   
   const { useGetChatLogList }  = useChatLog()
 
+  const dealId = useParams()
+
     const {
       data:chatLogInfo,
-    } = useGetChatLogList({ dealId: 1 })
+    } = useGetChatLogList({ dealId: Number(dealId) })
 
     const content = chatLogInfo?.data.dealResWithEndPrice.content;
     const endPrice = chatLogInfo?.data.dealResWithEndPrice.endPrice;
@@ -27,7 +29,7 @@ const DealInfo = () => {
     setIsModalOpen(false);
     try {
       // TODO: 실제 데이터로 바꿔야함 임시 roomId = 1
-      const response = await confirmedDealReq(1);
+      const response = await confirmedDealReq(Number(dealId));
       console.log(response); 
     } catch (error) {
       console.error('API 호출 에러:', error);

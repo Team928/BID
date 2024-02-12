@@ -9,19 +9,17 @@ import { IChatResList } from '@/types/chat';
 import { Client, StompHeaders } from '@stomp/stompjs';
 import { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
+import { useParams } from 'react-router-dom';
 
 const ChatRoomPage = () => {
   const [client, setClient] = useState<Client | null>(null);
   const [message, setMessage] = useState<string>('');
   const [chatLogs, setChatLogs] = useState<IChatResList[]>([]);
 
-  // 나중에 prop으로 받아야함
-  const dealId = 1;
-
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
     left: <IoIosArrowBack />,
-    center: '방제목',
+    center: `채팅`,
     right_1: null,
     right_2: null,
   };
@@ -29,7 +27,9 @@ const ChatRoomPage = () => {
   const { useGetChatLogList } = useChatLog();
   const { userId } = userStore();
 
-  const { data: chatLogInfo } = useGetChatLogList({ dealId });
+  const dealId = useParams()
+
+  const { data: chatLogInfo } = useGetChatLogList({ dealId: Number(dealId) });
   console.log(chatLogInfo);
 
   const accessToken = axiosAuthInstance;
