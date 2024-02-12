@@ -109,16 +109,12 @@ const PurchaseDetailPage = () => {
         );
       } else {
         if (purchaseDetailInfo?.data.applyForms.length === purchaseDetailInfo?.data.memberLimit) {
-          return (
-            <div onClick={() => setShowModal(true)} className={`detailBtn bg-BID_BLACK`}>
-              이미 최대 인원에 도달하였습니다
-            </div>
-          );
+          return <div className={`detailBtn bg-BID_BLACK`}>이미 최대 인원에 도달하였습니다</div>;
         } else {
           return (
-            <div onClick={() => setShowModal(true)} className={`detailBtn bg-BID_MAIN`}>
+            <button onClick={() => setShowModal(true)} className={`detailBtn bg-BID_MAIN`}>
               역경매 참여 신청하기
-            </div>
+            </button>
           );
         }
       }
@@ -155,7 +151,7 @@ const PurchaseDetailPage = () => {
           </div>
         </div>
         <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm max-w-[500px]">
-          <div className="w-full h-full py-2 flex items-center gap-3">
+          <div className="w-full h-full py-2 flex items-center gap-3 cursor-pointer">
             {purchaseDetailInfo.data.isWished ? (
               <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />
             ) : (

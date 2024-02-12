@@ -1,5 +1,6 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import Toggle from '@/components/@common/Toggle';
+import { PARTICIPANT_TYPE } from '@/constants/liveType';
 import useLiveStore from '@/stores/userLiveStore';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -57,12 +58,14 @@ const LiveEntrancePage = () => {
           </div>
           <Toggle isOn={onCamera} handleToggle={() => handleToggle('camera')} />
         </div>
-        <div className="flex justify-between py-1">
-          <div className="flex items-center">
-            <span className="pl-2">오디오 켜짐</span>
+        {pType === PARTICIPANT_TYPE.BUYER && (
+          <div className="flex justify-between py-1">
+            <div className="flex items-center">
+              <span className="pl-2">오디오 켜짐</span>
+            </div>
+            <Toggle isOn={onMike} handleToggle={() => handleToggle('mike')} />
           </div>
-          <Toggle isOn={onMike} handleToggle={() => handleToggle('mike')} />
-        </div>
+        )}
       </div>
       <div className="w-full h-[52px] px-8 mb-4 absolute bottom-2 max-w-[500px]">
         <button type="button" className="blueBtn" onClick={handleEnterLive}>

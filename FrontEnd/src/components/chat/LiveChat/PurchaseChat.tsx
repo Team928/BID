@@ -90,9 +90,9 @@ const PurchaseChat = () => {
         ref={chatContainerRef}
       >
         {chatLogs.map((log, index) => (
-          <div key={index} className="py-1 max-w-[450px] break-words">
-            <span className="font-bold text-black/50">{log.sender}</span>
-            <span className="px-2 font-bold">{log.message}</span>
+          <div key={index} className="py-1 max-w-[450px] break-words text-sm">
+            <span className="text-black/30">{log.sender}</span>
+            <span className="px-2">{log.message}</span>
           </div>
         ))}
       </div>
