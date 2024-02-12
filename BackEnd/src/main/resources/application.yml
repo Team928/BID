@@ -30,6 +30,11 @@ spring:
         format_sql: true
     show-sql: true
 
+  servlet:
+    multipart:
+      max-file-size: 300MB #파일 하나 최대 크기
+      max-request-size: 300MB # 한 번에 최대 업로드 가능 용량
+
 springdoc: #swagger
   packages-to-scan: com.qzp.bid
   default-consumes-media-type: application/json;charset=UTF-8
