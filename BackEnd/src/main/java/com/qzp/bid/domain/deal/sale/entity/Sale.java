@@ -33,7 +33,7 @@ public class Sale extends Deal {
     private DealStatus status;
     private int liveRequestCount;
     @ColumnDefault("0")
-    private int bidCount = 0;
+    private Integer bidCount;
     @OneToMany(fetch = FetchType.LAZY)
     private List<Bid> bids = new ArrayList<>();
 }
