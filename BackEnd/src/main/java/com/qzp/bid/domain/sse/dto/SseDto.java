@@ -18,6 +18,7 @@ public class SseDto {
 
     Long memberId;
     Long dealId;
+    String dealType;
     String event;
     String type;
     String message;
@@ -25,8 +26,9 @@ public class SseDto {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     LocalDateTime time;
 
-    public static SseDto of(Long memberId, Long dealId, SseType sseType, LocalDateTime time) {
-        return new SseDto(memberId, dealId, sseType.getEvent(), sseType.name(),
+    public static SseDto of(Long memberId, Long dealId, String dealType, SseType sseType,
+        LocalDateTime time) {
+        return new SseDto(memberId, dealId, dealType, sseType.getEvent(), sseType.name(),
             sseType.getMessage(),
             time);
     }
