@@ -1,16 +1,16 @@
 import StateButton from "@/components/@common/StateButton";
 import { useProfile } from "@/hooks/profile/useProfile";
 import sample from '@/assets/image/sample.png'
-// import userStore from "@/stores/userStore";
+import userStore from "@/stores/userStore";
 
 const SaleHost = () => {
 
-  // const { nickname } = userStore(state => state);
+  const { nickname } = userStore(state => state);
 
   const { useSaleHost } = useProfile()
   const {
     data: saleHostInfo,
-  } = useSaleHost('짱인사람') // 임의 닉네임
+  } = useSaleHost(nickname)
 
     return (
       <div className="pt-28">
@@ -21,7 +21,7 @@ const SaleHost = () => {
           </div>
           <div className="flex-1 flex flex-col py-2">
             <div className="flex items-center justify-between">
-              <StateButton deals={'sale'} status={'AUCTION'} />
+              <StateButton deals={'sale'} status={`${item.status}`} />
             </div>
             <div className="py-2">
               <p className="text-md">

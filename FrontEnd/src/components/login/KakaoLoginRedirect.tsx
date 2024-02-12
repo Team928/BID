@@ -16,9 +16,9 @@ export default function KakaoLoginRedirect() {
                 `${import.meta.env.VITE_BASE_URL}auth/login/kakao`,
                 { authorizationCode: kakaocode }
             ).then((res) => {
-                console.log(res.data)
+                console.log(res.data.data)
                 
-                const { id, accessToken, refreshToken, nickname, area } = res.data
+                const { id, accessToken, refreshToken, nickname, area } = res.data.data
                 const userId = Number(id)
 
           if (nickname) {

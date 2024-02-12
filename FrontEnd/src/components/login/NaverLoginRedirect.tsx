@@ -20,9 +20,9 @@ export default function NaverLoginRedirect() {
                 { authorizationCode: naverCode, state: state }
 
             ).then((res) => {
-                console.log(res.data)
+                console.log(res.data.data)
                 
-                const { id, accessToken, refreshToken, nickname, area } = res.data
+                const { id, accessToken, refreshToken, nickname, area } = res.data.data
                 const userId = Number(id)
 
                 if (nickname) {
