@@ -1,23 +1,23 @@
 import { useReview } from "@/hooks/review/useReview";
-import { CiStar } from "react-icons/ci";
+import userStore from "@/stores/userStore";
 
 const GetReviews = () => {
 
+    const { nickname } = userStore(state => state);
     const { useGetReviewList } = useReview()
+
     const {
         data: reviewInfo,
-    } = useGetReviewList()
+    } = useGetReviewList(nickname)
 
-    const cntReviews = reviewInfo?.data.reviewSimpleRes.length;
+    const reviewCnt = reviewInfo?.data.total
 
     return (
-        // TODO : 실제 데이터로 수정해야함
       <div className="pt-28">
         {/* 후기 몇 개 ?? */}
         <div className="px-6 ">
         <p className="text-md text-gray-500 py-3">
-                    {cntReviews ? `총 ${cntReviews}개의 후기가 있어요` : '아직 후기가 없어요'}
-                </p>
+            {reviewCnt? `총 ${reviewCnt}개의 후기가 있어요` : '아직 후기가 없어요'}</p>
         </div>
         {/* 리뷰 불러오기 */}
         <div>
@@ -27,7 +27,6 @@ const GetReviews = () => {
                     <div className="flex items-center justify-between pr-3">
                         <div className="flex items-center">
                             <p className="text-md font-bold">{item.reviewerNickname}</p>
-                            <p className="pl-2"><CiStar className="text-xl text-yellow-500" /></p>
                         </div>
                         <p className="text-xs">{item.createtime}</p>
                     </div>

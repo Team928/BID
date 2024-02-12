@@ -107,7 +107,7 @@ const SaleWritePage = () => {
       startPrice: values.startPrice,
       endTime: endTime,
     };
-
+    console.log(req);
     const formData = new FormData();
     const json = JSON.stringify(req);
     const blob = new Blob([json], { type: 'application/json' });

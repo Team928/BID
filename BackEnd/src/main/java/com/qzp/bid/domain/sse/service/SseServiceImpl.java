@@ -35,7 +35,7 @@ public class SseServiceImpl implements SseService {
     public SseEmitter subscribe(Long memberId) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         sseRepository.save(memberId, emitter);
-        SseDto sseDto = SseDto.of(memberId, null, SUCCESS_CONNECT_SSE, LocalDateTime.now());
+        SseDto sseDto = SseDto.of(memberId, null, null, SUCCESS_CONNECT_SSE, LocalDateTime.now());
         sendToClient(sseDto);
 
         // MessageListener 익명함수 사용해서 onMessage 구현, Redis에서 새로운 알림이 발생하면 자동적으로 onMessage가 호출

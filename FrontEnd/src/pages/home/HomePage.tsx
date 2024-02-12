@@ -5,6 +5,7 @@ import image3 from '@/assets/image/carouselEx/3.png';
 import Bottom from '@/components/@common/Bottom';
 import Carousel from '@/components/@common/Carousel';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
+import Toast from '@/components/@common/Toast';
 import AuctionTabBar from '@/components/home/AuctionTabBar';
 import BuyTab from '@/components/home/BuyTab';
 import Category from '@/components/home/Category';
@@ -72,6 +73,7 @@ const HomePage = () => {
     eventSource.addEventListener('auction', async function (event) {
       const data = JSON.parse(event.data);
       addNotification(data);
+      Toast.success('알림이 왔습니다 확인해보세요');
       console.log(data);
     });
     return () => {

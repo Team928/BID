@@ -61,10 +61,12 @@ public class DealServiceImpl implements DealService {
     public void auctionStartAlarm() {
         List<Wish> wishes = wishRepository.getByIsBeforeAlarm(false);
         for (Wish wish : wishes) {
-            if (wish.getDeal().getStartTime()
+            Deal deal = wish.getDeal();
+            if (deal.getStartTime()
                 .isAfter(LocalDateTime.now().minusMinutes(ALARM_TIME))) {
                 sseService.send(
-                    SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
+                    SseDto.of(wish.getMember().getId(), deal.getId(),
+                        deal.getClass().getSimpleName(),
                         SseType.START_AUCTION_BEFORE,
                         LocalDateTime.now()));
                 wish.setBeforeAlarm(true);
