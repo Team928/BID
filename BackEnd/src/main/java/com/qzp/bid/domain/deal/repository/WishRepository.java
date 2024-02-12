@@ -14,4 +14,6 @@ public interface WishRepository extends JpaRepository<Wish, Long>, WishRepositor
     Optional<Wish> findByMemberAndDeal(Member member, Deal deal);
 
     List<Wish> getByIsBeforeAlarm(boolean flag);
+
+    Optional<List<Wish>> findByDealId(long dealId);
 }
