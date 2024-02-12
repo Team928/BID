@@ -17,7 +17,7 @@ export interface IDealSimpleRes {
     endTime: string;
     bid: number;
     status: dealStatusType;
-    isWished: boolean
+    isWished?: boolean
   }
 
 // 나의 경매 Response 
@@ -30,16 +30,12 @@ export interface ISaleListRes {
 
   export interface IBuySimpleRes {
     dealSimpleRes: IDealSimpleRes;
-    immediatePrice: number;
-    startPrice: number;
-    endTime: string;
-    bid: number;
     status: dealStatusType;
     isWished: boolean
 
   }
 
-  // 내가 주최한 역경매 Response
+  // 나의 역경매 Response
   export interface IbuyListRes {
     purchaseSimpleRes: IBuySimpleRes[];
     last: boolean;
