@@ -46,9 +46,11 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
               </div>
             </div>
             <div className="flex items-center">
-              <span className="bg-orange-500 rounded-full h-6 w-6 flex items-center justify-center text-white font-semibold">
+              {unReadCount > 0 ? (
+                <span className="bg-orange-500 rounded-full h-6 w-6 flex items-center justify-center text-white font-semibold">
                 {unReadCount}
-              </span>
+                </span>
+              ) : null}
             </div>
           </div>
         </Item>
