@@ -6,11 +6,8 @@ import { MdOutlineCreate } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import userStore from '@/stores/userStore';
 import { useProfile } from '@/hooks/profile/useProfile';
-import { RequestPayParams, RequestPayResponse } from '@/types/model/iamport';
-import Modal from '@/components/@common/Modal';
 import { useState } from 'react';
-import payment_icon from '@/assets/image/payment_icon_yellow_small.png';
-import Toast from '@/components/@common/Toast';
+import PointChargeModal from '@/components/@common/PointChargeModal';
 
 const ProfilePage = () => {
   const info: IHeaderInfo = {
@@ -23,7 +20,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
 
   const { nickname } = userStore();
-  const { useUserProfile, usePostChargePoint } = useProfile();
+  const { useUserProfile } = useProfile();
   const { data: userProfileInfo } = useUserProfile(`${nickname}`); // 임의 닉네임
 
   const moveToNavigate = (path: string) => {
@@ -38,81 +35,12 @@ const ProfilePage = () => {
   };
 
   const [showChargeModal, setShowChargeModal] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(0);
-
-  const { mutate } = usePostChargePoint(amount, nickname);
-  // 아임포트 결제
-  const handleChargePoint = () => {
-    window.IMP?.init('imp58677553'); // 발급받은 가맹점 식별코드
-
-    if (!amount) {
-      Toast.error('결제 금액을 확인해주세요');
-      return;
-    }
-    const data: RequestPayParams = {
-      pg: 'kakaopay',
-      merchant_uid: `mid_${new Date().getTime()}`,
-      name: '포인트 충전',
-      amount: amount,
-      buyer_name: userProfileInfo?.data.nickname,
-      buyer_email: userProfileInfo?.data.email,
-      // m_redirect_url: '/', 모바일 환경에서는 리다이렉트 url이 필수라 혹시몰라 주석처리
-    };
-
-    const callback = (response: RequestPayResponse) => {
-      const { success } = response;
-      if (success) {
-        console.log(response);
-        mutate();
-        setShowChargeModal(false);
-      } else {
-        console.log(response);
-      }
-    };
-    window.IMP?.request_pay(data, callback);
-  };
 
   return (
     <>
       {/* 포인트 충전 모달 */}
       {showChargeModal && (
-        <Modal width="300px" height="auto" title="포인트 충전" onClose={() => setShowChargeModal(false)}>
-          <div className="w-full flex flex-col justify-center items-center px-8 py-2">
-            <div className="w-full">
-              <p className="font-bold">충전 금액</p>
-              <input
-                type="text"
-                name="amount"
-                onChange={e => setAmount(Number(e.target.value))}
-                placeholder="충전할 금액을 입력해주세요"
-                className="w-full outline-none border-b p-2"
-              ></input>
-            </div>
-            <div className="w-full pt-6 pb-2">
-              <p className="font-bold pb-3">결제 수단 선택</p>
-              <div className="flex gap-2">
-                <input type="radio" className="w-4" />
-                <img src={payment_icon} className="h-6" />
-              </div>
-            </div>
-            <div className="w-full flex gap-5 py-5">
-              <button
-                className="w-full bg-BID_SUB_GRAY text-white px-4 py-2 rounded-2xl"
-                onClick={() => setShowChargeModal(false)}
-              >
-                취소
-              </button>
-              <button
-                className="w-full bg-BID_MAIN text-white px-4 py-2 rounded-2xl"
-                onClick={() => {
-                  handleChargePoint();
-                }}
-              >
-                결제
-              </button>
-            </div>
-          </div>
-        </Modal>
+        <PointChargeModal setShowChargeModal={setShowChargeModal} userProfileInfo={userProfileInfo?.data} />
       )}
       <div>
         <Header info={info} />

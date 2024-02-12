@@ -1,4 +1,5 @@
 import Modal from '@/components/@common/Modal';
+import PointChargeModal from '@/components/@common/PointChargeModal';
 import { useSale } from '@/hooks/home/useSale';
 import { useProfile } from '@/hooks/profile/useProfile';
 import useLiveStore from '@/stores/userLiveStore';
@@ -56,8 +57,8 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
       }
     }
   };
+  const [showChargeModal, setShowChargeModal] = useState<boolean>(false);
 
-  // #TODO 내 포인트 조회 해야함
   return (
     <>
       {/* 입찰하기 모달 */}
@@ -115,8 +116,10 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             <div className="w-full flex gap-3 items-center">
               <p className="">내 포인트</p>
               {/* 내포인트 조회해야함 */}
-              <p className="text-BID_MAIN">32,000원</p>
-              <span className="text-BID_SUB_GRAY border-b text-xs">충전하기</span>
+              <p className="text-BID_MAIN">{userProfileInfo?.data.point}</p>
+              <span onClick={() => setShowChargeModal(true)} className="text-BID_SUB_GRAY border-b text-xs">
+                충전하기
+              </span>
             </div>
             <div className="w-full flex gap-5 py-4">
               <button
@@ -137,6 +140,10 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             </div>
           </div>
         </Modal>
+      )}
+      {/* 포인트 충전 모달 */}
+      {showChargeModal && (
+        <PointChargeModal setShowChargeModal={setShowChargeModal} userProfileInfo={userProfileInfo?.data} />
       )}
       <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] text-sm max-w-[500px]">
         <div className="w-full h-full py-2 flex items-center gap-3">
