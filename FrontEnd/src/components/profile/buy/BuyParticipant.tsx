@@ -17,14 +17,13 @@ const BuyParticipant = () => {
           </div>
           <div className="flex-1 flex flex-col py-2">
             <div className="flex items-center justify-between">
-              <StateButton deals={'purchase'} status={'AUCTION'} />
+              <StateButton deals={'purchase'} status={`${item.status}`} />
               <HiHeart size={'1.6rem'} color="#FF0000" />
             </div>
             <div className="py-2">
-              <p className="text-sm truncate whitespace-normal line-clamp-2">{item.dealSimpleRes.content}</p>
+              <p className="text-lg truncate whitespace-normal line-clamp-2">{item.dealSimpleRes.title}</p>
               <div className="flex items-center gap-3">
-                <p className="text-lg font-bold text-BID_BLACK">{item.immediatePrice}</p>
-                <p className="text-xs text-BID_BLACK">현재 가격</p>
+                <p className="text-sm  text-BID_BLACK">{item.dealSimpleRes.content}</p>
               </div>
             </div>
           </div>
