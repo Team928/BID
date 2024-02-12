@@ -38,7 +38,7 @@ public class SseController {
     @Operation(summary = "SSE로 테스트 메시지 전달")
     @PostMapping("/send/{memberId}")
     public ResponseEntity<Void> sendData(@PathVariable Long memberId) {
-        SseDto sseDto = SseDto.of(memberId, null, TEST_MSG, LocalDateTime.now());
+        SseDto sseDto = SseDto.of(memberId, null, null, TEST_MSG, LocalDateTime.now());
         sseService.send(sseDto);
         return ResponseEntity.ok().build();
     }
