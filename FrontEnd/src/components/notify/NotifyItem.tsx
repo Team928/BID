@@ -1,9 +1,11 @@
 import { INotifyInfo } from '@/types/notify';
 import { getTimeDifference } from '@/utils/getTimeDifference';
 import bid from '@/assets/image/BID.png';
+import { useNavigate } from 'react-router-dom';
 
 const NotifyItem = (props: { item: INotifyInfo }) => {
-  const { type, message, time } = props.item;
+  const navigate = useNavigate();
+  const { type, message, time, dealType, dealId } = props.item;
 
   const getNotifyType = (type: string) => {
     switch (type) {
@@ -22,8 +24,16 @@ const NotifyItem = (props: { item: INotifyInfo }) => {
     }
   };
 
+  const handleDetailNav = () => {
+    if (dealType === 'sale') {
+      navigate(`/sale/detail/${dealId}`);
+    } else if (dealType === 'purchase') {
+      navigate(`/buy/detail/${dealId}`);
+    }
+  };
+
   return (
-    <div className="flex gap-4 px-BID_P py-3 border-b border-[#D9D9D9]">
+    <div onClick={() => handleDetailNav} className="flex gap-4 px-BID_P py-3 border-b border-[#D9D9D9]">
       <div className="w-10 h-10 border rounded-full flex justify-center items-center">
         <img src={bid} className="w-5" />
       </div>

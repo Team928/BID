@@ -1,3 +1,5 @@
+import { dealType } from '@/components/@common/StateButton';
+
 export interface INotifyInfo {
   dealId: number;
   event: string;
@@ -5,4 +7,5 @@ export interface INotifyInfo {
   message: string;
   time: string;
   type: string;
+  dealType: dealType;
 }
