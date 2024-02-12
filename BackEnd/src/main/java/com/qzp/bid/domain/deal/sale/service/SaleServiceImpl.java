@@ -80,6 +80,7 @@ public class SaleServiceImpl implements SaleService {
             .map(imageRepository::save)
             .toList();
         sale.setImages(images);
+        sale.setBidCount(0);
         saleRepository.save(sale);
     }
 
