@@ -15,7 +15,7 @@ export default function KakaoLoginRedirect() {
       axios
         .post(`${import.meta.env.VITE_BASE_URL}auth/login/kakao`, { authorizationCode: kakaocode })
         .then(res => {
-          console.log(res.data);
+          console.log('res' + res.data);
 
           const { id, accessToken, refreshToken, nickname, area } = res.data;
           const userId = Number(id);
@@ -31,8 +31,8 @@ export default function KakaoLoginRedirect() {
 
             navigate('/');
           } else {
-            console.log(accessToken);
-            console.log(refreshToken);
+            console.log('accessToken   ' + accessToken);
+            console.log('refreshToken   ' + refreshToken);
             loginUser({ accessToken: accessToken, area: '', nickname: '', refreshToken: refreshToken, userId: userId });
             navigate('/signup');
           }
