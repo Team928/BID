@@ -13,20 +13,20 @@ const SaleListItem = (props: { item: ISaleSimpleRes }) => {
   const { month, date, datOfWeek, time } = getDate(sale.startTime);
 
   return (
-    <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs cursor-pointer">
-      <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
+    <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs cursor-pointer ">
+      <div className="w-28 h-28 relative">
         <img
           src={`${import.meta.env.VITE_BASE_URL}static${sale.image}`}
-          className="w-full h-full rounded-2xl object-cover"
+          className="w-full h-full rounded-lg object-cover"
         />
         {/* 경매 진행전이라면 라이브 일정 보여주기 */}
         {item.status === 'BEFORE' && (
           <>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-              <p className="text-white font-bold text-lg whitespace-nowrap">
+            <div className="absolute flex flex-col justify-center items-center rounded-md top-0 left-0 right-0 bottom-0 text-center bg-black/15">
+              <p className="text-white font-bold text-md whitespace-nowrap">
                 {month}/{date} ({datOfWeek})
               </p>
-              <p className="text-white font-bold text-2xl">{time}</p>
+              <p className="text-white font-bold text-xl">{time}</p>
             </div>
           </>
         )}

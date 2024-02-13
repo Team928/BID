@@ -1,5 +1,5 @@
 import Toast from '@/components/@common/Toast';
-import { checkTimeStamp, endRecording, matchLive, startRecording } from '@/service/live/api';
+import { checkTimeStamp, endPurchaseLive, endRecording, matchLive, startRecording } from '@/service/live/api';
 import { useMutation } from '@tanstack/react-query';
 import { IMatchReq, IRecordReq, ITimeStampReq } from './../../types/live';
 
@@ -60,5 +60,19 @@ export const useLive = () => {
     });
   };
 
-  return { usePostLiveMatch, useStartLiveRecord, useEndLiveRecord, useTimeStamp };
+  // 역경매 종료
+  const useEndPurchaseLive = () => {
+    return useMutation({
+      mutationKey: ['purchase'],
+      mutationFn: (dealId: string) => endPurchaseLive(dealId),
+      onSuccess: () => {
+        console.log('역경매 종료');
+      },
+      onError: () => {
+        console.log('역경매 종료 실패');
+      },
+    });
+  };
+
+  return { usePostLiveMatch, useStartLiveRecord, useEndLiveRecord, useTimeStamp, useEndPurchaseLive };
 };

@@ -57,7 +57,7 @@ const BuyCategoryPage = () => {
           <div className="pt-2 flex text-center">
             <button
               onClick={() => setOrder('asc')}
-              className={`w-12 mr-1 border border-BID_BLACK rounded-xl p-1 text-xs ${order === 'asc' && 'bg-BID_BLACK text-white'}`}
+              className={`w-12 mr-1.5 border border-BID_BLACK rounded-xl p-1 text-xs ${order === 'asc' && 'bg-BID_BLACK text-white'}`}
             >
               <p>최신순</p>
             </button>

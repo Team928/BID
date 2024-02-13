@@ -173,6 +173,11 @@ const SaleLivePage = () => {
       session.unpublish(publisher);
     }
 
+    if (publisher && publisher.stream && publisher.stream.getMediaStream()) {
+      const stream = publisher.stream.getMediaStream();
+      stream.getTracks().forEach(track => track.stop());
+    }
+
     OV.current = new OpenVidu();
     setSession(null);
     setMyUserName('');

@@ -1,3 +1,4 @@
+import alarm from '@/assets/icon/alarm.png';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import NotifyItem from '@/components/notify/NotifyItem';
 import useNotifyStore from '@/stores/useNotifyStore';
@@ -16,9 +17,16 @@ const NotifyPage = () => {
     <div className="w-full h-screen">
       <Header info={info} />
       <div className="pt-12">
-        {notifyList.map((item, index) => {
-          return <NotifyItem key={index} item={item} />;
-        })}
+        {notifyList.length === 0 ? (
+          <div className="flex justify-center items-center h-[calc(100vh-48px)] flex-col">
+            <img src={alarm} width={40} />
+            <div className="pt-5">수신한 알림이 없어요</div>
+          </div>
+        ) : (
+          notifyList.map((item, index) => {
+            return <NotifyItem key={index} item={item} />;
+          })
+        )}
       </div>
     </div>
   );

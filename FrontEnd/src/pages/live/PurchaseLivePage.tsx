@@ -29,8 +29,9 @@ const PurchaseLivePage = () => {
   const { state } = useLocation();
   const { pType, onMike, onCamera, setOnCamera, setOnMike } = useLiveStore();
   const { userId, nickname } = userStore();
-  const { usePostLiveMatch } = useLive();
+  const { usePostLiveMatch, useEndPurchaseLive } = useLive();
   const { mutate } = usePostLiveMatch();
+  const { mutate: endPurchaseLive } = useEndPurchaseLive();
   const { clearChatLogs } = useChatStore(state => state);
 
   // 오픈 비두
@@ -144,6 +145,11 @@ const PurchaseLivePage = () => {
       });
     });
 
+    mySession.on('signal:leaveSession', event => {
+      if (event.data === nickname) return;
+      Toast.info(`${event.data}님이 퇴장했습니다.`);
+    });
+
     // ----------------- 판매자 -----------------
 
     if (pType === PARTICIPANT_TYPE.SELLER) {
@@ -229,6 +235,11 @@ const PurchaseLivePage = () => {
     if (session && publisher) {
       session.disconnect();
       session.unpublish(publisher);
+    }
+
+    if (publisher && publisher.stream && publisher.stream.getMediaStream()) {
+      const stream = publisher.stream.getMediaStream();
+      stream.getTracks().forEach(track => track.stop());
     }
 
     OV.current = new OpenVidu();
@@ -562,6 +573,8 @@ const PurchaseLivePage = () => {
 
   // 매칭 확정하기(판매자가 매칭 확정할 때)
   const sendMatchConfirm = () => {
+    if (!id) return;
+
     session?.signal({
       data: mySessionId,
       type: 'matchSuccess',
@@ -574,6 +587,7 @@ const PurchaseLivePage = () => {
     };
 
     mutate(matchReq);
+    endPurchaseLive(id);
 
     leaveSession();
     setTimeout(() => {
@@ -588,6 +602,22 @@ const PurchaseLivePage = () => {
       window.removeEventListener('beforeunload', leaveSession);
     };
   }, []);
+
+  // 퇴장 함수
+  const handleGoOut = async () => {
+    if (window.confirm('역경매 방송을 퇴장하시겠습니까?')) {
+      await leaveSession();
+
+      session?.signal({
+        data: nickname,
+        type: 'leaveSession',
+      });
+
+      if (!id) return;
+      endPurchaseLive(id);
+      navigate('/', { replace: true });
+    }
+  };
 
   return (
     <div className="w-full h-screen bg-black/80 relative">
@@ -643,7 +673,11 @@ const PurchaseLivePage = () => {
           )}
         </div>
         <div className="w-[60%] text-center truncate">{state.title}</div>
-        <div className="w-[20%]">&nbsp;</div>
+        <div className="w-[20%] z-10 flex justify-end">
+          <button className="bg-[#FF0000] px-2 py-1 mr-4 rounded-sm text-sm hover:bg-red-600" onClick={handleGoOut}>
+            나가기
+          </button>
+        </div>
       </div>
       {session && (
         <div key={''} className="px-1 grid grid-cols-2 gap-2">
