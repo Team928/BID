@@ -8,28 +8,28 @@ export interface IWriteDateTimeProps {
 // 날짜+시간+기간을 받아 ISO 8601 형식으로 조합 후 반환하는 함수
 export const getDateTimeWrite = ({ date, time, radio }: IWriteDateTimeProps) => {
   // ISO 8601 형식으로 날짜 및 시간 조합
-  const startDate = new Date(`${date}T${time}:00`).toISOString();
+  const startDate = new Date(`${date}T${time}:00Z`).toISOString();
 
   let endDate = '';
 
   switch (radio) {
     case 'option1': {
       // 24시간 더하기
-      const dateWith24Hours = new Date(`${date}T${time}:00`);
+      const dateWith24Hours = new Date(`${date}T${time}:00Z`);
       dateWith24Hours.setHours(dateWith24Hours.getHours() + 24);
       endDate = dateWith24Hours.toISOString();
       break;
     }
     case 'option2': {
       // 48시간 더하기
-      const dateWith48Hours = new Date(`${date}T${time}:00`);
+      const dateWith48Hours = new Date(`${date}T${time}:00Z`);
       dateWith48Hours.setHours(dateWith48Hours.getHours() + 48);
       endDate = dateWith48Hours.toISOString();
       break;
     }
     case 'option3': {
       // 일주일 더하기
-      const dateWith1Week = new Date(`${date}T${time}:00`);
+      const dateWith1Week = new Date(`${date}T${time}:00Z`);
       dateWith1Week.setDate(dateWith1Week.getDate() + 7);
       endDate = dateWith1Week.toISOString();
       break;
