@@ -12,7 +12,7 @@ const ProfileOtherTabBar: React.FC<ProfileTabBarProps> = ({ leftTab, middleTab, 
 
   return (
     <>
-      <div className="w-screen flex px-BID_P relative pb-2 text-center pt-16 max-w-[500px]">
+      <div className="w-screen flex relative pb-2 text-center max-w-[500px]">
         <div
           onClick={() => setTab('review')}
           className={tab === 'review' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}

@@ -10,7 +10,7 @@ const ProfileTabBar: React.FC<ProfileTabBarProps> = ({ leftTab, rightTab }) => {
   const { tab, setTab } = useTabStore();
 
   return (
-    <div className="w-screen flex px-BID_P relative pb-2 text-center pt-16 max-w-[500px]">
+    <div className="w-screen flex  relative pb-2 text-center pt-16 max-w-[500px]">
       <div
         onClick={() => setTab('sale')}
         className={tab === 'sale' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}
