@@ -51,6 +51,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class SaleServiceImpl implements SaleService {
 
+    private static final long CLOSE_TIME = 10L;
     private final SaleRepository saleRepository;
     private final SaleMapper saleMapper;
     private final ImageMapper imageMapper;
@@ -216,8 +217,12 @@ public class SaleServiceImpl implements SaleService {
             return;
         }
         for (Sale sale : sales.get()) {
-            log.info(sale.getEndTime().toString());
-            log.info(LocalDateTime.now().toString());
+            if (sale.getStartTime().plusMinutes(CLOSE_TIME).isBefore(LocalDateTime.now())) {
+                if (sale.getStatus().equals(DealStatus.BEFORE)) {
+                    sale.setStatus(DealStatus.END);
+                    continue;
+                }
+            }
             if (sale.getEndTime().isAfter(LocalDateTime.now())) {
                 continue;
             }
