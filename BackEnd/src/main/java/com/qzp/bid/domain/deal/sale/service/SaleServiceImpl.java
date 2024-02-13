@@ -71,14 +71,11 @@ public class SaleServiceImpl implements SaleService {
         Sale sale = saleMapper.toSale(saleReq);
         List<ImageDto> uploadPaths = imageUploader.upload(photos);
         sale.setWriter(member);
-        List<Image> images = uploadPaths.stream()
-            .map(imageDto -> {
-                Image image = imageMapper.imageDtoToImage(imageDto);
-                image.setDeal(sale);
-                return image;
-            })
-            .map(imageRepository::save)
-            .toList();
+        List<Image> images = uploadPaths.stream().map(imageDto -> {
+            Image image = imageMapper.imageDtoToImage(imageDto);
+            image.setDeal(sale);
+            return image;
+        }).map(imageRepository::save).toList();
         sale.setImages(images);
         sale.setBidCount(0);
         saleRepository.save(sale);
@@ -93,9 +90,8 @@ public class SaleServiceImpl implements SaleService {
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
         Optional<List<Bid>> bids = bidRepository.findBySaleId(saleId);
         SaleRes saleRes = saleMapper.toSaleRes(sale);
-        bids.ifPresent(
-            bidList -> saleRes.setBidList(
-                bidList.stream().map(bidMapper::BidToBidRes).collect(Collectors.toList())));
+        bids.ifPresent(bidList -> saleRes.setBidList(
+            bidList.stream().map(bidMapper::BidToBidRes).collect(Collectors.toList())));
         if (liveRequestRepository.existsBySaleIdAndMemberId(saleId, member.getId())) {
             saleRes.setLiveReq(true);
         }
@@ -160,12 +156,8 @@ public class SaleServiceImpl implements SaleService {
             throw new BusinessException(ErrorCode.NOT_ENOUGH_POINT);
         }
         bidRepository.save(bid);
-        PointHistory hold = PointHistory.builder()
-            .amount(bid.getBidPrice())
-            .status(PointStatus.HOLD)
-            .time(bid.getBidTime())
-            .member(member)
-            .build();
+        PointHistory hold = PointHistory.builder().amount(bid.getBidPrice())
+            .status(PointStatus.HOLD).time(bid.getBidTime()).member(member).build();
         pointHistoryRepository.save(hold);
         if (sale.getHighestBid() != null) {
             Bid highestBid = sale.getHighestBid();
@@ -175,12 +167,8 @@ public class SaleServiceImpl implements SaleService {
                 SseDto.of(highestBid.getBidder().getId(), saleId, "sale", SseType.CANCEL_BID,
                     LocalDateTime.now()));
 
-            PointHistory free = PointHistory.builder()
-                .amount(highestBid.getBidPrice())
-                .status(PointStatus.FREE)
-                .time(bid.getBidTime())
-                .member(member)
-                .build();
+            PointHistory free = PointHistory.builder().amount(highestBid.getBidPrice())
+                .status(PointStatus.FREE).time(bid.getBidTime()).member(member).build();
             pointHistoryRepository.save(free);
         }
         sale.setHighestBid(bid);
@@ -199,13 +187,12 @@ public class SaleServiceImpl implements SaleService {
         if (!sale.getStatus().equals(DealStatus.AUCTION)) {
             throw new BusinessException(ErrorCode.NOT_AUCTION_STATUS);
         }
-        LiveRequest liveRequest = LiveRequest.builder().memberId(member.getId())
-            .saleId(saleId).build();
+        LiveRequest liveRequest = LiveRequest.builder().memberId(member.getId()).saleId(saleId)
+            .build();
         liveRequestRepository.save(liveRequest);
         sale.setLiveRequestCount(sale.getLiveRequestCount() + 1);
         sseService.send(
-            SseDto.of(sale.getWriter().getId(), sale.getId(), "sale",
-                SseType.LIVE_REQUEST,
+            SseDto.of(sale.getWriter().getId(), sale.getId(), "sale", SseType.LIVE_REQUEST,
                 LocalDateTime.now()));
     }
 
@@ -226,12 +213,13 @@ public class SaleServiceImpl implements SaleService {
             if (highestBid != null) {
                 highestBid.setSuccess(true);
 
-                sseService.send(
-                    SseDto.of(highestBid.getBidder().getId(), sale.getId(), "sale",
-                        SseType.SUCCESS_BID,
-                        LocalDateTime.now()));
+                sseService.send(SseDto.of(highestBid.getBidder().getId(), sale.getId(), "sale",
+                    SseType.SUCCESS_BID, LocalDateTime.now()));
             }
             //TODO: 구매자 판매자 채팅방 생성
+            if (sale.getHighestBid() != null){
+                chatService.createRoom(LiveResultReq.builder().dealId(sale.getId()).build());
+            }
         }
     }
 
@@ -248,12 +236,8 @@ public class SaleServiceImpl implements SaleService {
         if (!member.bidding(sale.getImmediatePrice())) {
             throw new BusinessException(ErrorCode.NOT_ENOUGH_POINT);
         }
-        PointHistory hold = PointHistory.builder()
-            .amount(sale.getImmediatePrice())
-            .status(PointStatus.HOLD)
-            .time(LocalDateTime.now())
-            .member(member)
-            .build();
+        PointHistory hold = PointHistory.builder().amount(sale.getImmediatePrice())
+            .status(PointStatus.HOLD).time(LocalDateTime.now()).member(member).build();
         pointHistoryRepository.save(hold);
         sale.setStatus(DealStatus.END);
 
