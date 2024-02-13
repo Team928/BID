@@ -316,7 +316,7 @@ public class MemberServiceImpl implements MemberService {
             .amount(pointChargeReq.getAmount())
             .status(PointStatus.CHARGE)
             .time(LocalDateTime.now()).build();
-        member.getPointHistory().add(pointHistory);
         pointHistoryRepository.save(pointHistory);
+        member.getPointHistory().add(pointHistory);
     }
 }
