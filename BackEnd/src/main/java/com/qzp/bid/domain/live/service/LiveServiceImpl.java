@@ -316,10 +316,6 @@ public class LiveServiceImpl implements LiveService {
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
 
-        if (!deal.getClass().getSimpleName().equals("Purchase")) {
-            throw new BusinessException(ErrorCode.GET_PURCHASE_FAIL);
-        }
-
         Purchase purchase = purchaseRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
         purchase.setStatus(DealStatus.END);
