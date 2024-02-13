@@ -113,7 +113,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         <Modal width="300px" height="auto" title="구매하기" onClose={() => setShowImmediateModal(false)}>
           <div className="w-full flex flex-col justify-center items-center p-3 px-10">
             <div className="w-full flex gap-3">
-              <p className="">현재 최고가</p>
+              <p className="">즉시 구매가</p>
               <p className="text-BID_MAIN">{highestBid === 0 ? immediatePrice : highestBid}원</p>
               <p className=""></p>
             </div>
