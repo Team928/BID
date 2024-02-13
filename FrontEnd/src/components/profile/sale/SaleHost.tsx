@@ -2,17 +2,25 @@ import StateButton from '@/components/@common/StateButton';
 import { useProfile } from '@/hooks/profile/useProfile';
 import sample from '@/assets/image/sample.png';
 import userStore from '@/stores/userStore';
+import { useNavigate } from 'react-router-dom';
 
 const SaleHost = () => {
   const { nickname } = userStore(state => state);
+  const navigate = useNavigate()
 
   const { useSaleHost } = useProfile();
   const { data: saleHostInfo } = useSaleHost(nickname);
 
+  const handleClick = (dealId: number) => {
+    navigate(`/sale/detail/${dealId}`);
+  };
+
+  
   return (
     <div className="">
       {saleHostInfo?.data.saleSimpleResList.map((item, index) => (
-        <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
+        <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]" onClick={() => handleClick(item.dealSimpleRes.id)} >
+          <div></div>
           <div className="w-32 h-32">
             <img className="w-full h-full rounded-xl" src={sample}></img>
           </div>
