@@ -246,9 +246,12 @@ public class SaleServiceImpl implements SaleService {
         pointHistoryRepository.save(hold);
         sale.setStatus(DealStatus.END);
 
-        Bid bid = Bid.builder().sale(sale).bidder(member).bidPrice(sale.getImmediatePrice())
-            .isSuccess(true).build();
-
+        Bid bid = Bid.builder()
+            .sale(sale)
+            .bidder(member)
+            .bidPrice(sale.getImmediatePrice())
+            .isSuccess(true)
+            .build();
         bidRepository.save(bid);
         sale.setHighestBid(bid);
         saleRepository.save(sale);
