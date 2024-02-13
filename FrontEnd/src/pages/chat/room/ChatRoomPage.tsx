@@ -27,10 +27,8 @@ const ChatRoomPage = () => {
   const { useGetChatLogList } = useChatLog();
   const { userId } = userStore();
 
-  const dealId = useParams()
-
+  const { dealId } = useParams()
   const { data: chatLogInfo } = useGetChatLogList({ dealId: Number(dealId) });
-  console.log(chatLogInfo);
 
   const accessToken = axiosAuthInstance;
 
