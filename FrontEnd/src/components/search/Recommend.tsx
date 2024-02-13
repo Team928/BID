@@ -9,11 +9,11 @@ const Recommend = () => {
   ];
   return (
     <div className="py-4">
-      <p className="font-bold text-xl">추천검색어</p>
-      <div className="flex flex-wrap pt-5 gap-4 text-sm">
+      <p className="font-bold text-lg">추천검색어</p>
+      <div className="flex flex-wrap pt-3 gap-2 text-[13px]">
         {suggestionKeyword.map((item, index) => {
           return (
-            <div key={index} className="bg-[#F4F4F4] rounded-3xl p-2">
+            <div key={index} className="bg-[#F4F4F4] rounded-full px-2 py-1">
               {item}
             </div>
           );

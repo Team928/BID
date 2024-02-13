@@ -101,8 +101,8 @@ const SaleCategoryPage = () => {
             className="w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30 "
           ></div>
           <div className="fixed bottom-0 h-72 w-full pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30 max-w-[500px]">
-            <div className="h-full flex flex-col justify-between font-bold text-xl">
-              <p className="text-center text-lg">지역 선택</p>
+            <div className="h-full flex flex-col justify-between">
+              <p className="text-center text-md">지역 선택</p>
               <div className="flex flex-col gap-5">
                 {area.map((item, index) => {
                   return (
@@ -139,7 +139,6 @@ const SaleCategoryPage = () => {
                       setIsAddressOpen(false);
                     }
                   }}
-                  className=""
                 >
                   닫기
                 </p>
@@ -156,13 +155,13 @@ const SaleCategoryPage = () => {
             <p className="font-bold text-lg">{changeEngToKr(category)}</p>
             <p className="text-xs text-BID_BLACK">필터링을 통해 원하는 상품을 찾아보세요</p>
           </div>
-          <div className="pl-4 pt-2 flex text-xs text-center overflow-x-scroll whitespace-nowrap">
+          <div className="pl-4 py-2 flex text-xs text-center overflow-x-scroll whitespace-nowrap">
             <button
               onClick={() => {
                 setOrder('');
                 setState('');
               }}
-              className={` border border-BID_BLACK rounded-xl p-1 px-2 mr-1 ${state === '' && 'bg-BID_BLACK text-white'}`}
+              className={` border border-BID_BLACK rounded-xl p-1 px-2 mr-1.5 ${state === '' && 'bg-BID_BLACK text-white'}`}
             >
               <p>전체</p>
             </button>
@@ -171,7 +170,7 @@ const SaleCategoryPage = () => {
                 setIsAddressOpen(true);
                 setIsAddrClick(!isAddrClick);
               }}
-              className={`flex justify-center items-center gap-1 border mr-1 border-BID_BLACK rounded-xl p-1 px-2 ${isAddrClick && 'bg-BID_BLACK text-white'}`}
+              className={`flex justify-center items-center gap-1 border mr-1.5 border-BID_BLACK rounded-xl p-1 px-2 ${isAddrClick && 'bg-BID_BLACK text-white'}`}
             >
               <p>{addrText}</p>
               <MdKeyboardArrowDown />
@@ -181,7 +180,7 @@ const SaleCategoryPage = () => {
                 setOrder('');
                 setState('LIVE');
               }}
-              className={` border border-BID_BLACK rounded-xl p-1 px-2 mr-1 ${state === 'LIVE' && 'bg-BID_BLACK text-white'}`}
+              className={` border border-BID_BLACK rounded-xl p-1 px-2 mr-1.5 ${state === 'LIVE' && 'bg-BID_BLACK text-white'}`}
             >
               <p>라이브 진행중</p>
             </button>
@@ -190,7 +189,7 @@ const SaleCategoryPage = () => {
                 setTempState('경매 시작전');
                 setIsOpen(true);
               }}
-              className={`flex justify-center items-center gap-1 border mr-1 border-BID_BLACK rounded-xl p-1 px-2 ${state === 'BEFORE' && 'bg-BID_BLACK text-white'}`}
+              className={`flex justify-center items-center gap-1 border mr-1.5 border-BID_BLACK rounded-xl p-1 px-2 ${state === 'BEFORE' && 'bg-BID_BLACK text-white'}`}
             >
               <p>{state === 'BEFORE' ? order : '경매 시작전'}</p>
               <MdKeyboardArrowDown />

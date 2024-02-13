@@ -158,14 +158,22 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             <HiOutlineHeart onClick={() => wishAddMuate()} size={'2rem'} color="#ababab" />
           )}
           {isSeller ? (
-            <button
-              onClick={() => approachLive()}
-              className="w-full border rounded-xl text-md border-red-500 font-bold flex p-3 justify-center items-center gap-2-"
-            >
-              <MdLiveTv size={'16px'} color="red" />
-              &nbsp;&nbsp;
-              <p className=" text-red-500 ">라이브 시작하기</p>
-            </button>
+            status === 'BEFORE' ? (
+              <button
+                onClick={() => approachLive()}
+                className="w-full border rounded-xl text-md border-red-500 font-bold flex p-3 justify-center items-center gap-2-"
+              >
+                <MdLiveTv size={'16px'} color="red" />
+                &nbsp;&nbsp;
+                <p className=" text-red-500 ">라이브 시작하기</p>
+              </button>
+            ) : (
+              <button className="w-full border rounded-xl text-md bg-BID_BLACK font-bold flex p-3 justify-center items-center gap-2-">
+                <MdLiveTv size={'16px'} color="red" />
+                &nbsp;&nbsp;
+                <p className=" text-white ">이미 종료된 경매입니다</p>
+              </button>
+            )
           ) : (
             <button
               onClick={handleBtnClick}

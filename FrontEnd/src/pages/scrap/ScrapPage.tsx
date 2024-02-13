@@ -1,12 +1,13 @@
+import heart from '@/assets/icon/heart.png';
+import NOTIFY from '@/assets/icon/notify.png';
 import Bottom from '@/components/@common/Bottom';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import AuctionTabBar from '@/components/home/AuctionTabBar';
-import NOTIFY from '@/assets/icon/notify.png';
-import useTabStore from '@/stores/auctionTabStore';
-import { useWish } from '@/hooks/scrap/useWish';
-import { useEffect } from 'react';
-import WishSaleItem from '@/components/scrap/WishSaleItem';
 import WishPurchaseItem from '@/components/scrap/WishPurchaseItem';
+import WishSaleItem from '@/components/scrap/WishSaleItem';
+import { useWish } from '@/hooks/scrap/useWish';
+import useTabStore from '@/stores/auctionTabStore';
+import { useEffect } from 'react';
 
 const ScrapPage = () => {
   const { tab } = useTabStore();
@@ -38,10 +39,28 @@ const ScrapPage = () => {
         <div className="pt-[5.1rem] h-full overflow-y-auto">
           {/* 탭에 따른 컴포넌트 보여주기 */}
           {tab === 'sale' ? (
-            <>{saleList?.data.saleSimpleResList.map((item, index) => <WishSaleItem key={index} item={item} />)}</>
+            <>
+              {saleList?.data.saleSimpleResList.length === 0 ? (
+                <div className="w-full h-[calc(100vh-160px)] flex flex-col justify-center items-center">
+                  <img src={heart} width={80} />
+                  <div className="pt-5">위시에 담긴 거래가 없어요</div>
+                  <div>지금 바로 좋아요를 눌러 위시를 담아보세요</div>
+                </div>
+              ) : (
+                saleList?.data.saleSimpleResList.map((item, index) => <WishSaleItem key={index} item={item} />)
+              )}
+            </>
           ) : (
             <>
-              {purchaseList?.data.purchaseSimpleRes.map((item, index) => <WishPurchaseItem key={index} item={item} />)}
+              {purchaseList?.data.purchaseSimpleRes.length === 0 ? (
+                <div className="w-full h-[calc(100vh-160px)] flex flex-col justify-center items-center">
+                  <img src={heart} width={80} />
+                  <div className="pt-5">위시에 담긴 거래가 없어요</div>
+                  <div>지금 바로 좋아요를 눌러 위시를 담아보세요</div>
+                </div>
+              ) : (
+                purchaseList?.data.purchaseSimpleRes.map((item, index) => <WishPurchaseItem key={index} item={item} />)
+              )}
             </>
           )}
         </div>

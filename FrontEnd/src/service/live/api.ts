@@ -62,3 +62,15 @@ export const checkTimeStamp = async ({ step, dealId }: ITimeStampReq): Promise<A
     throw err;
   }
 };
+
+// 역경매 종료 함수
+export const endPurchaseLive = async (dealId: string): Promise<APIResponse<string>> => {
+  try {
+    const { data } = await axiosAuthInstance.get(`lives/end/purchase/${dealId}`);
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};

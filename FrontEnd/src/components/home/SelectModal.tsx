@@ -34,8 +34,8 @@ const SelectModal = ({ order, setOrder, state, setState, setIsOpen, sort }: ISel
         className="w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30 "
       ></div>
       <div className="fixed bottom-0 h-72 w-full pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30 max-w-[500px]">
-        <div className="h-full flex flex-col justify-between font-bold text-xl">
-          <p className="text-center text-lg">{sort.state}</p>
+        <div className="h-full flex flex-col justify-between text-md">
+          <p className="text-center">{sort.state}</p>
           <div className="flex flex-col gap-5">
             {sort.lower.map((lower, index) => {
               return (
