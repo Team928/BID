@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import { RequestPayParams, RequestPayResponse } from '@/types/model/iamport';
 import { useProfile } from '@/hooks/profile/useProfile';
 import { IUserProfile } from '@/types/profile';
 import payment_icon from '@/assets/image/payment_icon_yellow_small.png';
 import Toast from './Toast';
+import { useSearchParams } from 'react-router-dom';
 
 interface IPointChargeProps {
   setShowChargeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +13,7 @@ interface IPointChargeProps {
 }
 
 const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeProps) => {
+  const [query] = useSearchParams();
   const [amount, setAmount] = useState<number>(0);
   const { usePostChargePoint } = useProfile();
 
@@ -46,6 +48,13 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
     };
     window.IMP?.request_pay(data, callback);
   };
+
+  useEffect(() => {
+    if (query.get('imp_success') === 'true') {
+      mutate();
+      setShowChargeModal(false);
+    }
+  }, [query]);
 
   return (
     <>
