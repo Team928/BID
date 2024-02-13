@@ -13,4 +13,7 @@ public interface LiveService {
 
     public Recording StartRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException;
+
+    public Recording EndRecording(LiveRoomReq liveRoomReq)
+        throws OpenViduJavaClientException, OpenViduHttpException;
 }
