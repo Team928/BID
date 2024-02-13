@@ -15,7 +15,7 @@ import PurchaseApplyFromModal from './PurchaseApplyFromModal';
 
 const PurchaseDetailPage = () => {
   const { id } = useParams();
-  const { nickname, userId } = userStore();
+  const { nickname } = userStore();
 
   const { useGetPurchaseDetail } = usePurchase();
   const {
