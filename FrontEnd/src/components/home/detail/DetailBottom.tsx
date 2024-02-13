@@ -133,6 +133,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 onClick={() => {
                   immediateMuate();
                   setShowImmediateModal(false);
+                  navigate(`chat/rooms/${dealRes.id}`)
                 }}
               >
                 확인

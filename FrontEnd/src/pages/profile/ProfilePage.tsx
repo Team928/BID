@@ -51,6 +51,10 @@ const ProfilePage = () => {
           <div className="pt-12">
             <div className="flex gap-4 p-8 items-center">
               <div className="w-24 h-24 bg-BID_LIGHT_GRAY rounded-3xl relative">
+              <img
+                    src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
+                    className="w-full h-full rounded-2xl object-cover"
+                  />
                 <button className="p-1 bg-white rounded-3xl absolute right-1 bottom-1" onClick={() => setIsModalOpen(true)}>
                   <MdOutlineCreate />
                 </button>
