@@ -12,19 +12,19 @@ import { MdLiveTv } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
+  const { useUserProfile } = useProfile();
+  const { nickname } = userStore();
   const { status, isWished, highestBid, startPrice, dealRes, immediatePrice } = props.info;
   const isSeller = props.isSeller;
   const [showBidModal, setShowBidModal] = useState<boolean>(false);
   const [showImmediateModal, setShowImmediateModal] = useState<boolean>(false);
   const [bidPrice, setBidPrice] = useState<string>('');
   const { usePostSaleBid, usePostSaleImmediate, usePostDealWishAdd, useDeleteDealWish } = useSale();
-  const { mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice);
+  const { mutate: bidMuate } = usePostSaleBid(dealRes.id, bidPrice, nickname);
   const { mutate: immediateMuate } = usePostSaleImmediate(dealRes.id);
   const { mutate: wishAddMuate } = usePostDealWishAdd(dealRes.id);
   const { mutate: wishDeleteMuate } = useDeleteDealWish(dealRes.id);
 
-  const { useUserProfile } = useProfile();
-  const { nickname } = userStore();
   const { data: userProfileInfo } = useUserProfile(nickname);
   const navigate = useNavigate();
   const { setTType, setPType } = useLiveStore();

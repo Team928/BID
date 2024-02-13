@@ -22,7 +22,7 @@ const BuyModal = ({
   const { useUserProfile } = useProfile();
   const { nickname } = userStore();
   const { data: userProfileInfo } = useUserProfile(nickname);
-  const { mutate: bidMuate, isSuccess } = usePostSaleBid(Number(id), String(bidPrice));
+  const { mutate: bidMuate, isSuccess } = usePostSaleBid(Number(id), String(bidPrice), nickname);
 
   const handleChangeBid = (e: ChangeEvent<HTMLInputElement>) => {
     setBidPrice(Number(e.target.value));

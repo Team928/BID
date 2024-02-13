@@ -46,7 +46,7 @@ export const useSale = () => {
     });
   };
 
-  const usePostSaleBid = (saleId: number, bidPrice: string) => {
+  const usePostSaleBid = (saleId: number, bidPrice: string, nickname: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -54,6 +54,7 @@ export const useSale = () => {
       mutationFn: () => postSaleBid(saleId, bidPrice),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['sale', 'detail', saleId] });
+        queryClient.invalidateQueries({ queryKey: ['profile', nickname] });
         Toast.success('성공적으로 입찰되었습니다');
       },
       onError: () => {

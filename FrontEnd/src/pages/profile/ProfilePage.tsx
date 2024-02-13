@@ -120,7 +120,7 @@ const ProfilePage = () => {
               </button>
             </div>
             <div className="flex justify-between px-2 py-4 border-b">
-              <p className="text-gray-500 text-lg">내 포인트 내역</p>
+              <p className="text-gray-500 text-lg">포인트 사용 내역</p>
               <button className="bg-BID_MAIN p-1 rounded-2xl" onClick={() => moveToNavigate('/profile/point')}>
                 <img src={ARROWRIGHT} />
               </button>
