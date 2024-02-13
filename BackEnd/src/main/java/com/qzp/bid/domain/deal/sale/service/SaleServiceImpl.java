@@ -222,7 +222,7 @@ public class SaleServiceImpl implements SaleService {
                     SseType.SUCCESS_BID, LocalDateTime.now()));
             }
             //TODO: 구매자 판매자 채팅방 생성
-            if (sale.getHighestBid() != null){
+            if (sale.getHighestBid() != null) {
                 chatService.createRoom(LiveResultReq.builder().dealId(sale.getId()).build());
             }
         }
@@ -250,6 +250,8 @@ public class SaleServiceImpl implements SaleService {
             .isSuccess(true).build();
 
         bidRepository.save(bid);
+        sale.setHighestBid(bid);
+        saleRepository.save(sale);
 
         chatService.createRoom(LiveResultReq.builder().dealId(saleId).build());
     }
