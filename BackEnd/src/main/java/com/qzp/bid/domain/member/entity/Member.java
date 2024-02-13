@@ -33,9 +33,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(value = AuditingEntityListener.class)
 public class Member {
 
-    @OneToMany
-    @Builder.Default
-    private List<PointHistory> pointHistory = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

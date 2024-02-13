@@ -22,6 +22,7 @@ import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
 import com.qzp.bid.domain.member.dto.MemberUpdateProfileReq;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
+import com.qzp.bid.domain.member.dto.PointHistoryListPage;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.service.MemberService;
 import com.qzp.bid.global.result.ResultCode;
@@ -178,5 +179,12 @@ public class MemberController {
     public ResponseEntity<ResultResponse> chargePoint(@RequestBody PointChargeReq pointChargeReq) {
         memberService.chargePoint(pointChargeReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.POINT_CHARGE_SUCCESS));
+    }
+
+    @Operation(summary = "포인트 내역 조회")
+    @GetMapping("/points")
+    public ResponseEntity<ResultResponse> getPaymentHistory(Pageable pageable){
+        PointHistoryListPage pointHistoryListPage = memberService.getPaymentHistory(pageable);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_POINT_HISTORY_SUCCESS, pointHistoryListPage));
     }
 }

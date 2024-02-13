@@ -164,9 +164,9 @@ public class SaleServiceImpl implements SaleService {
             .amount(bid.getBidPrice())
             .status(PointStatus.HOLD)
             .time(bid.getBidTime())
+            .member(member)
             .build();
         pointHistoryRepository.save(hold);
-        member.getPointHistory().add(hold);
         if (sale.getHighestBid() != null) {
             Bid highestBid = sale.getHighestBid();
             highestBid.cancelBidding();
@@ -179,9 +179,9 @@ public class SaleServiceImpl implements SaleService {
                 .amount(highestBid.getBidPrice())
                 .status(PointStatus.FREE)
                 .time(bid.getBidTime())
+                .member(member)
                 .build();
             pointHistoryRepository.save(free);
-            sale.getHighestBid().getBidder().getPointHistory().add(free);
         }
         sale.setHighestBid(bid);
         sale.setBidCount(sale.getBidCount() + 1);
@@ -248,9 +248,9 @@ public class SaleServiceImpl implements SaleService {
             .amount(sale.getImmediatePrice())
             .status(PointStatus.HOLD)
             .time(LocalDateTime.now())
+            .member(member)
             .build();
         pointHistoryRepository.save(hold);
-        member.getPointHistory().add(hold);
         sale.setStatus(DealStatus.END);
 
         Bid bid = Bid.builder().sale(sale).bidder(member).bidPrice(sale.getImmediatePrice())
