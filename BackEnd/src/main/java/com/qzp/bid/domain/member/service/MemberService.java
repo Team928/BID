@@ -10,6 +10,7 @@ import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
 import com.qzp.bid.domain.member.dto.MemberUpdateProfileReq;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
+import com.qzp.bid.domain.member.dto.PointHistoryListPage;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,4 +46,6 @@ public interface MemberService {
     ReviewListPage getReceivedReview(String nickname, Pageable pageable);
 
     void chargePoint(PointChargeReq pointChargeReq);
+
+    PointHistoryListPage getPaymentHistory(Pageable pageable);
 }

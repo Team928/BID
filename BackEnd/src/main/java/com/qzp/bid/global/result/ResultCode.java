@@ -23,6 +23,7 @@ public enum ResultCode {
     UPDATE_PROFILE_SUCCESS(200, "프로필 수정에 성공하였습니다."),
 
     POINT_CHARGE_SUCCESS(200, "포인트 충전에 성공하였습니다."),
+    GET_POINT_HISTORY_SUCCESS(200, "포인트 사용 내역 조회에 성공하였습니다."),
     //deal
     ADD_WISH_SUCCESS(201, "거래글 찜목록 추가에 성공하였습니다."),
     DELETE_WISH_SUCCESS(200, "거래글 찜목록 삭제에 성공하였습니다."),
@@ -55,7 +56,8 @@ public enum ResultCode {
     CHOICE_RESULT_SUCCESS(201, "역경매 선택에 성공하였습니다."),
     LIVE_START(200, "라이브를 시작하였습니다."),
     RECORDING_SUCCESS(200, "녹화를 시작하였습니다."),
-
+    RECORDING_END_SUCCESS(200, "녹화종료를 하였습니다."),
+    RECORDING_CHECK_SUCCESS(200, "녹화기록에 성공하였습니다."),
     ;
 
 
