@@ -23,7 +23,6 @@ const DealInfo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-
   const navigate = useNavigate()
 
   const handleConfirm = async () => {
@@ -47,7 +46,8 @@ const DealInfo = () => {
   return (
     <div className="fixed top-0 w-full bg-white border-sm">
       <div className="flex gap-4 pt-14 px-4 pb-2 border items-center">
-        <div className="w-20 h-20 bg-BID_LIGHT_GRAY rounded-2xl relative"></div>
+        <div className="w-20 h-20 bg-BID_LIGHT_GRAY rounded-2xl relative">
+        </div>
         <div className="flex-1 flex flex-col justify-around">
           <p className="text-sm">{content}</p>
           <p className="text-xs text-BID_MAIN">최종 거래가</p>

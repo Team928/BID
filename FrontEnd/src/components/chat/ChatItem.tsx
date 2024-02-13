@@ -1,10 +1,10 @@
 import { deleteChatRoomReq } from "@/service/chat/api";
 import { IChatRoomListRes } from "@/types/chat";
 import { useState } from "react";
-import { BsEmojiSunglasses } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Modal from "../@common/Modal";
 import { useLongPress } from 'use-long-press';
+import { useProfile } from "@/hooks/profile/useProfile";
 
 const ChatItem = (props: { item: IChatRoomListRes }) => {
   const { chatRoomRes, unReadCount, audienceMemberRes } = props.item;
@@ -16,6 +16,13 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
   const handleChatItemClick = () => {
     navigate(`/chat/rooms/${dealId}`);
   };
+
+  const {useUserProfile } = useProfile()
+
+  const {
+    data: userInfo
+  } = useUserProfile(opponentNick)
+
 
   // 채팅방 삭제
   const handleDeleteClick = useLongPress(async() => {
@@ -34,9 +41,12 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
       <div className="flex pl-6 py-3 border-b border-[#D9D9D9]">
           <div className="flex justify-between overflow-hidden w-full" {...handleDeleteClick}>
             <div className=" flex" >
-              <div>
+              <div className="w-16 h-16">
                 {/* TODO: 프로필 사진으로 변경 */}
-                <BsEmojiSunglasses size={"3.5rem"} color="#545454" />
+                <img
+                    src={`${import.meta.env.VITE_BASE_URL}static${userInfo?.data.profileImage}`}
+                    className="w-full h-full rounded-2xl object-cover"
+                  />
               </div>
               <div
                 className="flex flex-col gap-1 px-5"
