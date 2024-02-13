@@ -55,7 +55,9 @@ public class PurchaseServiceImpl implements PurchaseService {
         Member member = accountUtil.getLoginMember()
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
         Purchase purchase = purchaseMapper.toPurchase(purchaseReq);
+        log.info("mapping complete");
         List<ImageDto> uploadPaths = imageUploader.upload(photos);
+        log.info("image path complete");
         purchase.setWriter(member);
         List<Image> images = uploadPaths.stream()
             .map(imageDto -> {
@@ -67,6 +69,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             .toList();
         purchase.setImages(images);
         purchaseRepository.save(purchase);
+        log.info("save complete");
     }
 
     @Transactional(readOnly = true)
