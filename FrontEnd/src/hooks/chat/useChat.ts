@@ -2,8 +2,10 @@ import { getChatLogLisReq, getChatRoomListReq } from "@/service/chat/api"
 import { IChatLogListReq, IChatRoomListReq } from "@/types/chat"
 import { useQuery } from "@tanstack/react-query"
 
+
 // 채팅방 목록
 export const useChatRoom = () => {
+
     const useGetChatRoomList = ( props: IChatRoomListReq) => {
         return useQuery({
             queryKey: ['chatRoom', props],
@@ -12,7 +14,6 @@ export const useChatRoom = () => {
     };
     return { useGetChatRoomList };
 }
-
 
 // 채팅로그 목록
 export const useChatLog = () => {
