@@ -3,8 +3,10 @@ package com.qzp.bid.domain.live.controller;
 import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
+import com.qzp.bid.domain.live.dto.SummaryReq;
 import com.qzp.bid.domain.live.service.LiveService;
 import com.qzp.bid.domain.live.service.STTService;
+import com.qzp.bid.domain.live.service.SummaryService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.openvidu.java.client.OpenViduHttpException;
@@ -13,6 +15,8 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +29,7 @@ public class LiveController {
     private final LiveService liveService;
     private final ChatService chatService;
     private final STTService sttService;
+    private final SummaryService summaryService;
 
 
     @GetMapping("/create/rooms") // 방만들기 & 방참가
@@ -41,10 +46,15 @@ public class LiveController {
 
     }
 
-    @GetMapping("/results") // 역경매 판매자 선택하기 + 채팅방 개설
+    @GetMapping("/results") //stt
     public ResponseEntity<ResultResponse> getSTT(String path) {
         sttService.transcribeFile(path);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
+    }
 
+    @PostMapping("/summary") //stt
+    public ResponseEntity<ResultResponse> getSummary(@RequestBody SummaryReq summaryReq) {
+        String summary = summaryService.getSummary(summaryReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS, summary));
     }
 }
