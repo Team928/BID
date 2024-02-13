@@ -5,10 +5,12 @@ import userStore from "@/stores/userStore";
 import { IChangeProfile } from "@/types/profile";
 import { useRef, useState } from "react";
 import { CiCamera } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
 
     const { nickname, area } = userStore()
+    const navigate = useNavigate()
 
     const imgRef = useRef<HTMLInputElement>(null);
     // post로 보낼 이미지 파일 관리
@@ -34,7 +36,7 @@ const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
             const result: string | null = reader.result as string;
             setPhoto(result);
             };
-        }
+          }
         }
     };
 
@@ -48,7 +50,7 @@ const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
         formData.append('profileImage', image!);
 
         postchangeProfile(formData).then(() => {
-            onClose()
+            navigate(`/profile`)
         })
     }
 
