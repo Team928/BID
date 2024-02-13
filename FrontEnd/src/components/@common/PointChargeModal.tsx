@@ -5,7 +5,6 @@ import { IUserProfile } from '@/types/profile';
 import payment_icon from '@/assets/image/payment_icon_yellow_small.png';
 import Toast from './Toast';
 import amountStore from '@/stores/amountStore';
-import { useEffect } from 'react';
 
 interface IPointChargeProps {
   setShowChargeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,7 +14,7 @@ interface IPointChargeProps {
 const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeProps) => {
   const { amount, setAmount } = amountStore();
   const { usePostChargePoint } = useProfile();
-  const { mutate, data } = usePostChargePoint(amount, userProfileInfo!.nickname);
+  const { mutate } = usePostChargePoint(amount, userProfileInfo!.nickname);
 
   // 아임포트 결제
   const handleChargePoint = () => {
@@ -40,19 +39,13 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       if (success) {
         console.log(response);
         mutate();
+        setShowChargeModal(false);
       } else {
         console.log(response);
       }
     };
     window.IMP?.request_pay(data, callback);
   };
-
-  useEffect(() => {
-    if (data && data.status === 200) {
-      setAmount(0);
-      setShowChargeModal(false);
-    }
-  }, [data]);
 
   return (
     <>
