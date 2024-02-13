@@ -1,3 +1,4 @@
+import Carousel from '@/components/@common/Carousel';
 import { IPurchaseDetailRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
@@ -17,15 +18,37 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
     navigate(`/profile/${dealRes.writer}`);
   };
 
+  const carouselSettings = {
+    dots: false,
+    infinite: true,
+    speed: 1000,
+    autoplay: true, 
+    autoplaySpeed: 2000, 
+    pauseOnFocus: false,
+  }
+
+  const images = [];
+
+  for (let i = 0; i < dealRes.images.length; i++) {
+    images.push(`${import.meta.env.VITE_BASE_URL}static${dealRes.images[i]}`);
+  }
+  console.log(images)
+  console.log(images.length)
+
   return (
     <>
       <div className="w-full h-full ">
         {/* 사진 */}
-        <div className="relative w-full h-2/5">
-          <img
-            src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images[0]}`}
-            className="object-cover w-full h-full"
-          ></img>
+        <div className="relative w-full h-30">
+        {images.length === 1 ? (
+              <img
+                src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images}`}
+                className="object-cover w-full h-full"
+                alt={`Slide 0`}
+              />
+            ) : (
+              <Carousel settings={carouselSettings} images={images} />
+            )}
           {/* #TODO 이미지 캐러셀 해야함 */}
           {dealRes.images.length !== 1 && (
             <p className="absolute right-0 bottom-0 text-white p-5 text-xs">참여자 {applyForms.length}/8</p>
