@@ -29,7 +29,6 @@ const PaymentRedirectPage = () => {
     console.log('data' + data);
     if (data && data.status === 200) {
       setAmount(0);
-      window.location.reload();
       navigate('/profile');
     }
   }, [data]);
