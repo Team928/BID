@@ -4,6 +4,7 @@ import static com.qzp.bid.domain.member.entity.ReviewRole.BUYER;
 import static com.qzp.bid.domain.member.entity.ReviewRole.SELLER;
 import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_DUPLICATED;
 import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_NICKNAME_NOT_EXIST;
 
 import com.qzp.bid.domain.auth.dto.LoginTokenDto;
@@ -100,6 +101,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
 
+        if(checkNickname(memberJoinReq.getNickname())){
+            throw new BusinessException(MEMBER_NICKNAME_DUPLICATED);
+        }
+
         member.setNickname(memberJoinReq.getNickname());
         member.setArea(new ArrayList<>(Arrays.asList(memberJoinReq.getAddress())));
 
@@ -144,13 +149,16 @@ public class MemberServiceImpl implements MemberService {
 
         if (memberUpdateProfileReq.getNickname() != null && !memberUpdateProfileReq.getNickname()
             .isEmpty()) {
+            if(checkNickname(memberUpdateProfileReq.getNickname())){
+                throw new BusinessException(MEMBER_NICKNAME_DUPLICATED);
+            }
             member.setNickname(memberUpdateProfileReq.getNickname());
         }
         if (memberUpdateProfileReq.getArea() != null && !memberUpdateProfileReq.getArea()
             .isEmpty()) {
             member.setArea(memberUpdateProfileReq.getArea());
         }
-        if (!profileImage.isEmpty()) {
+        if ( profileImage != null && !profileImage.isEmpty() ) {
             ImageDto imagePath = imageUploader.uploadOne(profileImage);
             if (member.getProfileImage() != null) {
                 File imageFile = new File(imageUploader.getUploadPath() + member.getProfileImage()
