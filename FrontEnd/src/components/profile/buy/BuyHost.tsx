@@ -1,11 +1,10 @@
-import sample from '@/assets/image/sample.png';
 import StateButton from '@/components/@common/StateButton';
 import { useProfile } from '@/hooks/profile/useProfile';
 import userStore from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
 
 const BuyHost = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { nickname } = userStore(state => state);
 
   const { useBuyHost } = useProfile();
@@ -18,9 +17,16 @@ const BuyHost = () => {
   return (
     <div className="">
       {buyHostInfo?.data.purchaseSimpleRes.map((item, index) => (
-        <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]" onClick={() => handleClick(item.dealSimpleRes.id)}>
+        <div
+          key={index}
+          className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]"
+          onClick={() => handleClick(item.dealSimpleRes.id)}
+        >
           <div className="w-32 h-32">
-            <img className="w-full h-full rounded-xl" src={sample}></img>
+            <img
+              className="w-full h-full rounded-xl"
+              src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
+            ></img>
           </div>
           <div className="flex-1 flex flex-col py-2">
             <div className="flex items-center justify-between">
