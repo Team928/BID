@@ -184,7 +184,7 @@ public class ChatServiceImpl implements ChatService {
 
             Member member;
             if (chatRoom.getHostId() == userId) {
-                member = memberRepository.findById(chatRoom.getHostId())
+                member = memberRepository.findById(chatRoom.getGuestId())
                     .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
             } else {
                 member = memberRepository.findById(chatRoom.getHostId())
