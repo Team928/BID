@@ -3,10 +3,13 @@ import ConfirmModal from './Modal/ConfirmModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirmedDealReq } from '@/service/chat/api';
 import { useChatLog } from '@/hooks/chat/useChat';
+import useDealStore from '@/stores/useDealStore';
 
 const DealInfo = () => {
   
   const { useGetChatLogList }  = useChatLog()
+  const isConfirmed = useDealStore((state) => state.isConfirmed);
+  const setConfirmed = useDealStore((state) => state.setConfirmed);
 
   const { dealId } = useParams()
   console.log('글정보 아이디' , dealId)
@@ -21,13 +24,10 @@ const DealInfo = () => {
   const endPrice = chatLogInfo?.data.dealResWithEndPrice.endPrice;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
-
   const navigate = useNavigate()
 
   const handleConfirm = async () => {
-    console.log('거래 확정');
-    setIsConfirmed(true); // 확정 여부를 true로 변경
+    setConfirmed(true); 
     setIsModalOpen(false);
     try {
       const response = await confirmedDealReq(id);
