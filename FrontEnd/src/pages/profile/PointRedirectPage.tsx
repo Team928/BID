@@ -9,6 +9,7 @@ const PointRedirectPage = () => {
   };
   useEffect(() => {
     if (query.get('imp_success') === 'true') {
+      console.log(query.get('imp_success'));
       navigate('/profile', { state: info });
     }
   }, []);

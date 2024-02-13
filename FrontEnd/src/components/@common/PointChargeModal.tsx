@@ -19,16 +19,19 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
   const [amount, setAmount] = useState<number>(0);
   const { usePostChargePoint } = useProfile();
   const { mutate } = usePostChargePoint(amount, userProfileInfo!.nickname);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   useEffect(() => {
-    if (success) {
+    if (isSuccess) {
       mutate();
       setShowChargeModal(false);
     }
-  }, [success]);
+  }, [isSuccess]);
 
   useEffect(() => {
-    console.log(success);
+    if (success) {
+      setIsSuccess(success);
+    }
   }, [success]);
 
   // 아임포트 결제
