@@ -28,7 +28,6 @@ const DealInfo = () => {
     setIsConfirmed(true); // 확정 여부를 true로 변경
     setIsModalOpen(false);
     try {
-      // TODO: 실제 데이터로 바꿔야함 임시 roomId = 1
       const response = await confirmedDealReq(Number(dealId));
       console.log(response); 
     } catch (error) {
