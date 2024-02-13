@@ -7,11 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +31,4 @@ public class Sale extends Deal {
     private int liveRequestCount;
     @ColumnDefault("0")
     private Integer bidCount;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Bid> bids = new ArrayList<>();
 }
