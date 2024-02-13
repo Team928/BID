@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Modal from './Modal';
 import { RequestPayParams, RequestPayResponse } from '@/types/model/iamport';
 import { useProfile } from '@/hooks/profile/useProfile';
 import { IUserProfile } from '@/types/profile';
 import payment_icon from '@/assets/image/payment_icon_yellow_small.png';
 import Toast from './Toast';
-import { useLocation } from 'react-router-dom';
 
 interface IPointChargeProps {
   setShowChargeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,26 +12,9 @@ interface IPointChargeProps {
 }
 
 const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeProps) => {
-  const location = useLocation();
-  const success = location.state !== null ? location.state.isSuccess : false;
-
   const [amount, setAmount] = useState<number>(0);
   const { usePostChargePoint } = useProfile();
   const { mutate } = usePostChargePoint(amount, userProfileInfo!.nickname);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isSuccess) {
-      mutate();
-      setShowChargeModal(false);
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (success) {
-      setIsSuccess(success);
-    }
-  }, [success]);
 
   // 아임포트 결제
   const handleChargePoint = () => {
@@ -49,7 +31,7 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       amount: amount,
       buyer_name: userProfileInfo!.nickname,
       buyer_email: userProfileInfo!.email,
-      m_redirect_url: 'https://i10d208.p.ssafy.io/iamport/redirect',
+      m_redirect_url: 'https://i10d208.p.ssafy.io/profile',
     };
 
     const callback = (response: RequestPayResponse) => {
