@@ -9,13 +9,14 @@ const DealInfo = () => {
   const { useGetChatLogList }  = useChatLog()
 
   const dealId = useParams()
+  console.log(dealId.roomId)
 
-    const {
-      data:chatLogInfo,
-    } = useGetChatLogList({ dealId: Number(dealId) })
+  const {
+    data:chatLogInfo,
+  } = useGetChatLogList({ dealId: Number(dealId.roomId) })
 
-    const content = chatLogInfo?.data.dealResWithEndPrice.content;
-    const endPrice = chatLogInfo?.data.dealResWithEndPrice.endPrice;
+  const content = chatLogInfo?.data.dealResWithEndPrice.content;
+  const endPrice = chatLogInfo?.data.dealResWithEndPrice.endPrice;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -28,7 +29,7 @@ const DealInfo = () => {
     setIsConfirmed(true); // 확정 여부를 true로 변경
     setIsModalOpen(false);
     try {
-      const response = await confirmedDealReq(Number(dealId));
+      const response = await confirmedDealReq(Number(dealId.roomId));
       console.log(response); 
     } catch (error) {
       console.error('API 호출 에러:', error);
@@ -50,7 +51,7 @@ const DealInfo = () => {
           <p className="text-xs text-BID_MAIN">최종 거래가</p>
           <p className="text-lg font-bold">{endPrice}</p>
         </div>
-          {isConfirmed ? ( // isConfirmed가 true인 경우 리뷰쓰기 버튼을 보여줌
+          {isConfirmed ? (
             <button
               className="text-sm px-3 h-10 text-yellow-500 border border-yellow-500 rounded-xl font-bold"
               onClick={goToReview}
