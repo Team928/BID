@@ -58,15 +58,17 @@ public class Member {
     private String profileImage;
 
     public boolean bidding(int price) {
-        if (point - holdingPoint < price) {
+        if (point < price) {
             return false;
         }
         this.holdingPoint += price;
+        this.point -= price;
         return true;
     }
 
     public void cancelBidding(int price) {
         this.holdingPoint -= price;
+        this.point += price;
     }
 
     public void chargePoint(int point) {

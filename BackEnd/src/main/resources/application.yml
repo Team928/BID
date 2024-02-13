@@ -51,3 +51,7 @@ springdoc: #swagger
       enabled: true
   cache:
     disabled: true
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
