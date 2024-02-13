@@ -9,7 +9,7 @@ const BuyParticipant = () => {
 
   return (
     // TODO : 실제 데이터로 수정해야함
-    <div className="pt-28">
+    <div className="">
       {buyParticipantInfo?.data.purchaseSimpleRes.map((item, index) => (
         <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
           <div className="w-32 h-32">
