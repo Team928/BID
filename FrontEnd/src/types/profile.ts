@@ -51,3 +51,9 @@ export interface ISaleListRes {
     profileImage: string | null;
     score: number;
   }
+
+  // 프로필 수정
+  export interface IChangeProfile {
+    nickname: string;
+    area: string[]
+  }

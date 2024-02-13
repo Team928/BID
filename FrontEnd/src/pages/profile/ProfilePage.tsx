@@ -8,6 +8,7 @@ import userStore from '@/stores/userStore';
 import { useProfile } from '@/hooks/profile/useProfile';
 import { useState } from 'react';
 import PointChargeModal from '@/components/@common/PointChargeModal';
+import ProfileModal from '@/components/profile/ProfileModal';
 
 const ProfilePage = () => {
   const info: IHeaderInfo = {
@@ -21,7 +22,8 @@ const ProfilePage = () => {
 
   const { nickname } = userStore();
   const { useUserProfile } = useProfile();
-  const { data: userProfileInfo } = useUserProfile(`${nickname}`); // 임의 닉네임
+  const { data: userProfileInfo } = useUserProfile(`${nickname}`);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const moveToNavigate = (path: string) => {
     navigate(path);
@@ -45,21 +47,23 @@ const ProfilePage = () => {
       <div>
         <Header info={info} />
         {/* 내 프로필 섹션 */}
-        <div className="pt-12">
-          <div className="flex gap-4 p-8 items-center">
-            <div className="w-24 h-24 bg-BID_LIGHT_GRAY rounded-3xl relative"></div>
-            <div className="flex-1 flex flex-col justify-around">
-              <div className="flex">
-                <p className="text-lg font-bold">{userProfileInfo?.data.nickname}</p>
-                <button className="px-2">
+          <div className="pt-12">
+            <div className="flex gap-4 p-8 items-center">
+              <div className="w-24 h-24 bg-BID_LIGHT_GRAY rounded-3xl relative">
+                <button className="p-1 bg-white rounded-3xl absolute right-1 bottom-1" onClick={() => setIsModalOpen(true)}>
                   <MdOutlineCreate />
                 </button>
               </div>
-              <p className="text-xs text-BID_GRAY py-2">{userProfileInfo?.data.email}</p>
-              <p className="text-md text-BID_MAIN font-bold">{userProfileInfo?.data.score}</p>
+              <div className="flex-1 flex flex-col justify-around">
+                <div className="flex">
+                  <p className="text-lg font-bold">{userProfileInfo?.data.nickname}</p>
+                </div>
+                <p className="text-xs text-BID_GRAY py-2">{userProfileInfo?.data.email}</p>
+                <p className="text-md text-BID_MAIN font-bold">{userProfileInfo?.data.score}</p>
+              </div>
             </div>
           </div>
-        </div>
+
         {/* 포인트 섹션 */}
         <div className="px-6">
           <div className="w-full h-30 border p-4 rounded-lg">
@@ -107,7 +111,13 @@ const ProfilePage = () => {
           </div>
         </div>
         <Bottom />
+
+        {/* 모달 영역 */}
+      {isModalOpen && <ProfileModal onClose={() => setIsModalOpen(false)}/>
+      }
       </div>
+
+      
     </>
   );
 };

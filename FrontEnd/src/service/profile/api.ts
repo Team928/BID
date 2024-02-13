@@ -50,3 +50,15 @@ export const postChargePoint = async (amount: number): Promise<APIResponse<strin
     throw error;
   }
 };
+
+// 프로필 수정
+export const postchangeProfile = async (info: FormData): Promise<APIResponse<string>> => {
+  console.log(info)
+  const { data } = await axiosAuthInstance.patch(`members/profiles`, info, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  console.log(data)
+  return data
+}
