@@ -5,6 +5,7 @@ import com.qzp.bid.domain.chat.dto.ChatList;
 import com.qzp.bid.domain.chat.dto.ChatLive;
 import com.qzp.bid.domain.chat.dto.ChatRes;
 import com.qzp.bid.domain.chat.dto.ChatRoomList;
+import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.chat.entity.Chat;
 import com.qzp.bid.domain.chat.entity.ChatRoom;
 import com.qzp.bid.domain.chat.entity.ChatType;
@@ -24,7 +25,6 @@ import com.qzp.bid.domain.deal.purchase.repository.ReverseAuctionResultRepositor
 import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
-import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.repository.MemberRepository;
@@ -35,7 +35,6 @@ import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -84,18 +83,20 @@ public class ChatServiceImpl implements ChatService {
             member = dealRepository.findBidderByDealId(dealId);
         } else if (dtype.equals("Purchase")) {
             // Purchase 상태 바꾸기
-            Purchase purchase = purchaseRepository.findById(resultReq.getDealId()).orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+            Purchase purchase = purchaseRepository.findById(resultReq.getDealId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
             purchase.setStatus(DealStatus.END);
             purchaseRepository.save(purchase);
             // ApplyForm 가격 갱신
-            ApplyForm applyForm = applyFormRepository.findById(resultReq.getApplyFormId()).orElseThrow(() -> new BusinessException(ErrorCode.GET_APPLYFORM_FAIL));
+            ApplyForm applyForm = applyFormRepository.findById(resultReq.getApplyFormId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.GET_APPLYFORM_FAIL));
             applyForm.setOfferPrice(resultReq.getOfferPrice());
             applyFormRepository.save(applyForm);
             // 역 경매결과 생성 저장
             ReverseAuctionResult reverseAuctionResult = ReverseAuctionResult.builder()
                 .winningBid((int) resultReq.getApplyFormId())
                 .purchaseId((int) resultReq.getDealId())
-                .sellerId(applyForm.getSellerId())
+                .sellerId(applyForm.getSeller().getId())
                 .build();
             reverseAuctionResultRepository.save(reverseAuctionResult);
 
@@ -184,7 +185,7 @@ public class ChatServiceImpl implements ChatService {
 
             Member member;
             if (chatRoom.getHostId() == userId) {
-                member = memberRepository.findById(chatRoom.getHostId())
+                member = memberRepository.findById(chatRoom.getGuestId())
                     .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
             } else {
                 member = memberRepository.findById(chatRoom.getHostId())
@@ -254,7 +255,7 @@ public class ChatServiceImpl implements ChatService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
 
             List<Long> sellerIds = purchase.getApplyForms().stream()
-                .map(ApplyForm::getSellerId)
+                .map(applyForm -> applyForm.getSeller().getId())
                 .collect(Collectors.toList());
 
             ApplyForm applyForm = applyFormRepository.findApplyFormByWinningId(sellerIds);

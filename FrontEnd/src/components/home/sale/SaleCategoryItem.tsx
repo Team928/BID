@@ -9,12 +9,12 @@ const SaleCategoryItem = (props: { item: ISaleSimpleRes }) => {
 
   return (
     <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="flex gap-4 cursor-pointer">
-      <img className="w-28 h-28 rounded-xl" src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`} />
-      <div className="flex-1 flex flex-col justify-around ">
-        <p className="font-bold truncate whitespace-normal line-clamp-2">{dealSimpleRes.title}</p>
-        <p className="text-sm truncate whitespace-normal line-clamp-2">{dealSimpleRes.content}</p>
+      <img className="w-24 h-24 rounded-md" src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`} />
+      <div className="flex-1 flex flex-col justify-around">
+        <p className="font-black truncate whitespace-normal line-clamp-2">{dealSimpleRes.title}</p>
+        <p className="text-xs truncate whitespace-normal line-clamp-2 text-black/80">{dealSimpleRes.content}</p>
         <div className="flex items-center gap-2">
-          <p className="font-bold ">
+          <p className="font-bold text-sm">
             {status === 'BEFORE'
               ? addCommaToPrice(immediatePrice)
               : bid === 0
@@ -22,7 +22,7 @@ const SaleCategoryItem = (props: { item: ISaleSimpleRes }) => {
                 : addCommaToPrice(bid)}
             원
           </p>
-          <p className="text-BID_SUB_GRAY text-xs">{getPriceName(status)}</p>
+          <p className="text-BID_SUB_GRAY text-[10px]">{getPriceName(status)}</p>
         </div>
       </div>
     </div>

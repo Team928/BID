@@ -1,5 +1,6 @@
 package com.qzp.bid.domain.deal.purchase.entity;
 
+import com.qzp.bid.domain.member.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +18,8 @@ public class ApplyForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long sellerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member seller;
     private int offerPrice;
     private String image;
     private String content;

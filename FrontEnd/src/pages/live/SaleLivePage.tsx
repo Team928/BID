@@ -1,5 +1,4 @@
 import Toast from '@/components/@common/Toast';
-import LivePermissonModal from '@/components/live/Modal/LivePermissonModal';
 import { PARTICIPANT_TYPE } from '@/constants/liveType';
 import { getSession } from '@/service/live/api';
 import useLiveStore from '@/stores/userLiveStore';
@@ -23,8 +22,6 @@ const SaleLivePage = () => {
   const { userId, nickname } = userStore();
   const [myUserName, setMyUserName] = useState(nickname);
   const [currentBid, setCurrentBid] = useState<number>(state.startPrice); // 현재 입찰가
-  const [isShowLivePermissionModal, setIsShowaLivePermissionModal] = useState<boolean>(false);
-  const [isAllowed, setIsAllowed] = useState<boolean>(false);
 
   const [session, setSession] = useState<Session | null>(null);
   const [publisher, setPublisher] = useState<Publisher>();
@@ -43,9 +40,6 @@ const SaleLivePage = () => {
   // 판매자 이벤트 핸들러 정의
   const sellerJoinSession = useCallback(async () => {
     const newSession = OV.current.initSession();
-
-    console.log(newSession);
-
     setSession(newSession);
 
     newSession.on('signal:successBid', e => {
@@ -107,13 +101,13 @@ const SaleLivePage = () => {
 
             const publisher = await OV.current.initPublisherAsync(undefined, {
               audioSource: undefined,
-              videoSource: videoDevices[0].deviceId,
+              videoSource: undefined,
               publishAudio: onMike,
               publishVideo: onCamera,
-              resolution: '600X900',
-              frameRate: 30,
+              resolution: '1280x720',
+              frameRate: 40,
               insertMode: 'APPEND',
-              mirror: true,
+              mirror: false,
             });
 
             const currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
@@ -187,12 +181,7 @@ const SaleLivePage = () => {
   }, [session]);
 
   useEffect(() => {
-    // 판매자
-    if (pType === PARTICIPANT_TYPE.SELLER) {
-      setIsShowaLivePermissionModal(true);
-    }
-    // 구매자
-    else if (pType === PARTICIPANT_TYPE.BUYER) {
+    if (pType === PARTICIPANT_TYPE.BUYER) {
       buyerJoinSession();
     }
 
@@ -200,12 +189,6 @@ const SaleLivePage = () => {
       leaveSession();
     };
   }, []);
-
-  useEffect(() => {
-    if (isAllowed) {
-      sellerJoinSession();
-    }
-  }, [isAllowed]);
 
   if (pType === PARTICIPANT_TYPE.SELLER) {
     return (
@@ -221,15 +204,12 @@ const SaleLivePage = () => {
               Toast.error('카메라를 켜주세요.');
               return;
             }
-
             switchCamera();
           }}
           state={state}
           currentBid={currentBid}
+          sellerJoinSession={sellerJoinSession}
         />
-        {isShowLivePermissionModal && (
-          <LivePermissonModal onClose={() => setIsShowaLivePermissionModal(false)} setIsAllowed={setIsAllowed} />
-        )}
       </>
     );
   } else if (pType === PARTICIPANT_TYPE.BUYER) {

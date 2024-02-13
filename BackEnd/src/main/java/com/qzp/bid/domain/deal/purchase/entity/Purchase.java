@@ -25,6 +25,6 @@ public class Purchase extends Deal {
     private int memberLimit;
     @Enumerated(EnumType.STRING)
     private DealStatus status;
-    @OneToMany
+    @OneToMany(mappedBy = "purchase")
     private List<ApplyForm> applyForms = new ArrayList<>();
 }

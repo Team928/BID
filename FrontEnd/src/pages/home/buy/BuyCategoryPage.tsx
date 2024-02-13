@@ -49,24 +49,24 @@ const BuyCategoryPage = () => {
     <>
       <div className="w-full h-screen pb-[4.5rem]">
         <Header info={info} />
-        <div className="pt-12 pb-4 px-BID_P ">
-          <div className="pt-4 ">
-            <p className="font-bold text-lg">{changeEngToKr(pathname.split('/')[2].toUpperCase())}</p>
+        <div className="pt-12 pb-2 px-BID_P ">
+          <div className="pt-4">
+            <p className="text-lg">{changeEngToKr(pathname.split('/')[2].toUpperCase())}</p>
             <p className="text-xs text-BID_BLACK">필터링을 통해 원하는 상품을 찾아보세요</p>
           </div>
-          <div className="pt-4 flex font-bold gap-3 text-center">
-            <div
+          <div className="pt-2 flex text-center">
+            <button
               onClick={() => setOrder('asc')}
-              className={`w-[4.5rem] border border-BID_BLACK rounded-xl p-1 text-sm ${order === 'asc' && 'bg-BID_BLACK text-white'}`}
+              className={`w-12 mr-1 border border-BID_BLACK rounded-xl p-1 text-xs ${order === 'asc' && 'bg-BID_BLACK text-white'}`}
             >
               <p>최신순</p>
-            </div>
-            <div
+            </button>
+            <button
               onClick={() => setOrder('desc')}
-              className={`w-[4.5rem] border border-BID_BLACK rounded-xl p-1 text-sm ${order === 'desc' && 'bg-BID_BLACK text-white'}`}
+              className={`w-16 border border-BID_BLACK rounded-xl p-1 text-xs ${order === 'desc' && 'bg-BID_BLACK text-white'}`}
             >
               <p>시작 임박</p>
-            </div>
+            </button>
           </div>
         </div>
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">

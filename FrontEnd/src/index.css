@@ -39,11 +39,16 @@
   font-display: swap;
 }
 
+html,
+body {
+  max-width: 500px;
+  margin: 0 auto;
+  height: 100vh;
+}
+
 body {
   /* font-family: 'LINESeedKR-Rg'; */
   font-family: 'NanumSquare';
-  max-width: 500px;
-  margin: 0 auto;
 }
 
 ::-webkit-scrollbar {

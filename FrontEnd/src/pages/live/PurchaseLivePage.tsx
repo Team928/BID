@@ -83,9 +83,12 @@ const PurchaseLivePage = () => {
     const mySession = OV.current.initSession();
     setSession(mySession);
 
+    mySession.on('connectionCreated', event => {
+      console.log(event);
+    });
+
     mySession.on('streamCreated', event => {
       const clientData = JSON.parse(event.stream.connection.data.split('%/%')[0]);
-      // Toast.info(`${clientData.nickName}님이 라이브에 참여했습니다.`);
 
       // 내가 구매자일 때 판매자가 들어오면 sellerList에 정보 저장
       if (pType === PARTICIPANT_TYPE.BUYER) {
@@ -213,9 +216,9 @@ const PurchaseLivePage = () => {
         if (!event.data) return;
         console.log(event.data);
 
+        leaveSession();
         setTimeout(() => {
-          leaveSession();
-          navigate(`/chat/rooms/${mySessionId}`, { replace: true });
+          navigate(`/chat/rooms/${id}`, { replace: true });
         }, 2000);
       });
     }
@@ -287,8 +290,8 @@ const PurchaseLivePage = () => {
             videoSource: undefined,
             publishAudio: onMike,
             publishVideo: onCamera,
-            resolution: '640x480',
-            frameRate: 30,
+            resolution: '1280x720',
+            frameRate: 40,
             insertMode: 'APPEND',
             mirror: false,
           });
@@ -329,10 +332,10 @@ const PurchaseLivePage = () => {
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: onMike,
             publishVideo: onCamera,
-            resolution: '600X900',
-            frameRate: 30,
+            resolution: '1280x720',
+            frameRate: 40,
             insertMode: 'APPEND',
-            mirror: true,
+            mirror: false,
           });
 
           if (session && publisher) {
@@ -572,9 +575,9 @@ const PurchaseLivePage = () => {
 
     mutate(matchReq);
 
+    leaveSession();
     setTimeout(() => {
-      leaveSession();
-      navigate(`/chat/rooms/${mySessionId}`, { replace: true });
+      navigate(`/chat/rooms/${id}`, { replace: true });
     }, 2000);
   };
 
@@ -622,19 +625,21 @@ const PurchaseLivePage = () => {
               </button>
             </div>
           ) : (
-            <button
-              className="mx-3 z-10"
-              onClick={() => {
-                if (!onCamera) {
-                  Toast.error('카메라를 켜주세요.');
-                  return;
-                }
+            <div className="flex">
+              <button
+                className="mx-3 z-10"
+                onClick={() => {
+                  if (!onCamera) {
+                    Toast.error('카메라를 켜주세요.');
+                    return;
+                  }
 
-                switchCamera();
-              }}
-            >
-              <IoCameraReverseOutline size={25} color="#D9D9D9" />
-            </button>
+                  switchCamera();
+                }}
+              >
+                <IoCameraReverseOutline size={25} color="#D9D9D9" />
+              </button>
+            </div>
           )}
         </div>
         <div className="w-[60%] text-center truncate">{state.title}</div>

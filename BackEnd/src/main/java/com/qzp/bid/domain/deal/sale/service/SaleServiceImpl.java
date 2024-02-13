@@ -203,6 +203,10 @@ public class SaleServiceImpl implements SaleService {
             .saleId(saleId).build();
         liveRequestRepository.save(liveRequest);
         sale.setLiveRequestCount(sale.getLiveRequestCount() + 1);
+        sseService.send(
+            SseDto.of(sale.getWriter().getId(), sale.getId(), "sale",
+                SseType.LIVE_REQUEST,
+                LocalDateTime.now()));
     }
 
     @Override

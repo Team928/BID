@@ -12,9 +12,9 @@ const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
   const { tab } = useTabStore();
   return (
     <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="px-BID_P py-3 flex gap-4">
-      <div className="w-32 h-32 relative">
+      <div className="relative flex justify-center items-center">
         <img
-          className="w-full h-full rounded-xl"
+          className="w-24 h-24 rounded-md object-cover"
           src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`}
         ></img>
       </div>
@@ -23,10 +23,10 @@ const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
           <StateButton deals={tab} status={status} />
           <HiHeart size={'1.6rem'} color="#FF0000" />
         </div>
-        <p className="text-sm truncate whitespace-normal line-clamp-1 font-bold">{dealSimpleRes.title}</p>
-        <p className="text-sm truncate whitespace-normal line-clamp-1">{dealSimpleRes.content}</p>
+        <p className="text-sm py-1 truncate whitespace-normal line-clamp-1 font-bold">{dealSimpleRes.title}</p>
+        <p className="text-xs truncate whitespace-normal line-clamp-1">{dealSimpleRes.content}</p>
         <div className="flex items-center gap-3">
-          <p className="text-lg font-bold text-BID_BLACK">
+          <p className="text-sm font-bold text-BID_BLACK">
             {status === 'BEFORE'
               ? addCommaToPrice(immediatePrice)
               : bid === 0

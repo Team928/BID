@@ -112,6 +112,10 @@ public class LiveServiceImpl implements LiveService {
 
         } else { // 세션 없음 -> 새로 만들기
 
+            if(userId != Long.parseLong(accountUtil.getLoginMemberId())){
+                throw new BusinessException(ErrorCode.NOT_WRITER);
+            }
+
             SessionProperties sessionProperties = new SessionProperties.Builder()
                 .customSessionId("LIVECHATROOMID" + dealId)
                 .recordingMode(RecordingMode.MANUAL)
@@ -150,7 +154,7 @@ public class LiveServiceImpl implements LiveService {
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
 
-        if(deal.getWriter().getId() != Long.parseLong(accountUtil.getLoginMemberId())){
+        if(userId != Long.parseLong(accountUtil.getLoginMemberId())){
             throw new BusinessException(ErrorCode.NOT_WRITER);
         }
 
@@ -217,6 +221,9 @@ public class LiveServiceImpl implements LiveService {
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
 
+        if(userId != Long.parseLong(accountUtil.getLoginMemberId())){
+            throw new BusinessException(ErrorCode.NOT_WRITER);
+        }
 
         String recordingId = String.valueOf(
             redisTemplate.opsForHash().get("OpenVidu_recording", dealId));
@@ -261,9 +268,6 @@ public class LiveServiceImpl implements LiveService {
     public void CheckRecording(LiveRecordingRes liveRecordingRes) {
         long dealId = liveRecordingRes.getDealId();
 
-        Deal deal = dealRepository.findById(dealId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
-
         Video video = videoRepository.findByDealId(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.VIDEO_NOT_EXIST));
 
@@ -277,19 +281,22 @@ public class LiveServiceImpl implements LiveService {
 
         switch (liveRecordingRes.getStep()) {
             case 1:
-                timeLine.add("전면부|" + time);
+                timeLine.add("1_" + time);
                 break;
             case 2:
-                timeLine.add("후면부|" + time);
+                timeLine.add("2_" + time);
                 break;
             case 3:
-                timeLine.add("다방면|" + time);
+                timeLine.add("3_" + time);
                 break;
             case 4:
-                timeLine.add("작동상태|" + time);
+                timeLine.add("4_" + time);
                 break;
             case 5:
-                timeLine.add("크기비교|" + time);
+                timeLine.add("5_" + time);
+                break;
+            case 6:
+                timeLine.add("6_" + time);
                 break;
         }
 

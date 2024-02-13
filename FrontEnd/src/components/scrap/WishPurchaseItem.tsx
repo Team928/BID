@@ -10,12 +10,12 @@ const WishPurchaseItem = (props: { item: IPurchaseSimpleRes }) => {
 
   return (
     <div onClick={() => navigate(`/buy/detail/${id}`)} className="px-BID_P py-3 flex gap-4">
-      <div className="w-32 h-32 relative">
-        <img className="w-full h-full rounded-xl" src={`${import.meta.env.VITE_BASE_URL}static${image}`}></img>
+      <div className="relative flex justify-center items-center">
+        <img className="w-24 h-24 rounded-md object-cover" src={`${import.meta.env.VITE_BASE_URL}static${image}`}></img>
         <HiHeart size={'1.6rem'} color="#FF0000" className="absolute bottom-1 right-1" />
       </div>
       <div className="flex-1 flex flex-col justify-between py-2">
-        <p className="font-bold truncate whitespace-normal line-clamp-1">{title}</p>
+        <p className="font-bold text-md truncate whitespace-normal line-clamp-1">{title}</p>
         <p className="text-sm truncate whitespace-normal line-clamp-2">{content}</p>
         <div className="flex items-center gap-3">
           <p className="text-xs text-BID_BLACK">

@@ -1,20 +1,19 @@
+import CategoryComboBox from '@/components/@common/CategoryComboBox';
+import DaumPostModal from '@/components/@common/DaumPostModal';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import useInput from '@/hooks/@common/useInput';
+import { postSaleWrite } from '@/service/write/api';
 import userStore from '@/stores/userStore';
+import { categoryType } from '@/types/model';
+import { ICategory, ICreateSaleReq, IWriteInput } from '@/types/write';
+import { changeKrToEng } from '@/utils/changeCategorie';
+import { getDate } from '@/utils/getDate';
+import { IWriteDateTimeProps, getDateTimeWrite } from '@/utils/getDateTimeWrite';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { CiCamera } from 'react-icons/ci';
-import { useNavigate } from 'react-router-dom';
-import { FaMinus } from 'react-icons/fa';
-import CategoryComboBox from '@/components/@common/CategoryComboBox';
-import { ICategory, ICreateSaleReq, IWriteInput } from '@/types/write';
-import { FaPlus } from 'react-icons/fa';
-import { IWriteDateTimeProps, getDateTimeWrite } from '@/utils/getDateTimeWrite';
-import { getDate } from '@/utils/getDate';
-import { categoryType } from '@/types/model';
-import { postSaleWrite } from '@/service/write/api';
-import { changeKrToEng } from '@/utils/changeCategorie';
-import DaumPostModal from '@/components/@common/DaumPostModal';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 const SaleWritePage = () => {
   const navigate = useNavigate();
@@ -248,12 +247,14 @@ const SaleWritePage = () => {
                   min={'2024-02-04'}
                   name="date"
                   onChange={changer}
+                  value={values.date}
                   className="w-1/2 outline-none border p-2 rounded-xl"
                 />
                 <input
                   type="time"
                   name="time"
                   onChange={changer}
+                  value={values.time}
                   className="w-1/2 outline-none border  p-2 rounded-xl"
                 />
               </div>

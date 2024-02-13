@@ -142,7 +142,7 @@ public class PurchaseRepositoryQuerydslImpl implements PurchaseRepositoryQueryds
             ))
             .from(purchase)
             .innerJoin(purchase.applyForms, applyForm).fetchJoin()
-            .where(applyForm.sellerId.eq(sellerId))
+            .where(applyForm.seller.id.eq(sellerId))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .orderBy(purchase.createTime.desc())
