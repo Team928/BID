@@ -4,6 +4,7 @@ import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
 import com.qzp.bid.domain.live.service.LiveService;
+import com.qzp.bid.domain.live.service.STTService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.openvidu.java.client.OpenViduHttpException;
@@ -23,6 +24,7 @@ public class LiveController {
 
     private final LiveService liveService;
     private final ChatService chatService;
+    private final STTService sttService;
 
 
     @GetMapping("/create/rooms") // 방만들기 & 방참가
@@ -33,10 +35,16 @@ public class LiveController {
     }
 
     @GetMapping("/purchase/results") // 역경매 판매자 선택하기 + 채팅방 개설
-    public ResponseEntity<ResultResponse> ChoicePurchaseResult(LiveResultReq resultReq){
+    public ResponseEntity<ResultResponse> ChoicePurchaseResult(LiveResultReq resultReq) {
         chatService.createRoom(resultReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
 
     }
 
+    @GetMapping("/results") // 역경매 판매자 선택하기 + 채팅방 개설
+    public ResponseEntity<ResultResponse> getSTT(String path) {
+        sttService.transcribeFile(path);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
+
+    }
 }

@@ -51,3 +51,7 @@ springdoc: #swagger
       enabled: true
   cache:
     disabled: true
+
+vito:
+  client_id: ENC(tFsXZHiu8O3G0eNpEvYa9R+Nq6kG5Lx47HWFMw3PxVo=)
+  client_secret: ENC(SvJta6O71FfeYxyDgMGKeoTB1bDaEZ0oUIX+ZGrlrLh+e8vxbV4cas+h+wDjpEjiad92DLLf2HU=)
