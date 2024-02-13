@@ -11,9 +11,8 @@ import { useParams } from 'react-router-dom';
 const OtherProfilePage = () => {
   const { useUserProfile } = useProfile();
   const { nickname } = useParams();
-  if (!nickname) return <div>유저 조회 불가</div>;
 
-  const { data: userProfileInfo } = useUserProfile(nickname);
+  const { data: userProfileInfo } = useUserProfile(nickname!);
 
   const info: IHeaderInfo = {
     left: <IoIosArrowBack />,
@@ -30,7 +29,12 @@ const OtherProfilePage = () => {
         <Header info={info} />
         <div className="pt-12">
           <div className="flex gap-4 p-8 items-center">
-            <div className="w-28 h-28 bg-BID_LIGHT_GRAY rounded-3xl relative"></div>
+            <div className="w-28 h-28 rounded-3xl relative">
+              <img
+                    src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
+                    className="w-full h-full rounded-2xl object-cover"
+                  />
+            </div>
             <div className="flex-1 flex flex-col justify-around">
               <div className="flex">
                 <p className="text-xl font-bold">{userProfileInfo?.data.nickname}</p>
