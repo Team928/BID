@@ -27,6 +27,7 @@ import com.qzp.bid.domain.member.dto.MemberProfileRes;
 import com.qzp.bid.domain.member.dto.MemberReviewReq;
 import com.qzp.bid.domain.member.dto.MemberUpdateProfileReq;
 import com.qzp.bid.domain.member.dto.PointChargeReq;
+import com.qzp.bid.domain.member.dto.PointHistoryListPage;
 import com.qzp.bid.domain.member.dto.ReviewListPage;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.PointHistory;
@@ -315,8 +316,18 @@ public class MemberServiceImpl implements MemberService {
         PointHistory pointHistory = PointHistory.builder()
             .amount(pointChargeReq.getAmount())
             .status(PointStatus.CHARGE)
-            .time(LocalDateTime.now()).build();
+            .time(LocalDateTime.now())
+            .member(member)
+            .build();
         pointHistoryRepository.save(pointHistory);
-        member.getPointHistory().add(pointHistory);
+    }
+
+    @Override
+    public PointHistoryListPage getPaymentHistory(Pageable pageable) {
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(()-> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+        PointHistoryListPage pointHistoryListPage = pointHistoryRepository.getPointHistoryListPageByMemberId(member.getId(), pageable);
+        return pointHistoryListPage;
     }
 }
