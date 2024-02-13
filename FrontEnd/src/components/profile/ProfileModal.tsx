@@ -8,7 +8,7 @@ import { CiCamera } from "react-icons/ci";
 
 const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
 
-    const { nickname, area } = userStore()
+    const { nickname } = userStore()
     const { useChangeProfile } = useProfile()
 
     const imgRef = useRef<HTMLInputElement>(null);
@@ -18,8 +18,8 @@ const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
     const [photo, setPhoto] = useState<string>('');
     
     const changeProfile: IChangeProfile = {
-        nickname: nickname,
-        area: area,
+        nickname: '',
+        area: [],
     }
 
     // 이미지 저장
