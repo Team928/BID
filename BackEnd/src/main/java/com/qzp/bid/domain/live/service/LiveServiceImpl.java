@@ -145,6 +145,7 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
+    @Transactional
     public Recording StartRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
 
