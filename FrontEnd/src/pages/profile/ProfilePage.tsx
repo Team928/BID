@@ -50,7 +50,7 @@ const ProfilePage = () => {
         {/* 내 프로필 섹션 */}
           <div className="pt-12">
             <div className="flex gap-4 p-8 items-center">
-              <div className="w-24 h-24 bg-BID_LIGHT_GRAY rounded-3xl relative">
+              <div className="w-24 h-24 rounded-3xl relative">
               <img
                     src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
                     className="w-full h-full rounded-2xl object-cover"
