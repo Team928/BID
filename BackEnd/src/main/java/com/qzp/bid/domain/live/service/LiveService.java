@@ -9,7 +9,8 @@ import io.openvidu.java.client.Recording;
 
 public interface LiveService {
 
-    public LiveRoomRes JoinLiveRoom(LiveRoomReq liveRoomReq) throws OpenViduJavaClientException, OpenViduHttpException;
+    public LiveRoomRes JoinLiveRoom(LiveRoomReq liveRoomReq)
+        throws OpenViduJavaClientException, OpenViduHttpException;
 
     public Recording StartRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException;
@@ -19,4 +20,5 @@ public interface LiveService {
 
     public void CheckRecording(LiveRecordingRes liveRecordingRes);
 
+    public void EndLive(long dealId);
 }

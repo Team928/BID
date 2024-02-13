@@ -71,6 +71,7 @@ public class LiveServiceImpl implements LiveService {
         this.openVidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
     }
 
+    @Transactional
     @Override
     public LiveRoomRes JoinLiveRoom(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
@@ -125,6 +126,26 @@ public class LiveServiceImpl implements LiveService {
             session.fetch();
             connection = session.createConnection(connectionProperties);
 
+            if (deal.getClass().getSimpleName().equals("Purchase")) {
+                Purchase purchase = purchaseRepository.findById(dealId)
+                    .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+                purchase.setStatus(DealStatus.LIVE);
+                purchaseRepository.save(purchase);
+
+            }
+
+            // 세션 만들어지면 알람 보내기
+            Optional<List<Wish>> wishes = wishRepository.findByDealId(dealId);
+            if (wishes.isPresent()) {
+                for (Wish wish : wishes.get()) {
+                    sseService.send(
+                        SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
+                            wish.getDeal().getClass().getSimpleName(),
+                            SseType.START_LIVE,
+                            LocalDateTime.now()));
+                }
+            }
+
             // Redis  <DealId : SessionId> 넣기
             redisTemplate.opsForHash().put("OpenVidu_SessionId", dealId, session.getSessionId());
 
@@ -145,6 +166,7 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
+    @Transactional
     public Recording StartRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
 
@@ -185,22 +207,6 @@ public class LiveServiceImpl implements LiveService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
             sale.setStatus(DealStatus.LIVE);
             saleRepository.save(sale);
-        } else {
-            Purchase purchase = purchaseRepository.findById(dealId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
-            purchase.setStatus(DealStatus.LIVE);
-            purchaseRepository.save(purchase);
-        }
-
-        Optional<List<Wish>> wishes = wishRepository.findByDealId(dealId);
-        if (wishes.isPresent()) {
-            for (Wish wish : wishes.get()) {
-                sseService.send(
-                    SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
-                        wish.getDeal().getClass().getSimpleName(),
-                        SseType.START_LIVE,
-                        LocalDateTime.now()));
-            }
         }
 
         Video video = Video.builder().dealId(dealId).name("LIVE" + dealId).build();
@@ -302,6 +308,18 @@ public class LiveServiceImpl implements LiveService {
 
         videoRepository.save(video);
 
+    }
+
+    @Override
+    @Transactional
+    public void EndLive(long dealId) {
+        Deal deal = dealRepository.findById(dealId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
+
+        Purchase purchase = purchaseRepository.findById(dealId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+        purchase.setStatus(DealStatus.END);
+        purchaseRepository.save(purchase);
     }
 
 }
