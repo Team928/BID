@@ -67,17 +67,6 @@ const HomePage = () => {
       eventSource.close();
     };
 
-    // // eventSource 연결 시 할 일
-    eventSource.onmessage = async event => {
-      console.log(event);
-    };
-
-    eventSource.addEventListener('test', async function (event) {
-      const data = JSON.parse(event.data);
-      addNotification(data);
-      console.log(data);
-    });
-
     eventSource.addEventListener('auction', async function (event) {
       const data = JSON.parse(event.data);
       addNotification(data);

@@ -27,7 +27,7 @@ const SaleDetailPage = () => {
   if (saleDetailInfo)
     return (
       <>
-        <div className="w-full h-screen pb-[4.5rem]">
+        <div className="w-screen h-screen pb-[4.5rem]">
           <Header info={info} />
           <div className="pt-12 h-full overflow-y-auto">
             <SaleDetail isSeller={isSeller} info={saleDetailInfo.data} />
