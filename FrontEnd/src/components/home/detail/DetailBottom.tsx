@@ -12,7 +12,7 @@ import { MdLiveTv } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
-  const { status, isWished, highestBid, startPrice, dealRes } = props.info;
+  const { status, isWished, highestBid, startPrice, dealRes, immediatePrice } = props.info;
   const isSeller = props.isSeller;
   const [showBidModal, setShowBidModal] = useState<boolean>(false);
   const [showImmediateModal, setShowImmediateModal] = useState<boolean>(false);
@@ -110,7 +110,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
           <div className="w-full flex flex-col justify-center items-center p-3 px-10">
             <div className="w-full flex gap-3">
               <p className="">현재 최고가</p>
-              <p className="text-BID_MAIN">{highestBid === 0 ? startPrice : highestBid}원</p>
+              <p className="text-BID_MAIN">{highestBid === 0 ? immediatePrice : highestBid}원</p>
               <p className=""></p>
             </div>
             <div className="w-full flex gap-3 items-center">
