@@ -14,7 +14,7 @@ const Category = () => {
   const category = [
     {
       name: '전체',
-      icon: <p className="text-BID_BLACK font-bold">ALL</p>,
+      icon: <p className="text-BID_BLACK font-extrabold">ALL</p>,
     },
     {
       name: '도서/음반',
