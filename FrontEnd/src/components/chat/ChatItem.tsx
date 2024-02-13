@@ -8,19 +8,19 @@ import { useLongPress } from 'use-long-press';
 
 const ChatItem = (props: { item: IChatRoomListRes }) => {
   const { chatRoomRes, unReadCount, audienceMemberRes } = props.item;
-  const { id, lastMessage } = chatRoomRes;
+  const { dealId, lastMessage } = chatRoomRes;
   const { opponentNick } = audienceMemberRes;
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
   const handleChatItemClick = () => {
-    navigate(`/chat/rooms/${id}`);
+    navigate(`/chat/rooms/${dealId}`);
   };
 
   // 채팅방 삭제
   const handleDeleteClick = useLongPress(async() => {
     try {
-      await deleteChatRoomReq(id);
+      await deleteChatRoomReq(dealId);
       setShowModal(false);
       alert('채팅방이 삭제되었습니다.')
     } catch (error) {

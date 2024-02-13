@@ -1,4 +1,5 @@
 import Accordian from '@/components/@common/Accordian';
+import Carousel from '@/components/@common/Carousel';
 import userStore from '@/stores/userStore';
 import { IPurchaseDetailRes } from '@/types/home';
 import addCommaToPrice from '@/utils/addCommaToPrice';

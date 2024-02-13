@@ -8,12 +8,14 @@ const DealInfo = () => {
   
   const { useGetChatLogList }  = useChatLog()
 
-  const dealId = useParams()
-  console.log(dealId.roomId)
+  const { dealId } = useParams()
+  console.log('글정보 아이디' , dealId)
+  const id = Number(dealId)
 
   const {
     data:chatLogInfo,
-  } = useGetChatLogList({ dealId: Number(dealId.roomId) })
+  } = useGetChatLogList({ dealId: id })
+  console.log(chatLogInfo)
 
   const content = chatLogInfo?.data.dealResWithEndPrice.content;
   const endPrice = chatLogInfo?.data.dealResWithEndPrice.endPrice;
@@ -29,7 +31,7 @@ const DealInfo = () => {
     setIsConfirmed(true); // 확정 여부를 true로 변경
     setIsModalOpen(false);
     try {
-      const response = await confirmedDealReq(Number(dealId.roomId));
+      const response = await confirmedDealReq(id);
       console.log(response); 
     } catch (error) {
       console.error('API 호출 에러:', error);
