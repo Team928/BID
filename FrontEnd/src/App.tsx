@@ -27,7 +27,6 @@ import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
 import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import BuyWritePage from './pages/write/BuyWritePage';
 import SaleWritePage from './pages/write/SaleWritePage';
-import PointRedirectPage from './pages/profile/PointRedirectPage';
 
 const router = createBrowserRouter([
   {
@@ -85,10 +84,6 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <ProfilePage />,
-  },
-  {
-    path: '/iamport/redirect',
-    element: <PointRedirectPage />,
   },
   {
     path: '/profile/:nickname',
