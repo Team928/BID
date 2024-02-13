@@ -34,7 +34,7 @@ const PaymentRedirectPage = () => {
   }, [data]);
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center relative">
+    <div className="w-full h-screen flex flex-col justify-center items-center relative">
       <div>결제 진행중입니다...</div>
     </div>
   );

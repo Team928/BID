@@ -1,5 +1,5 @@
-import React from 'react';
 import useOtherTabStore from '@/stores/profileOtherTab';
+import React from 'react';
 
 interface ProfileTabBarProps {
   leftTab: string;
@@ -12,7 +12,7 @@ const ProfileOtherTabBar: React.FC<ProfileTabBarProps> = ({ leftTab, middleTab, 
 
   return (
     <>
-      <div className="w-screen flex relative pb-2 text-center max-w-[500px]">
+      <div className="w-full flex relative pb-2 text-center max-w-[500px]">
         <div
           onClick={() => setTab('review')}
           className={tab === 'review' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}
