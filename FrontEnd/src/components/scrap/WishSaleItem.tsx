@@ -18,7 +18,7 @@ const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
           src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`}
         ></img>
       </div>
-      <div className="flex-1 flex flex-col justify-between py-2">
+      <div className="flex-1 flex flex-col justify-between py-2 gap-1">
         <div className="flex items-center justify-between">
           <StateButton deals={tab} status={status} />
           <HiHeart size={'1.6rem'} color="#FF0000" />

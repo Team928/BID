@@ -7,7 +7,7 @@ import { useProfile } from '@/hooks/profile/useProfile';
 import useOtherTabStore from '@/stores/profileOtherTab';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useParams } from 'react-router-dom';
-import userImage from '@/assets/icon/user.png'
+import userImage from '@/assets/icon/user.png';
 
 const OtherProfilePage = () => {
   const { useUserProfile } = useProfile();
@@ -32,16 +32,13 @@ const OtherProfilePage = () => {
           <div className="flex gap-4 p-8 items-center">
             <div className="w-28 h-28 rounded-3xl relative">
               {userProfileInfo?.data.profileImage ? (
-                  <img
-                    src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
-                    className="w-full h-full rounded-2xl object-cover"
-                  />
-                ) : (
-                  <img
-                    src={userImage}
-                    className="w-full h-full rounded-2xl object-cover bg-gray-200"
-                  />
-                )}
+                <img
+                  src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
+                  className="w-full h-full rounded-2xl object-cover"
+                />
+              ) : (
+                <img src={userImage} className="w-full h-full rounded-2xl object-cover bg-gray-200" />
+              )}
             </div>
             <div className="flex-1 flex flex-col justify-around">
               <div className="flex">
@@ -53,14 +50,12 @@ const OtherProfilePage = () => {
           </div>
         </div>
         {/* 경매 및 리뷰 탭 */}
-        <div className="pt-200">
+        <div className="">
           <ProfileOtherTabBar leftTab="받은 리뷰" middleTab="주최한 경매" rightTab="주최한 역경매" />
-          <div className="w-full flex px-BID_P bg-white z-[9]">
-            <div>
-              {tab === 'review' ? <OtherReview /> : null}
-              {tab === 'sale' ? <OtherSale /> : null}
-              {tab === 'buy' ? <OtherBuy /> : null}
-            </div>
+          <div className="w-full h-full flex px-BID_P bg-white z-[9]">
+            {tab === 'review' ? <OtherReview /> : null}
+            {tab === 'sale' ? <OtherSale /> : null}
+            {tab === 'buy' ? <OtherBuy /> : null}
           </div>
         </div>
       </div>

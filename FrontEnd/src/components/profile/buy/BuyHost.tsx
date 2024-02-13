@@ -1,6 +1,7 @@
 import StateButton from '@/components/@common/StateButton';
 import { useProfile } from '@/hooks/profile/useProfile';
 import userStore from '@/stores/userStore';
+import { getDate } from '@/utils/getDate';
 import { useNavigate } from 'react-router-dom';
 
 const BuyHost = () => {
@@ -13,30 +14,27 @@ const BuyHost = () => {
   const handleClick = (dealId: number) => {
     navigate(`/buy/detail/${dealId}`);
   };
-
   return (
     <div className="">
       {buyHostInfo?.data.purchaseSimpleRes.map((item, index) => (
-        <div
-          key={index}
-          className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]"
-          onClick={() => handleClick(item.dealSimpleRes.id)}
-        >
-          <div className="w-32 h-32">
+        <div key={index} className="px-BID_P py-3 flex gap-4" onClick={() => handleClick(item.dealSimpleRes.id)}>
+          <div className="relative flex justify-center items-center">
             <img
-              className="w-full h-full rounded-xl"
+              className="w-24 h-24 rounded-md object-cover"
               src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
             ></img>
           </div>
-          <div className="flex-1 flex flex-col py-2">
+          <div className="flex-1 flex flex-col py-2 gap-1">
             <div className="flex items-center justify-between">
               <StateButton deals={'purchase'} status={`${item.status}`} />
             </div>
-            <div className="py-2">
-              <p className="text-lg truncate whitespace-normal line-clamp-2">{item.dealSimpleRes.title}</p>
-              <div className="flex items-center gap-3">
-                <p className="text-sm text-BID_BLACK">{item.dealSimpleRes.content}</p>
-              </div>
+            <p className="font-bold text-sm truncate whitespace-normal line-clamp-1">{item.dealSimpleRes.title}</p>
+            <p className="text-xs truncate whitespace-normal line-clamp-1">{item.dealSimpleRes.content}</p>
+            <div className="flex items-center gap-3">
+              <p className="text-xs text-BID_BLACK">
+                {getDate(item.dealSimpleRes.startTime).month}/{getDate(item.dealSimpleRes.startTime).date} (
+                {getDate(item.dealSimpleRes.startTime).datOfWeek}) 라이브 예정
+              </p>
             </div>
           </div>
         </div>
