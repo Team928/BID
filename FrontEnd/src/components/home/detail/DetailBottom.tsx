@@ -59,6 +59,10 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   };
   const [showChargeModal, setShowChargeModal] = useState<boolean>(false);
 
+  const goToChatRoom = () => {
+    navigate(`/chat/rooms/${dealRes.id}`)
+  }
+
   return (
     <>
       {/* 입찰하기 모달 */}
@@ -133,6 +137,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 onClick={() => {
                   immediateMuate();
                   setShowImmediateModal(false);
+                  goToChatRoom()
                 }}
               >
                 확인

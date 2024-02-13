@@ -19,8 +19,6 @@ const Header = (props: { info: IHeaderInfo }) => {
       {!left && !center && (
         <div className="h-full w-full">
           <img src={bid} className="h-full py-[0.9rem] cursor-pointer" />
-
-          {/* <p className="text-xl font-bold">BID</p> */}
         </div>
       )}
       <div className="basis-1/5">{left && <div onClick={() => navigate(-1)}>{left}</div>}</div>

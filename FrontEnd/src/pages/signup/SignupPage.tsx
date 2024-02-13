@@ -1,5 +1,6 @@
 import DaumPostModal from '@/components/@common/DaumPostModal';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
+import Toast from '@/components/@common/Toast';
 import { useSignup } from '@/hooks/signup/useSignup';
 import userStore from '@/stores/userStore';
 import { ISignupReq } from '@/types/signup';
@@ -62,13 +63,13 @@ const SignupPage = () => {
       const { accessToken, area, id, nickname, refreshToken } = data.data;
       loginUser({
         accessToken: accessToken,
-        area: area[0],
+        area: area,
         nickname: nickname,
         refreshToken: refreshToken,
         userId: id,
       });
       navigate('/');
-      // #TODO 토스트 메시지 띄우기
+      Toast.success('회원가입에 성공하였습니다');
     }
   }, [isSuccess]);
 

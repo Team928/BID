@@ -32,7 +32,7 @@ export default function NaverLoginRedirect() {
 
             navigate('/');
           } else {
-            loginUser({ accessToken: accessToken, area: '', nickname: '', refreshToken: refreshToken, userId: userId });
+            loginUser({ accessToken: accessToken, area: [], nickname: '', refreshToken: refreshToken, userId: userId });
             navigate('/signup');
           }
         })

@@ -18,7 +18,7 @@ interface IUserState {
   }: {
     userId: number;
     nickname: string;
-    area: string;
+    area: string[];
     accessToken: string;
     refreshToken: string;
   }) => void;
@@ -41,7 +41,7 @@ const userStore = create(
           accessToken,
           refreshToken,
           nickname,
-          area: [area],
+          area: area,
           isLogin: true,
         }),
 
