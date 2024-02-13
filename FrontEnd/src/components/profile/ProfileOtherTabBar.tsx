@@ -2,39 +2,45 @@ import React from 'react';
 import useOtherTabStore from '@/stores/profileOtherTab';
 
 interface ProfileTabBarProps {
-    leftTab: string;
-    middleTab: string;
-    rightTab: string;
+  leftTab: string;
+  middleTab: string;
+  rightTab: string;
 }
 
 const ProfileOtherTabBar: React.FC<ProfileTabBarProps> = ({ leftTab, middleTab, rightTab }) => {
-    const { tab, setTab } = useOtherTabStore();
-    
-    return (
-        <div className="w-full flex px-BID_P bg-white z-[9]">
-            <div className="w-1/3 flex justify-center border-b-[3px] py-1 border-BID_MAIN" onClick={() => setTab('review')}>
-                {tab === 'review' ? (
-                    <p className="font-bold text-BID_MAIN">{leftTab}</p>
-                ) : (
-                    <p className="text-gray-400 py-1">{leftTab}</p>
-                )}
-            </div>
-            <div className="w-1/3 flex justify-center border-b-[3px] py-1 border-BID_MAIN" onClick={() => setTab('sale')}>
-                {tab === 'sale' ? (
-                    <p className="font-bold text-BID_MAIN">{middleTab}</p>
-                ) : (
-                    <p className="text-gray-400 py-1">{middleTab}</p>
-                )}
-            </div>
-            <div className="w-1/3 flex justify-center border-b-[3px] py-1 border-BID_MAIN" onClick={() => setTab('buy')}>
-                {tab === 'buy' ? (
-                    <p className="font-bold text-BID_MAIN">{rightTab}</p>
-                ) : (
-                    <p className="text-gray-400 py-1">{rightTab}</p>
-                )}
-            </div>
+  const { tab, setTab } = useOtherTabStore();
+
+  return (
+    <>
+      <div className="w-screen flex relative pb-2 text-center max-w-[500px]">
+        <div
+          onClick={() => setTab('review')}
+          className={tab === 'review' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}
+        >
+          <p>{leftTab}</p>
         </div>
-    );
+        <div
+          onClick={() => setTab('sale')}
+          className={tab === 'sale' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}
+        >
+          <p>{middleTab}</p>
+        </div>
+        <div
+          onClick={() => setTab('buy')}
+          className={tab === 'buy' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}
+        >
+          <p>{rightTab}</p>
+        </div>
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-300">
+          <div
+            className={`${
+              tab === 'review' ? 'left-0' : tab === 'sale' ? 'left-1/3' : 'left-2/3'
+            } duration-500 ease-in-out relative bottom-[2px] z-10 w-1/3 h-[3px] bg-BID_MAIN`}
+          ></div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default ProfileOtherTabBar;

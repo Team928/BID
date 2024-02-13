@@ -4,13 +4,13 @@ import { useProfile } from '@/hooks/profile/useProfile';
 import userStore from '@/stores/userStore';
 
 const BuyHost = () => {
-  const { nickname } = userStore(state => state)
+  const { nickname } = userStore(state => state);
 
   const { useBuyHost } = useProfile();
-  const { data: buyHostInfo } = useBuyHost(nickname); 
+  const { data: buyHostInfo } = useBuyHost(nickname);
 
   return (
-    <div className="pt-28">
+    <div className="">
       {buyHostInfo?.data.purchaseSimpleRes.map((item, index) => (
         <div key={index} className="px-BID_P py-3 flex gap-4 border-b border-[#D9D9D9]">
           <div className="w-32 h-32">

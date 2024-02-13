@@ -8,6 +8,7 @@ import userStore from '@/stores/userStore';
 import { useProfile } from '@/hooks/profile/useProfile';
 import { useState } from 'react';
 import PointChargeModal from '@/components/@common/PointChargeModal';
+import Toast from '@/components/@common/Toast';
 
 const ProfilePage = () => {
   const info: IHeaderInfo = {
@@ -71,7 +72,12 @@ const ProfilePage = () => {
               <button onClick={() => setShowChargeModal(true)} className="px-2 text-gray-400">
                 충전
               </button>
-              <button className="px-2 py-1 text-gray-400">환급</button>
+              <button
+                onClick={() => Toast.error('아직 준비되지 않은 서비스입니다')}
+                className="px-2 py-1 text-gray-400"
+              >
+                환급
+              </button>
             </div>
           </div>
         </div>
