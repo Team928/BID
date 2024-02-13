@@ -14,6 +14,7 @@ import io.openvidu.java.client.Recording;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +35,7 @@ public class LiveController {
     }
 
     @GetMapping("/purchase/results") // 역경매 판매자 선택하기 + 채팅방 개설
-    public ResponseEntity<ResultResponse> ChoicePurchaseResult(LiveResultReq resultReq){
+    public ResponseEntity<ResultResponse> ChoicePurchaseResult(LiveResultReq resultReq) {
         chatService.createRoom(resultReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
 
@@ -55,8 +56,15 @@ public class LiveController {
     }
 
     @GetMapping("/check/recording")
-    public ResponseEntity<ResultResponse> CheckRecording(LiveRecordingRes liveRecordingRes){
+    public ResponseEntity<ResultResponse> CheckRecording(LiveRecordingRes liveRecordingRes) {
         liveService.CheckRecording(liveRecordingRes);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_CHECK_SUCCESS));
+    }
+
+    @GetMapping("/end/purchase/{dealId}")
+    public ResponseEntity<ResultResponse> EndPurchaseLive(
+        @PathVariable(name = "dealId") long dealId) {
+        liveService.EndLive(dealId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_CHECK_SUCCESS));
     }
 }
