@@ -102,7 +102,16 @@ export interface IPurchaseDetailRes {
   maxPrice: number;
   memberLimit: number;
   status: dealStatusType;
-  applyForms: [];
+  applyForms: IApplyForms[];
   isWished: boolean;
   joinReq: boolean;
+}
+
+export interface IApplyForms {
+  content: string;
+  id: number;
+  image: string;
+  offerPrice: number;
+  sellerId: number;
+  sellerNickname: string;
 }
