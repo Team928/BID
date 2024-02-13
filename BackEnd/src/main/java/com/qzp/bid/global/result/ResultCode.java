@@ -54,6 +54,8 @@ public enum ResultCode {
     CREATE_LIVE_ROOM_SUCCESS(201, "라이브 방 생성에 성공하였습니다."),
     CHOICE_RESULT_SUCCESS(201, "역경매 선택에 성공하였습니다."),
     LIVE_START(200, "라이브를 시작하였습니다."),
+    RECORDING_SUCCESS(200, "녹화를 시작하였습니다."),
+
     ;
 
 
