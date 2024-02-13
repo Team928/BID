@@ -48,4 +48,11 @@ public class LiveController {
         Recording recording = liveService.StartRecording(liveRoomReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_SUCCESS, recording));
     }
+
+    @GetMapping("/end/recording")
+    public ResponseEntity<ResultResponse> EndRecording(LiveRoomReq liveRoomReq)
+        throws OpenViduJavaClientException, OpenViduHttpException {
+        Recording recording = liveService.EndRecording(liveRoomReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_END_SUCCESS, recording));
+    }
 }
