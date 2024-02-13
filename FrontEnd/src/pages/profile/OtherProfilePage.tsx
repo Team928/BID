@@ -7,6 +7,7 @@ import { useProfile } from '@/hooks/profile/useProfile';
 import useOtherTabStore from '@/stores/profileOtherTab';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useParams } from 'react-router-dom';
+import userImage from '@/assets/icon/user.png'
 
 const OtherProfilePage = () => {
   const { useUserProfile } = useProfile();
@@ -30,10 +31,17 @@ const OtherProfilePage = () => {
         <div className="pt-12">
           <div className="flex gap-4 p-8 items-center">
             <div className="w-28 h-28 rounded-3xl relative">
-              <img
+              {userProfileInfo?.data.profileImage ? (
+                  <img
                     src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
                     className="w-full h-full rounded-2xl object-cover"
                   />
+                ) : (
+                  <img
+                    src={userImage}
+                    className="w-full h-full rounded-2xl object-cover bg-gray-200"
+                  />
+                )}
             </div>
             <div className="flex-1 flex flex-col justify-around">
               <div className="flex">
