@@ -119,7 +119,12 @@ const ProfilePage = () => {
                 <IoIosArrowDroprightCircle size={30} color="#3498DB" />
               </button>
             </div>
-            {/* 로그아웃 로직 */}
+            <div className="flex justify-between px-2 py-2.5 border-b">
+              <p className="text-gray-500 text-sm leading-7">포인트 사용 내역</p>
+              <button onClick={() => moveToNavigate('/profile/point')}>
+                <IoIosArrowDroprightCircle size={30} color="#3498DB" />
+              </button>
+            </div>
             <div className="flex justify-between px-2 py-2.5 border-b">
               <p className="text-gray-500 text-sm leading-7">로그아웃</p>
               <button onClick={handleLogout}>
