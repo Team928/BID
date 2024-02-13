@@ -10,6 +10,7 @@ import { useState } from 'react';
 import PointChargeModal from '@/components/@common/PointChargeModal';
 import Toast from '@/components/@common/Toast';
 import ProfileModal from '@/components/profile/ProfileModal';
+import userImage from '@/assets/icon/user.png'
 
 const ProfilePage = () => {
   const info: IHeaderInfo = {
@@ -51,10 +52,17 @@ const ProfilePage = () => {
           <div className="pt-12">
             <div className="flex gap-4 p-8 items-center">
               <div className="w-24 h-24 rounded-3xl relative">
-              <img
+              {userProfileInfo?.data.profileImage ? (
+                  <img
                     src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
                     className="w-full h-full rounded-2xl object-cover"
                   />
+                ) : (
+                  <img
+                    src={userImage}
+                    className="w-full h-full rounded-2xl object-cover bg-gray-200"
+                  />
+                )}
                 <button className="p-1 bg-white rounded-3xl absolute right-1 bottom-1" onClick={() => setIsModalOpen(true)}>
                   <MdOutlineCreate />
                 </button>

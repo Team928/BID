@@ -25,14 +25,23 @@
 }
 
 @font-face {
-  font-family: 'KOTRA_GOTHIC';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/KOTRA_GOTHIC.woff') format('woff');
-  font-weight: normal;
+  font-family: 'LINESeedKR-Rg';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Rg.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 400;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/naver/NanumSquare_acR.woff2) format('woff2');
+  font-display: swap;
+}
+
 body {
-  font-family: 'KOTRA_GOTHIC';
+  /* font-family: 'LINESeedKR-Rg'; */
+  font-family: 'NanumSquare';
   max-width: 500px;
   margin: 0 auto;
 }
