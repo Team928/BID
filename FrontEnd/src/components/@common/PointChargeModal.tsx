@@ -5,6 +5,7 @@ import { IUserProfile } from '@/types/profile';
 import payment_icon from '@/assets/image/payment_icon_yellow_small.png';
 import Toast from './Toast';
 import amountStore from '@/stores/amountStore';
+import { useEffect } from 'react';
 
 interface IPointChargeProps {
   setShowChargeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,12 +15,12 @@ interface IPointChargeProps {
 const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeProps) => {
   const { amount, setAmount } = amountStore();
   const { usePostChargePoint } = useProfile();
-  const { mutate } = usePostChargePoint(amount, userProfileInfo!.nickname);
+  const { mutate, data } = usePostChargePoint(amount, userProfileInfo!.nickname);
 
   // 아임포트 결제
   const handleChargePoint = () => {
     window.IMP?.init('imp58677553'); // 발급받은 가맹점 식별코드
-
+    console.log(amount);
     if (!amount) {
       Toast.error('결제 금액을 확인해주세요');
       return;
@@ -39,14 +40,19 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       if (success) {
         console.log(response);
         mutate();
-        setAmount(0);
-        setShowChargeModal(false);
       } else {
         console.log(response);
       }
     };
     window.IMP?.request_pay(data, callback);
   };
+
+  useEffect(() => {
+    if (data && data.status === 200) {
+      setAmount(0);
+      setShowChargeModal(false);
+    }
+  }, [data]);
 
   return (
     <>
@@ -57,6 +63,7 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
             <input
               type="text"
               name="amount"
+              value={amount}
               onChange={e => setAmount(Number(e.target.value))}
               placeholder="충전할 금액을 입력해주세요"
               className="w-full outline-none border-b p-2"

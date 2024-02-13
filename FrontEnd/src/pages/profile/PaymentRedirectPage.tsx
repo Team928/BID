@@ -12,15 +12,20 @@ const PaymentRedirectPage = () => {
   const { amount, setAmount } = amountStore();
   const { nickname } = userStore();
   const { usePostChargePoint } = useProfile();
-  const { mutate } = usePostChargePoint(amount, nickname);
+  const { mutate, data } = usePostChargePoint(amount, nickname);
 
   useEffect(() => {
     if (impSuccess === 'true') {
       mutate();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (data && data.status === 200) {
       setAmount(0);
       navigate('/profile');
     }
-  }, []);
+  }, [data]);
 
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center relative">
