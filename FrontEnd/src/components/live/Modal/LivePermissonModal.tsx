@@ -13,7 +13,7 @@ const LivePermissonModal = ({
 }) => {
   const requestPermissions = async () => {
     try {
-      await navigator.mediaDevices.getUserMedia({ video: true });
+      // await navigator.mediaDevices.getUserMedia({ video: true });
       Toast.success('접근 권한이 허용되었습니다.');
       setIsAllowed(true);
     } catch (error) {

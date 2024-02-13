@@ -13,7 +13,7 @@ const SaleListItem = (props: { item: ISaleSimpleRes }) => {
   const { month, date, datOfWeek, time } = getDate(sale.startTime);
 
   return (
-    <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs">
+    <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs cursor-pointer">
       <div className="w-32 h-32 bg-BID_LIGHT_GRAY rounded-2xl relative">
         <img
           src={`${import.meta.env.VITE_BASE_URL}static${sale.image}`}

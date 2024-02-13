@@ -15,6 +15,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -31,7 +32,8 @@ public class Sale extends Deal {
     @Enumerated(EnumType.STRING)
     private DealStatus status;
     private int liveRequestCount;
-    private int bidCount;
+    @ColumnDefault("0")
+    private Integer bidCount;
     @OneToMany(fetch = FetchType.LAZY)
     private List<Bid> bids = new ArrayList<>();
 }

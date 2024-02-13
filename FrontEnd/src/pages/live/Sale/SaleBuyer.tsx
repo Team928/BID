@@ -52,7 +52,7 @@ const SaleBuyer = ({
 
       setTimeout(() => {
         navigate('/');
-      }, 3000);
+      }, 1000);
     }
   };
 
@@ -69,7 +69,7 @@ const SaleBuyer = ({
       )}
       {/* 사진 위 화면 */}
       <div className="absolute top-0 left-0 right-0 bottom-0">
-        <div className="w-full h-full relative">
+        <div className="w-full h-screen relative ">
           <div className="absolute w-full h-36 bg-gradient-to-b from-black/35 to-black/0">&nbsp;</div>
           <div className="absolute w-full flex p-3 items-center">
             <div className="liveRedBtn">LIVE</div>
@@ -78,7 +78,7 @@ const SaleBuyer = ({
               <BsXLg color="white" size="30" />
             </div>
           </div>
-          <div className="absolute top-12 px-4 text-white text-xs">
+          <div className="absolute top-12 px-2 text-white text-xs">
             <div className="mb-3">
               <span className="text-white font-semibold bg-black/10 px-2 py-1 mr-1 rounded-full">경매 시작가</span>
               {state.startPrice}원

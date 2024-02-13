@@ -3,7 +3,7 @@ import PurchaseChat from '@/components/chat/LiveChat/PurchaseChat';
 
 const ChattingBottomSheet = ({ onClose }: { onClose: () => void }) => {
   return (
-    <BottomSheet height="600px" title="현재 참여중인 판매자" onClose={onClose}>
+    <BottomSheet height="600px" title="채팅하기" onClose={onClose}>
       <div>
         <PurchaseChat />
       </div>
