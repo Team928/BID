@@ -112,7 +112,7 @@ const BuyWritePage = () => {
       formData.append('photos', photos[i]);
     }
 
-    postBuyWrite(formData).then(() => navigate('/profile'));
+    postBuyWrite(formData).then(() => navigate('/'));
   };
 
   // 글쓰기 유효성 검사

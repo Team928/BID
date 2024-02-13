@@ -118,7 +118,7 @@ const SaleWritePage = () => {
       formData.append('photos', photos[i]);
     }
 
-    postSaleWrite(formData).then(() => navigate('/profile'));
+    postSaleWrite(formData).then(() => navigate('/'));
   };
 
   // 글쓰기 유효성 검사

@@ -5,7 +5,7 @@ import { useProfile } from '@/hooks/profile/useProfile';
 import { IUserProfile } from '@/types/profile';
 import payment_icon from '@/assets/image/payment_icon_yellow_small.png';
 import Toast from './Toast';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface IPointChargeProps {
   setShowChargeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,11 +13,24 @@ interface IPointChargeProps {
 }
 
 const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeProps) => {
-  const [query] = useSearchParams();
+  const location = useLocation();
+  const success = location.state !== null ? location.state.isSuccess : false;
+
   const [amount, setAmount] = useState<number>(0);
   const { usePostChargePoint } = useProfile();
-
   const { mutate } = usePostChargePoint(amount, userProfileInfo!.nickname);
+
+  useEffect(() => {
+    if (success) {
+      mutate();
+      setShowChargeModal(false);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    console.log(success);
+  }, [success]);
+
   // 아임포트 결제
   const handleChargePoint = () => {
     window.IMP?.init('imp58677553'); // 발급받은 가맹점 식별코드
@@ -33,7 +46,7 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       amount: amount,
       buyer_name: userProfileInfo!.nickname,
       buyer_email: userProfileInfo!.email,
-      m_redirect_url: 'https://i10d208.p.ssafy.io/profile',
+      m_redirect_url: 'https://i10d208.p.ssafy.io/iamport/redirect',
     };
 
     const callback = (response: RequestPayResponse) => {
@@ -48,13 +61,6 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
     };
     window.IMP?.request_pay(data, callback);
   };
-
-  useEffect(() => {
-    if (query.get('imp_success') === 'true') {
-      mutate();
-      setShowChargeModal(false);
-    }
-  }, [query]);
 
   return (
     <>
