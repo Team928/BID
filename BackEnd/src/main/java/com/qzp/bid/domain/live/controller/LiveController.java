@@ -2,16 +2,19 @@ package com.qzp.bid.domain.live.controller;
 
 import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.chat.service.ChatService;
+import com.qzp.bid.domain.live.dto.LiveRoomReq;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
 import com.qzp.bid.domain.live.service.LiveService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
+import io.openvidu.java.client.Recording;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +29,9 @@ public class LiveController {
 
 
     @GetMapping("/create/rooms") // 방만들기 & 방참가
-    public ResponseEntity<ResultResponse> JoinLiveRoom(@RequestParam Map<String, Object> params)
+    public ResponseEntity<ResultResponse> JoinLiveRoom(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
-        LiveRoomRes liveRoom = liveService.JoinLiveRoom(params);
+        LiveRoomRes liveRoom = liveService.JoinLiveRoom(liveRoomReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CREATE_LIVE_ROOM_SUCCESS, liveRoom));
     }
 
@@ -39,4 +42,10 @@ public class LiveController {
 
     }
 
+    @GetMapping("/start/recording")
+    public ResponseEntity<ResultResponse> StartRecording(LiveRoomReq liveRoomReq)
+        throws OpenViduJavaClientException, OpenViduHttpException {
+        Recording recording = liveService.StartRecording(liveRoomReq);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_SUCCESS, recording));
+    }
 }

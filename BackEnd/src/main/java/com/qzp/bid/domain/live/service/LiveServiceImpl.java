@@ -9,12 +9,16 @@ import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
+import com.qzp.bid.domain.live.dto.LiveRoomReq;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
+import com.qzp.bid.domain.live.entity.Video;
+import com.qzp.bid.domain.live.repositorty.VideoRepository;
 import com.qzp.bid.domain.sse.dto.SseDto;
 import com.qzp.bid.domain.sse.dto.SseType;
 import com.qzp.bid.domain.sse.service.SseService;
 import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
+import com.qzp.bid.global.security.util.AccountUtil;
 import io.openvidu.java.client.Connection;
 import io.openvidu.java.client.ConnectionProperties;
 import io.openvidu.java.client.ConnectionType;
@@ -22,7 +26,10 @@ import io.openvidu.java.client.OpenVidu;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.OpenViduRole;
+import io.openvidu.java.client.Recording;
+import io.openvidu.java.client.Recording.OutputMode;
 import io.openvidu.java.client.RecordingMode;
+import io.openvidu.java.client.RecordingProperties;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.SessionProperties;
 import jakarta.annotation.PostConstruct;
@@ -33,6 +40,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -50,6 +58,8 @@ public class LiveServiceImpl implements LiveService {
     private final PurchaseRepository purchaseRepository;
     private final WishRepository wishRepository;
     private final SseService sseService;
+    private final AccountUtil accountUtil;
+    private final VideoRepository videoRepository;
     private OpenVidu openVidu;
     @Value("${openvidu.url}")
     private String OPENVIDU_URL;
@@ -62,11 +72,11 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public LiveRoomRes JoinLiveRoom(Map<String, Object> params)
+    public LiveRoomRes JoinLiveRoom(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
 
-        long userId = Long.parseLong((String) params.get("userId"));
-        long dealId = Long.parseLong((String) params.get("dealId"));
+        long userId = liveRoomReq.getUserId();
+        long dealId = liveRoomReq.getDealId();
 
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
@@ -102,37 +112,13 @@ public class LiveServiceImpl implements LiveService {
 
         } else { // 세션 없음 -> 새로 만들기
 
-            // 라이브로 상태 바꾸기
-            if (deal.getClass().getSimpleName().equals("Sale")) {
-                Sale sale = saleRepository.findById(dealId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
-                sale.setStatus(DealStatus.LIVE);
-                saleRepository.save(sale);
-            } else {
-                Purchase purchase = purchaseRepository.findById(dealId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
-                purchase.setStatus(DealStatus.LIVE);
-                purchaseRepository.save(purchase);
-            }
-
-            Optional<List<Wish>> wishes = wishRepository.findByDealId(dealId);
-            if (wishes.isPresent()) {
-                for (Wish wish : wishes.get()) {
-                    sseService.send(
-                        SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
-                            wish.getDeal().getClass().getSimpleName(),
-                            SseType.START_LIVE,
-                            LocalDateTime.now()));
-                }
-            }
-
             SessionProperties sessionProperties = new SessionProperties.Builder()
                 .customSessionId("LIVECHATROOMID" + dealId)
                 .recordingMode(RecordingMode.MANUAL)
                 .build();
 
             session = openVidu.createSession(sessionProperties);
-
+            session.fetch();
             connection = session.createConnection(connectionProperties);
 
             // Redis  <DealId : SessionId> 넣기
@@ -153,5 +139,75 @@ public class LiveServiceImpl implements LiveService {
 
         return liveRoom;
     }
+
+    @Override
+    public Recording StartRecording(LiveRoomReq liveRoomReq)
+        throws OpenViduJavaClientException, OpenViduHttpException {
+
+        long userId = liveRoomReq.getUserId();
+        long dealId = liveRoomReq.getDealId();
+
+        Deal deal = dealRepository.findById(dealId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
+
+        if(deal.getWriter().getId() != Long.parseLong(accountUtil.getLoginMemberId())){
+            throw new BusinessException(ErrorCode.NOT_WRITER);
+        }
+
+        String sessionId = String.valueOf(
+            redisTemplate.opsForHash().get("OpenVidu_SessionId", dealId));
+
+        RecordingProperties properties = new RecordingProperties.Builder().outputMode(
+                OutputMode.COMPOSED).hasAudio(true).hasVideo(true).name("LIVE" + dealId).frameRate(30)
+            .resolution("600x900").build();
+
+        openVidu.fetch();
+        Session session = null;
+        for (Session s : openVidu.getActiveSessions()) {
+            if (sessionId != null && s.getSessionId().equals(sessionId)) {
+                session = s;
+                break;
+            }
+        }
+
+        // 녹화 시작
+        Recording recording = openVidu.startRecording(session.getSessionId(), properties);
+        // Record Id Redis에 저장
+        redisTemplate.opsForHash().put("OpenVidu_recording", dealId, recording.getId());
+
+        // 상태 바꾸기 : LIVE
+        if (deal.getClass().getSimpleName().equals("Sale")) {
+            Sale sale = saleRepository.findById(dealId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
+            sale.setStatus(DealStatus.LIVE);
+            saleRepository.save(sale);
+        } else {
+            Purchase purchase = purchaseRepository.findById(dealId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+            purchase.setStatus(DealStatus.LIVE);
+            purchaseRepository.save(purchase);
+        }
+
+        Optional<List<Wish>> wishes = wishRepository.findByDealId(dealId);
+        if (wishes.isPresent()) {
+            for (Wish wish : wishes.get()) {
+                sseService.send(
+                    SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
+                        wish.getDeal().getClass().getSimpleName(),
+                        SseType.START_LIVE,
+                        LocalDateTime.now()));
+            }
+        }
+
+        Video video = Video.builder().dealId(dealId).name("LIVE" + dealId).build();
+        videoRepository.save(video);
+
+        return recording;
+
+
+    }
+
+
+
 
 }
