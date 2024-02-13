@@ -112,7 +112,7 @@ public class LiveServiceImpl implements LiveService {
 
         } else { // 세션 없음 -> 새로 만들기
 
-            if(userId != Long.parseLong(accountUtil.getLoginMemberId())){
+            if (userId != Long.parseLong(accountUtil.getLoginMemberId())) {
                 throw new BusinessException(ErrorCode.NOT_WRITER);
             }
 
@@ -154,7 +154,7 @@ public class LiveServiceImpl implements LiveService {
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
 
-        if(userId != Long.parseLong(accountUtil.getLoginMemberId())){
+        if (userId != Long.parseLong(accountUtil.getLoginMemberId())) {
             throw new BusinessException(ErrorCode.NOT_WRITER);
         }
 
@@ -221,7 +221,7 @@ public class LiveServiceImpl implements LiveService {
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
 
-        if(userId != Long.parseLong(accountUtil.getLoginMemberId())){
+        if (userId != Long.parseLong(accountUtil.getLoginMemberId())) {
             throw new BusinessException(ErrorCode.NOT_WRITER);
         }
 
@@ -233,12 +233,12 @@ public class LiveServiceImpl implements LiveService {
         if (deal.getClass().getSimpleName().equals("Sale")) {
             Sale sale = saleRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
-            sale.setStatus(DealStatus.END);
+            sale.setStatus(DealStatus.AUCTION);
             saleRepository.save(sale);
         } else {
             Purchase purchase = purchaseRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
-            purchase.setStatus(DealStatus.END);
+            purchase.setStatus(DealStatus.AUCTION);
             purchaseRepository.save(purchase);
         }
         recording = openVidu.stopRecording(recording.getId());
