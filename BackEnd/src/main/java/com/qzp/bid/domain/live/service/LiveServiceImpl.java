@@ -9,6 +9,7 @@ import com.qzp.bid.domain.deal.repository.DealRepository;
 import com.qzp.bid.domain.deal.repository.WishRepository;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
+import com.qzp.bid.domain.live.dto.LiveRecordingRes;
 import com.qzp.bid.domain.live.dto.LiveRoomReq;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
 import com.qzp.bid.domain.live.entity.Video;
@@ -37,11 +38,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -218,10 +217,6 @@ public class LiveServiceImpl implements LiveService {
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
 
-        if(deal.getWriter().getId() != Long.parseLong(accountUtil.getLoginMemberId())){
-            throw new BusinessException(ErrorCode.NOT_WRITER);
-        }
-
 
         String recordingId = String.valueOf(
             redisTemplate.opsForHash().get("OpenVidu_recording", dealId));
@@ -261,6 +256,45 @@ public class LiveServiceImpl implements LiveService {
 
     }
 
+    @Transactional
+    @Override
+    public void CheckRecording(LiveRecordingRes liveRecordingRes) {
+        long dealId = liveRecordingRes.getDealId();
 
+        Deal deal = dealRepository.findById(dealId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
+
+        Video video = videoRepository.findByDealId(dealId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.VIDEO_NOT_EXIST));
+
+        List<String> timeLine = video.getTimeLine();
+        String time = String.format("%02d",
+            ChronoUnit.HOURS.between(video.getCreateTime(), LocalDateTime.now())) + ":"
+            + String.format("%02d",
+            ChronoUnit.MINUTES.between(video.getCreateTime(), LocalDateTime.now())) + ":"
+            + String.format("%02d",
+            ChronoUnit.SECONDS.between(video.getCreateTime(), LocalDateTime.now()));
+
+        switch (liveRecordingRes.getStep()) {
+            case 1:
+                timeLine.add("전면부|" + time);
+                break;
+            case 2:
+                timeLine.add("후면부|" + time);
+                break;
+            case 3:
+                timeLine.add("다방면|" + time);
+                break;
+            case 4:
+                timeLine.add("작동상태|" + time);
+                break;
+            case 5:
+                timeLine.add("크기비교|" + time);
+                break;
+        }
+
+        videoRepository.save(video);
+
+    }
 
 }

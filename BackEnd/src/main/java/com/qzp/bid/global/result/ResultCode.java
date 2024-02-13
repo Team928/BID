@@ -56,7 +56,7 @@ public enum ResultCode {
     LIVE_START(200, "라이브를 시작하였습니다."),
     RECORDING_SUCCESS(200, "녹화를 시작하였습니다."),
     RECORDING_END_SUCCESS(200, "녹화종료를 하였습니다."),
-
+    RECORDING_CHECK_SUCCESS(200, "녹화기록에 성공하였습니다."),
     ;
 
 
