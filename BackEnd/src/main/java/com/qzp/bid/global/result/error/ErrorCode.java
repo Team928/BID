@@ -55,6 +55,10 @@ public enum ErrorCode {
     //Chat
     EXIT_CHATROOM_FAIL(400, "거래가 확정되지 않았습니다."),
     CHATROOM_NOT_EXIST(400, "채팅방이 존재하지 않습니다."),
+
+    //live
+    VIDEO_NOT_EXIST(400, "비디오가 존재하지 않습니다."),
+    NOT_WRITER(400, "글쓴이가 아닙니다."),
     ;
 
     private final int status;
