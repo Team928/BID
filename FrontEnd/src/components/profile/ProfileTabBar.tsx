@@ -10,20 +10,25 @@ const ProfileTabBar: React.FC<ProfileTabBarProps> = ({ leftTab, rightTab }) => {
   const { tab, setTab } = useTabStore();
 
   return (
-    <div className="w-full flex px-BID_P fixed top-0 pt-16 bg-white z-[9] max-w-[500px]">
-      <div className="w-1/2 flex justify-center border-b-[3px] py-1 border-BID_MAIN" onClick={() => setTab('sale')}>
-        {tab === 'sale' ? (
-          <p className="font-bold text-BID_MAIN">{leftTab}</p>
-        ) : (
-          <p className="text-gray-400 py-1">{leftTab}</p>
-        )}
+    <div className="w-screen flex px-BID_P relative pb-2 text-center pt-16 ">
+      <div
+        onClick={() => setTab('sale')}
+        className={tab === 'sale' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}
+      >
+        <p>{leftTab}</p>
       </div>
-      <div className="w-1/2 flex justify-center border-b-[3px] py-1 border-BID_MAIN" onClick={() => setTab('purchase')}>
-        {tab === 'purchase' ? (
-          <p className="font-bold text-BID_MAIN">{rightTab}</p>
-        ) : (
-          <p className="text-gray-400 py-1">{rightTab}</p>
-        )}
+      <div
+        onClick={() => setTab('purchase')}
+        className={tab === 'purchase' ? ' font-bold flex-1 text-BID_MAIN' : 'text-gray-400 flex-1'}
+      >
+        <p>{rightTab}</p>
+      </div>
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-300">
+        <div
+          className={`${
+            tab !== 'sale' ? 'left-1/2' : 'left-0'
+          } duration-500 ease-in-out relative bottom-[2px] z-10 w-1/2 h-[3px] bg-BID_MAIN`}
+        ></div>
       </div>
     </div>
   );
