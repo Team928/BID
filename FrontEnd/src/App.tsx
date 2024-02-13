@@ -27,6 +27,7 @@ import ProfileReviewPage from './pages/profile/review/ProfileReviewPage';
 import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import BuyWritePage from './pages/write/BuyWritePage';
 import SaleWritePage from './pages/write/SaleWritePage';
+import PaymentRedirectPage from './pages/profile/PaymentRedirectPage';
 
 const router = createBrowserRouter([
   {
@@ -140,6 +141,10 @@ const router = createBrowserRouter([
   {
     path: '/live/end',
     element: <LiveEndPage />,
+  },
+  {
+    path: '/payments/complete',
+    element: <PaymentRedirectPage></PaymentRedirectPage>,
   },
 ]);
 function App() {

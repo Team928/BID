@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import Modal from './Modal';
 import { RequestPayParams, RequestPayResponse } from '@/types/model/iamport';
 import { useProfile } from '@/hooks/profile/useProfile';
 import { IUserProfile } from '@/types/profile';
 import payment_icon from '@/assets/image/payment_icon_yellow_small.png';
 import Toast from './Toast';
+import amountStore from '@/stores/amountStore';
 
 interface IPointChargeProps {
   setShowChargeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +12,7 @@ interface IPointChargeProps {
 }
 
 const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeProps) => {
-  const [amount, setAmount] = useState<number>(0);
+  const { amount, setAmount } = amountStore();
   const { usePostChargePoint } = useProfile();
   const { mutate } = usePostChargePoint(amount, userProfileInfo!.nickname);
 
@@ -39,6 +39,7 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       if (success) {
         console.log(response);
         mutate();
+        setAmount(0);
         setShowChargeModal(false);
       } else {
         console.log(response);
