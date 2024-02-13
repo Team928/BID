@@ -151,63 +151,62 @@ const SaleCategoryPage = () => {
       {isDaumModalOpen && <DaumPostModal setIsOpen={setIsDaumModalOpen} setAddress={setAddress} />}
       <div className="w-full h-screen pb-[4.5rem] max-w-[500px]">
         <Header info={info} />
-        <div className="w-full pt-12 pb-4  ">
+        <div className="w-full pt-12">
           <div className="pt-4 px-BID_P">
             <p className="font-bold text-lg">{changeEngToKr(category)}</p>
             <p className="text-xs text-BID_BLACK">필터링을 통해 원하는 상품을 찾아보세요</p>
           </div>
-          <div className="pl-4 pt-4 flex font-bold gap-3 text-center  overflow-x-scroll  whitespace-nowrap">
-            <div
+          <div className="pl-4 pt-2 flex text-xs text-center overflow-x-scroll whitespace-nowrap">
+            <button
               onClick={() => {
                 setOrder('');
                 setState('');
               }}
-              className={` border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === '' && 'bg-BID_BLACK text-white'}`}
+              className={` border border-BID_BLACK rounded-xl p-1 px-2 mr-1 ${state === '' && 'bg-BID_BLACK text-white'}`}
             >
               <p>전체</p>
-            </div>
-            <div
+            </button>
+            <button
               onClick={() => {
                 setIsAddressOpen(true);
                 setIsAddrClick(!isAddrClick);
               }}
-              className={`flex justify-center items-center gap-1 border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${isAddrClick && 'bg-BID_BLACK text-white'}`}
+              className={`flex justify-center items-center gap-1 border mr-1 border-BID_BLACK rounded-xl p-1 px-2 ${isAddrClick && 'bg-BID_BLACK text-white'}`}
             >
               <p>{addrText}</p>
               <MdKeyboardArrowDown />
-            </div>
-            <div
+            </button>
+            <button
               onClick={() => {
                 setOrder('');
                 setState('LIVE');
               }}
-              className={` border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === 'LIVE' && 'bg-BID_BLACK text-white'}`}
+              className={` border border-BID_BLACK rounded-xl p-1 px-2 mr-1 ${state === 'LIVE' && 'bg-BID_BLACK text-white'}`}
             >
               <p>라이브 진행중</p>
-            </div>
-            <div
+            </button>
+            <button
               onClick={() => {
                 setTempState('경매 시작전');
                 setIsOpen(true);
               }}
-              className={`flex justify-center items-center gap-1 border border-BID_BLACK rounded-xl p-1 px-2 text-sm ${state === 'BEFORE' && 'bg-BID_BLACK text-white'}`}
+              className={`flex justify-center items-center gap-1 border mr-1 border-BID_BLACK rounded-xl p-1 px-2 ${state === 'BEFORE' && 'bg-BID_BLACK text-white'}`}
             >
               <p>{state === 'BEFORE' ? order : '경매 시작전'}</p>
               <MdKeyboardArrowDown />
-            </div>
-            <div
+            </button>
+            <button
               onClick={() => {
                 setTempState('경매 진행중');
                 setIsOpen(true);
               }}
-              className={`flex justify-center items-center gap-1 border border-BID_BLACK rounded-xl p-1 px-2 mr-2 text-sm ${state === 'AUCTION' && 'bg-BID_BLACK text-white'}`}
+              className={`flex justify-center items-center gap-1 border border-BID_BLACK rounded-xl p-1 px-2 mr-2 ${state === 'AUCTION' && 'bg-BID_BLACK text-white'}`}
             >
               <p>{state === 'AUCTION' ? order : '경매 진행중'}</p>
               <MdKeyboardArrowDown />
-            </div>
+            </button>
           </div>
         </div>
-
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
           {categoryInfo?.pages.map(
             item =>

@@ -39,6 +39,7 @@ const LiveEntrancePage = () => {
         },
       });
     } else {
+      setOnMike(false);
       navigate(`/live/purchase/${id}`, {
         state: {
           title: state.title,

@@ -60,8 +60,8 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const [showChargeModal, setShowChargeModal] = useState<boolean>(false);
 
   const goToChatRoom = () => {
-    navigate(`/chat/rooms/${dealRes.id}`)
-  }
+    navigate(`/chat/rooms/${dealRes.id}`);
+  };
 
   return (
     <>
@@ -137,7 +137,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 onClick={() => {
                   immediateMuate();
                   setShowImmediateModal(false);
-                  goToChatRoom()
+                  goToChatRoom();
                 }}
               >
                 확인
@@ -150,25 +150,26 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
       {showChargeModal && (
         <PointChargeModal setShowChargeModal={setShowChargeModal} userProfileInfo={userProfileInfo?.data} />
       )}
-      <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] text-sm max-w-[500px]">
+      <div className="fixed px-4 bottom-0 w-full h-[4rem] bg-white z-10 text-[#A9A9A9] text-sm max-w-[500px]">
         <div className="w-full h-full py-2 flex items-center gap-3">
           {isWished ? (
-            <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />
+            <HiHeart onClick={() => wishDeleteMuate()} size={'2rem'} color="#FF0000" />
           ) : (
-            <HiOutlineHeart onClick={() => wishAddMuate()} size={'2.3rem'} color="#ababab" />
+            <HiOutlineHeart onClick={() => wishAddMuate()} size={'2rem'} color="#ababab" />
           )}
           {isSeller ? (
             <button
               onClick={() => approachLive()}
-              className="w-full border rounded-xl border-red-500 font-bold flex p-3 justify-center items-center gap-2"
+              className="w-full border rounded-xl text-md border-red-500 font-bold flex p-3 justify-center items-center gap-2-"
             >
-              <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
-              <p className="text-lg text-red-500">라이브 시작하기</p>
+              <MdLiveTv size={'16px'} color="red" />
+              &nbsp;&nbsp;
+              <p className=" text-red-500 ">라이브 시작하기</p>
             </button>
           ) : (
             <button
               onClick={handleBtnClick}
-              className={`w-full py-3  text-white rounded-xl text-center text-lg font-bold 
+              className={`w-full py-3  text-white rounded-xl text-center text-md
           ${status === 'END' ? 'bg-BID_BLACK' : 'bg-BID_MAIN'}`}
             >
               {status === 'BEFORE' ? '즉시 구매하기' : status === 'END' ? '이미 종료된 경매입니다' : '입찰하기'}
