@@ -15,7 +15,7 @@ const LoginRedirectPage = () => {
     // 이미 회원가입이 되어있는 유저라면
     if (serchParams.get('nickname')) {
       const nickname = serchParams.get('nickname')!;
-      const area = serchParams.get('area')!;
+      const area = [serchParams.get('area')!];
       loginUser({
         userId,
         accessToken,
@@ -27,7 +27,7 @@ const LoginRedirectPage = () => {
       navigate('/');
     } else {
       // 그게 아니라면 회원가입 페이지로
-      loginUser({ accessToken: accessToken, area: '', nickname: '', refreshToken: refreshToken, userId: userId });
+      loginUser({ accessToken: accessToken, area: [], nickname: '', refreshToken: refreshToken, userId: userId });
       navigate('/signup');
     }
   }, []);

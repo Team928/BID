@@ -31,7 +31,7 @@ export default function KakaoLoginRedirect() {
           } else {
             console.log('accessToken   ' + accessToken);
             console.log('refreshToken   ' + refreshToken);
-            loginUser({ accessToken: accessToken, area: '', nickname: '', refreshToken: refreshToken, userId: userId });
+            loginUser({ accessToken: accessToken, area: [], nickname: '', refreshToken: refreshToken, userId: userId });
             navigate('/signup');
           }
         })
