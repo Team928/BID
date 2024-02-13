@@ -15,10 +15,14 @@ import useKeywordStore from '@/stores/keywordStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import userStore from '@/stores/userStore';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
+  const { isLogin } = userStore();
   const { tab } = useTabStore();
   const { init } = useKeywordStore();
+  const navigate = useNavigate();
+
   const info: IHeaderInfo = {
     left: null,
     center: null,
@@ -28,6 +32,9 @@ const HomePage = () => {
 
   useEffect(() => {
     init();
+    if (!isLogin) {
+      navigate('/');
+    }
   }, []);
 
   // 캐러셀 설정
