@@ -10,7 +10,7 @@ import { useState } from 'react';
 import PointChargeModal from '@/components/@common/PointChargeModal';
 import Toast from '@/components/@common/Toast';
 import ProfileModal from '@/components/profile/ProfileModal';
-import userImage from '@/assets/icon/user.png'
+import userImage from '@/assets/icon/user.png';
 
 const ProfilePage = () => {
   const info: IHeaderInfo = {
@@ -49,33 +49,33 @@ const ProfilePage = () => {
       <div>
         <Header info={info} />
         {/* 내 프로필 섹션 */}
-          <div className="pt-12">
-            <div className="flex gap-4 p-8 items-center">
-              <div className="w-24 h-24 rounded-3xl relative">
+        <div className="pt-12">
+          <div className="flex gap-4 p-8 items-center">
+            <div className="w-24 h-24 rounded-3xl relative">
               {userProfileInfo?.data.profileImage ? (
-                  <img
-                    src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
-                    className="w-full h-full rounded-2xl object-cover"
-                  />
-                ) : (
-                  <img
-                    src={userImage}
-                    className="w-full h-full rounded-2xl object-cover bg-gray-200"
-                  />
-                )}
-                <button className="p-1 bg-white rounded-3xl absolute right-1 bottom-1" onClick={() => setIsModalOpen(true)}>
-                  <MdOutlineCreate />
-                </button>
+                <img
+                  src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
+                  className="w-full h-full rounded-2xl object-cover"
+                />
+              ) : (
+                <img src={userImage} className="w-full h-full rounded-2xl object-cover bg-gray-200" />
+              )}
+              <button
+                className="p-1 bg-white rounded-3xl absolute right-1 bottom-1"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <MdOutlineCreate />
+              </button>
+            </div>
+            <div className="flex-1 flex flex-col justify-around">
+              <div className="flex">
+                <p className="text-lg font-bold">{userProfileInfo?.data.nickname}</p>
               </div>
-              <div className="flex-1 flex flex-col justify-around">
-                <div className="flex">
-                  <p className="text-lg font-bold">{userProfileInfo?.data.nickname}</p>
-                </div>
-                <p className="text-xs text-BID_GRAY py-2">{userProfileInfo?.data.email}</p>
-                <p className="text-md text-BID_MAIN font-bold">{userProfileInfo?.data.score}</p>
-              </div>
+              <p className="text-xs text-BID_GRAY py-2">{userProfileInfo?.data.email}</p>
+              <p className="text-md text-BID_MAIN font-bold">{userProfileInfo?.data.score}</p>
             </div>
           </div>
+        </div>
 
         {/* 포인트 섹션 */}
         <div className="px-6">
@@ -119,6 +119,12 @@ const ProfilePage = () => {
                 <img src={ARROWRIGHT} />
               </button>
             </div>
+            <div className="flex justify-between px-2 py-4 border-b">
+              <p className="text-gray-500 text-lg">내 포인트 내역</p>
+              <button className="bg-BID_MAIN p-1 rounded-2xl" onClick={() => moveToNavigate('/profile/point')}>
+                <img src={ARROWRIGHT} />
+              </button>
+            </div>
             {/* 로그아웃 로직 */}
             <div className="flex justify-between px-2 py-4 border-b">
               <p className="text-gray-500 text-lg">로그아웃</p>
@@ -131,11 +137,8 @@ const ProfilePage = () => {
         <Bottom />
 
         {/* 모달 영역 */}
-      {isModalOpen && <ProfileModal onClose={() => setIsModalOpen(false)}/>
-      }
+        {isModalOpen && <ProfileModal onClose={() => setIsModalOpen(false)} />}
       </div>
-
-      
     </>
   );
 };

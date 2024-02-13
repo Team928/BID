@@ -71,7 +71,6 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
               </div>
             </button>
           </div>
-
           <div>
             {nickname === dealRes.writer && (
               <>

@@ -28,6 +28,7 @@ import ProfileSalePage from './pages/profile/sale/ProfileSalePage';
 import BuyWritePage from './pages/write/BuyWritePage';
 import SaleWritePage from './pages/write/SaleWritePage';
 import PaymentRedirectPage from './pages/profile/PaymentRedirectPage';
+import ProfilePointPage from './pages/profile/ProfilePointPage';
 
 const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
   {
     path: '/profile/review',
     element: <ProfileReviewPage />,
+  },
+  {
+    path: '/profile/point',
+    element: <ProfilePointPage />,
   },
   {
     path: '/scrap',

@@ -1,6 +1,6 @@
 import { axiosAuthInstance } from '@/apis/axiosInstance';
 import { APIResponse } from '@/types/model';
-import { ISaleListRes, IUserProfile, IbuyListRes } from '@/types/profile';
+import { ISaleListRes, IUserPointHistoryRes, IUserProfile, IbuyListRes } from '@/types/profile';
 
 // 내가 주최한 경매 조회
 export const getSaleListHostReq = async (nickName: string): Promise<APIResponse<ISaleListRes>> => {
@@ -53,12 +53,24 @@ export const postChargePoint = async (amount: number): Promise<APIResponse<strin
 
 // 프로필 수정
 export const postchangeProfile = async (info: FormData): Promise<APIResponse<string>> => {
-  console.log(info)
+  console.log(info);
   const { data } = await axiosAuthInstance.patch(`members/profiles`, info, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  console.log(data)
-  return data
-}
+  console.log(data);
+  return data;
+};
+
+// 사용자 포인트 내역 조회
+export const getUserPointHistory = async (): Promise<APIResponse<IUserPointHistoryRes>> => {
+  const { data } = await axiosAuthInstance.get(`members/points`, {
+    params: {
+      page: 0,
+      size: 20,
+    },
+  });
+  console.log(data);
+  return data;
+};

@@ -4,6 +4,7 @@ import {
   getBuyListParticiReq,
   getSaleListHostReq,
   getSaleListParticiReq,
+  getUserPointHistory,
   getUserProfileReq,
   postChargePoint,
   postchangeProfile,
@@ -11,7 +12,6 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useProfile = () => {
-  
   const useSaleHost = (nickName: string) => {
     return useQuery({
       queryKey: ['sale', 'host', nickName],
@@ -47,18 +47,18 @@ export const useProfile = () => {
     });
   };
 
-  const useChangeProfile = (nickname: string, ) => {
-    const queryClient = useQueryClient()
+  const useChangeProfile = (nickname: string) => {
+    const queryClient = useQueryClient();
 
     return useMutation({
       mutationKey: ['image', nickname],
       mutationFn: (formData: FormData) => postchangeProfile(formData),
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['profile', nickname]})
-        Toast.success('프로필을 변경하였습니다')
-      }
-    })
-  }
+        queryClient.invalidateQueries({ queryKey: ['profile', nickname] });
+        Toast.success('프로필을 변경하였습니다');
+      },
+    });
+  };
 
   const usePostChargePoint = (amount: number, nickname: string) => {
     const queryClient = useQueryClient();
@@ -76,5 +76,21 @@ export const useProfile = () => {
     });
   };
 
-  return { useSaleHost, useUserProfile, useBuyHost, useSaleParticipant, useBuyParticipant, usePostChargePoint, useChangeProfile };
+  const useUserPointHistory = () => {
+    return useQuery({
+      queryKey: ['profile', 'point', 'history'],
+      queryFn: () => getUserPointHistory(),
+    });
+  };
+
+  return {
+    useSaleHost,
+    useUserProfile,
+    useBuyHost,
+    useSaleParticipant,
+    useBuyParticipant,
+    usePostChargePoint,
+    useChangeProfile,
+    useUserPointHistory,
+  };
 };

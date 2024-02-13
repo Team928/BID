@@ -35,8 +35,8 @@ export const getDate = (startTime: string) => {
   const customTime2 = `${hours}:${minutes}`;
   const fullDate2 = `${year}.${customDate} ${customTime2}`;
   const fullDate3 = [month, date, hours, minutes];
-
-  return { year, month, date, datOfWeek, hours, minutes, time, fullDate, fullDate2, fullDate3 };
+  const fullDate4 = `${year}/${month}/${date}`;
+  return { year, month, date, datOfWeek, hours, minutes, time, fullDate, fullDate2, fullDate3, fullDate4 };
 };
 
 // 2024-02-10T16:47:00
