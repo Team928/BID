@@ -23,3 +23,35 @@ export interface IMatchReqInfo {
   applyFormId: number;
   finalOfferPrice: number;
 }
+
+export interface IRecordReq {
+  userId: number;
+  dealId: string;
+}
+
+export interface ITimeLine {
+  step: number;
+  dealId: string;
+}
+
+export interface IMatchReq {
+  dealId: string;
+  applyFormId: number;
+  offerPrice: number;
+}
+
+export interface ISessionRes {
+  roomName: string;
+  roomNum: number;
+  token: string;
+}
+
+export interface ITimeStampReq {
+  step: number;
+  dealId: string;
+}
+
+export interface ITimeStamp {
+  content: string;
+  time: string;
+}
