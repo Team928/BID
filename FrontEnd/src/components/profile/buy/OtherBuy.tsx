@@ -1,8 +1,10 @@
 import StateButton from "@/components/@common/StateButton"
 import { useProfile } from "@/hooks/profile/useProfile"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 const OtherBuy = () => {
+
+    const navigate = useNavigate()
 
     const { useUserProfile,  useBuyHost  } = useProfile()
     const { nickname } = useParams()
@@ -15,10 +17,14 @@ const OtherBuy = () => {
         data: buyHostInfo
     } = useBuyHost(`${userProfileInfo?.data.nickname}`)
 
+    const handleClick = (dealId: number) => {
+      navigate(`/buy/detail/${dealId}`);
+    };
+
     return (
         <div>
             {buyHostInfo?.data.purchaseSimpleRes.map((item, index) => (
-                <div key={index} className="px-BID_P py-3 gap-4 border-b border-[#D9D9D9] flex items-center">
+                <div key={index} className="px-BID_P py-3 gap-4 border-b border-[#D9D9D9] flex items-center" onClick={() => handleClick(item.dealSimpleRes.id)}>
                 <div className="w-32 h-32">
                   <img
                     className="w-full h-full rounded-xl"
