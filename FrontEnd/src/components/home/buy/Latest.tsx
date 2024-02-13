@@ -14,7 +14,7 @@ const Latest = () => {
       <div className="py-4 border-b border-[#D9D9D9]">
         <div className="px-BID_P">
           <p className="font-bold">최신 구매글을 확인해보세요</p>
-          <p className="text-xs text-BID_BLACK">따끈따근한 최신글</p>
+          <p className="text-xs text-BID_BLACK">따끈따끈한 최신글</p>
         </div>
         <div className="pl-4 py-4 flex flex-nowrap overflow-x-auto">
           {latestInfo?.data.purchaseSimpleRes.map(item => {

@@ -70,7 +70,7 @@ const PurchaseDetailPage = () => {
 
       for (let i = 0; i < applyForms.length; i++) {
         const currentForm = applyForms[i];
-        if (currentForm.sellerId === userId) {
+        if (currentForm.sellerNickname === nickname) {
           isExistForm = true;
           myForm = currentForm;
           break;
@@ -115,20 +115,20 @@ const PurchaseDetailPage = () => {
       if (isBuyer) {
         return (
           <button onClick={() => approachLive()} className="detailLiveRedBtn">
-            <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
-            <p className="text-lg text-red-500">라이브 시작하기</p>
+            <MdLiveTv size={'1.5rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
+            <p className=" text-red-500">라이브 시작하기</p>
           </button>
         );
       } else {
         return (
           <button onClick={() => approachLive()} className="detailLiveRedBtn">
-            <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
-            <p className="text-lg text-red-500">라이브 참가하기</p>
+            <MdLiveTv size={'1.5rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
+            <p className=" text-red-500">라이브 참가하기</p>
           </button>
         );
       }
     } else if (status === 'END') {
-      return <div className={`detailBtn bg-BID_MAIN`}>역경매가 종료되었습니다</div>;
+      return <div className={`detailBtn bg-BID_BLACK`}>역경매가 종료되었습니다</div>;
     }
   };
 

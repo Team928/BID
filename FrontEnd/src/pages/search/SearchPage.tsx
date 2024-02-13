@@ -30,7 +30,7 @@ const SearchPage = () => {
 
   return (
     <>
-      <div className="bg-white w-full px-BID_P h-16 flex items-center border-b border-[#D9D9D9] fixed top-0">
+      <div className="bg-white w-full max-w-[500px] px-BID_P h-16 flex items-center fixed top-0">
         <input
           ref={inputRef}
           value={keyword}

@@ -24,13 +24,13 @@ const Popular = () => {
   return (
     <div className="py-4">
       <div className="flex justify-between">
-        <p className="font-bold text-xl">인기검색어</p>
-        <p className="text-[#ABABAB]">01.23 10:00 기준</p>
+        <p className="font-bold text-lg">인기검색어</p>
+        <p className="text-[#ABABAB] text-sm">01.23 10:00 기준</p>
       </div>
       <div className="pt-5 grid grid-rows-10 grid-flow-col gap-4">
         {popularityKeyword.map((item, index) => {
           return (
-            <div key={index} className="flex gap-2">
+            <div key={index} className="flex gap-2 text-sm">
               <p className="font-bold">{index + 1}</p>
               <p>{item}</p>
             </div>
