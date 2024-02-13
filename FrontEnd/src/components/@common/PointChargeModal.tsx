@@ -31,7 +31,7 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       amount: amount,
       buyer_name: userProfileInfo!.nickname,
       buyer_email: userProfileInfo!.email,
-      m_redirect_url: 'https://i10d208.p.ssafy.io/profile',
+      m_redirect_url: 'https://i10d208.p.ssafy.io/payments/complete',
     };
 
     const callback = (response: RequestPayResponse) => {
