@@ -43,7 +43,7 @@ export default function NaverLoginRedirect() {
   });
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center relative">
+    <div className="w-full h-screen flex flex-col justify-center items-center relative">
       <div>로그인 진행중입니다...</div>
     </div>
   );
