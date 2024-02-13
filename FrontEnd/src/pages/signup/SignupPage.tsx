@@ -68,7 +68,9 @@ const SignupPage = () => {
         refreshToken: refreshToken,
         userId: id,
       });
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
       Toast.success('회원가입에 성공하였습니다');
     }
   }, [isSuccess]);

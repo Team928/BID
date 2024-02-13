@@ -29,7 +29,9 @@ const PaymentRedirectPage = () => {
     console.log('data' + data);
     if (data && data.status === 200) {
       setAmount(0);
-      navigate('/profile');
+      setTimeout(() => {
+        navigate('/profile');
+      }, 500);
     }
   }, [data]);
 
