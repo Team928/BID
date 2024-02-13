@@ -1,4 +1,3 @@
-import sample from '@/assets/image/sample.png';
 import StateButton from '@/components/@common/StateButton';
 import { useProfile } from '@/hooks/profile/useProfile';
 import { HiHeart } from 'react-icons/hi';

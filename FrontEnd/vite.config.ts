@@ -7,7 +7,7 @@ export default defineConfig({
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
   },
-  base: '/login',
+  base: '/',
   server: {
     port: 5173,
     host: true,
