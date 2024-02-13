@@ -1,16 +1,15 @@
 
 import Modal from "@/components/@common/Modal"
-import { postchangeProfile } from "@/service/profile/api";
+import { useProfile } from "@/hooks/profile/useProfile";
 import userStore from "@/stores/userStore";
 import { IChangeProfile } from "@/types/profile";
 import { useRef, useState } from "react";
 import { CiCamera } from "react-icons/ci";
-import { useNavigate } from "react-router-dom";
 
 const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
 
     const { nickname, area } = userStore()
-    const navigate = useNavigate()
+    const { useChangeProfile } = useProfile()
 
     const imgRef = useRef<HTMLInputElement>(null);
     // post로 보낼 이미지 파일 관리
@@ -40,6 +39,9 @@ const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
         }
     };
 
+    const { mutate } = useChangeProfile(nickname)
+    console.log(nickname)
+
     const handleChangereview = () => {
 
         const formData = new FormData()
@@ -48,10 +50,8 @@ const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
 
         formData.append('memberUpdateProfileReq', blob)
         formData.append('profileImage', image!);
-
-        postchangeProfile(formData).then(() => {
-            navigate(`/profile`)
-        })
+            onClose()
+            mutate(formData)
     }
 
     
@@ -61,7 +61,7 @@ const ProfileModal = ({ onClose }: { onClose: () => void; }) => {
                 {/* 프로필 사진 */}
                 <label className="flex border items-center justify-center w-24 h-24 rounded-lg" htmlFor="photo">
                 {photo ? (
-                        <img src={photo} alt="프로필 사진" className="w-full h-full object-cover rounded-lg" />
+                        <img src={photo} alt="profilePhoto" className="w-full h-full object-cover rounded-lg" />
                     ) : (
                         <CiCamera className="flex justify-center" size="2rem" color="#878787" />
                     )}
