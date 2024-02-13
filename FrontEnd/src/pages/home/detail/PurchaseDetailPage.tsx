@@ -5,20 +5,13 @@ import { usePurchase } from '@/hooks/home/usePurchase';
 import { useSale } from '@/hooks/home/useSale';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
+import { IApplyForms } from '@/types/home';
 import { useState } from 'react';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdLiveTv } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import PurchaseApplyFromModal from './PurchaseApplyFromModal';
-
-interface IApplyForm {
-  content: string;
-  id: number;
-  image: number;
-  offerPrice: number;
-  sellerId: number;
-}
 
 const PurchaseDetailPage = () => {
   const { id } = useParams();
@@ -71,7 +64,7 @@ const PurchaseDetailPage = () => {
         return;
       }
 
-      const applyForms: IApplyForm[] = purchaseDetailInfo.data.applyForms;
+      const applyForms: IApplyForms[] = purchaseDetailInfo.data.applyForms;
       let isExistForm = false;
       let myForm;
 
