@@ -8,7 +8,7 @@ import lombok.Setter;
 public class ApplyFormRes {
 
     private long id;
-    private long sellerId;
+    private String sellerNickname;
     private int offerPrice;
     private String image;
     private String content;

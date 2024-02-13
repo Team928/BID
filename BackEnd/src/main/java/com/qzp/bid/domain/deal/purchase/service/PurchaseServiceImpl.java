@@ -55,9 +55,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         Member member = accountUtil.getLoginMember()
             .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
         Purchase purchase = purchaseMapper.toPurchase(purchaseReq);
-        log.info("mapping complete");
         List<ImageDto> uploadPaths = imageUploader.upload(photos);
-        log.info("image path complete");
         purchase.setWriter(member);
         List<Image> images = uploadPaths.stream()
             .map(imageDto -> {
@@ -69,7 +67,6 @@ public class PurchaseServiceImpl implements PurchaseService {
             .toList();
         purchase.setImages(images);
         purchaseRepository.save(purchase);
-        log.info("save complete");
     }
 
     @Transactional(readOnly = true)
@@ -81,7 +78,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             .orElseThrow(() -> new BusinessException(GET_PURCHASE_FAIL));
         PurchaseRes purchaseRes = purchaseMapper.toPurchaseRes(purchase);
         if (purchase.getApplyForms().stream()
-            .anyMatch(applyForm -> applyForm.getSellerId() == member.getId())) {
+            .anyMatch(applyForm -> applyForm.getSeller().getId() == member.getId())) {
             purchaseRes.setJoinReq(true);
         }
         if (wishRepository.existsByDealIdAndMemberId(purchaseId, member.getId())) {
@@ -123,12 +120,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         ApplyForm applyForm = applyFormMapper.applyFormToApplyFormReq(applyFormReq);
         ImageDto imageDto = imageUploader.uploadOne(image);
-        applyForm.setSellerId(member.getId());
+        applyForm.setSeller(member);
         applyForm.setImage(imageDto.getImagePath());
+        applyForm.setPurchase(purchase);
         applyFormRepository.save(applyForm);
-
-        List<ApplyForm> applyForms = purchase.getApplyForms();
-        applyForms.add(applyForm);
-        purchase.setApplyForms(applyForms);
     }
 }
