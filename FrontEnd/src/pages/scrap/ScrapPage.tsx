@@ -39,7 +39,7 @@ const ScrapPage = () => {
         <div className="pt-[5.1rem] h-full overflow-y-auto">
           {/* 탭에 따른 컴포넌트 보여주기 */}
           {tab === 'sale' ? (
-            <>
+            <div className="pt-2">
               {saleList?.data.saleSimpleResList.length === 0 ? (
                 <div className="w-full h-[calc(100vh-160px)] flex flex-col justify-center items-center">
                   <img src={heart} width={80} />
@@ -49,9 +49,9 @@ const ScrapPage = () => {
               ) : (
                 saleList?.data.saleSimpleResList.map((item, index) => <WishSaleItem key={index} item={item} />)
               )}
-            </>
+            </div>
           ) : (
-            <>
+            <div className="pt-2">
               {purchaseList?.data.purchaseSimpleRes.length === 0 ? (
                 <div className="w-full h-[calc(100vh-160px)] flex flex-col justify-center items-center">
                   <img src={heart} width={80} />
@@ -61,7 +61,7 @@ const ScrapPage = () => {
               ) : (
                 purchaseList?.data.purchaseSimpleRes.map((item, index) => <WishPurchaseItem key={index} item={item} />)
               )}
-            </>
+            </div>
           )}
         </div>
       </div>

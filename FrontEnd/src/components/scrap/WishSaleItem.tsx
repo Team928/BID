@@ -11,14 +11,14 @@ const WishSaleItem = (props: { item: ISaleSimpleRes }) => {
   const { status, dealSimpleRes, immediatePrice, startPrice, bid } = props.item;
   const { tab } = useTabStore();
   return (
-    <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="px-BID_P py-3 flex gap-4">
+    <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="px-BID_P py-1 flex gap-4">
       <div className="relative flex justify-center items-center">
         <img
           className="w-24 h-24 rounded-md object-cover"
           src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`}
         ></img>
       </div>
-      <div className="flex-1 flex flex-col justify-between py-2 gap-1">
+      <div className="flex-1 flex flex-col justify-between gap-1">
         <div className="flex items-center justify-between">
           <StateButton deals={tab} status={status} />
           <HiHeart size={'1.6rem'} color="#FF0000" />
