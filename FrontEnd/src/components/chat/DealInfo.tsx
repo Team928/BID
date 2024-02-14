@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ConfirmModal from './Modal/ConfirmModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirmedDealReq } from '@/service/chat/api';
 import { useChatLog } from '@/hooks/chat/useChat';
 import useDealStore from '@/stores/useDealStore';
 
-interface DealInfoProps {
-  isWroteReview: boolean;
-}
-
-const DealInfo: React.FC<DealInfoProps> = ({ isWroteReview }) => {
+const DealInfo = () => {
 
   const { dealId } = useParams()
   console.log('글정보 아이디' , dealId)
@@ -61,9 +57,6 @@ const DealInfo: React.FC<DealInfoProps> = ({ isWroteReview }) => {
           <p className="text-xs px-2 text-BID_MAIN">최종 거래가</p>
           </div>
         </div>
-
-
-        {isWroteReview === false && (
         <div>
           {isConfirmed ? (
             <button
@@ -81,16 +74,6 @@ const DealInfo: React.FC<DealInfoProps> = ({ isWroteReview }) => {
             </button>
           )}
         </div>
-      )}
-      {/* 작성 완료 상태 */}
-      {isWroteReview && isConfirmed && (
-        <button
-          className="text-sm px-3 h-10 text-BID_MAIN border border-BID_MAIN rounded-xl font-bold"
-          disabled={true}
-        >
-          작성 완료
-        </button>
-      )}
     </div>
 
       {/* 모달 영역 */}
