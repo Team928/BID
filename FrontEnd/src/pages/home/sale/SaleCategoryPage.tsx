@@ -138,7 +138,7 @@ const SaleCategoryPage = () => {
                       className="flex justify-between"
                     >
                       <p className={`${addrText === item && 'text-BID_MAIN'}`}>{item}</p>
-                      {addrText === item && <FaCheck color="#3498DB" />}
+                      {addrText === item && <FaCheck color="#6B54C4" />}
                     </div>
                   );
                 })}

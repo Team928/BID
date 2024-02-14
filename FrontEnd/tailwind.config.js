@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        BID_MAIN: '#3498DB',
+        BID_MAIN: '#6B54C4',
         BID_BLACK: '#545454',
         BID_LIGHT_GRAY: '#F4F4F4',
         BID_SUB_GRAY: '#ABABAB',

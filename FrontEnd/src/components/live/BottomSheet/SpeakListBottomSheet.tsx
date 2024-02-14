@@ -30,7 +30,7 @@ const SpeakListBottomSheet = ({
               <span className="text-sm">{info.nickName}</span>
               <div className="flex">
                 <div className="mx-3 cursor-pointer" onClick={() => handleResolve(info.userId, info.nickName)}>
-                  {info.isRequestSpeak && <LuHand size={20} color="#3498DB" />}
+                  {info.isRequestSpeak && <LuHand size={20} color="#6B54C4" />}
                 </div>
                 <div>
                   {info.onMike ? <AiOutlineAudio size={20} /> : <AiOutlineAudioMuted size={20} color="#D9D9D9" />}
