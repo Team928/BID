@@ -9,12 +9,14 @@ import { IChatResList } from '@/types/chat';
 import { Client, StompHeaders } from '@stomp/stompjs';
 import { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const ChatRoomPage = () => {
   const [client, setClient] = useState<Client | null>(null);
   const [message, setMessage] = useState<string>('');
   const [chatLogs, setChatLogs] = useState<IChatResList[]>([]);
+
+  const { state: { isWroteReview= false } = {} } = useLocation();
 
   // TODO: 실제 채팅방 참여 유저로 변경해야함
   const info: IHeaderInfo = {
@@ -89,7 +91,7 @@ const ChatRoomPage = () => {
   return (
     <div className="w-full h-screen pb-[4.5rem]">
       <Header info={info} />
-      <DealInfo />
+      <DealInfo isWroteReview={isWroteReview} />
       <div className="px-6 pt-40 pb-20">
         {/* 이전 대화내용 불러오기 */}
         {chatLogInfo &&

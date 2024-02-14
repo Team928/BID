@@ -124,7 +124,7 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     public void sendChat(Chat chat, long dealId) {
 
-        chat.setRoomId(dealId); // 이게 필요할까?
+        chat.setRoomId(dealId);
         if (!chat.getType().equals(ChatType.TALK)) {
             throw new BusinessException(ErrorCode.INPUT_VALUE_INVALID);
         }
@@ -146,6 +146,7 @@ public class ChatServiceImpl implements ChatService {
         chatRepository.save(chat);
 
         chatRoom.setLastMessage(chat.getMessage());
+        chatRoom.setLastSenderId(chat.getSenderId());
         chatRoomRepository.save(chatRoom);
 
         ResponseEntity<ResultResponse> res = ResponseEntity.ok(
@@ -183,19 +184,23 @@ public class ChatServiceImpl implements ChatService {
 
         for (ChatRoom chatRoom : chatRoomList) {
 
-            Member member;
-            if (chatRoom.getHostId() == userId) {
+            Member member = null;
+            if (chatRoom.getHostId() != -1 && chatRoom.getHostId() == userId) {
                 member = memberRepository.findById(chatRoom.getGuestId())
                     .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
-            } else {
+            } else if (chatRoom.getHostId() != -1 && chatRoom.getGuestId() == userId) {
                 member = memberRepository.findById(chatRoom.getHostId())
+                    .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+            } else {
+                member = memberRepository.findById(userId)
                     .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
             }
 
             ChatRoomList chatRoomRes = ChatRoomList.builder()
                 .chatRoomRes(chatRoomMapper.toChatRoomRes(chatRoom))
                 .exitPossible((chatRoom.getDealConfirmed().size() == 2) ? true : false)
-                .audienceMemberRes(memberMapper.toOpponentMemberRes(member)).build();
+                .audienceMemberRes(memberMapper.toOpponentMemberRes(member))
+                .build();
             if (userId != chatRoom.getLastSenderId()) {
                 int countUmReadChats = chatRepository.countAllByRoomIdAndReadIsFalse(
                     chatRoom.getDealId());
@@ -218,18 +223,16 @@ public class ChatServiceImpl implements ChatService {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByDealId(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
 
-        List<Chat> listChat = chatRepository.findAllByRoomIdOrderByCreateTime(dealId);
-
         // 챗 읽기 처리
         if (chatRoom.getLastSenderId() != userId) {
-            for (int i = 0; i < chatRepository.countAllByRoomIdAndReadIsFalse(dealId); i++) {
-                Chat readChat = listChat.get(i);
-                readChat.setRead(true);
-                chatRepository.save(readChat);
-                listChat.set(i, readChat);
+            List<Chat> chats = chatRepository.findAllByRoomIdAndReadIsFalse(dealId);
+            for (Chat chat : chats) {
+                chat.setRead(true);
+                chatRepository.save(chat);
             }
         }
 
+        List<Chat> listChat = chatRepository.findAllByRoomIdOrderByCreateTime(dealId);
         List<ChatRes> chatRes = new ArrayList<>(); // 채팅 내역
         for (Chat chat : listChat) {
             chatRes.add(chatRoomMapper.toChatRes(chat));
