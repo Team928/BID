@@ -1,10 +1,13 @@
 package com.qzp.bid.domain.live.service;
 
+import static com.qzp.bid.global.result.error.ErrorCode.VIDEOTEXT_ID_NOT_EXIST;
 import static com.qzp.bid.global.result.error.ErrorCode.VIDEO_ID_NOT_EXIST;
 
+import com.qzp.bid.domain.live.dto.VideoTextRes;
 import com.qzp.bid.domain.live.entity.Utterance;
 import com.qzp.bid.domain.live.entity.Video;
 import com.qzp.bid.domain.live.entity.VideoText;
+import com.qzp.bid.domain.live.mapper.VideoTextMapper;
 import com.qzp.bid.domain.live.repository.VideoRepository;
 import com.qzp.bid.domain.live.repository.VideoTextRepository;
 import com.qzp.bid.global.result.error.exception.BusinessException;
@@ -35,6 +38,7 @@ public class STTServiceImpl implements STTService {
 
     private final VideoTextRepository videoTextRepository;
     private final VideoRepository videoRepository;
+    private final VideoTextMapper videoTextMapper;
     @Value("${vito.client_id}")
     private String client_id;
     @Value("${vito.client_secret}")
@@ -135,6 +139,13 @@ public class STTServiceImpl implements STTService {
             texts.add(text);
         }
         videoTextRepository.save(videoText);
+    }
+
+    @Override
+    public VideoTextRes getVideoText(long videoId) {
+        VideoText videoText = videoTextRepository.findByVideoId(videoId)
+            .orElseThrow(() -> new BusinessException(VIDEOTEXT_ID_NOT_EXIST));
+        return videoTextMapper.videoTextToVideoTextRes(videoText);
     }
 
 

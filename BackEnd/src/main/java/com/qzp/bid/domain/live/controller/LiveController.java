@@ -3,6 +3,7 @@ package com.qzp.bid.domain.live.controller;
 import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
+import com.qzp.bid.domain.live.dto.VideoTextRes;
 import com.qzp.bid.domain.live.service.LiveService;
 import com.qzp.bid.domain.live.service.STTService;
 import com.qzp.bid.domain.live.service.SummaryService;
@@ -10,11 +11,11 @@ import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,15 +45,10 @@ public class LiveController {
 
     }
 
-    @GetMapping("/results") //stt
-    public ResponseEntity<ResultResponse> getSTT(long videoId) {
-        sttService.transcribeFile(videoId);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
-    }
-
-    @PostMapping("/summary") //stt
-    public ResponseEntity<ResultResponse> getSummary(long videoId) {
-        summaryService.getSummary(videoId);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
+    @Operation(summary = "녹화영상 STT, 요약 내용 가져오기")
+    @GetMapping("/videotexts") //stt
+    public ResponseEntity<ResultResponse> getVideoText(long videoId) {
+        VideoTextRes videoTextRes = sttService.getVideoText(videoId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_VIDEOTEXT_SUCCESS, videoTextRes));
     }
 }
