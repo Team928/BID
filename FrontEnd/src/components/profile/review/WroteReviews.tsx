@@ -22,7 +22,7 @@ const WroteReviews = () => {
             <div className="flex-1 flex flex-col justify-around px-2">
               <div className="flex items-center justify-between pr-3">
                 <div className="flex items-center">
-                  <p className="text-md font-bold">{item.reviewerNickname}</p>
+                  <p className="text-md font-bold">{item.tergetNickname} 님과의 거래</p>
                 </div>
                 <p className="text-xs">{item.createtime}</p>
               </div>

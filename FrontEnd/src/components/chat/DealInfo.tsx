@@ -6,14 +6,14 @@ import { useChatLog } from '@/hooks/chat/useChat';
 import useDealStore from '@/stores/useDealStore';
 
 const DealInfo = () => {
-  
-  const { useGetChatLogList }  = useChatLog()
-  const isConfirmed = useDealStore((state) => state.isConfirmed);
-  const setConfirmed = useDealStore((state) => state.setConfirmed);
 
   const { dealId } = useParams()
   console.log('글정보 아이디' , dealId)
   const id = Number(dealId)
+  
+  const { useGetChatLogList }  = useChatLog()
+  const isConfirmed = useDealStore((state) => state.isConfirmed[String(dealId)] || false);
+  const setConfirmed = useDealStore((state) => state.setConfirmed);
 
   const {
     data:chatLogInfo,
@@ -27,7 +27,7 @@ const DealInfo = () => {
   const navigate = useNavigate()
 
   const handleConfirm = async () => {
-    setConfirmed(true); 
+    setConfirmed(String(id), true); 
     setIsModalOpen(false);
     try {
       const response = await confirmedDealReq(id);

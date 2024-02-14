@@ -1,15 +1,19 @@
 import create from 'zustand';
 
 type DealStore = {
-  isConfirmed: boolean;
-  setConfirmed: (value: boolean) => void;
+  isConfirmed: Record<string, boolean>;
+  setConfirmed: (dealId: string, value: boolean) => void;
 };
 
 const useDealStore = create<DealStore>((set) => ({
-  isConfirmed: localStorage.getItem('isConfirmed') === 'true' || false,
-  setConfirmed: (value) => {
-    set({ isConfirmed: value });
-    localStorage.setItem('isConfirmed', value.toString());
+  isConfirmed: {},
+  setConfirmed: (dealId, value) => {
+    set((state) => ({
+      isConfirmed: {
+        ...state.isConfirmed,
+        [dealId]: value,
+      },
+    }));
   },
 }));
 
