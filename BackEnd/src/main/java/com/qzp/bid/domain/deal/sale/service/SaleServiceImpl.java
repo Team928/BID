@@ -27,6 +27,7 @@ import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.entity.Member;
 import com.qzp.bid.domain.member.entity.PointHistory;
 import com.qzp.bid.domain.member.entity.PointStatus;
+import com.qzp.bid.domain.member.repository.MemberRepository;
 import com.qzp.bid.domain.member.repository.PointHistoryRepository;
 import com.qzp.bid.domain.sse.dto.SseDto;
 import com.qzp.bid.domain.sse.dto.SseType;
@@ -63,6 +64,7 @@ public class SaleServiceImpl implements SaleService {
     private final LiveRequestRepository liveRequestRepository;
     private final WishRepository wishRepository;
     private final PointHistoryRepository pointHistoryRepository;
+    private final MemberRepository memberRepository;
     private final SseService sseService;
     private final ChatService chatService;
 
@@ -168,8 +170,12 @@ public class SaleServiceImpl implements SaleService {
                 SseDto.of(highestBid.getBidder().getId(), saleId, "sale", SseType.CANCEL_BID,
                     LocalDateTime.now()));
 
+            //상위 입찰 전 최고 입찰가인 사람에게 포인트 돌려주기
+            Member lastHighMember = memberRepository.findMemberById(highestBid.getBidder().getId())
+                .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
             PointHistory free = PointHistory.builder().amount(highestBid.getBidPrice())
-                .status(PointStatus.FREE).time(bid.getBidTime()).member(member).build();
+                .status(PointStatus.FREE).time(bid.getBidTime()).member(lastHighMember).build();
             pointHistoryRepository.save(free);
         }
         sale.setHighestBid(bid);
