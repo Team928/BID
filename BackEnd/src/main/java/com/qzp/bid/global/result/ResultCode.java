@@ -58,7 +58,11 @@ public enum ResultCode {
     RECORDING_SUCCESS(200, "녹화를 시작하였습니다."),
     RECORDING_END_SUCCESS(200, "녹화종료를 하였습니다."),
     RECORDING_CHECK_SUCCESS(200, "녹화기록에 성공하였습니다."),
+    LIVE_END_SUCCESS(200, "라이브 종료에 성공하였습니다."),
+    RECORDING_GET_SUCCESS(200, "라이브 영상 조회에 성공하였습니다."),
+    GET_VIDEOTEXT_SUCCESS(200, "비디오 텍스트 조회에 성공했습니다.")
     ;
+
 
 
     private final int status;

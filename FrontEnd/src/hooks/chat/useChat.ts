@@ -1,19 +1,36 @@
-import { getChatLogLisReq, getChatRoomListReq } from "@/service/chat/api"
+import { deleteChatRoomReq, getChatLogLisReq, getChatRoomListReq } from "@/service/chat/api"
 import { IChatLogListReq, IChatRoomListReq } from "@/types/chat"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
 
 
 // 채팅방 목록
 export const useChatRoom = () => {
 
-    const useGetChatRoomList = ( props: IChatRoomListReq) => {
+    const useGetChatRoomList = (props: IChatRoomListReq) => {
         return useQuery({
             queryKey: ['chatRoom', props],
             queryFn: () => getChatRoomListReq(props),
         });
     };
-    return { useGetChatRoomList };
-}
+
+    const useDeleteChatRoom = (dealId: number) => {
+        const queryClient = useQueryClient();
+
+        const deleteChatRoom = useMutation({
+            mutationKey: ['delete', dealId],
+            mutationFn: () => deleteChatRoomReq(dealId),
+            onSuccess: () => {
+                queryClient.invalidateQueries({queryKey: ['chatRoom']})
+                console.log('확인')
+            }
+        })
+
+        return { deleteChatRoom };
+    };
+
+    return { useGetChatRoomList, useDeleteChatRoom };
+};
+
 
 // 채팅로그 목록
 export const useChatLog = () => {

@@ -15,10 +15,12 @@ const ReviewPage = () => {
 
   const reviewReq: ICreateReviewReq = {
     content: reviewText,
-    dealId: dealInfo.id,
+    dealId: dealInfo.dealId,
     score: rating,
     targetNickname: dealInfo.writer,
   };
+
+  console.log(dealInfo)
 
   const { mutate } = usePostReview(reviewReq);
   const info: IHeaderInfo = {
