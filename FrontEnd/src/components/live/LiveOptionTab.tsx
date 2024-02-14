@@ -128,7 +128,7 @@ const LiveOptionTab = ({
             <button
               key={info.type}
               value={info.type}
-              className={`liveBtn ${info.type === 'match' ? 'bg-red-600 hover:bg-red-700' : info.type === 'auction' ? 'bg-BID_MAIN hover:bg-BID_HOVER_MAIN' : 'bg-[#D9D9D9]/30 hover:bg-[#D9D9D9]/50'}`}
+              className={`liveBtn ${info.type === 'match' ? 'bg-red-600 hover:bg-red-700' : info.type === 'auction' ? 'bg-BID_MAIN hover:bg-BID_HOVER_MAIN' : 'bg-white/20 hover:bg-[#D9D9D9]/90'}`}
               onClick={e => handleOption(e.currentTarget.value)}
             >
               {info.icon}

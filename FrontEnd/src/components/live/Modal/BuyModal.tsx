@@ -35,6 +35,7 @@ const BuyModal = ({
   useEffect(() => {
     if (isSuccess) {
       successBid(bidPrice);
+      onClose();
     } else {
       console.log('실패');
     }

@@ -96,8 +96,8 @@ const PurchaseDetailPage = () => {
       if (isBuyer) {
         return (
           <button onClick={() => approachLive()} className="detailLiveRedBtn">
-            <MdLiveTv size={'1.8rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
-            <p className="text-lg text-red-500">라이브 시작하기</p>
+            <MdLiveTv size={'1.5rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
+            <p className="text-red-500">&nbsp;라이브 시작하기</p>
           </button>
         );
       } else {
@@ -115,8 +115,8 @@ const PurchaseDetailPage = () => {
       if (isBuyer) {
         return (
           <button onClick={() => approachLive()} className="detailLiveRedBtn">
-            <MdLiveTv size={'1.5rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
-            <p className=" text-red-500">라이브 시작하기</p>
+            <MdLiveTv size={'1.5rem'} color="red" />
+            <p className=" text-red-500">&nbsp;라이브 시작하기</p>
           </button>
         );
       } else {
@@ -143,8 +143,8 @@ const PurchaseDetailPage = () => {
             <PurchaseDetail info={purchaseDetailInfo.data} />
           </div>
         </div>
-        <div className="fixed px-4 bottom-0 w-full h-[65px] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm max-w-[500px]">
-          <div className="w-full h-full py-2 flex items-center gap-3 cursor-pointer">
+        <div className="fixed px-4 bottom-0 w-full h-[65px] bg-white z-10 text-[#A9A9A9] text-xs max-w-[500px]">
+          <div className="w-full h-full py-2 flex items-center gap-2 cursor-pointer">
             {purchaseDetailInfo.data.isWished ? (
               <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />
             ) : (

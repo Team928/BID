@@ -144,10 +144,10 @@ const SaleLivePage = () => {
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: onMike,
             publishVideo: onCamera,
-            resolution: '600X900',
-            frameRate: 30,
+            resolution: '1280x720',
+            frameRate: 40,
             insertMode: 'APPEND',
-            mirror: true,
+            mirror: false,
           });
 
           if (session && publisher) {
@@ -162,7 +162,7 @@ const SaleLivePage = () => {
     } catch (e) {
       console.error(e);
     }
-  }, [currentVideoDevice, session, mainStreamManager]);
+  }, [currentVideoDevice, session, mainStreamManager, onMike, onCamera]);
 
   const leaveSession = useCallback(() => {
     if (session) {

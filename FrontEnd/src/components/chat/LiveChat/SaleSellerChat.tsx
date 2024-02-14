@@ -59,8 +59,8 @@ const SaleSellerChat = () => {
     <div>
       <div className="px-2 max-h-60 overflow-y-auto py-2 relative text-white" ref={chatContainerRef}>
         {chatLogs.map((log, index) => (
-          <div key={index} className="py-1">
-            <span className="font-bold text-white/90">{log.sender}</span>
+          <div key={index} className="py-1 text-sm">
+            <span className="font-bold text-white/70">{log.sender}</span>
             <span className="px-2 font-bold">{log.message}</span>
           </div>
         ))}
