@@ -5,14 +5,12 @@ import image3 from '@/assets/image/carouselEx/3.png';
 import Bottom from '@/components/@common/Bottom';
 import Carousel from '@/components/@common/Carousel';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
-import Toast from '@/components/@common/Toast';
 import AuctionTabBar from '@/components/home/AuctionTabBar';
 import BuyTab from '@/components/home/BuyTab';
 import Category from '@/components/home/Category';
 import SaleTab from '@/components/home/SaleTab';
 import useTabStore from '@/stores/auctionTabStore';
 import useKeywordStore from '@/stores/keywordStore';
-import useNotifyStore from '@/stores/useNotifyStore';
 import userStore from '@/stores/userStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -49,34 +47,6 @@ const HomePage = () => {
 
   // 캐러셀 이미지 배열
   const images = [image1, image2, image3];
-
-  const { addNotification } = useNotifyStore();
-  const { userId } = userStore();
-  useEffect(() => {
-    // eventSource 객체 생성
-    const eventSource = new EventSource(import.meta.env.VITE_SSE_URL + userId);
-
-    // eventSource Connection 됐을때
-    eventSource.onopen = () => {
-      console.log('연결완');
-    };
-
-    // eventSource 에러 시 할 일
-    eventSource.onerror = async event => {
-      console.log(event);
-      eventSource.close();
-    };
-
-    eventSource.addEventListener('auction', async function (event) {
-      const data = JSON.parse(event.data);
-      addNotification(data);
-      Toast.success('알림이 왔습니다 확인해보세요');
-      console.log(data);
-    });
-    return () => {
-      eventSource.close();
-    };
-  }, []);
 
   return (
     <>
