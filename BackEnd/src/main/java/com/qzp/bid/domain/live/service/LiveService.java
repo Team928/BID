@@ -11,18 +11,18 @@ import java.util.List;
 
 public interface LiveService {
 
-    public LiveRoomRes JoinLiveRoom(LiveRoomReq liveRoomReq)
+    LiveRoomRes JoinLiveRoom(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException;
 
-    public Recording StartRecording(LiveRoomReq liveRoomReq)
+    Recording StartRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException;
 
-    public Recording EndRecording(LiveRoomReq liveRoomReq)
+    Recording EndRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException;
 
-    public void CheckRecording(LiveRecordingRes liveRecordingRes);
+    void CheckRecording(LiveRecordingRes liveRecordingRes);
 
-    public void EndLive(long dealId);
+    void EndLive(long dealId);
 
-    public List<Video> GetLiveRecord(long dealId);
+    List<Video> GetLiveRecord(long dealId);
 }

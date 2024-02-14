@@ -4,7 +4,7 @@ import com.qzp.bid.domain.live.dto.VideoTextRes;
 
 public interface STTService {
 
-    public void transcribeFile(long videoId);
+    void transcribeFile(long videoId);
 
     VideoTextRes getVideoText(long videoId);
 }

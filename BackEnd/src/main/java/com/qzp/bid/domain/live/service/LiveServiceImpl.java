@@ -13,7 +13,7 @@ import com.qzp.bid.domain.live.dto.LiveRecordingRes;
 import com.qzp.bid.domain.live.dto.LiveRoomReq;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
 import com.qzp.bid.domain.live.entity.Video;
-import com.qzp.bid.domain.live.repositorty.VideoRepository;
+import com.qzp.bid.domain.live.repository.VideoRepository;
 import com.qzp.bid.domain.sse.dto.SseDto;
 import com.qzp.bid.domain.sse.dto.SseType;
 import com.qzp.bid.domain.sse.service.SseService;
