@@ -46,12 +46,12 @@ const ProfilePage = () => {
       {showChargeModal && (
         <PointChargeModal setShowChargeModal={setShowChargeModal} userProfileInfo={userProfileInfo?.data} />
       )}
-      <>
+      <div className="h-[calc(100vh-4rem)] overflow-y-scroll">
         <Header info={info} />
         {/* 내 프로필 섹션 */}
         <div className="pt-12">
           <div className="flex gap-4 p-8 items-center">
-            <div className="w-20 h-20 rounded-3xl relative">
+            <div className="w-20 h-20 rounded-xl relative">
               {userProfileInfo?.data.profileImage ? (
                 <img
                   src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
@@ -98,10 +98,12 @@ const ProfilePage = () => {
           </div>
         </div>
         {/* 거래 및 리뷰 내역 */}
-        <div className="px-6 pt-8">
-          <p className="font-bold px-3 text-lg">내역 조회</p>
+        <div className="px-6">
           <div className="px-4 py-2">
-            <div onClick={() => moveToNavigate('/profile/sale')} className="flex justify-between px-2 py-2.5 border-b">
+            <div
+              onClick={() => moveToNavigate('/profile/sale')}
+              className="w-full flex justify-between px-2 py-2.5 border-b"
+            >
               <p className="text-gray-500 text-sm leading-7">경매 내역</p>
               <button>
                 <IoIosArrowDroprightCircle size={30} color="#6B54C4" />
@@ -115,7 +117,7 @@ const ProfilePage = () => {
             </div>
             <div
               onClick={() => moveToNavigate('/profile/review')}
-              className="flex justify-between px-2 py-2.5 border-b"
+              className="w-full flex justify-between px-2 py-2.5 border-b"
             >
               <p className="text-gray-500 text-sm leading-7">리뷰 내역</p>
               <button>
@@ -140,7 +142,7 @@ const ProfilePage = () => {
 
         {/* 모달 영역 */}
         {isModalOpen && <ProfileModal onClose={() => setIsModalOpen(false)} />}
-      </>
+      </div>
     </>
   );
 };
