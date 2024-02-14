@@ -80,7 +80,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="w-full h-screen pb-[4.5rem]">
+      <div className="w-full h-screen pb-[56px]">
         <Header info={info} />
         <AuctionTabBar />
         <div className="pt-[5.1rem] h-full overflow-y-auto overflow-x-hidden">

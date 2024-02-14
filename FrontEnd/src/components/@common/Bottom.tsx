@@ -19,40 +19,40 @@ const Bottom = () => {
     {
       name: '홈',
       path: '/',
-      selectIcon: <GoHome size={'1.8rem'} color="#3498DB" />,
-      defaultIcon: <GoHome size={'1.8rem'} color="#545454" />,
+      selectIcon: <GoHome size={'1.5rem'} color="#3498DB" />,
+      defaultIcon: <GoHome size={'1.5rem'} color="#545454" />,
     },
     {
       name: '위시',
       path: '/scrap',
       selectIcon: (
         <div className="w-8 h-8 flex  items-center justify-center">
-          <BsSuitHeart size={'1.6rem'} color="#3498DB" />
+          <BsSuitHeart size={'1.3rem'} color="#3498DB" />
         </div>
       ),
       defaultIcon: (
         <div className="w-8 h-8 flex  items-center justify-center">
-          <BsSuitHeart size={'1.6rem'} color="#545454" />
+          <BsSuitHeart size={'1.3rem'} color="#545454" />
         </div>
       ),
     },
     {
       name: '글쓰기',
       path: '',
-      selectIcon: <PiPencilSimpleLine size={'1.8rem'} color={isModalOpen ? '#3498DB' : '#545454'} />,
-      defaultIcon: <PiPencilSimpleLine onClick={toggleModal} size={'1.8rem'} color="#545454" />,
+      selectIcon: <PiPencilSimpleLine size={'1.5rem'} color={isModalOpen ? '#3498DB' : '#545454'} />,
+      defaultIcon: <PiPencilSimpleLine onClick={toggleModal} size={'1.5rem'} color="#545454" />,
     },
     {
       name: '채팅',
       path: '/chat',
-      selectIcon: <PiChatsCircle size={'1.8rem'} color="#3498DB" />,
-      defaultIcon: <PiChatsCircle size={'1.8rem'} color="#545454" />,
+      selectIcon: <PiChatsCircle size={'1.5rem'} color="#3498DB" />,
+      defaultIcon: <PiChatsCircle size={'1.5rem'} color="#545454" />,
     },
     {
       name: '마이',
       path: '/profile',
-      selectIcon: <PiUser size={'1.8rem'} color="#3498DB" />,
-      defaultIcon: <PiUser size={'1.8rem'} color="#545454" />,
+      selectIcon: <PiUser size={'1.5rem'} color="#3498DB" />,
+      defaultIcon: <PiUser size={'1.5rem'} color="#545454" />,
     },
   ];
 
@@ -65,8 +65,8 @@ const Bottom = () => {
   return (
     <>
       {isModalOpen && <SelectWriteModal closeModal={toggleModal} />}
-      <div className="fixed px-4 bottom-0 w-full h-[4rem] bg-white z-10 text-[#A9A9A9] text-sm max-w-[500px]">
-        <div className="py-2 flex justify-around items-center">
+      <div className="fixed px-4 bottom-0 w-full h-[56px] bg-black/90 z-10 text-[#A9A9A9] text-sm max-w-[500px]">
+        <div className="py-1 flex justify-around items-center">
           <div onClick={() => navigate(`/`)} className="flex flex-col items-center cursor-pointer text-xs">
             {pathname === '/' || pathname.split('/')[1] === 'sale' || pathname.split('/')[1] === 'buy' ? (
               <>

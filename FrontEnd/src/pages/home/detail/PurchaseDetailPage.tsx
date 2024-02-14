@@ -137,13 +137,13 @@ const PurchaseDetailPage = () => {
       <>
         {/* 입찰하기 모달 */}
         {showModal && <PurchaseApplyFromModal setShowModal={setShowModal} id={Number(id)} />}
-        <div className="w-full h-screen pb-[4.5rem]">
+        <div className="w-full h-screen pb-[56px]">
           <Header info={info} />
           <div className="pt-12 h-full overflow-y-auto">
             <PurchaseDetail info={purchaseDetailInfo.data} />
           </div>
         </div>
-        <div className="fixed px-4 bottom-0 w-full h-[4.5rem] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm max-w-[500px]">
+        <div className="fixed px-4 bottom-0 w-full h-[56px] bg-white z-10 text-[#A9A9A9] border-t border-[#D9D9D9] text-sm max-w-[500px]">
           <div className="w-full h-full py-2 flex items-center gap-3 cursor-pointer">
             {purchaseDetailInfo.data.isWished ? (
               <HiHeart onClick={() => wishDeleteMuate()} size={'2.3rem'} color="#FF0000" />

@@ -12,7 +12,7 @@ const WritePage = () => {
 
   return (
     <>
-      <div className="w-full h-screen pb-[4.5rem]">
+      <div className="w-full h-screen pb-[56px]">
         <Header info={info} />
         <div className="pt-12 px-BID_P h-full overflow-y-auto">
           <div className={`text-xl font-bold py-8`}>
