@@ -6,12 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
-@Transactional
 public class auctionDealScheduler {
 
     private final SaleService saleService;
@@ -19,7 +17,13 @@ public class auctionDealScheduler {
 
     @Scheduled(fixedRate = 60000)
     public void auctionClosing() {
-        saleService.saleClosing();
+        try {
+            saleService.saleClosing();
+        } catch (Exception e) {
+            log.warn("스케줄러 실패");
+            log.warn(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Scheduled(fixedRate = 60000)

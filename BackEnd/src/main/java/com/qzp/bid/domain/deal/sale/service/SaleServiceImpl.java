@@ -226,9 +226,7 @@ public class SaleServiceImpl implements SaleService {
 
                 sseService.send(SseDto.of(highestBid.getBidder().getId(), sale.getId(), "sale",
                     SseType.SUCCESS_BID, LocalDateTime.now()));
-            }
-            //TODO: 구매자 판매자 채팅방 생성
-            if (sale.getHighestBid() != null) {
+
                 chatService.createRoom(LiveResultReq.builder().dealId(sale.getId()).build());
             }
         }
