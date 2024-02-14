@@ -19,7 +19,7 @@ const ProfileReviewPage = () => {
     <>
       <div>
         <Header info={info} />
-        <ProfileTabBar leftTab="나의 리뷰" rightTab="내가 작성한 리뷰" />
+        <ProfileTabBar leftTab="내가 받은 리뷰" rightTab="내가 작성한 리뷰" />
         {/* 탭에 따른 컴포넌트 보여주기 */}
         {tab === 'sale' ? <GetReviews></GetReviews> : <WroteReviews></WroteReviews>}
       </div>

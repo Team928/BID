@@ -20,7 +20,7 @@ const OtherBuy = () => {
   return (
     <div>
       {buyHostInfo?.data.purchaseSimpleRes.map((item, index) => (
-        <div key={index} className="px-BID_P py-3 flex gap-4" onClick={() => handleClick(item.dealSimpleRes.id)}>
+        <div key={index} className="py-3 flex gap-4" onClick={() => handleClick(item.dealSimpleRes.id)}>
           <div className="relative flex justify-center items-center">
             <img
               className="w-24 h-24 rounded-md object-cover"
@@ -31,7 +31,7 @@ const OtherBuy = () => {
             <div className="flex items-center justify-between">
               <StateButton deals={'purchase'} status={`${item.status}`} />
             </div>
-            <p className="font-bold text-sm truncate whitespace-normal line-clamp-1">{item.dealSimpleRes.title}</p>
+            <p className="text-sm py-1 truncate whitespace-normal line-clamp-1 font-bold">{item.dealSimpleRes.title}</p>
             <p className="text-xs truncate whitespace-normal line-clamp-1">{item.dealSimpleRes.content}</p>
             <div className="flex items-center gap-3">
               <p className="text-xs text-BID_BLACK">

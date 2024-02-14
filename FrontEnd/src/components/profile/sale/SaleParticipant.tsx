@@ -14,16 +14,16 @@ const SaleParticipant = () => {
   };
 
   return (
-    <div className="">
+    <div className="px-BID_P pt-1">
       {saleParticipantInfo?.data.saleSimpleResList.map((item, index) => (
-        <div key={index} className="px-BID_P py-3 flex gap-4" onClick={() => handleClick(item.dealSimpleRes.id)}>
+        <div key={index} className="py-2 flex gap-4" onClick={() => handleClick(item.dealSimpleRes.id)}>
           <div className="relative flex justify-center items-center">
             <img
               className="w-24 h-24 rounded-md object-cover"
               src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
             ></img>
           </div>
-          <div className="flex-1 flex flex-col justify-between py-2 gap-1">
+          <div className="flex-1 flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <StateButton deals={'sale'} status={`${item.status}`} />
             </div>

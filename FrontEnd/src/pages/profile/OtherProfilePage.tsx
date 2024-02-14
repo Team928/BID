@@ -30,7 +30,7 @@ const OtherProfilePage = () => {
         <Header info={info} />
         <div className="pt-12">
           <div className="flex gap-4 p-8 items-center">
-            <div className="w-28 h-28 rounded-3xl relative">
+            <div className="w-20 h-20 rounded-3xl relative">
               {userProfileInfo?.data.profileImage ? (
                 <img
                   src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
@@ -42,10 +42,10 @@ const OtherProfilePage = () => {
             </div>
             <div className="flex-1 flex flex-col justify-around">
               <div className="flex">
-                <p className="text-xl font-bold">{userProfileInfo?.data.nickname}</p>
+                <p className="text-lg font-bold">{userProfileInfo?.data.nickname}</p>
               </div>
-              <p className="text-xs text-BID_GRAY py-3">{userProfileInfo?.data.email}</p>
-              <p className="text-md text-BID_MAIN font-bold">{userProfileInfo?.data.score}</p>
+              <p className="text-xs text-BID_GRAY py-2">{userProfileInfo?.data.email}</p>
+              <p className="text-xs text-BID_MAIN">신뢰지수 {userProfileInfo?.data.score}</p>
             </div>
           </div>
         </div>
