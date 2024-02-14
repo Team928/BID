@@ -10,7 +10,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
@@ -26,7 +25,7 @@ public class Chat {
     private String id;
     private String sender;
     private long senderId;
-    private long roomId;
+    private long dealId;
     private String createTime;
     private String message;
     @Enumerated(EnumType.STRING)
