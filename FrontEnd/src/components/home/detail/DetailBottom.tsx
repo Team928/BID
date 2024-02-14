@@ -65,11 +65,11 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
 
   const checkBtn = () => {
     if (isSeller) {
-      if (status === 'BEFORE' || status === 'AUCTION') {
+      if (status === 'BEFORE' || status === 'LIVE' || status === 'AUCTION') {
         return (
           <button
             onClick={() => approachLive()}
-            className="w-full border rounded-xl text-md border-red-500 font-bold flex p-3 justify-center items-center gap-2-"
+            className="w-full border rounded-xl text-md border-red-500 flex p-3 justify-center items-center"
           >
             <MdLiveTv size={'16px'} color="red" />
             &nbsp;&nbsp;
@@ -78,7 +78,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         );
       } else if (status === 'END') {
         return (
-          <div className="w-full border rounded-xl text-md bg-BID_BLACK font-bold flex p-3 justify-center items-center gap-2-">
+          <div className="w-full border rounded-xl text-md bg-BID_BLACK flex p-3 justify-center items-center gap-2">
             <p className=" text-white ">이미 종료된 경매입니다</p>
           </div>
         );
