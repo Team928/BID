@@ -60,6 +60,8 @@ public class LiveServiceImpl implements LiveService {
     private final SseService sseService;
     private final AccountUtil accountUtil;
     private final VideoRepository videoRepository;
+    private final STTService sttService;
+    private final SummaryService summaryService;
     private OpenVidu openVidu;
     @Value("${openvidu.url}")
     private String OPENVIDU_URL;
@@ -250,6 +252,11 @@ public class LiveServiceImpl implements LiveService {
         video.setPath(recording.getUrl());
 
         videoRepository.save(video);
+
+        //STT
+        sttService.transcribeFile(video.getId());
+        summaryService.getSummary(video.getId());
+
         // 라이브 종료 = 세션 종료
         redisTemplate.opsForHash().delete("OpenVidu_recording", dealId);
         redisTemplate.opsForHash().delete("OpenVidu_SessionId", dealId);
