@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface LiveService {
 
-    public LiveRoomRes JoinLiveRoom(Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException;
+    LiveRoomRes JoinLiveRoom(Map<String, Object> params)
+        throws OpenViduJavaClientException, OpenViduHttpException;
 
 }

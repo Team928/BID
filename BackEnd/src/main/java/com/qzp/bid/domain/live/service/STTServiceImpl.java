@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -26,6 +27,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class STTServiceImpl implements STTService {
 
     private final VideoTextRepository videoTextRepository;

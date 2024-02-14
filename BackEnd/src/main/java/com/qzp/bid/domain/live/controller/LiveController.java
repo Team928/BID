@@ -3,7 +3,6 @@ package com.qzp.bid.domain.live.controller;
 import com.qzp.bid.domain.chat.dto.LiveResultReq;
 import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
-import com.qzp.bid.domain.live.dto.SummaryReq;
 import com.qzp.bid.domain.live.service.LiveService;
 import com.qzp.bid.domain.live.service.STTService;
 import com.qzp.bid.domain.live.service.SummaryService;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,8 +51,8 @@ public class LiveController {
     }
 
     @PostMapping("/summary") //stt
-    public ResponseEntity<ResultResponse> getSummary(@RequestBody SummaryReq summaryReq) {
-        String summary = summaryService.getSummary(summaryReq);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS, summary));
+    public ResponseEntity<ResultResponse> getSummary(long videoId) {
+        summaryService.getSummary(videoId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
     }
 }
