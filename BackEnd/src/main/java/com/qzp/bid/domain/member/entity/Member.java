@@ -9,7 +9,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -66,6 +65,14 @@ public class Member {
     public void cancelBidding(int price) {
         this.holdingPoint -= price;
         this.point += price;
+    }
+
+    public void bidSuccessGetPoint(int price) { //경매 낙찰되었을 때 판매자인 경우 포인트 입금
+        this.point += price;
+    }
+
+    public void bidSuccessRemovePoint(int price) { //경매 낙찰되었을 때 구매자인 경우 holding 포인트 취소
+        this.holdingPoint -= price;
     }
 
     public void chargePoint(int point) {
