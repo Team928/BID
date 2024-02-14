@@ -33,6 +33,10 @@ public class SseServiceImpl implements SseService {
     private final ObjectMapper objectMapper;
 
     public SseEmitter subscribe(Long memberId) {
+        boolean exist = false;
+        if (sseRepository.get(memberId) != null) {
+            exist = true;
+        }
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         sseRepository.save(memberId, emitter);
         SseDto sseDto = SseDto.of(memberId, null, null, SUCCESS_CONNECT_SSE, LocalDateTime.now());
@@ -49,9 +53,11 @@ public class SseServiceImpl implements SseService {
             }
             sendToClient(dto);
         };
-        // redisMeesageListenerContainer에 새로운 MessageListener를 추가함
-        redisMessageListenerContainer.addMessageListener(messageListener,
-            ChannelTopic.of(getTopicName(sseDto.getMemberId())));
+        if (!exist) {
+            // redisMeesageListenerContainer에 새로운 MessageListener를 추가함
+            redisMessageListenerContainer.addMessageListener(messageListener,
+                ChannelTopic.of(getTopicName(sseDto.getMemberId())));
+        }
         // emitter의 상태를 체크함, 완료되었는지 타임아웃이 났는지
         checkEmitterStatus(emitter, memberId, messageListener);
         return emitter;
