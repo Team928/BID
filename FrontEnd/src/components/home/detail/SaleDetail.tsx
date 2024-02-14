@@ -122,11 +122,11 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         {/* 하위 컨텐츠 */}
         <div className="px-BID_P flex flex-col gap-3 pt-2">
           {status === 'BEFORE' ? (
-            <p className="text-BID_MAIN font-bold text-sm">
+            <p className="text-BID_MAIN font-bold">
               {month}/{date} ({datOfWeek}) {time} 경매 시작 예정
             </p>
           ) : (
-            <p className="text-BID_MAIN font-bold text-sm">
+            <p className="text-BID_MAIN font-bold">
               {endM}/{endD} ({endW}) {endT} 경매 종료
             </p>
           )}
