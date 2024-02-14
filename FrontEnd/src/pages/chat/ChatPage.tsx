@@ -28,8 +28,8 @@ const ChatPage = () => {
         <Header info={info} />
         <div className="pt-12">
           {chatRoomInfo && !chatRoomInfo.data.length ? (
-            <div className="w-full h-[calc(100vh-90px)] flex flex-col justify-center items-center">
-              <img src={chatting} width={80} />
+            <div className="w-full h-[calc(100vh-90px)] flex flex-col justify-center items-center text-sm">
+              <img src={chatting} width={60} />
               <div className="pt-5">채팅이 진행된 거래가 없어요</div>
               <div>지금 거래를 진행해 채팅방을 생성해보아요</div>
             </div>

@@ -21,7 +21,7 @@ const Header = (props: { info: IHeaderInfo }) => {
           <img src={bid} className="h-full py-[0.9rem] cursor-pointer" />
         </div>
       )}
-      <div className="basis-1/5">{left && <div onClick={() => navigate(-1)}>{left}</div>}</div>
+      <button className="basis-1/5">{left && <div onClick={() => navigate(-1)}>{left}</div>}</button>
       {center && <div className="text-lg font-semibold">{center}</div>}
       <div className="basis-1/5 flex gap-3 justify-end">
         {right_1 && (

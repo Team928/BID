@@ -140,24 +140,15 @@ const SaleSeller = ({
   const handleSkip = () => {
     pickTimeStamp({ dealId: id, step: step });
     Toast.info(stepText[step + 1]);
-
-    setTimeout(() => {
-      setStep(step + 1);
-    }, 2000);
+    setStep(step + 1);
   };
 
   // 다음 스텝으로 넘어가기
   const handleNextStep = () => {
     pickTimeStamp({ dealId: id, step: step });
-
     Toast.info(stepText[step + 1]);
-
-    setTimeout(() => {
-      setStep(step + 1);
-    }, 2000);
+    setStep(step + 1);
   };
-
-  // console.log('timeline', timeLine);
 
   return (
     <div className="relative">

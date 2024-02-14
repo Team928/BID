@@ -63,6 +63,55 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
     navigate(`/chat/rooms/${dealRes.id}`);
   };
 
+  const checkBtn = () => {
+    if (isSeller) {
+      if (status === 'BEFORE' || status === 'AUCTION') {
+        return (
+          <button
+            onClick={() => approachLive()}
+            className="w-full border rounded-xl text-md border-red-500 font-bold flex p-3 justify-center items-center gap-2-"
+          >
+            <MdLiveTv size={'16px'} color="red" />
+            &nbsp;&nbsp;
+            <p className=" text-red-500 ">라이브 시작하기</p>
+          </button>
+        );
+      } else if (status === 'END') {
+        return (
+          <div className="w-full border rounded-xl text-md bg-BID_BLACK font-bold flex p-3 justify-center items-center gap-2-">
+            <p className=" text-white ">이미 종료된 경매입니다</p>
+          </div>
+        );
+      }
+    } else {
+      if (status === 'BEFORE') {
+        return (
+          <button
+            onClick={handleBtnClick}
+            className={`w-full py-3 text-white rounded-xl text-center text-md bg-BID_MAIN`}
+          >
+            즉시 구매하기
+          </button>
+        );
+      } else if (status === 'LIVE' || status === 'AUCTION') {
+        return (
+          <button
+            onClick={handleBtnClick}
+            className="w-full py-3  text-white rounded-xl text-center text-md bg-BID_MAIN"
+          >
+            입찰하기
+          </button>
+        );
+      } else if (status === 'END') {
+        return (
+          <div className="w-full border rounded-xl text-md bg-BID_BLACK font-bold flex p-3 justify-center items-center gap-2-">
+            <p className=" text-white ">이미 종료된 경매입니다</p>
+          </div>
+        );
+      }
+    }
+  };
+
   return (
     <>
       {/* 입찰하기 모달 */}
@@ -157,32 +206,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
           ) : (
             <HiOutlineHeart onClick={() => wishAddMuate()} size={'2rem'} color="#ababab" />
           )}
-          {isSeller ? (
-            status === 'BEFORE' ? (
-              <button
-                onClick={() => approachLive()}
-                className="w-full border rounded-xl text-md border-red-500 font-bold flex p-3 justify-center items-center gap-2-"
-              >
-                <MdLiveTv size={'16px'} color="red" />
-                &nbsp;&nbsp;
-                <p className=" text-red-500 ">라이브 시작하기</p>
-              </button>
-            ) : (
-              <button className="w-full border rounded-xl text-md bg-BID_BLACK font-bold flex p-3 justify-center items-center gap-2-">
-                <MdLiveTv size={'16px'} color="red" />
-                &nbsp;&nbsp;
-                <p className=" text-white ">이미 종료된 경매입니다</p>
-              </button>
-            )
-          ) : (
-            <button
-              onClick={handleBtnClick}
-              className={`w-full py-3  text-white rounded-xl text-center text-md
-          ${status === 'END' ? 'bg-BID_BLACK' : 'bg-BID_MAIN'}`}
-            >
-              {status === 'BEFORE' ? '즉시 구매하기' : status === 'END' ? '이미 종료된 경매입니다' : '입찰하기'}
-            </button>
-          )}
+          {checkBtn()}
         </div>
       </div>
     </>
