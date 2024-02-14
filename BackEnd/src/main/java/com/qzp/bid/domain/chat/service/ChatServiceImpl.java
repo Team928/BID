@@ -130,7 +130,7 @@ public class ChatServiceImpl implements ChatService {
         Member sender = memberRepository.findById(chat.getSenderId())
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
 
-        ChatRoom chatRoom = chatRoomRepository.findById(chat.getDealId())
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByDealId(chat.getDealId())
             .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
 
         if (redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/" + dealId) != null
