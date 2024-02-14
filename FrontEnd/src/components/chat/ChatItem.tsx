@@ -1,9 +1,10 @@
-import { deleteChatRoomReq } from "@/service/chat/api";
 import { IChatRoomListRes } from "@/types/chat";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../@common/Modal";
 import { useProfile } from "@/hooks/profile/useProfile";
+import Toast from "../@common/Toast";
+import { useChatRoom } from "@/hooks/chat/useChat";
 
 const ChatItem = (props: { item: IChatRoomListRes }) => {
   const { chatRoomRes, unReadCount, audienceMemberRes } = props.item;
@@ -11,23 +12,25 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
   const { opponentNick } = audienceMemberRes;
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
- 
+
   const handleChatItemClick = () => {
     navigate(`/chat/rooms/${dealId}`);
   };
-
   const { useUserProfile } = useProfile()
 
   const {
     data: userInfo
   } = useUserProfile(opponentNick)
 
-  // 채팅방 삭제
+  const { useDeleteChatRoom } = useChatRoom()
+  const { deleteChatRoom }  = useDeleteChatRoom(dealId)
+
+  // 채팅방 삭제 
   const handleDeleteClick = async () => {
     try {
-      await deleteChatRoomReq(dealId);
+      await deleteChatRoom.mutate();
       setShowModal(false);
-      alert('채팅방을 나갑니다');
+      Toast.success('채팅방을 나갑니다')
 
     } catch (error) {
       setShowModal(true);

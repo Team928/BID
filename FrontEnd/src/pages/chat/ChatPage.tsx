@@ -22,8 +22,6 @@ const ChatPage = () => {
     // error,
   } = useGetChatRoomList({ userId: userId });
 
-  console.log(userId);
-
   return (
     <>
       <div className="w-full h-screen">
