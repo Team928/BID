@@ -19,7 +19,7 @@ const Bottom = () => {
     {
       name: '홈',
       path: '/',
-      selectIcon: <GoHome size={'1.5rem'} color="#3498DB" />,
+      selectIcon: <GoHome size={'1.5rem'} color="#ffffff" />,
       defaultIcon: <GoHome size={'1.5rem'} color="#545454" />,
     },
     {
@@ -27,7 +27,7 @@ const Bottom = () => {
       path: '/scrap',
       selectIcon: (
         <div className="w-8 h-8 flex  items-center justify-center">
-          <BsSuitHeart size={'1.3rem'} color="#3498DB" />
+          <BsSuitHeart size={'1.3rem'} color="#ffffff" />
         </div>
       ),
       defaultIcon: (
@@ -39,19 +39,19 @@ const Bottom = () => {
     {
       name: '글쓰기',
       path: '',
-      selectIcon: <PiPencilSimpleLine size={'1.5rem'} color={isModalOpen ? '#3498DB' : '#545454'} />,
+      selectIcon: <PiPencilSimpleLine size={'1.5rem'} color={isModalOpen ? '#ffffff' : '#545454'} />,
       defaultIcon: <PiPencilSimpleLine onClick={toggleModal} size={'1.5rem'} color="#545454" />,
     },
     {
       name: '채팅',
       path: '/chat',
-      selectIcon: <PiChatsCircle size={'1.5rem'} color="#3498DB" />,
+      selectIcon: <PiChatsCircle size={'1.5rem'} color="#ffffff" />,
       defaultIcon: <PiChatsCircle size={'1.5rem'} color="#545454" />,
     },
     {
       name: '마이',
       path: '/profile',
-      selectIcon: <PiUser size={'1.5rem'} color="#3498DB" />,
+      selectIcon: <PiUser size={'1.5rem'} color="#ffffff" />,
       defaultIcon: <PiUser size={'1.5rem'} color="#545454" />,
     },
   ];
@@ -71,7 +71,7 @@ const Bottom = () => {
             {pathname === '/' || pathname.split('/')[1] === 'sale' || pathname.split('/')[1] === 'buy' ? (
               <>
                 {menu[0].selectIcon}
-                <p className="text-BID_MAIN ">{menu[0].name}</p>
+                <p className="text-white ">{menu[0].name}</p>
               </>
             ) : (
               <>
@@ -84,7 +84,7 @@ const Bottom = () => {
             {pathname.split('/')[1] === 'scrap' ? (
               <>
                 {menu[1].selectIcon}
-                <p className="text-BID_MAIN ">{menu[1].name}</p>
+                <p className="text-white ">{menu[1].name}</p>
               </>
             ) : (
               <>
@@ -97,7 +97,7 @@ const Bottom = () => {
             {pathname.split('/')[1] == 'write' ? (
               <>
                 {menu[2].selectIcon}
-                <p className="text-BID_MAIN ">{menu[2].name}</p>
+                <p className="text-white ">{menu[2].name}</p>
               </>
             ) : (
               <>
@@ -110,7 +110,7 @@ const Bottom = () => {
             {pathname.split('/')[1] === 'chat' ? (
               <>
                 {menu[3].selectIcon}
-                <p className="text-BID_MAIN ">{menu[3].name}</p>
+                <p className="text-white ">{menu[3].name}</p>
               </>
             ) : (
               <>
@@ -123,7 +123,7 @@ const Bottom = () => {
             {pathname.split('/')[1] === 'profile' ? (
               <>
                 {menu[4].selectIcon}
-                <p className="text-BID_MAIN ">{menu[4].name}</p>
+                <p className="text-white ">{menu[4].name}</p>
               </>
             ) : (
               <>

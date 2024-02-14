@@ -25,19 +25,19 @@ const SelectWriteModal: React.FC<ModalProps> = ({ closeModal }) => {
         onClick={closeModal}
       >
         <div className=" fixed w-full h-full flex items-center justify-center max-w-[500px] mx-auto">
-          <div className="p-2 rounded-2xl absolute bottom-20 z-[12]">
-            <div className="flex flex-col bg-base-200 w-40">
+          <div className="p-2 rounded-2xl absolute bottom-[70px] z-[12]">
+            <div className="flex flex-col bg-base-200 w-32 text-white">
               <button
-                className="animate-sheetOn  bg-white text-BID_MAIN border border-BID_MAIN rounded-2xl text-center p-3"
+                className="animate-sheetOn bg-BID_BLACK rounded-2xl text-center p-3"
                 onClick={() => goToSaleWrite()}
               >
-                경매글 등록하기
+                경매글 등록
               </button>
               <button
-                className="animate-sheetOn bg-white text-BID_MAIN border border-BID_MAIN rounded-2xl text-center p-3 mt-2"
+                className="animate-sheetOn bg-BID_BLACK  rounded-2xl text-center p-3 mt-2"
                 onClick={() => goToBuyWrite()}
               >
-                역경매글 등록하기
+                역경매글 등록
               </button>
             </div>
           </div>
