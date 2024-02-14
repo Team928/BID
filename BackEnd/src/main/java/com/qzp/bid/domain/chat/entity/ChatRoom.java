@@ -2,6 +2,7 @@ package com.qzp.bid.domain.chat.entity;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,8 +14,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
@@ -22,6 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class ChatRoom {
 
     @Id
@@ -31,9 +34,9 @@ public class ChatRoom {
     private long dealId;
     private long hostId;
     private long guestId;
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime createTime;
-    @UpdateTimestamp
+    @LastModifiedDate
     private LocalDateTime updateTime;
     private String lastMessage;
     private long lastSenderId;

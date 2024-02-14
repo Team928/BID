@@ -36,7 +36,6 @@ import com.qzp.bid.global.security.util.AccountUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -72,18 +71,17 @@ public class ChatServiceImpl implements ChatService {
     public void createRoom(LiveResultReq resultReq) {
 
         long dealId = resultReq.getDealId();
-        Deal deal = dealRepository.findById(resultReq.getDealId())
+        Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
-
         String dtype = deal.getClass().getSimpleName(); // DTYPE 가져오기
-
-        Optional<Member> member = Optional.empty();
+        Member guest = null;
 
         if (dtype.equals("Sale")) {
-            member = dealRepository.findBidderByDealId(dealId);
+            guest = dealRepository.findBidderByDealId(dealId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
         } else if (dtype.equals("Purchase")) {
             // Purchase 상태 바꾸기
-            Purchase purchase = purchaseRepository.findById(resultReq.getDealId())
+            Purchase purchase = purchaseRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
             purchase.setStatus(DealStatus.END);
             purchaseRepository.save(purchase);
@@ -93,28 +91,23 @@ public class ChatServiceImpl implements ChatService {
             // 역 경매결과 생성 저장
             ReverseAuctionResult reverseAuctionResult = ReverseAuctionResult.builder()
                 .winningBid((int) resultReq.getApplyFormId())
-                .purchaseId(resultReq.getDealId())
+                .purchaseId(dealId)
                 .sellerId(applyForm.getSeller().getId())
                 .build();
             reverseAuctionResultRepository.save(reverseAuctionResult);
 
-            member = dealRepository.findSellerByDealId(dealId);
-        }
-
-        if (member.isEmpty()) {
-            throw new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST);
+            guest = dealRepository.findSellerByDealId(dealId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
         }
 
         String roomName = deal.getTitle();
         long hostId = deal.getWriter().getId();
-        long guestId = member.get().getId();
+        long guestId = guest.getId();
 
         ChatRoom chatRoom = ChatRoom.builder().dealId(dealId).roomName(roomName)
             .hostId(hostId).guestId(guestId).build();
 
         chatRoomRepository.save(chatRoom);
-
-
     }
 
 
