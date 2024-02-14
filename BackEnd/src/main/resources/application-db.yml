@@ -40,7 +40,7 @@ spring:
     password: ENC(XsxnNbWCt8rygqdJk1q41kHzQ9SRjWpe)
   data:
     mongodb:
-      uri: ENC(EKNu3Pxr5EMs1lD+NlXbna/C+8pi15WPD+evHiWCBKWTNijKB9MikmgHRjbEsj/H)
+      uri: ENC(TsP7R0yzpvmB+xnJZBIf6eoiDB6VQovxWB1PKx2TVUKe8L7MCw5Cz+2VpeKPJ752opX4/PSebewK8tVs308WqoLXbsuEiTiG3LBphcOvF6ml4O02/m3wMNFignOqsxwRG+typSCG/qyfoCkAm6MOE6Qiw4LOJEzw)
 
     redis:
       host: ENC(Rn5UFKpvFvo9QPC73lWnOe48t1FILQLfrhf+soOaz+Q=)
