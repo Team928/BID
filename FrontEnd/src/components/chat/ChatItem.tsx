@@ -29,8 +29,7 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
   const handleDeleteClick = async () => {
     try {
       await deleteChatRoom.mutate();
-      setShowModal(false);
-      Toast.success('채팅방을 나갑니다')
+      Toast.success('구매 확정 후 채팅방을 나갑니다')
 
     } catch (error) {
       setShowModal(true);
@@ -40,7 +39,7 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
 
   return (
     <>
-      <div className="flex pl-6 py-3 border-b border-[#D9D9D9]">
+      <div className="w-full flex px-6 py-3 border-b border-[#D9D9D9]">
         <div
           className="flex justify-between overflow-hidden w-full"
           onClick={handleChatItemClick}
@@ -57,12 +56,12 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
                 className="w-full h-full rounded-2xl object-cover"
               />
             </div>
-            <div className="flex flex-col gap-1 px-5">
-              <p className="font-bold">{opponentNick}</p>
+            <div className="flex flex-col justify-center gap-1 px-5">
+              <p className="font-bold">{chatRoomRes.roomName}</p>
               <p>{lastMessage}</p>
             </div>
           </div>
-          <div className="flex items-center mx-8">
+          <div className="flex items-center mx-2">
             {unReadCount > 0 ? (
               <span className="bg-orange-500 rounded-full h-6 w-6 flex items-center justify-center text-white font-semibold">
                 {unReadCount}
