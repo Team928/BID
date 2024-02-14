@@ -230,7 +230,7 @@ const SaleCategoryPage = () => {
         </div>
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
           {categoryInfo?.pages.map((item, idx) => {
-            if (item.data.saleSimpleResList.length === 0) {
+            if (item.data.saleSimpleResList && item.data.saleSimpleResList.length === 0) {
               return (
                 <div key={idx} className="w-full h-[calc(100vh-320px)] flex justify-center items-center">
                   필터링된 거래가 없어요
