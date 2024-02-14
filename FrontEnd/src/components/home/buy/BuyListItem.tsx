@@ -25,8 +25,8 @@ const BuyListItem = (props: { item: IPurchaseSimpleRes }) => {
         </div>
       </div>
       <div className="flex flex-col w-full">
-        <p className=" text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(category)}</p>
-        <p className=" w-32 truncate whitespace-normal line-clamp-2">{title}</p>
+        <p className="text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(category)}</p>
+        <p className="w-28 truncate whitespace-normal line-clamp-2">{title}</p>
       </div>
     </div>
   );

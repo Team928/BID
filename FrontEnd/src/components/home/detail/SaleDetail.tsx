@@ -75,9 +75,6 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
     },
   ];
 
-  // #TODO 라이브 요청하는 함수
-  const liveRequest = () => {};
-
   const carouselSettings = {
     dots: false,
     infinite: true,
@@ -126,7 +123,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         </Modal>
       )}
       <div className="w-full h-full ">
-        <div className="relative w-full">
+        <div className="relative w-full h-72">
           {images.length === 1 ? (
             <img
               src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images}`}
@@ -138,12 +135,10 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
           )}
           {status === 'AUCTION' && (
             <div
-              onClick={() => liveRequest()}
-              className="absolute left-3 bottom-3 p-2 px-3 text-sm bg-white text-black rounded-full font-bold flex items-center gap-1"
+              onClick={() => setShowModal(true)}
+              className="absolute left-3 bottom-3 p-2 px-3 text-sm bg-white/80 shadow-lg text-black rounded-full font-bold flex items-center gap-1"
             >
-              <p onClick={() => setShowModal(true)} className="">
-                라이브 요청
-              </p>
+              <p>라이브 요청</p>
             </div>
           )}
         </div>

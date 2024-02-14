@@ -9,7 +9,12 @@ const SaleCategoryItem = (props: { item: ISaleSimpleRes }) => {
 
   return (
     <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="flex gap-4 cursor-pointer">
-      <img className="w-24 h-24 rounded-md" src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`} />
+      <div className="w-28 h-28 relative">
+        <img
+          src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`}
+          className="w-full h-full rounded-lg object-cover"
+        />
+      </div>
       <div className="flex-1 flex flex-col justify-around">
         <p className="font-black truncate whitespace-normal line-clamp-2">{dealSimpleRes.title}</p>
         <p className="text-xs truncate whitespace-normal line-clamp-2 text-black/80">{dealSimpleRes.content}</p>

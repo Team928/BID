@@ -54,7 +54,7 @@ const BuyCategoryPage = () => {
         <Header info={info} />
         <div className="pt-12 px-BID_P ">
           <div className="pt-4">
-            <p className="text-lg">{changeEngToKr(pathname.split('/')[2].toUpperCase())}</p>
+            <p className="font-bold text-lg">{changeEngToKr(pathname.split('/')[2].toUpperCase())}</p>
             <p className="text-xs text-BID_BLACK">필터링을 통해 원하는 상품을 찾아보세요</p>
           </div>
           <div className="py-3 flex text-center">

@@ -32,8 +32,8 @@ const SaleListItem = (props: { item: ISaleSimpleRes }) => {
         )}
       </div>
       <div className="px-1 flex flex-col gap-1">
-        <p className="text-[0.6rem] text-BID_SUB_GRAY">{changeEngToKr(sale.category)}</p>
-        <p className="w-32 truncate whitespace-normal line-clamp-2">{sale.title}</p>
+        <p className="text-[0.6rem] text-BID_SUB_GRAY pt-1">{changeEngToKr(sale.category)}</p>
+        <p className="w-28 truncate whitespace-normal line-clamp-2">{sale.title}</p>
         <div className="">
           <p className="font-bold text-sm">
             {item.status === 'BEFORE'
