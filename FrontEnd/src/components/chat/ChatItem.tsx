@@ -5,6 +5,7 @@ import Modal from "../@common/Modal";
 import { useProfile } from "@/hooks/profile/useProfile";
 import Toast from "../@common/Toast";
 import { useChatRoom } from "@/hooks/chat/useChat";
+import userImage from '@/assets/icon/defaultProfile.png';
 
 const ChatItem = (props: { item: IChatRoomListRes }) => {
   const { chatRoomRes, unReadCount, audienceMemberRes } = props.item;
@@ -51,10 +52,14 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
           <div className=" flex">
             <div className="w-16 h-16">
               {/* TODO: 프로필 사진으로 변경 */}
+              {userInfo?.data.profileImage ? (
               <img
                 src={`${import.meta.env.VITE_BASE_URL}static${userInfo?.data.profileImage}`}
                 className="w-full h-full rounded-2xl object-cover"
               />
+              ) : (
+                <img src={userImage} className="w-full h-full object-cover" />
+              )}
             </div>
             <div className="flex flex-col justify-center gap-1 px-5">
               <p className="font-bold">{chatRoomRes.roomName}</p>
