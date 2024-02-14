@@ -23,7 +23,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const { dealRes, immediatePrice, startPrice, status, highestBid, bidList, endTime } = props.info;
   const isSeller = props.isSeller;
   const { month, date, datOfWeek, time } = getDate(dealRes.startTime);
-  const { fullDate } = getDate(endTime);
+  const { month: endM, date: endD, datOfWeek: endW, time: endT } = getDate(endTime);
   const { usePostSaleLive } = useSale();
   const { mutate: liveMutate } = usePostSaleLive(dealRes.id);
   const { setTType, setPType } = useLiveStore();
@@ -121,18 +121,26 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         </div>
         {/* 하위 컨텐츠 */}
         <div className="px-BID_P flex flex-col gap-3 pt-2">
-          {status === 'BEFORE' && (
+          {status === 'BEFORE' ? (
             <p className="text-BID_MAIN font-bold text-sm">
               {month}/{date} ({datOfWeek}) {time} 경매 시작 예정
+            </p>
+          ) : (
+            <p className="text-BID_MAIN font-bold text-sm">
+              {endM}/{endD} ({endW}) {endT} 경매 종료
             </p>
           )}
           {/* 카테고리 + 지역 */}
           <div className="flex justify-between text-xs text-BID_SUB_GRAY">
-            <p>{changeEngToKr(dealRes.category)}</p>
+            <div className="flex gap-2 items-center">
+              <p>{changeEngToKr(dealRes.category)}</p>
+              <div className="w-[2px] h-[2px] rounded-full bg-BID_SUB_GRAY"></div>
+              <p className="text-right text-xs">{getTimeDifference(dealRes.createTime)}</p>
+            </div>
             <p>{dealRes.area[0]}</p>
           </div>
           {/* 상태에 따른 가격 */}
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <p className="font-bold text-md">
                 {status === 'BEFORE'
@@ -144,24 +152,20 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
               </p>
               <p className="text-sm text-BID_BLACK">{getPriceName(status)}</p>
             </div>
-            <p className="text-right text-xs">{getTimeDifference(dealRes.createTime)}</p>
           </div>
           {/* 판매글 제목 + 내용 */}
           <div>
             <p className="text-lg font-bold">{dealRes.title}</p>
             <p className="text-BID_BLACK pt-2 text-sm">{dealRes.content}</p>
           </div>
-          <div className="text-right text-xs pt-2">
-            <p className="text-BID_BLACK">{fullDate} 경매종료</p>
-          </div>
           {/* 판매자 정보 */}
           <div className="py-2 border-b-[1px] border-[#EFEFEF]">
-            <button onClick={() => getMemberInfo()} className="w-full flex flex-col">
-              <div className="text-xs pl-2 text-BID_BLACK">판매자</div>
+            <button onClick={() => getMemberInfo()} className="w-full flex items-center gap-2">
+              <div className="text-sm">판매자</div>
               <div className="p-2 flex justify-center items-center">
-                <PiUser size={'18px'} color="#545454" />
+                <PiUser size={'16px'} color="#545454" />
                 <div className="pl-2 text-sm">{dealRes.writer}</div>&nbsp;&nbsp;
-                <IoIosArrowForward size={'16px'} color="#666666" />
+                <IoIosArrowForward size={'15px'} color="#666666" />
               </div>
             </button>
           </div>

@@ -9,7 +9,7 @@ import { IChatResList } from '@/types/chat';
 import { Client, StompHeaders } from '@stomp/stompjs';
 import { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const ChatRoomPage = () => {
   const [client, setClient] = useState<Client | null>(null);
@@ -27,7 +27,7 @@ const ChatRoomPage = () => {
   const { useGetChatLogList } = useChatLog();
   const { userId } = userStore();
 
-  const { dealId } = useParams()
+  const { dealId } = useParams();
   const { data: chatLogInfo } = useGetChatLogList({ dealId: Number(dealId) });
 
   const accessToken = axiosAuthInstance;
@@ -87,7 +87,7 @@ const ChatRoomPage = () => {
   };
 
   return (
-    <div className="w-full h-screen pb-[4.5rem]">
+    <div className="w-full h-screen pb-[65px]">
       <Header info={info} />
       <DealInfo />
       <div className="px-6 pt-40 pb-20">
