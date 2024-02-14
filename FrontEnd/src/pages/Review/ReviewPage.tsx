@@ -8,7 +8,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import useReviewStore from '@/stores/useReviewStore';
 
 const ReviewPage = () => {
-  const { dealInfo } = useLocation().state;
+  const { dealInfo, userInfo } = useLocation().state;
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const { usePostReview } = useReview();
@@ -19,7 +19,7 @@ const ReviewPage = () => {
     content: reviewText,
     dealId: dealInfo.dealId,
     score: rating,
-    targetNickname: dealInfo.writer,
+    targetNickname: userInfo.audienceMemberRes.opponentNick,
   };
 
   console.log(dealInfo)
@@ -50,7 +50,7 @@ const ReviewPage = () => {
       <div className="w-full h-screen">
         <Header info={info} />
         <div className="pt-20">
-          <p className="flex justify-center font-bold text-lg py-3">{dealInfo.writer}님과의 거래는 어떠셨나요😄</p>
+          <p className="flex justify-center font-bold text-lg py-3">{userInfo.audienceMemberRes.opponentNick}님과의 거래는 어떠셨나요😄</p>
           <p className="flex justify-center font-bold text-BID_MAIN py-2">리뷰를 통해 거래의 후기를 남겨주세요</p>
         </div>
         <div className="px-6 py-4">

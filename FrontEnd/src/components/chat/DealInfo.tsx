@@ -2,19 +2,26 @@ import { useState } from 'react';
 import ConfirmModal from './Modal/ConfirmModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirmedDealReq } from '@/service/chat/api';
-import { useChatLog } from '@/hooks/chat/useChat';
+import { useChatLog, useChatRoom } from '@/hooks/chat/useChat';
 import useDealStore from '@/stores/useDealStore';
 import useReviewStore from '@/stores/useReviewStore';
+import userStore from '@/stores/userStore';
 
 const DealInfo = () => {
   const { dealId } = useParams();
   const id = Number(dealId);
 
+  const {userId} = userStore()
+
   const { useGetChatLogList } = useChatLog();
+  const { useGetChatRoomList } = useChatRoom()
   const isConfirmed = useDealStore((state) => state.isConfirmed[String(dealId)] || false);
   const setConfirmed = useDealStore((state) => state.setConfirmed);
 
+  // 채팅로그 조회
   const { data: chatLogInfo } = useGetChatLogList({ dealId: id });
+  // 채팅목록 조회
+  const {data: chatRoomInfo } = useGetChatRoomList({userId: userId})
 
   const title = chatLogInfo?.data.dealResWithEndPrice.title;
   const content = chatLogInfo?.data.dealResWithEndPrice.content;
@@ -35,7 +42,8 @@ const DealInfo = () => {
   };
 
   const goToReview = () => {
-    navigate(`/review`, { state: { dealInfo: chatLogInfo?.data.dealResWithEndPrice } });
+    navigate(`/review`, { state: { dealInfo: chatLogInfo?.data.dealResWithEndPrice, userInfo: chatRoomInfo?.data} });
+    
   };
 
   // reviewPosted 상태 확인
