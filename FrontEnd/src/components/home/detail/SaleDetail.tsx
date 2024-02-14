@@ -14,14 +14,16 @@ import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 import VideoPlayer from './VideoPlayer';
+import { getTimeDifference } from '@/utils/getTimeDifference';
 
 const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState<boolean>(false);
-  const { dealRes, immediatePrice, startPrice, status, highestBid, bidList } = props.info;
+  const { dealRes, immediatePrice, startPrice, status, highestBid, bidList, endTime } = props.info;
   const isSeller = props.isSeller;
   const { month, date, datOfWeek, time } = getDate(dealRes.startTime);
+  const { fullDate } = getDate(endTime);
   const { usePostSaleLive } = useSale();
   const { mutate: liveMutate } = usePostSaleLive(dealRes.id);
   const { setTType, setPType } = useLiveStore();
@@ -50,12 +52,13 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   };
 
   const carouselSettings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 1000,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 5000,
     pauseOnFocus: false,
+    arrows: false,
   };
 
   const images = [];
@@ -105,12 +108,12 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
               alt={`Slide 0`}
             />
           ) : (
-            <Carousel settings={carouselSettings} images={images} />
+            <Carousel settings={carouselSettings} images={images} height="h-72" />
           )}
           {status === 'AUCTION' && (
             <div
               onClick={() => setShowModal(true)}
-              className="absolute left-3 bottom-3 p-2 px-3 text-sm bg-white/80 shadow-lg text-black rounded-full font-bold flex items-center gap-1"
+              className="absolute right-3 top-3 p-2 px-3 text-sm bg-white/80 shadow-lg text-black rounded-full font-bold flex items-center gap-1"
             >
               <p>라이브 요청</p>
             </div>
@@ -129,21 +132,27 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             <p>{dealRes.area[0]}</p>
           </div>
           {/* 상태에 따른 가격 */}
-          <div className="flex items-center gap-2">
-            <p className="font-bold text-md">
-              {status === 'BEFORE'
-                ? addCommaToPrice(immediatePrice)
-                : highestBid === 0
-                  ? addCommaToPrice(startPrice)
-                  : addCommaToPrice(highestBid)}
-              원
-            </p>
-            <p className="text-sm text-BID_BLACK">{getPriceName(status)}</p>
+          <div className="flex justify-between">
+            <div className="flex items-center gap-2">
+              <p className="font-bold text-md">
+                {status === 'BEFORE'
+                  ? addCommaToPrice(immediatePrice)
+                  : highestBid === 0
+                    ? addCommaToPrice(startPrice)
+                    : addCommaToPrice(highestBid)}
+                원
+              </p>
+              <p className="text-sm text-BID_BLACK">{getPriceName(status)}</p>
+            </div>
+            <p className="text-right text-xs">{getTimeDifference(dealRes.createTime)}</p>
           </div>
           {/* 판매글 제목 + 내용 */}
           <div>
             <p className="text-lg font-bold">{dealRes.title}</p>
             <p className="text-BID_BLACK pt-2 text-sm">{dealRes.content}</p>
+          </div>
+          <div className="text-right text-xs pt-2">
+            <p className="text-BID_BLACK">{fullDate} 경매종료</p>
           </div>
           {/* 판매자 정보 */}
           <div className="py-2 border-b-[1px] border-[#EFEFEF]">
@@ -176,7 +185,6 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
               </div>
             </div>
           )}
-
           <div className="pt-4 pb-4 w-full">
             <p className="font-xs text-md">입찰 로그</p>
             <p className="pt-1 text-xs text-BID_SUB_GRAY">현재까지의 입찰 로그를 확인해보세요</p>
@@ -186,24 +194,29 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 <p className="w-1/3">입찰가격</p>
                 <p className="w-1/2">입찰시간</p>
               </div>
-              {bidList.length > 0 ? (
-                <div className="py-2 text-[14px] text-BID_SUB_GRAY max-h-28 overflow-y-scroll border-b">
-                  {bidList.map(item => {
-                    return (
-                      <div key={item.id} className="flex justify-between gap-3 text-center py-1 ">
-                        <p className="w-1/6">{item.bidder}</p>
-                        <p className="w-1/3">{item.bidPrice}원</p>
-                        <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="flex w-full h-20 text-[13px] justify-center items-center text-gray-400 text-center">
-                  입찰 기록이 없습니다.
-                  <br />첫 입찰 기록을 남겨보는건 어떨까요?
-                </div>
-              )}
+              <div
+                className="h-28 max-h-28 
+              py-2 text-[14px] text-BID_SUB_GRAY overflow-y-scroll border-b"
+              >
+                {bidList.length > 0 ? (
+                  <div>
+                    {bidList.map(item => {
+                      return (
+                        <div key={item.id} className="flex justify-between gap-3 text-center py-1 ">
+                          <p className="w-1/6">{item.bidder}</p>
+                          <p className="w-1/3">{item.bidPrice}원</p>
+                          <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex w-full h-20 text-[13px] justify-center items-center text-gray-400 text-center">
+                    입찰 기록이 없습니다.
+                    <br />첫 입찰 기록을 남겨보는건 어떨까요?
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -22,12 +22,13 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
   };
 
   const carouselSettings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 1000,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 5000,
     pauseOnFocus: false,
+    arrows: false,
   };
 
   const images = [];
@@ -42,7 +43,7 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
     <>
       <div className="w-full h-full">
         {/* 사진 */}
-        <div className="relative w-full h-30">
+        <div className="relative w-full h-72">
           {images.length === 1 ? (
             <img
               src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images}`}
@@ -50,9 +51,8 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
               alt={`Slide 0`}
             />
           ) : (
-            <Carousel settings={carouselSettings} images={images} />
+            <Carousel settings={carouselSettings} images={images} height="h-72" />
           )}
-          {/* #TODO 이미지 캐러셀 해야함 */}
           {dealRes.images.length !== 1 && (
             <p className="absolute right-0 bottom-0 text-white p-5 text-xs">
               참여자 {applyForms.length}/{memberLimit}
