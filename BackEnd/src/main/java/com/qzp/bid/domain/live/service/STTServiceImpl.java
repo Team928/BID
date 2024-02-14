@@ -1,8 +1,14 @@
 package com.qzp.bid.domain.live.service;
 
+import com.qzp.bid.domain.live.entity.Utterance;
+import com.qzp.bid.domain.live.entity.Video;
+import com.qzp.bid.domain.live.entity.VideoText;
+import com.qzp.bid.domain.live.repository.VideoRepository;
+import com.qzp.bid.domain.live.repository.VideoTextRepository;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,9 +24,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class STTServiceImpl implements STTService {
 
+    private final VideoTextRepository videoTextRepository;
+    private final VideoRepository videoRepository;
     @Value("${vito.client_id}")
     private String client_id;
     @Value("${vito.client_secret}")
@@ -50,7 +59,7 @@ public class STTServiceImpl implements STTService {
 
 
     @Override
-    public void transcribeFile(String path) {
+    public void transcribeFile(long videoId) {
         String transcribeId = null;
         String accessToken = null;
 
@@ -61,7 +70,9 @@ public class STTServiceImpl implements STTService {
             .defaultHeader(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
             .build();
 
-        File file = new File(path);
+        Video video = videoRepository.findById(videoId).orElseThrow();
+
+        File file = new File(video.getPath());
 
         MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
         multipartBodyBuilder.part("file", new FileSystemResource(file));
@@ -109,9 +120,15 @@ public class STTServiceImpl implements STTService {
         }
         List<Map<String, String>> utterances = (List<Map<String, String>>) stringObjectMap.get(
             "utterances");
+        VideoText videoText = new VideoText();
+        videoText.setVideo(video);
+
+        List<Utterance> texts = videoText.getUtterances();
         for (Map<String, String> utterance : utterances) {
-            log.info(utterance.get("msg"));
+            Utterance text = Utterance.from(utterance);
+            texts.add(text);
         }
+        videoTextRepository.save(videoText);
     }
 
 

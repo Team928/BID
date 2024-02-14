@@ -47,8 +47,8 @@ public class LiveController {
     }
 
     @GetMapping("/results") //stt
-    public ResponseEntity<ResultResponse> getSTT(String path) {
-        sttService.transcribeFile(path);
+    public ResponseEntity<ResultResponse> getSTT(long videoId) {
+        sttService.transcribeFile(videoId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
     }
 

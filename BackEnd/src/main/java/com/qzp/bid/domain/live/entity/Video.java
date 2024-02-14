@@ -4,10 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 //TODO: 형식모름 수정필요
 @Entity
+@Getter
 public class Video {
 
     @Id
