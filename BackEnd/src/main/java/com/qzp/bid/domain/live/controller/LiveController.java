@@ -5,12 +5,14 @@ import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.domain.live.dto.LiveRecordingRes;
 import com.qzp.bid.domain.live.dto.LiveRoomReq;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
+import com.qzp.bid.domain.live.entity.Video;
 import com.qzp.bid.domain.live.service.LiveService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.Recording;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,6 +67,13 @@ public class LiveController {
     public ResponseEntity<ResultResponse> EndPurchaseLive(
         @PathVariable(name = "dealId") long dealId) {
         liveService.EndLive(dealId);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_CHECK_SUCCESS));
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.LIVE_END_SUCCESS));
+    }
+
+    @GetMapping("/recording/video/{dealId}")
+    public ResponseEntity<ResultResponse> RecordingVideoGet(
+        @PathVariable(name = "dealId") long dealId) {
+        List<Video> records = liveService.GetLiveRecord(dealId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_GET_SUCCESS, records));
     }
 }

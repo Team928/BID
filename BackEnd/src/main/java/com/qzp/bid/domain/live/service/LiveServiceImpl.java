@@ -95,11 +95,8 @@ public class LiveServiceImpl implements LiveService {
         }
 
         Connection connection = null;
-        ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
-            .type(ConnectionType.WEBRTC)
-            .role(OpenViduRole.PUBLISHER)
-            .data(deal.toString())
-            .build();
+        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
+            ConnectionType.WEBRTC).role(OpenViduRole.PUBLISHER).data(deal.toString()).build();
 
         if (session != null) { // 세션 존재
 
@@ -117,10 +114,8 @@ public class LiveServiceImpl implements LiveService {
                 throw new BusinessException(ErrorCode.NOT_WRITER);
             }
 
-            SessionProperties sessionProperties = new SessionProperties.Builder()
-                .customSessionId("LIVECHATROOMID" + dealId)
-                .recordingMode(RecordingMode.MANUAL)
-                .build();
+            SessionProperties sessionProperties = new SessionProperties.Builder().customSessionId(
+                "LIVECHATROOMID" + dealId).recordingMode(RecordingMode.MANUAL).build();
 
             session = openVidu.createSession(sessionProperties);
             session.fetch();
@@ -138,11 +133,9 @@ public class LiveServiceImpl implements LiveService {
             Optional<List<Wish>> wishes = wishRepository.findByDealId(dealId);
             if (wishes.isPresent()) {
                 for (Wish wish : wishes.get()) {
-                    sseService.send(
-                        SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
-                            wish.getDeal().getClass().getSimpleName(),
-                            SseType.START_LIVE,
-                            LocalDateTime.now()));
+                    sseService.send(SseDto.of(wish.getMember().getId(), wish.getDeal().getId(),
+                        wish.getDeal().getClass().getSimpleName(), SseType.START_LIVE,
+                        LocalDateTime.now()));
                 }
             }
 
@@ -156,11 +149,8 @@ public class LiveServiceImpl implements LiveService {
         }
 
         // 응답에 필요한 정보 구성
-        LiveRoomRes liveRoom = LiveRoomRes.builder()
-            .roomNum(dealId)
-            .roomName(deal.getTitle())
-            .token(connection.getToken())
-            .build();
+        LiveRoomRes liveRoom = LiveRoomRes.builder().roomNum(dealId).roomName(deal.getTitle())
+            .token(connection.getToken()).build();
 
         return liveRoom;
     }
@@ -320,6 +310,12 @@ public class LiveServiceImpl implements LiveService {
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
         purchase.setStatus(DealStatus.END);
         purchaseRepository.save(purchase);
+    }
+
+    @Override
+    public List<Video> GetLiveRecord(long dealId) {
+        List<Video> videos = videoRepository.findAllByDealId(dealId);
+        return videos;
     }
 
 }
