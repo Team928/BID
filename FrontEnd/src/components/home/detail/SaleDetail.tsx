@@ -220,24 +220,29 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 <p className="w-1/3">입찰가격</p>
                 <p className="w-1/2">입찰시간</p>
               </div>
-              {bidList.length > 0 ? (
-                <div className="py-2 text-[14px] text-BID_SUB_GRAY max-h-28 overflow-y-scroll border-b">
-                  {bidList.map(item => {
-                    return (
-                      <div key={item.id} className="flex justify-between gap-3 text-center py-1 ">
-                        <p className="w-1/6">{item.bidder}</p>
-                        <p className="w-1/3">{item.bidPrice}원</p>
-                        <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="flex w-full h-20 text-[13px] justify-center items-center text-gray-400 text-center">
-                  입찰 기록이 없습니다.
-                  <br />첫 입찰 기록을 남겨보는건 어떨까요?
-                </div>
-              )}
+              <div
+                className="h-28 max-h-28 
+              py-2 text-[14px] text-BID_SUB_GRAY overflow-y-scroll border-b"
+              >
+                {bidList.length > 0 ? (
+                  <div>
+                    {bidList.map(item => {
+                      return (
+                        <div key={item.id} className="flex justify-between gap-3 text-center py-1 ">
+                          <p className="w-1/6">{item.bidder}</p>
+                          <p className="w-1/3">{item.bidPrice}원</p>
+                          <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex w-full h-20 text-[13px] justify-center items-center text-gray-400 text-center">
+                    입찰 기록이 없습니다.
+                    <br />첫 입찰 기록을 남겨보는건 어떨까요?
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
