@@ -3,6 +3,7 @@ import SEARCH from '@/assets/icon/search.png';
 import Bottom from '@/components/@common/Bottom';
 import DaumPostModal from '@/components/@common/DaumPostModal';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
+import Spinner from '@/components/@common/Spinner';
 import Toast from '@/components/@common/Toast';
 import SelectModal from '@/components/home/SelectModal';
 import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
@@ -49,8 +50,9 @@ const SaleCategoryPage = () => {
     data: categoryInfo,
     fetchNextPage,
     hasNextPage,
+    isLoading,
   } = useGetListInfinite({
-    size: '5',
+    size: '8',
     ...(order === '최신순' || order === '' ? { order: 'asc' } : { order: 'desc' }),
     ...(category !== 'ALL' && { catg: category }),
     ...(state !== '' && { status: state }),
@@ -94,6 +96,7 @@ const SaleCategoryPage = () => {
 
   const [isRendering] = useState<boolean>(true);
 
+  if (isLoading) return <Spinner />;
   return (
     <>
       {isOpen && (

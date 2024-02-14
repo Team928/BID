@@ -2,6 +2,7 @@ import NOTIFY from '@/assets/icon/notify.png';
 import SEARCH from '@/assets/icon/search.png';
 import Bottom from '@/components/@common/Bottom';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
+import Spinner from '@/components/@common/Spinner';
 import BuyCategoryItem from '@/components/home/buy/BuyCategoryItem';
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 import { usePurchase } from '@/hooks/home/usePurchase';
@@ -33,8 +34,9 @@ const BuyCategoryPage = () => {
     data: categoryInfo,
     fetchNextPage,
     hasNextPage,
+    isLoading,
   } = useGetListPurchaseInfinite({
-    size: '5',
+    size: '8',
     order: order,
     ...(category !== 'ALL' && { catg: category }),
     ...(keyword !== '' && { keyword: keyword }),
@@ -45,6 +47,7 @@ const BuyCategoryPage = () => {
     fetchNextPage,
   });
 
+  if (isLoading) return <Spinner />;
   return (
     <>
       <div className="w-full h-screen pb-[4.5rem]">
