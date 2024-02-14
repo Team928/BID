@@ -223,10 +223,13 @@ public class SaleServiceImpl implements SaleService {
             Bid highestBid = sale.getHighestBid();
             if (highestBid != null) {
                 highestBid.setSuccess(true);
-
+                log.info(
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  경매상태 변경완  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 sseService.send(SseDto.of(highestBid.getBidder().getId(), sale.getId(), "sale",
                     SseType.SUCCESS_BID, LocalDateTime.now()));
 
+                log.info(
+                    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  sse전송 완  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 chatService.createRoom(LiveResultReq.builder().dealId(sale.getId()).build());
             }
         }
