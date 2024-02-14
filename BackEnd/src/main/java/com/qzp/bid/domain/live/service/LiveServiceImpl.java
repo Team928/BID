@@ -244,9 +244,9 @@ public class LiveServiceImpl implements LiveService {
         video.setRunTime(String.format("%02d",
             ChronoUnit.HOURS.between(video.getCreateTime(), LocalDateTime.now())) + ":"
             + String.format("%02d",
-            ChronoUnit.MINUTES.between(video.getCreateTime(), LocalDateTime.now())) + ":"
+            (ChronoUnit.MINUTES.between(video.getCreateTime(), LocalDateTime.now()) % 60)) + ":"
             + String.format("%02d",
-            ChronoUnit.SECONDS.between(video.getCreateTime(), LocalDateTime.now())));
+            (ChronoUnit.SECONDS.between(video.getCreateTime(), LocalDateTime.now()) % 60)));
         video.setPath(recording.getUrl());
 
         videoRepository.save(video);
@@ -271,9 +271,9 @@ public class LiveServiceImpl implements LiveService {
         String time = String.format("%02d",
             ChronoUnit.HOURS.between(video.getCreateTime(), LocalDateTime.now())) + ":"
             + String.format("%02d",
-            ChronoUnit.MINUTES.between(video.getCreateTime(), LocalDateTime.now())) + ":"
+            (ChronoUnit.MINUTES.between(video.getCreateTime(), LocalDateTime.now())) % 60) + ":"
             + String.format("%02d",
-            ChronoUnit.SECONDS.between(video.getCreateTime(), LocalDateTime.now()));
+            (ChronoUnit.SECONDS.between(video.getCreateTime(), LocalDateTime.now())) % 60);
 
         switch (liveRecordingRes.getStep()) {
             case 1:
