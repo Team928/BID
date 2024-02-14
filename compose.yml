@@ -9,10 +9,4 @@ services:
       - /home/ubuntu/workspace/bid/backend/logs:/app/logs
       - /opt/openvidu/recordings:/app/openvidu/recordings
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_REDIS_HOST: ${SPRING_REDIS_HOST}
-      SPRING_REDIS_PORT: ${SPRING_REDIS_PORT}
-      SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
