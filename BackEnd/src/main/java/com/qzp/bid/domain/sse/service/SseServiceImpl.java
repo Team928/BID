@@ -34,9 +34,6 @@ public class SseServiceImpl implements SseService {
 
     public SseEmitter subscribe(Long memberId) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        if (sseRepository.get(memberId) != null) {
-            throw new BusinessException(ErrorCode.ALREADY_CONNECT_SSE);
-        }
         sseRepository.save(memberId, emitter);
         SseDto sseDto = SseDto.of(memberId, null, null, SUCCESS_CONNECT_SSE, LocalDateTime.now());
         sendToClient(sseDto);

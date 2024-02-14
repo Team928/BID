@@ -63,7 +63,7 @@ public enum ErrorCode {
 
     VIDEO_ID_NOT_EXIST(400, "존재하지 않는 동영상 ID입니다."),
     VIDEOTEXT_ID_NOT_EXIST(400, "존재하지 않는 동영상 텍스트 ID입니다."),
-    ALREADY_CONNECT_SSE(400, "이미 SSE연결이 존재합니다.");
+    ;
 
     private final int status;
     private final String message;
