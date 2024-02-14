@@ -40,8 +40,8 @@ spring:
     password: ENC(XsxnNbWCt8rygqdJk1q41kHzQ9SRjWpe)
   data:
     mongodb:
-      uri: ENC(Ss/b2eSmW2ZQD7bq/INmGaqHsIsU/O1cE/WG9/ELVLvOQQxdPf8aKvv5QQPxPz4/2/S4VvuQOZ/pN1u3PD5UtA==)
-      authentication-mechanism: SCRAM-SHA-256
+      uri: ENC(Apl/r3A61fqwdWaPO/iYK8/UXWRUE9y1i5Nr8TU57Me+zQtH6XOSq3pIxlPMoDmJQrFn59jGxlBm4vDMQYI6F8svnAwoevXUtV8VGUjSWdcfh4BUnrShr09GatTiNwop)
+
     redis:
       host: ENC(Rn5UFKpvFvo9QPC73lWnOe48t1FILQLfrhf+soOaz+Q=)
       port: ENC(1TrHMFwQn/O0BP6eIIXNwg==)
