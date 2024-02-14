@@ -1,10 +1,13 @@
 package com.qzp.bid.domain.live.service;
 
+import static com.qzp.bid.global.result.error.ErrorCode.VIDEO_ID_NOT_EXIST;
+
 import com.qzp.bid.domain.live.entity.Utterance;
 import com.qzp.bid.domain.live.entity.Video;
 import com.qzp.bid.domain.live.entity.VideoText;
 import com.qzp.bid.domain.live.repository.VideoRepository;
 import com.qzp.bid.domain.live.repository.VideoTextRepository;
+import com.qzp.bid.global.result.error.exception.BusinessException;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +75,8 @@ public class STTServiceImpl implements STTService {
             .defaultHeader(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
             .build();
 
-        Video video = videoRepository.findById(videoId).orElseThrow();
+        Video video = videoRepository.findById(videoId)
+            .orElseThrow(() -> new BusinessException(VIDEO_ID_NOT_EXIST));
 
         File file = new File(video.getPath());
 
