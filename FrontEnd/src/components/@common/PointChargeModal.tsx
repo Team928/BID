@@ -52,23 +52,46 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       <Modal width="300px" height="auto" title="포인트 충전" onClose={() => setShowChargeModal(false)}>
         <div className="w-full flex flex-col justify-center items-center px-8 py-2">
           <div className="w-full">
-            <p className="font-bold">충전 금액</p>
+            <p className="font-bold text-sm">충전금액</p>
             <input
               type="text"
               name="amount"
               value={amount}
               onChange={e => setAmount(Number(e.target.value))}
               placeholder="충전할 금액을 입력해주세요"
-              className="w-full outline-none border-b p-2"
+              className="w-full outline-none border-b p-2 text-sm"
             ></input>
           </div>
-          <div className="w-full pt-6 pb-2">
-            <p className="font-bold pb-3">결제 수단 선택</p>
-            <div className="flex gap-2">
-              <input type="radio" className="w-4" />
-              <img src={payment_icon} className="h-6" />
+          <div className="w-full pt-5">
+            <p className="font-bold pb-3 text-sm">결제수단</p>
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-2 items-center">
+                <input type="radio" name="pay" className="w-4" />
+                <img src={payment_icon} className="h-5" />
+                <p className="text-xs">카카오 페이</p>
+              </div>
+              <div className="flex gap-2 items-center">
+                <input type="radio" name="pay" className="w-4" />
+                <p className="text-xs">카드 결제(신용/체크)</p>
+              </div>
             </div>
           </div>
+          <div className="pt-5">
+            <div className="w-full pt-4 border-t text-left">
+              <p className="font-bold pb-3 text-xs">구매조건을 모두 확인하였으며, 결제에 동의합니다</p>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <input type="radio" className="w-4" />
+                  <p className="text-xs">개인 정보 수집 동의(필수)</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="radio" className="w-4" />
+                  <p className="text-xs">전자금융거래 이용약관 동의(필수)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="w-full flex gap-5 py-5">
             <button
               className="w-full bg-BID_SUB_GRAY text-white px-4 py-2 rounded-2xl"
