@@ -69,7 +69,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         return (
           <button
             onClick={() => approachLive()}
-            className="w-full border rounded-xl text-md border-red-500 flex p-3 justify-center items-center"
+            className="w-full py-3 text-red-500 rounded-xl text-center text-sm border-red-500 border flex justify-center items-center"
           >
             <MdLiveTv size={'16px'} color="red" />
             &nbsp;&nbsp;
@@ -78,7 +78,7 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         );
       } else if (status === 'END') {
         return (
-          <div className="w-full border rounded-xl text-md bg-BID_BLACK flex p-3 justify-center items-center gap-2">
+          <div className="w-full border rounded-xl text-md bg-BID_BLACK flex p-2 justify-center items-center gap-2">
             <p className=" text-white ">이미 종료된 경매입니다</p>
           </div>
         );

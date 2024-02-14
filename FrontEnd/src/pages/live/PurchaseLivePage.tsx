@@ -145,6 +145,11 @@ const PurchaseLivePage = () => {
       });
     });
 
+    mySession.on('signal:joinSession', event => {
+      if (event.data === nickname) return;
+      Toast.info(`${event.data}님이 참가했습니다.`);
+    });
+
     mySession.on('signal:leaveSession', event => {
       if (event.data === nickname) return;
       Toast.info(`${event.data}님이 퇴장했습니다.`);
@@ -378,6 +383,11 @@ const PurchaseLivePage = () => {
 
   useEffect(() => {
     joinSession();
+
+    session?.signal({
+      data: nickname,
+      type: 'joinSession',
+    });
 
     return () => leaveSession();
   }, []);
@@ -620,7 +630,7 @@ const PurchaseLivePage = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-black/80 relative">
+    <div className="w-full h-screen bg-black relative">
       <div className="absolute bottom-0 top-0 flex justify-between items-center left-0 right-0 p-1 z-[1]">
         <button onClick={handlePreviousPage}>
           <IoIosArrowBack size={25} color="#D9D9D9" />
@@ -680,15 +690,18 @@ const PurchaseLivePage = () => {
         </div>
       </div>
       {session && (
-        <div key={''} className="px-1 grid grid-cols-2 gap-2">
+        <div key="key" className="px-1 grid grid-cols-2 gap-2">
           {displayInfo.length &&
             displayInfo.map((info, idx) => {
               if (info) {
                 const data = JSON.parse(info.stream.connection.data.split('%/%')[0]);
 
                 return (
-                  <div key={idx} className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">
-                    <div className="relative w-full h-full" onClick={() => handleMainVideoStream(info)}>
+                  <div
+                    key={idx}
+                    className={`w-full h-[calc((100vh-150px)/2)] rounded-xl relative ${data.nickName === nickname && 'border border-gray-100'}`}
+                  >
+                    <div className="relative w-full h-full rounded-xl" onClick={() => handleMainVideoStream(info)}>
                       <div className="absolute text-white/50 text-xs left-2 top-2  px-1.5 py-0.5">
                         {data.type === 'buyer' ? '구매자' : '판매자'}
                       </div>
@@ -703,7 +716,9 @@ const PurchaseLivePage = () => {
                   </div>
                 );
               } else {
-                return <div className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-black/30 relative">&nbsp;</div>;
+                return (
+                  <div className="w-full h-[calc((100vh-150px)/2)] rounded-xl bg-BID_BLACK/50 relative">&nbsp;</div>
+                );
               }
             })}
         </div>

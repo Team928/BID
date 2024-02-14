@@ -1,14 +1,14 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 type ReviewStore = {
   reviewPosted: Record<string, boolean>;
   setReviewPosted: (dealId: string, value: boolean) => void;
 };
 
-const useReviewStore = create<ReviewStore>((set) => ({
+const useReviewStore = create<ReviewStore>(set => ({
   reviewPosted: {},
   setReviewPosted: (dealId, value) => {
-    set((state) => ({
+    set(state => ({
       reviewPosted: {
         ...state.reviewPosted,
         [dealId]: value,

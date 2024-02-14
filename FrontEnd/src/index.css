@@ -16,11 +16,11 @@
   }
 
   .detailLiveRedBtn {
-    @apply w-full border rounded-xl border-red-500 flex p-3 justify-center items-center gap-2;
+    @apply w-full py-3 text-white rounded-xl text-center text-sm border border-red-500 flex justify-center items-center;
   }
 
   .detailBtn {
-    @apply w-full py-3 text-white rounded-xl text-center text-base font-bold;
+    @apply w-full py-3 text-white rounded-xl text-center text-sm;
   }
 }
 

@@ -10,7 +10,7 @@ const CameraItem = ({ streamManager }: { streamManager: StreamManager }) => {
     }
   }, [streamManager, videoRef]);
 
-  return <video className="w-full h-full object-cover rounded-lg" autoPlay={true} ref={videoRef} />;
+  return <video className="w-full h-full object-cover rounded-xl" autoPlay={true} ref={videoRef} />;
 };
 
 export default CameraItem;
