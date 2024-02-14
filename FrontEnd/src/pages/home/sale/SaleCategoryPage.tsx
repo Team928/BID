@@ -8,6 +8,7 @@ import SelectModal from '@/components/home/SelectModal';
 import SaleCategoryItem from '@/components/home/sale/SaleCategoryItem';
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 import { useSale } from '@/hooks/home/useSale';
+import { patchChangeArea } from '@/service/profile/api';
 import useKeywordStore from '@/stores/keywordStore';
 import userStore from '@/stores/userStore';
 import { categoryType, dealStatusType } from '@/types/model';
@@ -67,15 +68,31 @@ const SaleCategoryPage = () => {
   useEffect(() => {
     if (address) {
       addArea(address);
-      setAddress('');
-      Toast.success('지역이 추가되었습니다');
+
+      const req = {
+        nickname: '',
+        area: [...area, address],
+      };
+
+      const formData = new FormData();
+      const json = JSON.stringify(req);
+      const blob = new Blob([json], { type: 'application/json' });
+
+      formData.append('memberUpdateProfileReq', blob);
+      patchChangeArea(formData).then(() => {
+        setAddress('');
+        Toast.success('지역이 추가되었습니다');
+      });
     }
   }, [address]);
+
   useEffect(() => {
     if (!isAddrClick) {
       setAddrText('지역 선택');
     }
   }, [isAddrClick, addrText]);
+
+  const [isRendering] = useState<boolean>(true);
 
   return (
     <>
@@ -98,9 +115,11 @@ const SaleCategoryPage = () => {
               }
               setIsAddressOpen(false);
             }}
-            className="w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30 "
+            className={`w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 transition ease-in-out delay-200 ${isRendering ? 'bg-black/50' : 'bg-black/0'}`}
           ></div>
-          <div className="fixed bottom-0 h-72 w-full pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30 max-w-[500px]">
+          <div
+            className={`fixed bottom-0 h-72 w-full pt-5 pb-5 px-BID_P rounded-t-3xl bg-white z-30 max-w-[500px] ${isRendering ? 'animate-sheetOn' : 'animate-sheetOff'}`}
+          >
             <div className="h-full flex flex-col justify-between">
               <p className="text-center text-md">지역 선택</p>
               <div className="flex flex-col gap-5">
@@ -155,7 +174,7 @@ const SaleCategoryPage = () => {
             <p className="font-bold text-lg">{changeEngToKr(category)}</p>
             <p className="text-xs text-BID_BLACK">필터링을 통해 원하는 상품을 찾아보세요</p>
           </div>
-          <div className="pl-4 py-2 flex text-xs text-center overflow-x-scroll whitespace-nowrap">
+          <div className="pl-4 py-3 flex text-xs text-center overflow-x-scroll whitespace-nowrap">
             <button
               onClick={() => {
                 setOrder('');

@@ -74,3 +74,15 @@ export const getUserPointHistory = async (): Promise<APIResponse<IUserPointHisto
   console.log(data);
   return data;
 };
+
+// 지역 수정
+export const patchChangeArea = async (info: FormData): Promise<APIResponse<string>> => {
+  console.log(info);
+  const { data } = await axiosAuthInstance.patch(`members/profiles`, info, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  console.log(data);
+  return data;
+};
