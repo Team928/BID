@@ -109,13 +109,13 @@ const ProfilePage = () => {
             </div>
             <div className="flex justify-between px-2 py-2.5 border-b">
               <p className="text-gray-500 text-sm leading-7">내 역경매 내역</p>
-              <button onClick={() => moveToNavigate('/profile/sale')}>
+              <button onClick={() => moveToNavigate('/profile/buy')}>
                 <IoIosArrowDroprightCircle size={30} color="#3498DB" />
               </button>
             </div>
             <div className="flex justify-between px-2 py-2.5 border-b">
               <p className="text-gray-500 text-sm leading-7">나의 리뷰 내역</p>
-              <button onClick={() => moveToNavigate('/profile/sale')}>
+              <button onClick={() => moveToNavigate('/profile/review')}>
                 <IoIosArrowDroprightCircle size={30} color="#3498DB" />
               </button>
             </div>
