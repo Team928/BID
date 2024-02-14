@@ -1,3 +1,4 @@
+import feedBack from '@/assets/icon/feedback.png';
 import { useReview } from '@/hooks/review/useReview';
 import { getTimeDifference } from '@/utils/getTimeDifference';
 import { useParams } from 'react-router-dom';
@@ -13,9 +14,9 @@ const OtherReview = () => {
   return (
     <div className="w-full h-full">
       {!reviewCnt ? (
-        <div className="w-full h-full pt-16 text-center text-gray-500 text-md ">
-          <p>아직 후기가 없어요</p>
-          <p>글을 작성하고 후기를 받아 보세요</p>
+        <div className="w-full h-[calc(100vh-240px)] flex justify-center items-center flex-col">
+          <img src={feedBack} alt="review" width={60} />
+          <div className="pt-2">아직 받은 리뷰가 없어요</div>
         </div>
       ) : (
         <div>

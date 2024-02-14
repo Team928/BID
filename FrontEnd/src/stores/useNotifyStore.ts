@@ -18,10 +18,15 @@ const useNotifyStore = create(
       return {
         notifyList: notifyList,
         addNotification: (notify: INotifyInfo) => {
-          set(state => {
-            const updatedList = [...state.notifyList, notify];
-            localStorage.setItem('notify-store', JSON.stringify({ notifyList: updatedList }));
-            return { notifyList: updatedList };
+          set((state: INotifyStore) => {
+            // 매개변수 타입 명시
+            const isExist = state.notifyList.some(n => n.time === notify.time);
+            if (!isExist) {
+              const updatedList = [...state.notifyList, notify];
+              localStorage.setItem('notify-store', JSON.stringify({ notifyList: updatedList }));
+              return { notifyList: updatedList };
+            }
+            return state; // 반환 타입 명시
           });
         },
 

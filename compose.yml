@@ -7,6 +7,7 @@ services:
     volumes:
       - /home/ubuntu/workspace/bid/backend/images:/app/src/main/resources/static/images
       - /home/ubuntu/workspace/bid/backend/logs:/app/logs
+      - /opt/openvidu/recordings:/app/openvidu/recordings
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}

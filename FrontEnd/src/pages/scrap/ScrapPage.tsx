@@ -53,7 +53,7 @@ const ScrapPage = () => {
           ) : (
             <div className="pt-2">
               {purchaseList?.data.purchaseSimpleRes.length === 0 ? (
-                <div className="w-full h-[calc(100vh-160px)] flex flex-col justify-center items-center">
+                <div className="w-full h-[calc(100vh-160px)] flex flex-col justify-center items-center text-sm">
                   <img src={heart} width={60} />
                   <div className="pt-5">위시에 담긴 거래가 없어요</div>
                   <div>지금 바로 좋아요를 눌러 위시를 담아보세요</div>

@@ -229,13 +229,22 @@ const SaleCategoryPage = () => {
           </div>
         </div>
         <div className="px-BID_P flex flex-col h-[calc(100vh-170px)] gap-4 overflow-y-auto pb-20">
-          {categoryInfo?.pages.map(
-            item =>
-              item.data.saleSimpleResList &&
-              item.data.saleSimpleResList.map((value, index) => {
-                return <SaleCategoryItem key={index} item={value} />;
-              }),
-          )}
+          {categoryInfo?.pages.map((item, idx) => {
+            if (item.data.saleSimpleResList.length === 0) {
+              return (
+                <div key={idx} className="w-full h-[calc(100vh-320px)] flex justify-center items-center">
+                  필터링된 거래가 없어요
+                </div>
+              );
+            } else {
+              return (
+                item.data.saleSimpleResList &&
+                item.data.saleSimpleResList.map((value, index) => {
+                  return <SaleCategoryItem key={index} item={value} />;
+                })
+              );
+            }
+          })}
         </div>
 
         {/* 페이지 최하단에 작은 div요소 만들어 ref에 setTarget적용 */}

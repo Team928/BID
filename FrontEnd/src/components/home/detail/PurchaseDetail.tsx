@@ -62,7 +62,7 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
         {/* 하위 컨텐츠 */}
         <div className="px-BID_P flex flex-col gap-3 pt-2">
           {status === 'BEFORE' && (
-            <p className="text-BID_MAIN font-bold text-sm">
+            <p className="text-BID_MAIN font-bold">
               {month}/{date} ({datOfWeek}) {time} 경매 시작 예정
             </p>
           )}
