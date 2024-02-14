@@ -4,35 +4,31 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { confirmedDealReq } from '@/service/chat/api';
 import { useChatLog } from '@/hooks/chat/useChat';
 import useDealStore from '@/stores/useDealStore';
+import useReviewStore from '@/stores/useReviewStore';
 
 const DealInfo = () => {
+  const { dealId } = useParams();
+  const id = Number(dealId);
 
-  const { dealId } = useParams()
-  console.log('글정보 아이디' , dealId)
-  const id = Number(dealId)
-  
-  const { useGetChatLogList }  = useChatLog()
+  const { useGetChatLogList } = useChatLog();
   const isConfirmed = useDealStore((state) => state.isConfirmed[String(dealId)] || false);
   const setConfirmed = useDealStore((state) => state.setConfirmed);
 
-  const {
-    data:chatLogInfo,
-  } = useGetChatLogList({ dealId: id })
-  console.log(chatLogInfo)
+  const { data: chatLogInfo } = useGetChatLogList({ dealId: id });
 
   const title = chatLogInfo?.data.dealResWithEndPrice.title;
   const content = chatLogInfo?.data.dealResWithEndPrice.content;
   const endPrice = chatLogInfo?.data.dealResWithEndPrice.endPrice;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleConfirm = async () => {
-    setConfirmed(String(id), true); 
+    setConfirmed(String(id), true);
     setIsModalOpen(false);
     try {
       const response = await confirmedDealReq(id);
-      console.log(response); 
+      console.log(response);
     } catch (error) {
       console.error('API 호출 에러:', error);
     }
@@ -40,9 +36,13 @@ const DealInfo = () => {
 
   const goToReview = () => {
     navigate(`/review`, { state: { dealInfo: chatLogInfo?.data.dealResWithEndPrice } });
-  }
+  };
+
+  // reviewPosted 상태 확인
+  const reviewPosted = useReviewStore((state) => state.reviewPosted[String(dealId)] || false);
 
   console.log(isConfirmed)
+
 
   return (
     <div className="fixed top-0 w-full bg-white border-b border-sm">
@@ -58,23 +58,30 @@ const DealInfo = () => {
           </div>
         </div>
         <div>
-          {isConfirmed ? (
-            <button
-              className="text-sm px-3 h-10 text-yellow-500 border border-yellow-500 rounded-xl font-bold"
-              onClick={goToReview}
-            >
-              리뷰 작성
-            </button>
-          ) : (
-            <button
-              className="text-sm px-3 h-10 text-BID_MAIN border border-BID_MAIN rounded-xl font-bold"
-              onClick={() => setIsModalOpen(true)}
-            >
-              구매 확정
-            </button>
-          )}
+
+        {isConfirmed ? (
+          <button
+            className={`text-sm px-3 h-10 ${
+              reviewPosted
+                ? 'text-gray-500 border border-gray-500'
+                : 'text-yellow-500 border border-yellow-500'
+            } rounded-xl font-bold`}
+            onClick={reviewPosted ? undefined : goToReview}
+            disabled={reviewPosted}
+          >
+            {reviewPosted ? '리뷰 작성 완료' : '리뷰 작성'}
+          </button>
+        ) : (
+          <button
+            className="text-sm px-3 h-10 text-BID_MAIN border border-BID_MAIN rounded-xl font-bold"
+            onClick={() => setIsModalOpen(true)}
+          >
+            구매 확정
+          </button>
+        )}
+                
         </div>
-    </div>
+      </div>
 
       {/* 모달 영역 */}
       {isModalOpen && <ConfirmModal onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm}/>
