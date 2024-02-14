@@ -1,6 +1,9 @@
 package com.qzp.bid.domain.chat.service;
 
 
+import static com.qzp.bid.global.result.error.ErrorCode.DEAL_ID_NOT_EXIST;
+import static com.qzp.bid.global.result.error.ErrorCode.MEMBER_ID_NOT_EXIST;
+
 import com.qzp.bid.domain.chat.dto.ChatList;
 import com.qzp.bid.domain.chat.dto.ChatLive;
 import com.qzp.bid.domain.chat.dto.ChatRes;
@@ -23,11 +26,15 @@ import com.qzp.bid.domain.deal.purchase.repository.ApplyFormRepository;
 import com.qzp.bid.domain.deal.purchase.repository.PurchaseRepository;
 import com.qzp.bid.domain.deal.purchase.repository.ReverseAuctionResultRepository;
 import com.qzp.bid.domain.deal.repository.DealRepository;
+import com.qzp.bid.domain.deal.sale.entity.Bid;
 import com.qzp.bid.domain.deal.sale.entity.Sale;
 import com.qzp.bid.domain.deal.sale.repository.SaleRepository;
 import com.qzp.bid.domain.member.entity.Member;
+import com.qzp.bid.domain.member.entity.PointHistory;
+import com.qzp.bid.domain.member.entity.PointStatus;
 import com.qzp.bid.domain.member.mapper.MemberMapper;
 import com.qzp.bid.domain.member.repository.MemberRepository;
+import com.qzp.bid.domain.member.repository.PointHistoryRepository;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import com.qzp.bid.global.result.error.ErrorCode;
@@ -36,6 +43,7 @@ import com.qzp.bid.global.security.util.AccountUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +69,7 @@ public class ChatServiceImpl implements ChatService {
     private final DealRepository<Deal> dealRepository;
     private final SaleRepository saleRepository;
     private final PurchaseRepository purchaseRepository;
+    private final PointHistoryRepository pointHistoryRepository;
     private final AccountUtil accountUtil;
     private final RedisTemplate redisTemplate;
     private final ApplyFormRepository applyFormRepository;
@@ -136,7 +145,7 @@ public class ChatServiceImpl implements ChatService {
         }
 
         Member sender = memberRepository.findById(chat.getSenderId())
-            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
 
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByDealId(chat.getDealId())
             .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
@@ -167,7 +176,7 @@ public class ChatServiceImpl implements ChatService {
     public void sendLiveChat(Chat chat, long dealId) {
 
         Member member = memberRepository.findById((chat.getSenderId()))
-            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
 
         chat.setSender(member.getNickname());
         chat.setDealId(dealId);
@@ -193,13 +202,13 @@ public class ChatServiceImpl implements ChatService {
             Member member = null;
             if (chatRoom.getHostId() != -1 && chatRoom.getHostId() == userId) {
                 member = memberRepository.findById(chatRoom.getGuestId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+                    .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
             } else if (chatRoom.getHostId() != -1 && chatRoom.getGuestId() == userId) {
                 member = memberRepository.findById(chatRoom.getHostId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+                    .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
             } else {
                 member = memberRepository.findById(userId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+                    .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
             }
 
             ChatRoomList chatRoomRes = ChatRoomList.builder()
@@ -310,17 +319,47 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional
     public void dealConfirmed(long dealId) {
-        long userId = Long.parseLong(accountUtil.getLoginMemberId());
+        Member member = accountUtil.getLoginMember()
+            .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByDealId(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
 
         Set<Long> confirmedIds = chatRoom.getDealConfirmed();
-        confirmedIds.add(userId);
+        confirmedIds.add(member.getId());
         chatRoom.setDealConfirmed(confirmedIds);
         chatRoomRepository.save(chatRoom);
 
+        if (chatRoom.getDealConfirmed().size() == 2) { //거래 둘 다 확정
+            if (saleRepository.existsById(chatRoom.getDealId())) { //경매일 때만 처리
+                Sale sale = saleRepository.findSaleById(chatRoom.getDealId())
+                    .orElseThrow(() -> new BusinessException(DEAL_ID_NOT_EXIST));
+                Bid bid = sale.getHighestBid(); //최종 낙찰된 입찰 기록
+
+                Member seller = memberRepository.findById(chatRoom.getHostId())
+                    .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+                Member buyer = memberRepository.findById(chatRoom.getGuestId())
+                    .orElseThrow(() -> new BusinessException(MEMBER_ID_NOT_EXIST));
+
+                //seller 포인트 입금, 히스토리 기록
+                seller.bidSuccessGetPoint(bid.getBidPrice());
+                setHistory(seller, PointStatus.RECEIVE, bid.getBidPrice());
+
+                //buyer holding point 차감, 히스토리 기록
+                buyer.bidSuccessRemovePoint(bid.getBidPrice());
+                setHistory(buyer, PointStatus.USE, bid.getBidPrice());
+            }
+        }
     }
 
-
+    private void setHistory(Member member, PointStatus status, int bidPrice) {
+        PointHistory pointHistory = PointHistory.builder()
+            .amount(bidPrice)
+            .status(status)
+            .time(LocalDateTime.now())
+            .member(member)
+            .build();
+        pointHistoryRepository.save(pointHistory);
+    }
 }
 
