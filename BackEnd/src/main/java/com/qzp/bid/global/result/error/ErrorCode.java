@@ -60,6 +60,9 @@ public enum ErrorCode {
     //live
     VIDEO_NOT_EXIST(400, "비디오가 존재하지 않습니다."),
     NOT_WRITER(400, "글쓴이가 아닙니다."),
+
+    VIDEO_ID_NOT_EXIST(400, "존재하지 않는 동영상 ID입니다."),
+    VIDEOTEXT_ID_NOT_EXIST(400, "존재하지 않는 동영상 텍스트 ID입니다."),
     ;
 
     private final int status;

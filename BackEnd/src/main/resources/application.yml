@@ -52,6 +52,10 @@ springdoc: #swagger
   cache:
     disabled: true
 
-logging:
-  level:
-    org.hibernate.orm.jdbc.bind: trace
+vito:
+  client_id: ENC(tFsXZHiu8O3G0eNpEvYa9R+Nq6kG5Lx47HWFMw3PxVo=)
+  client_secret: ENC(SvJta6O71FfeYxyDgMGKeoTB1bDaEZ0oUIX+ZGrlrLh+e8vxbV4cas+h+wDjpEjiad92DLLf2HU=)
+
+clova:
+  client_id: ENC(zkzK2m1uA9jTUhCsLduWM346Hsptsxvp)
+  client_secret: ENC(OGKEiL8HAoGRyAjQgZzmzWTkOt/IXPPxlh8am4O3J1sM5c757N3+qNbKVIPjSuyfD4YPLHNBeck=)

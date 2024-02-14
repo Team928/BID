@@ -6,13 +6,18 @@ import com.qzp.bid.domain.live.dto.LiveRecordingRes;
 import com.qzp.bid.domain.live.dto.LiveRoomReq;
 import com.qzp.bid.domain.live.dto.LiveRoomRes;
 import com.qzp.bid.domain.live.entity.Video;
+import com.qzp.bid.domain.live.dto.VideoTextRes;
 import com.qzp.bid.domain.live.service.LiveService;
+import com.qzp.bid.domain.live.service.STTService;
+import com.qzp.bid.domain.live.service.SummaryService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.Recording;
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +32,8 @@ public class LiveController {
 
     private final LiveService liveService;
     private final ChatService chatService;
+    private final STTService sttService;
+    private final SummaryService summaryService;
 
 
     @GetMapping("/create/rooms") // 방만들기 & 방참가
@@ -75,5 +82,12 @@ public class LiveController {
         @PathVariable(name = "dealId") long dealId) {
         List<Video> records = liveService.GetLiveRecord(dealId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_GET_SUCCESS, records));
+    }
+
+    @Operation(summary = "녹화영상 STT, 요약 내용 가져오기")
+    @GetMapping("/videotexts") //stt
+    public ResponseEntity<ResultResponse> getVideoText(long videoId) {
+        VideoTextRes videoTextRes = sttService.getVideoText(videoId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_VIDEOTEXT_SUCCESS, videoTextRes));
     }
 }
