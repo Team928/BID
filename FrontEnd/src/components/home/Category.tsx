@@ -72,7 +72,7 @@ const Category = () => {
             onClick={() => navigateHandler(item.name)}
             className="flex flex-col justify-center items-center gap-1"
           >
-            <div className="flex justify-center items-center rounded-full w-[3.75rem] h-[3.75rem] border cursor-pointer">
+            <div className=" bg-gray-100 flex justify-center items-center rounded-full w-[3.75rem] h-[3.75rem] cursor-pointer">
               {item.icon}
             </div>
             <p>{item.name}</p>
