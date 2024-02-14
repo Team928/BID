@@ -87,15 +87,13 @@ public class ChatServiceImpl implements ChatService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
             purchase.setStatus(DealStatus.END);
             purchaseRepository.save(purchase);
-            // ApplyForm 가격 갱신
+
             ApplyForm applyForm = applyFormRepository.findById(resultReq.getApplyFormId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_APPLYFORM_FAIL));
-            applyForm.setOfferPrice(resultReq.getOfferPrice());
-            applyFormRepository.save(applyForm);
             // 역 경매결과 생성 저장
             ReverseAuctionResult reverseAuctionResult = ReverseAuctionResult.builder()
                 .winningBid((int) resultReq.getApplyFormId())
-                .purchaseId((int) resultReq.getDealId())
+                .purchaseId(resultReq.getDealId())
                 .sellerId(applyForm.getSeller().getId())
                 .build();
             reverseAuctionResultRepository.save(reverseAuctionResult);
