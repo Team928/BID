@@ -14,6 +14,7 @@ interface ISelectModal {
 const SelectModal = ({ order, setOrder, state, setState, setIsOpen, sort }: ISelectModal) => {
   // 경매 시작전 BEFORE -> 최신순, 경매 시작 임박
   // 경매 진행중 AUCTION -> 최신순,  경매마감임박
+  const [isRendering] = useState<boolean>(true);
 
   const itemClickEvent = (lower: string) => {
     setState(sort.state === '경매 시작전' ? 'BEFORE' : 'AUCTION');
@@ -31,9 +32,11 @@ const SelectModal = ({ order, setOrder, state, setState, setIsOpen, sort }: ISel
     <>
       <div
         onClick={() => setIsOpen(false)}
-        className="w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 bg-black/30 "
+        className={`w-full h-screen fixed left-0 top-0 bottom-0 right-0 z-20 ${isRendering ? 'bg-black/50' : 'bg-black/0'}`}
       ></div>
-      <div className="fixed bottom-0 h-72 w-full pt-5 pb-10 px-BID_P rounded-t-3xl bg-white z-30 max-w-[500px]">
+      <div
+        className={`fixed bottom-0 h-64 w-full pt-5 pb-5 px-BID_P rounded-t-3xl bg-white z-30 max-w-[500px] ${isRendering ? 'animate-sheetOn' : 'animate-sheetOff'}`}
+      >
         <div className="h-full flex flex-col justify-between text-md">
           <p className="text-center">{sort.state}</p>
           <div className="flex flex-col gap-5">
