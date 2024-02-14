@@ -1,5 +1,5 @@
 import { axiosAuthInstance } from '@/apis/axiosInstance';
-import { IDealsListReq, ISaleListRes, ISaleDetailRes, IPurchaseListRes, IPurchaseDetailRes } from '@/types/home';
+import { IDealsListReq, IPurchaseDetailRes, IPurchaseListRes, ISaleDetailRes, ISaleListRes } from '@/types/home';
 import { APIResponse } from '@/types/model';
 
 export const getSaleListReq = async ({
@@ -133,4 +133,23 @@ export const postPurchasesApplyForm = async (info: FormData, purchaseId: number)
   });
   console.log(data);
   return data;
+};
+
+interface IRecordVideoRes {
+  dealId: number;
+  path: string;
+  runTime: string;
+  timeLine: string[];
+}
+
+// 비디오 보여주기
+export const getRecordVideo = async (dealId: number): Promise<APIResponse<IRecordVideoRes[]>> => {
+  try {
+    const { data } = await axiosAuthInstance.get(`lives/recording/video/${dealId}`);
+    console.log('video', data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };

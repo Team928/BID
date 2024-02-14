@@ -1,6 +1,7 @@
 import Toast from '@/components/@common/Toast';
 import {
   deleteDealWish,
+  getRecordVideo,
   getSaleDetailReq,
   getSaleListReq,
   postDealWishAdd,
@@ -12,6 +13,8 @@ import { IDealsListInfiniteReq, IDealsListReq } from '@/types/home';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useSale = () => {
+  const queryClient = useQueryClient();
+
   const useGetSaleList = (props: IDealsListReq) => {
     return useQuery({
       queryKey: ['sale', props],
@@ -47,8 +50,6 @@ export const useSale = () => {
   };
 
   const usePostSaleBid = (saleId: number, bidPrice: string, nickname: string) => {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationKey: ['bid', saleId, bidPrice],
       mutationFn: () => postSaleBid(saleId, bidPrice),
@@ -64,8 +65,6 @@ export const useSale = () => {
   };
 
   const usePostSaleImmediate = (saleId: number) => {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationKey: ['immediate', saleId],
       mutationFn: () => postImmediateBid(saleId),
@@ -80,8 +79,6 @@ export const useSale = () => {
   };
 
   const usePostDealWishAdd = (dealId: number) => {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationKey: ['wished', 'add', dealId],
       mutationFn: () => postDealWishAdd(dealId),
@@ -96,8 +93,6 @@ export const useSale = () => {
   };
 
   const usePostSaleLive = (saleId: number) => {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationKey: ['live', saleId],
       mutationFn: () => postLiveReq(saleId),
@@ -112,8 +107,6 @@ export const useSale = () => {
   };
 
   const useDeleteDealWish = (dealId: number) => {
-    const queryClient = useQueryClient();
-
     return useMutation({
       mutationKey: ['wished', 'delete', dealId],
       mutationFn: () => deleteDealWish(dealId),
@@ -127,6 +120,13 @@ export const useSale = () => {
     });
   };
 
+  const useGetRecordVideo = (dealId: number) => {
+    return useQuery({
+      queryKey: ['video', dealId],
+      queryFn: () => getRecordVideo(dealId),
+    });
+  };
+
   return {
     useGetSaleList,
     useGetListInfinite,
@@ -136,5 +136,6 @@ export const useSale = () => {
     usePostDealWishAdd,
     useDeleteDealWish,
     usePostSaleLive,
+    useGetRecordVideo,
   };
 };

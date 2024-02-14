@@ -606,7 +606,7 @@ const PurchaseLivePage = () => {
   // 퇴장 함수
   const handleGoOut = async () => {
     if (window.confirm('역경매 방송을 퇴장하시겠습니까?')) {
-      await leaveSession();
+      leaveSession();
 
       session?.signal({
         data: nickname,

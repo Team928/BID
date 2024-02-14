@@ -4,7 +4,6 @@ import Toast from '@/components/@common/Toast';
 import { useSale } from '@/hooks/home/useSale';
 import useLiveStore from '@/stores/userLiveStore';
 import { ISaleDetailRes } from '@/types/home';
-import { ITimeStamp } from '@/types/live';
 import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { getDate } from '@/utils/getDate';
@@ -26,14 +25,13 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const { usePostSaleLive } = useSale();
   const { mutate: liveMutate } = usePostSaleLive(dealRes.id);
   const { setTType, setPType } = useLiveStore();
+  const { useGetRecordVideo } = useSale();
+  const { data: video } = useGetRecordVideo(dealRes.id);
 
-  // #TODO 프로필 파람 해야함
-  // 작성자로 사용자 정보 조회
   const getMemberInfo = () => {
     navigate(`/profile/${dealRes.writer}`);
   };
 
-  // #TODO 라이브방 진입하는 함수
   const approachLive = () => {
     setTType('sale');
     setPType(isSeller ? 'seller' : 'buyer');
@@ -43,7 +41,6 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
       return;
     }
 
-    // @TODO: 구매자가 경매 진행 중 필요한 데이터를 넘김
     navigate(`/live/sale/${dealRes.id}`, {
       state: {
         title: dealRes.title,
@@ -51,32 +48,6 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
       },
     });
   };
-
-  const timeStamp: ITimeStamp[] = [
-    {
-      content: '전면부',
-      time: '00:03:43',
-    },
-    {
-      content: '후면부',
-      time: '00:05:30',
-    },
-    {
-      content: '다각도',
-      time: '00:07:33',
-    },
-    {
-      content: '작동상태',
-      time: '00:09:01',
-    },
-    {
-      content: '크기비교',
-      time: '00:12:31',
-    },
-  ];
-
-  // #TODO 라이브 요청하는 함수
-  const liveRequest = () => {};
 
   const carouselSettings = {
     dots: false,
@@ -137,14 +108,11 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             <Carousel settings={carouselSettings} images={images} />
           )}
           {status === 'AUCTION' && (
-            <div
-              onClick={() => liveRequest()}
-              className="absolute left-3 bottom-3 p-2 px-3 text-sm bg-white text-black rounded-full font-bold flex items-center gap-1"
-            >
+            <button className="absolute left-3 bottom-3 p-2 px-3 text-sm bg-white text-black rounded-full font-bold flex items-center gap-1">
               <p onClick={() => setShowModal(true)} className="">
                 라이브 요청
               </p>
-            </div>
+            </button>
           )}
         </div>
         {/* 하위 컨텐츠 */}
@@ -190,23 +158,20 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
           {status === 'LIVE' && !isSeller && (
             <button
               onClick={() => approachLive()}
-              className="border rounded-xl border-red-500 text-red-500 font-bold flex p-3 justify-center items-center gap-2"
+              className="border rounded-xl border-red-500 text-sm text-red-500 flex p-2 py-3 justify-center items-center gap-2"
             >
-              <MdLiveTv size={'1.8rem'} color="#text-red-500" />
+              <MdLiveTv size={'1.3rem'} color="text-red-500" />
               <p className="text-md">라이브 보러가기</p>
             </button>
           )}
-          {status === 'AUCTION' && (
+          {status === 'AUCTION' && video && video.data[0].path && (
             <div>
               <div>
                 <p className="text-md">라이브 녹화 영상</p>
                 <p className="py-1 text-xs text-BID_SUB_GRAY">지난 라이브 녹화 방송을 확인해보세요</p>
               </div>
               <div className="w-full py-2">
-                <VideoPlayer
-                  src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                  timeStamp={timeStamp}
-                />
+                <VideoPlayer src={video.data[0].path} timeStamp={video.data[0].timeLine} />
               </div>
             </div>
           )}
@@ -220,29 +185,24 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 <p className="w-1/3">입찰가격</p>
                 <p className="w-1/2">입찰시간</p>
               </div>
-              <div
-                className="h-28 max-h-28 
-              py-2 text-[14px] text-BID_SUB_GRAY overflow-y-scroll border-b"
-              >
-                {bidList.length > 0 ? (
-                  <div>
-                    {bidList.map(item => {
-                      return (
-                        <div key={item.id} className="flex justify-between gap-3 text-center py-1 ">
-                          <p className="w-1/6">{item.bidder}</p>
-                          <p className="w-1/3">{item.bidPrice}원</p>
-                          <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="flex w-full h-20 text-[13px] justify-center items-center text-gray-400 text-center">
-                    입찰 기록이 없습니다.
-                    <br />첫 입찰 기록을 남겨보는건 어떨까요?
-                  </div>
-                )}
-              </div>
+              {bidList.length > 0 ? (
+                <div className="py-2 text-[14px] text-BID_SUB_GRAY max-h-28 overflow-y-scroll border-b">
+                  {bidList.map(item => {
+                    return (
+                      <div key={item.id} className="flex justify-between gap-3 text-center py-1 ">
+                        <p className="w-1/6">{item.bidder}</p>
+                        <p className="w-1/3">{item.bidPrice}원</p>
+                        <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex w-full h-20 text-[13px] justify-center items-center text-gray-400 text-center">
+                  입찰 기록이 없습니다.
+                  <br />첫 입찰 기록을 남겨보는건 어떨까요?
+                </div>
+              )}
             </div>
           </div>
         </div>
