@@ -81,8 +81,8 @@ const ProfilePage = () => {
         <div className="px-6">
           <div className="w-full h-30 border p-4 rounded-lg">
             <div className="flex px-2 py-1 justify-between items-center">
-              <p>나의 포인트</p>
-              <p className="text-xl">{userProfileInfo?.data.point} P</p>
+              <p className="font-bold">나의 포인트</p>
+              <p className="text-lg">{userProfileInfo?.data.point} P</p>
             </div>
             <div className="flex justify-end px-2 pt-2 text-sm font-bold">
               <button onClick={() => setShowChargeModal(true)} className="px-2 text-gray-400">
@@ -99,29 +99,32 @@ const ProfilePage = () => {
         </div>
         {/* 거래 및 리뷰 내역 */}
         <div className="px-6 pt-8">
-          <p className="font-bold px-3 text-lg">나의 거래</p>
+          <p className="font-bold px-3 text-lg">내역 조회</p>
           <div className="px-4 py-2">
-            <div className="flex justify-between px-2 py-2.5 border-b">
-              <p className="text-gray-500 text-sm leading-7">내 경매 내역</p>
-              <button onClick={() => moveToNavigate('/profile/sale')}>
+            <div onClick={() => moveToNavigate('/profile/sale')} className="flex justify-between px-2 py-2.5 border-b">
+              <p className="text-gray-500 text-sm leading-7">경매 내역</p>
+              <button>
                 <IoIosArrowDroprightCircle size={30} color="#3498DB" />
               </button>
             </div>
-            <div className="flex justify-between px-2 py-2.5 border-b">
-              <p className="text-gray-500 text-sm leading-7">내 역경매 내역</p>
-              <button onClick={() => moveToNavigate('/profile/buy')}>
+            <div onClick={() => moveToNavigate('/profile/buy')} className="flex justify-between px-2 py-2.5 border-b">
+              <p className="text-gray-500 text-sm leading-7">역경매 내역</p>
+              <button>
                 <IoIosArrowDroprightCircle size={30} color="#3498DB" />
               </button>
             </div>
-            <div className="flex justify-between px-2 py-2.5 border-b">
-              <p className="text-gray-500 text-sm leading-7">나의 리뷰 내역</p>
-              <button onClick={() => moveToNavigate('/profile/review')}>
+            <div
+              onClick={() => moveToNavigate('/profile/review')}
+              className="flex justify-between px-2 py-2.5 border-b"
+            >
+              <p className="text-gray-500 text-sm leading-7">리뷰 내역</p>
+              <button>
                 <IoIosArrowDroprightCircle size={30} color="#3498DB" />
               </button>
             </div>
-            <div className="flex justify-between px-2 py-2.5 border-b">
+            <div onClick={() => moveToNavigate('/profile/point')} className="flex justify-between px-2 py-2.5 border-b">
               <p className="text-gray-500 text-sm leading-7">포인트 사용 내역</p>
-              <button onClick={() => moveToNavigate('/profile/point')}>
+              <button>
                 <IoIosArrowDroprightCircle size={30} color="#3498DB" />
               </button>
             </div>
