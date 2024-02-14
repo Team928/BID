@@ -50,7 +50,7 @@ const BuyCategoryPage = () => {
   if (isLoading) return <Spinner />;
   return (
     <>
-      <div className="w-full h-screen pb-[56px]">
+      <div className="w-full h-screen pb-[65px]">
         <Header info={info} />
         <div className="pt-12 px-BID_P ">
           <div className="pt-4">

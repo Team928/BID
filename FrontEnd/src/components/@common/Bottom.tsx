@@ -65,7 +65,7 @@ const Bottom = () => {
   return (
     <>
       {isModalOpen && <SelectWriteModal closeModal={toggleModal} />}
-      <div className="fixed px-4 bottom-0 w-full h-[56px] bg-black/90 z-10 text-[#A9A9A9] text-sm max-w-[500px]">
+      <div className="fixed px-4 bottom-0 w-full h-[65px] bg-black/90 z-10 text-[#A9A9A9] text-sm max-w-[500px]">
         <div className="py-1 flex justify-around items-center">
           <div onClick={() => navigate(`/`)} className="flex flex-col items-center cursor-pointer text-xs">
             {pathname === '/' || pathname.split('/')[1] === 'sale' || pathname.split('/')[1] === 'buy' ? (

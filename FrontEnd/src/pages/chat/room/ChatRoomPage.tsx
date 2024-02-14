@@ -87,7 +87,7 @@ const ChatRoomPage = () => {
   };
 
   return (
-    <div className="w-full h-screen pb-[56px]">
+    <div className="w-full h-screen pb-[65px]">
       <Header info={info} />
       <DealInfo />
       <div className="px-6 pt-40 pb-20">

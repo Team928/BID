@@ -170,7 +170,7 @@ const SaleCategoryPage = () => {
         </>
       )}
       {isDaumModalOpen && <DaumPostModal setIsOpen={setIsDaumModalOpen} setAddress={setAddress} />}
-      <div className="w-full h-screen pb-[56px] max-w-[500px]">
+      <div className="w-full h-screen pb-[65px] max-w-[500px]">
         <Header info={info} />
         <div className="w-full pt-12">
           <div className="pt-4 px-BID_P">

@@ -21,7 +21,7 @@ const SelectWriteModal: React.FC<ModalProps> = ({ closeModal }) => {
   return (
     <>
       <div
-        className="fixed w-full top-0 bottom-[56px] left-0 right-0 transition ease-in-out delay-200 z-[11] bg-black bg-opacity-50 max-w-[500px] mx-auto"
+        className="fixed w-full top-0 bottom-[65px] left-0 right-0 transition ease-in-out delay-200 z-[11] bg-black bg-opacity-50 max-w-[500px] mx-auto"
         onClick={closeModal}
       >
         <div className=" fixed w-full h-full flex items-center justify-center max-w-[500px] mx-auto">
