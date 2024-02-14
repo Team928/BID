@@ -12,10 +12,6 @@ const ReviewPage = () => {
   const [reviewText, setReviewText] = useState<string>('');
   const { usePostReview } = useReview();
   const navigate = useNavigate();
-  const [isWroteReview, setIsWroteReview] = useState<boolean>(false);
-
-
-  console.log(isWroteReview)
 
   const reviewReq: ICreateReviewReq = {
     content: reviewText,
@@ -44,8 +40,7 @@ const ReviewPage = () => {
 
   const handleReviewCreate = () => {
     mutate();
-    setIsWroteReview(true);
-    navigate(`/chat/rooms/${dealInfo.dealId}`, { state: { isWroteReview: true} });
+    navigate(`/chat/rooms/${dealInfo.dealId}`);
   };
   return (
     <>
