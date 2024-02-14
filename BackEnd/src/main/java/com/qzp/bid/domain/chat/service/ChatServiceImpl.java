@@ -124,7 +124,7 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     public void sendChat(Chat chat, long dealId) {
 
-        chat.setRoomId(dealId);
+        chat.setDealId(dealId);
         if (!chat.getType().equals(ChatType.TALK)) {
             throw new BusinessException(ErrorCode.INPUT_VALUE_INVALID);
         }
@@ -132,7 +132,7 @@ public class ChatServiceImpl implements ChatService {
         Member sender = memberRepository.findById(chat.getSenderId())
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
 
-        ChatRoom chatRoom = chatRoomRepository.findById(chat.getRoomId())
+        ChatRoom chatRoom = chatRoomRepository.findById(chat.getDealId())
             .orElseThrow(() -> new BusinessException(ErrorCode.CHATROOM_NOT_EXIST));
 
         if (redisTemplate.opsForHash().get("SubDestination", "/sub/chat/room/" + dealId) != null
@@ -164,7 +164,7 @@ public class ChatServiceImpl implements ChatService {
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
 
         chat.setSender(member.getNickname());
-        chat.setRoomId(dealId);
+        chat.setDealId(dealId);
         chat.setCreateTime(LocalDateTime.now().toString());
         ChatLive chatLive = chatRoomMapper.toChatLive(chat);
 
@@ -202,7 +202,7 @@ public class ChatServiceImpl implements ChatService {
                 .audienceMemberRes(memberMapper.toOpponentMemberRes(member))
                 .build();
             if (userId != chatRoom.getLastSenderId()) {
-                int countUmReadChats = chatRepository.countAllByRoomIdAndReadIsFalse(
+                int countUmReadChats = chatRepository.countAllByDealIdAndReadIsFalse(
                     chatRoom.getDealId());
                 chatRoomRes.setUnReadCount(countUmReadChats);
             }
@@ -225,14 +225,14 @@ public class ChatServiceImpl implements ChatService {
 
         // 챗 읽기 처리
         if (chatRoom.getLastSenderId() != userId) {
-            List<Chat> chats = chatRepository.findAllByRoomIdAndReadIsFalse(dealId);
+            List<Chat> chats = chatRepository.findAllByDealIdAndReadIsFalse(dealId);
             for (Chat chat : chats) {
                 chat.setRead(true);
                 chatRepository.save(chat);
             }
         }
 
-        List<Chat> listChat = chatRepository.findAllByRoomIdOrderByCreateTime(dealId);
+        List<Chat> listChat = chatRepository.findAllByDealIdOrderByCreateTime(dealId);
         List<ChatRes> chatRes = new ArrayList<>(); // 채팅 내역
         for (Chat chat : listChat) {
             chatRes.add(chatRoomMapper.toChatRes(chat));
@@ -293,7 +293,7 @@ public class ChatServiceImpl implements ChatService {
 
         if (chatRoom.getHostId() == -1 && chatRoom.getGuestId() == -1) {
             chatRoomRepository.delete(chatRoom);
-            chatRepository.deleteAllByRoomId(dealId);
+            chatRepository.deleteAllByDealId(dealId);
         } else {
             chatRoomRepository.save(chatRoom);
         }
