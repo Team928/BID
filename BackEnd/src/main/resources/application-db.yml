@@ -41,6 +41,7 @@ spring:
   data:
     mongodb:
       uri: ENC(Ss/b2eSmW2ZQD7bq/INmGaqHsIsU/O1cE/WG9/ELVLvOQQxdPf8aKvv5QQPxPz4/2/S4VvuQOZ/pN1u3PD5UtA==)
+      authentication-mechanism: SCRAM-SHA-256
     redis:
       host: ENC(Rn5UFKpvFvo9QPC73lWnOe48t1FILQLfrhf+soOaz+Q=)
       port: ENC(1TrHMFwQn/O0BP6eIIXNwg==)
