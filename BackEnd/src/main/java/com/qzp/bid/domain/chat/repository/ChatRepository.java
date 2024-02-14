@@ -9,12 +9,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface ChatRepository extends MongoRepository<Chat, Long> {
 
 
-    int countAllByRoomIdAndReadIsFalse(long roomId);
+    int countAllByDealIdAndReadIsFalse(long roomId);
 
-    List<Chat> findAllByRoomIdAndReadIsFalse(long roomId);
+    List<Chat> findAllByDealIdAndReadIsFalse(long roomId);
 
-    List<Chat> findAllByRoomIdOrderByCreateTime(long roomId);
+    List<Chat> findAllByDealIdOrderByCreateTime(long roomId);
 
 
-    void deleteAllByRoomId(long roomId);
+    void deleteAllByDealId(long roomId);
 }
