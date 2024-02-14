@@ -5,6 +5,7 @@ import { useReview } from '@/hooks/review/useReview';
 import { ICreateReviewReq } from '@/types/review';
 import { BsFillStarFill } from 'react-icons/bs';
 import { IoIosArrowBack } from 'react-icons/io';
+import useReviewStore from '@/stores/useReviewStore';
 
 const ReviewPage = () => {
   const { dealInfo } = useLocation().state;
@@ -12,6 +13,7 @@ const ReviewPage = () => {
   const [reviewText, setReviewText] = useState<string>('');
   const { usePostReview } = useReview();
   const navigate = useNavigate();
+  const setReviewPosted = useReviewStore(state => state.setReviewPosted);
 
   const reviewReq: ICreateReviewReq = {
     content: reviewText,
@@ -40,7 +42,8 @@ const ReviewPage = () => {
 
   const handleReviewCreate = () => {
     mutate();
-    navigate(`/chat/rooms/${dealInfo.dealId}`);
+    setReviewPosted(dealInfo.dealId, true);
+    navigate(`/profile`);
   };
   return (
     <>
