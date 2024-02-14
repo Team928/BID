@@ -7,7 +7,6 @@ import userStore from '@/stores/userStore';
 import { categoryType } from '@/types/model';
 import { ICategory, ICreateSaleReq, IWriteInput } from '@/types/write';
 import { changeKrToEng } from '@/utils/changeCategorie';
-import { getDate } from '@/utils/getDate';
 import { IWriteDateTimeProps, getDateTimeWrite } from '@/utils/getDateTimeWrite';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { CiCamera } from 'react-icons/ci';
@@ -99,7 +98,7 @@ const SaleWritePage = () => {
         content: values.content,
         writer: nickname,
         category: changeKrToEng(selected.name) as categoryType,
-        area: area,
+        area: hopeArea,
         startTime: startTime,
       },
       immediatePrice: values.immediatePrice,
@@ -161,6 +160,17 @@ const SaleWritePage = () => {
       setAddress('');
     }
   }, [address]);
+
+  const getTime = (time: string) => {
+    const d = new Date(time);
+    const year = d.getUTCFullYear();
+    const month = (d.getUTCMonth() + 1).toString().padStart(2, '0');
+    const day = d.getUTCDate().toString().padStart(2, '0');
+    const hours = d.getUTCHours().toString().padStart(2, '0');
+    const minutes = d.getUTCMinutes().toString().padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+  };
 
   return (
     <>
@@ -294,10 +304,10 @@ const SaleWritePage = () => {
                 <div className="pt-4">
                   <div className="border p-3 text-center text-xs flex flex-col gap-1">
                     <p>
-                      {getDate(startTime).fullDate} <span className="text-BID_MAIN">경매 및 라이브방송</span> 시작
+                      {getTime(startTime)} <span className="text-BID_MAIN">경매 및 라이브방송</span> 시작
                     </p>
                     <p>
-                      경매 마감은 <span className="text-BID_MAIN">{getDate(endTime).fullDate}</span> 입니다
+                      경매 마감은 <span className="text-BID_MAIN">{getTime(endTime)}</span> 입니다
                     </p>
                     <p>
                       경매 시작전까지는 <span className="text-BID_MAIN">즉시 구매가</span>로 물건을 구매합니다

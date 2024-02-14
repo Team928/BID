@@ -7,7 +7,6 @@ import userStore from '@/stores/userStore';
 import { categoryType } from '@/types/model';
 import { IBuyWriteInput, ICategory, ICreateBuyReq } from '@/types/write';
 import { changeKrToEng } from '@/utils/changeCategorie';
-import { getDate } from '@/utils/getDate';
 import { IWriteDateTimeProps, getDateTimeWrite } from '@/utils/getDateTimeWrite';
 import { useEffect, useRef, useState } from 'react';
 import { CiCamera } from 'react-icons/ci';
@@ -78,6 +77,7 @@ const BuyWritePage = () => {
   // 이미지 삭제
   const deletePhoto = (id: number) => {
     setPhoto(photo.filter((_, index) => index !== id));
+    setPhotos(photos.filter((_, index) => index !== id));
   };
 
   // 판매글 등록
@@ -93,7 +93,7 @@ const BuyWritePage = () => {
         content: values.content,
         writer: nickname,
         category: changeKrToEng(selected.name) as categoryType,
-        area: area,
+        area: hopeArea,
         startTime: startTime,
       },
       minPirce: values.minPrice,
@@ -133,6 +133,17 @@ const BuyWritePage = () => {
     return false;
   };
 
+  const getTime = (time: string) => {
+    const d = new Date(time);
+    const year = d.getUTCFullYear();
+    const month = (d.getUTCMonth() + 1).toString().padStart(2, '0');
+    const day = d.getUTCDate().toString().padStart(2, '0');
+    const hours = d.getUTCHours().toString().padStart(2, '0');
+    const minutes = d.getUTCMinutes().toString().padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+  };
+
   // 날짜와 시간 radio버튼 입력 받았을 때
   // 시작시간 및 종료시간 저장
   useEffect(() => {
@@ -142,9 +153,14 @@ const BuyWritePage = () => {
         time: values.time,
       };
       const { startDate } = getDateTimeWrite(props)!;
+      console.log(startDate);
       setStartTime(startDate);
     }
   }, [values.date, values.time]);
+
+  useEffect(() => {
+    console.log(startTime);
+  }, [startTime]);
 
   useEffect(() => {
     if (address) {
@@ -253,7 +269,7 @@ const BuyWritePage = () => {
                 <div className="pt-4">
                   <div className="border p-3 text-center text-xs flex flex-col gap-1">
                     <p>
-                      {getDate(startTime).fullDate} <span className="text-BID_MAIN">라이브 방송</span> 시작
+                      {getTime(startTime)} <span className="text-BID_MAIN">라이브 방송</span> 시작
                     </p>
                     <p>
                       방송 시작전까지 <span className="text-BID_MAIN">참여 신청</span>을 받아보세요
