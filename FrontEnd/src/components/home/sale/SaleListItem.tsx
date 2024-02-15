@@ -15,10 +15,7 @@ const SaleListItem = (props: { item: ISaleSimpleRes }) => {
   return (
     <div onClick={() => navigate(`/sale/detail/${sale.id}`)} className="text-xs cursor-pointer ">
       <div className="w-28 h-28 relative">
-        <img
-          src={`${import.meta.env.VITE_BASE_URL}static${sale.image}`}
-          className="w-full h-full rounded-lg object-cover"
-        />
+        <img src={`${import.meta.env.VITE_BASE_URL}${sale.image}`} className="w-full h-full rounded-lg object-cover" />
         {/* 경매 진행전이라면 라이브 일정 보여주기 */}
         {item.status === 'BEFORE' && (
           <>

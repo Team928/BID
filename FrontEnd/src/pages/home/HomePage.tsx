@@ -30,7 +30,6 @@ const HomePage = () => {
 
   useEffect(() => {
     init();
-    console.log(isLogin);
     if (!isLogin) {
       navigate('/login');
     }

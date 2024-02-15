@@ -19,7 +19,7 @@ const ProfilePointHistory = () => {
                   충전
                 </div>
                 <div className="flex-1">
-                  <p>{getDate(item.time).fullDate4}</p>
+                  <p>{getDate(item.time).fullDate2}</p>
                   <p className="font-semibold pt-1">포인트 충전</p>
                 </div>
 
@@ -28,11 +28,11 @@ const ProfilePointHistory = () => {
             )}
             {item.status === 'RECEIVE' && (
               <>
-                <div className="bg-BID_BLACK text-white flex justify-center items-center border text-center w-14 h-14 rounded-full ">
+                <div className="bg-BID_MAIN text-white flex justify-center items-center border text-center w-14 h-14 rounded-full ">
                   입금
                 </div>
                 <div className="flex-1">
-                  <p>{getDate(item.time).fullDate4}</p>
+                  <p>{getDate(item.time).fullDate2}</p>
                   <p className="font-semibold pt-1">물건 판매 완료</p>
                 </div>
 
@@ -45,7 +45,7 @@ const ProfilePointHistory = () => {
                   취소
                 </div>
                 <div className="flex-1">
-                  <p>{getDate(item.time).fullDate4}</p>
+                  <p>{getDate(item.time).fullDate2}</p>
                   <p className="font-semibold pt-1">상위 입찰 발생</p>
                 </div>
 
@@ -58,7 +58,7 @@ const ProfilePointHistory = () => {
                   입찰
                 </div>
                 <div className="flex-1">
-                  <p>{getDate(item.time).fullDate4}</p>
+                  <p>{getDate(item.time).fullDate2}</p>
                   <p className="font-semibold pt-1">입찰 - 포인트 차감</p>
                 </div>
 
@@ -71,7 +71,7 @@ const ProfilePointHistory = () => {
                   낙찰
                 </div>
                 <div className="flex-1">
-                  <p>{getDate(item.time).fullDate4}</p>
+                  <p>{getDate(item.time).fullDate2}</p>
                   <p className="font-semibold pt-1">거래 낙찰 완료</p>
                 </div>
 

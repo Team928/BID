@@ -1,7 +1,9 @@
 import alarm from '@/assets/icon/alarm.png';
 import Header, { IHeaderInfo } from '@/components/@common/Header';
 import NotifyItem from '@/components/notify/NotifyItem';
+import notifyReadStore from '@/stores/notifyReadStore';
 import useNotifyStore from '@/stores/useNotifyStore';
+import { useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
 const NotifyPage = () => {
@@ -12,7 +14,12 @@ const NotifyPage = () => {
     right_2: null,
   };
 
+  const { setIsRead } = notifyReadStore();
   const { notifyList } = useNotifyStore();
+
+  useEffect(() => {
+    setIsRead();
+  }, []);
   return (
     <div className="w-full h-screen">
       <Header info={info} />

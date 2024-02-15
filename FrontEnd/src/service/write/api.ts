@@ -9,7 +9,7 @@ export const postSaleWrite = async (info: FormData): Promise<APIResponse<string>
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(data);
+
     Toast.success('경매글 등록을 성공했습니다.');
     return data;
   } catch (err) {
@@ -25,7 +25,7 @@ export const postBuyWrite = async (info: FormData): Promise<APIResponse<string>>
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(data);
+
     Toast.success('역경매글 등록을 성공했습니다.');
     return data;
   } catch (err) {

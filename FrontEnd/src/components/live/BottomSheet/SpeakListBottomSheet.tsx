@@ -12,8 +12,6 @@ const SpeakListBottomSheet = ({
   onClose: () => void;
   handleResolveSpeakRequest: (userId: number, nickName: string) => void;
 }) => {
-  console.log(speakInfo);
-
   const handleResolve = (userId: number, nickName: string) => {
     if (window.confirm(`${nickName}님께 발언권을 주시겠습니까?`)) {
       handleResolveSpeakRequest(userId, nickName);

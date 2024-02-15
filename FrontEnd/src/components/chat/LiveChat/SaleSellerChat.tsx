@@ -7,11 +7,9 @@ import { useParams } from 'react-router-dom';
 const SaleSellerChat = () => {
   const accessToken = axiosAuthInstance;
 
-  const [client, setClient] = useState<Client | null>(null);
+  const [, setClient] = useState<Client | null>(null);
   const { addChatLog, chatLogs, clearChatLogs } = useChatStore(state => state);
   const { id: dealId } = useParams();
-
-  console.log(client);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 

@@ -8,13 +8,7 @@ export const useLive = () => {
   const usePostLiveMatch = () => {
     return useMutation({
       mutationKey: ['match'],
-      mutationFn: ({ dealId, applyFormId, offerPrice }: IMatchReq) => matchLive({ dealId, applyFormId, offerPrice }),
-      onSuccess: () => {
-        console.log('매칭 성공');
-      },
-      onError: () => {
-        console.log('매칭 실패');
-      },
+      mutationFn: ({ dealId, formId, offerPrice }: IMatchReq) => matchLive({ dealId, formId, offerPrice }),
     });
   };
 
@@ -51,12 +45,6 @@ export const useLive = () => {
     return useMutation({
       mutationKey: ['timeStamp'],
       mutationFn: ({ step, dealId }: ITimeStampReq) => checkTimeStamp({ step, dealId }),
-      onSuccess: () => {
-        console.log('타임라인 찍기 성공');
-      },
-      onError: () => {
-        console.log('타임라인 찍기 실패');
-      },
     });
   };
 
@@ -65,12 +53,6 @@ export const useLive = () => {
     return useMutation({
       mutationKey: ['purchase'],
       mutationFn: (dealId: string) => endPurchaseLive(dealId),
-      onSuccess: () => {
-        console.log('역경매 종료');
-      },
-      onError: () => {
-        console.log('역경매 종료 실패');
-      },
     });
   };
 

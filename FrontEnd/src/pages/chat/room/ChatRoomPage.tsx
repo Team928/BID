@@ -29,7 +29,6 @@ const ChatRoomPage = () => {
 
   const { dealId } = useParams();
   const { data: chatLogInfo } = useGetChatLogList({ dealId: Number(dealId) });
-
   const accessToken = axiosAuthInstance;
 
   useEffect(() => {
@@ -38,18 +37,13 @@ const ChatRoomPage = () => {
     newClient.configure({
       brokerURL: import.meta.env.VITE_CHAT_URL,
       onConnect: () => {
-        console.log('웹소켓 연결 완료');
-
         const headers: StompHeaders = {
           Authorization: 'Bearer ' + accessToken,
         };
         newClient.subscribe(
           `/sub/chats/rooms/${dealId}`,
           message => {
-            console.log('받은 메시지 :', message.body);
-
             const parsedMessage = JSON.parse(message.body);
-            console.log(setChatLogs);
             setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data]);
           },
           headers,
@@ -79,7 +73,6 @@ const ChatRoomPage = () => {
         type: 'TALK',
       };
       const jsonMessage = JSON.stringify(newMessage);
-      console.log('보낸 메시지', jsonMessage);
       client.publish({ destination: `/pub/message/${dealId}`, body: jsonMessage });
     } else {
       console.error('웹소켓 연결 노활성화.');
@@ -90,7 +83,7 @@ const ChatRoomPage = () => {
     <div className="w-full h-screen pb-[65px]">
       <Header info={info} />
       <DealInfo />
-      <div className="px-6 pt-40 pb-20">
+      <div className="px-6 pt-[10px] pb-20">
         {/* 이전 대화내용 불러오기 */}
         {chatLogInfo &&
           chatLogInfo.data.chatResList.map((chatLog, index) => <ChatLogs key={index} chatResList={chatLog} />)}
@@ -99,7 +92,7 @@ const ChatRoomPage = () => {
           <ChatLogs key={index} chatResList={chatLog} />
         ))}
       </div>
-      <div>
+      <div className="fixed bottom-0 w-full max-w-[500px]">
         <MessageInput
           message={message}
           setMessage={setMessage}

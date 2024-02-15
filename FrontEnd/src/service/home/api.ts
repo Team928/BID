@@ -22,13 +22,13 @@ export const getSaleListReq = async ({
       keyword: keyword,
     },
   });
-  console.log(data);
+
   return data;
 };
 
 export const getSaleDetailReq = async (saleId: number): Promise<APIResponse<ISaleDetailRes>> => {
   const { data } = await axiosAuthInstance.get(`deals/sales/${saleId}`);
-  console.log(data);
+
   return data;
 };
 
@@ -52,13 +52,13 @@ export const getPurchaseListReq = async ({
       keyword: keyword,
     },
   });
-  console.log(data);
+
   return data;
 };
 
 export const getPurchaseDetailReq = async (purchaseId: number): Promise<APIResponse<IPurchaseDetailRes>> => {
   const { data } = await axiosAuthInstance.get(`deals/purchases/${purchaseId}`);
-  console.log(data);
+
   return data;
 };
 
@@ -68,7 +68,7 @@ export const postSaleBid = async (saleId: number, bidPrice: string): Promise<API
     const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/bids`, {
       bidPrice: bidPrice,
     });
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -80,7 +80,7 @@ export const postSaleBid = async (saleId: number, bidPrice: string): Promise<API
 export const postImmediateBid = async (saleId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/immediate`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -91,7 +91,7 @@ export const postImmediateBid = async (saleId: number): Promise<APIResponse<stri
 export const postLiveReq = async (saleId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/livereqs`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -103,7 +103,7 @@ export const postLiveReq = async (saleId: number): Promise<APIResponse<string>> 
 export const postDealWishAdd = async (dealId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.post(`deals/${dealId}/wishes`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -115,7 +115,7 @@ export const postDealWishAdd = async (dealId: number): Promise<APIResponse<strin
 export const deleteDealWish = async (dealId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.delete(`deals/${dealId}/wishes`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -131,11 +131,13 @@ export const postPurchasesApplyForm = async (info: FormData, purchaseId: number)
       'Content-Type': 'multipart/form-data',
     },
   });
-  console.log(data);
+
   return data;
 };
 
 interface IRecordVideoRes {
+  id: number;
+  createTime: string;
   dealId: number;
   path: string;
   runTime: string;
@@ -146,7 +148,35 @@ interface IRecordVideoRes {
 export const getRecordVideo = async (dealId: number): Promise<APIResponse<IRecordVideoRes[]>> => {
   try {
     const { data } = await axiosAuthInstance.get(`lives/recording/video/${dealId}`);
-    console.log('video', data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+interface IUtterancesRes {
+  start_at: string;
+  duration: string;
+  msg: string;
+  spk: string;
+}
+
+interface IVideoSTTRes {
+  id: number;
+  videoId: number;
+  utterances: IUtterancesRes[];
+  summary: string;
+}
+
+// STT 및 요약
+export const getVideoSTT = async (videoId: number): Promise<APIResponse<IVideoSTTRes>> => {
+  try {
+    const { data } = await axiosAuthInstance.get(`lives/videotexts`, {
+      params: {
+        videoId: videoId,
+      },
+    });
     return data;
   } catch (err) {
     console.log(err);

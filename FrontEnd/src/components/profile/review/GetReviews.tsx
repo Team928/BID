@@ -19,9 +19,6 @@ const GetReviews = () => {
         </div>
       ) : (
         <div>
-          <div className="px-6 ">
-            <p className="text-md pb-2 pt-4 text-gray-500">총 {reviewCnt}개의 후기가 있어요</p>
-          </div>
           {/* 리뷰 불러오기 */}
           <div className="px-BID_P">
             {reviewInfo?.data.reviewSimpleRes.map((item, index) => (

@@ -37,8 +37,6 @@ const BuyModal = ({
     if (isSuccess) {
       successBid(bidPrice);
       onClose();
-    } else {
-      console.log('실패');
     }
   }, [isSuccess]);
 

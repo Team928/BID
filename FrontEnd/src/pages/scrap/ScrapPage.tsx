@@ -7,7 +7,6 @@ import WishPurchaseItem from '@/components/scrap/WishPurchaseItem';
 import WishSaleItem from '@/components/scrap/WishSaleItem';
 import { useWish } from '@/hooks/scrap/useWish';
 import useTabStore from '@/stores/auctionTabStore';
-import { useEffect } from 'react';
 
 const ScrapPage = () => {
   const { tab } = useTabStore();
@@ -22,14 +21,6 @@ const ScrapPage = () => {
   const { useGetWishSaleList, useGetWishPurchaseList } = useWish();
   const { data: saleList } = useGetWishSaleList(tab);
   const { data: purchaseList } = useGetWishPurchaseList(tab);
-
-  useEffect(() => {
-    console.log(saleList);
-  }, [saleList]);
-
-  useEffect(() => {
-    console.log(purchaseList);
-  }, [purchaseList]);
 
   return (
     <>

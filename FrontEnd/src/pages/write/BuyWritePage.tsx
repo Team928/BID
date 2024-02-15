@@ -83,7 +83,6 @@ const BuyWritePage = () => {
   // 판매글 등록
   const handleWriteClick = () => {
     if (!confirmWrite(values)) {
-      console.log('빈 값이 존재합니다');
       return;
     }
 
@@ -153,14 +152,9 @@ const BuyWritePage = () => {
         time: values.time,
       };
       const { startDate } = getDateTimeWrite(props)!;
-      console.log(startDate);
       setStartTime(startDate);
     }
   }, [values.date, values.time]);
-
-  useEffect(() => {
-    console.log(startTime);
-  }, [startTime]);
 
   useEffect(() => {
     if (address) {

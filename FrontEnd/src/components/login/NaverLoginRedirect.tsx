@@ -11,13 +11,10 @@ export default function NaverLoginRedirect() {
   const { loginUser } = userStore();
 
   useEffect(() => {
-    console.log(naverCode);
     if (naverCode) {
       axios
         .post(`${import.meta.env.VITE_BASE_URL}auth/login/naver`, { authorizationCode: naverCode, state: state })
         .then(res => {
-          console.log(res.data);
-
           const { id, accessToken, refreshToken, nickname, area } = res.data.data;
           const userId = Number(id);
 

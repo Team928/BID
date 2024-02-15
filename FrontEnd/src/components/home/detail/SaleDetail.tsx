@@ -8,13 +8,13 @@ import addCommaToPrice from '@/utils/addCommaToPrice';
 import { changeEngToKr } from '@/utils/changeCategorie';
 import { getDate } from '@/utils/getDate';
 import { getPriceName } from '@/utils/getPriceName';
+import { getTimeDifference } from '@/utils/getTimeDifference';
 import { useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 import VideoPlayer from './VideoPlayer';
-import { getTimeDifference } from '@/utils/getTimeDifference';
 
 const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const navigate = useNavigate();
@@ -64,10 +64,8 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const images = [];
 
   for (let i = 0; i < dealRes.images.length; i++) {
-    images.push(`${import.meta.env.VITE_BASE_URL}static${dealRes.images[i]}`);
+    images.push(`${import.meta.env.VITE_BASE_URL}${dealRes.images[i]}`);
   }
-  console.log(images);
-  console.log(images.length);
 
   return (
     <>
@@ -103,7 +101,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         <div className="relative w-full h-72">
           {images.length === 1 ? (
             <img
-              src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images}`}
+              src={`${import.meta.env.VITE_BASE_URL}${dealRes.images}`}
               className="object-cover w-full h-full"
               alt={`Slide 0`}
             />
@@ -185,7 +183,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 <p className="py-1 text-xs text-BID_SUB_GRAY">지난 라이브 녹화 방송을 확인해보세요</p>
               </div>
               <div className="w-full py-2">
-                <VideoPlayer src={video.data[0].path} timeStamp={video.data[0].timeLine} />
+                <VideoPlayer src={video.data[0].path} timeStamp={video.data[0].timeLine} id={video.data[0].id} />
               </div>
             </div>
           )}
@@ -193,10 +191,10 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             <p className="font-xs text-md">입찰 로그</p>
             <p className="pt-1 text-xs text-BID_SUB_GRAY">현재까지의 입찰 로그를 확인해보세요</p>
             <div className="px-5">
-              <div className="flex justify-between gap-3 w-full border-b pt-4 pb-1 text-center text-sm">
-                <p className="w-1/6">입찰자</p>
-                <p className="w-1/3">입찰가격</p>
-                <p className="w-1/2">입찰시간</p>
+              <div className="flex justify-between gap-3 w-full border-b pt-4 pb-1 text-center text-[12px]">
+                <p className="w-[30%]">입찰자</p>
+                <p className="w-[30%]">입찰가격</p>
+                <p className="w-[40%]">입찰시간</p>
               </div>
               <div
                 className="h-28 max-h-28 
@@ -206,10 +204,10 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                   <div>
                     {bidList.map(item => {
                       return (
-                        <div key={item.id} className="flex justify-between gap-3 text-center py-1 ">
-                          <p className="w-1/6">{item.bidder}</p>
-                          <p className="w-1/3">{item.bidPrice}원</p>
-                          <p className="w-1/2">{getDate(item.bidTime).fullDate2}</p>
+                        <div key={item.id} className="flex justify-between gap-3 text-center py-1 text-xs">
+                          <p className="w-[30%]">{item.bidder}</p>
+                          <p className="w-[30%]">{item.bidPrice}원</p>
+                          <p className="w-[40%]">{getDate(item.bidTime).fullDate2}</p>
                         </div>
                       );
                     })}

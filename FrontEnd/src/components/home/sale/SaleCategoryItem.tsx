@@ -11,7 +11,7 @@ const SaleCategoryItem = (props: { item: ISaleSimpleRes }) => {
     <div onClick={() => navigate(`/sale/detail/${dealSimpleRes.id}`)} className="flex gap-4 cursor-pointer">
       <div className="w-28 h-28 relative">
         <img
-          src={`${import.meta.env.VITE_BASE_URL}static${dealSimpleRes.image}`}
+          src={`${import.meta.env.VITE_BASE_URL}${dealSimpleRes.image}`}
           className="w-full h-full rounded-lg object-cover"
         />
       </div>

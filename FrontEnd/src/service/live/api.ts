@@ -14,12 +14,12 @@ export const getSession = async (dealId: string, userId: number): Promise<APIRes
 };
 
 // 역경매 시 최종 매칭
-export const matchLive = async ({ dealId, applyFormId, offerPrice }: IMatchReq): Promise<APIResponse<string>> => {
+export const matchLive = async ({ dealId, formId, offerPrice }: IMatchReq): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.get(
-      `/lives/purchase/results?dealId=${dealId}&applyFormId=${applyFormId}&offerPrice=${offerPrice}`,
+      `/lives/purchase/results?dealId=${dealId}&applyFormId=${formId}&offerPrice=${offerPrice}`,
     );
-    console.log(data);
+
     return data;
   } catch (err) {
     console.log(err);
@@ -31,7 +31,7 @@ export const matchLive = async ({ dealId, applyFormId, offerPrice }: IMatchReq):
 export const startRecording = async ({ userId, dealId }: IRecordReq): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.get(`/lives/start/recording?userId=${userId}&dealId=${dealId}`);
-    console.log(data);
+
     return data;
   } catch (err) {
     console.log(err);
@@ -43,7 +43,7 @@ export const startRecording = async ({ userId, dealId }: IRecordReq): Promise<AP
 export const endRecording = async ({ userId, dealId }: IRecordReq): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.get(`/lives/end/recording?userId=${userId}&dealId=${dealId}`);
-    console.log(data);
+
     return data;
   } catch (err) {
     console.log(err);
@@ -55,7 +55,7 @@ export const endRecording = async ({ userId, dealId }: IRecordReq): Promise<APIR
 export const checkTimeStamp = async ({ step, dealId }: ITimeStampReq): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.get(`lives/check/recording?step=${step}&dealId=${dealId}`);
-    console.log(data);
+
     return data;
   } catch (err) {
     console.log(err);
@@ -67,7 +67,6 @@ export const checkTimeStamp = async ({ step, dealId }: ITimeStampReq): Promise<A
 export const endPurchaseLive = async (dealId: string): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.get(`lives/end/purchase/${dealId}`);
-    console.log(data);
     return data;
   } catch (err) {
     console.log(err);

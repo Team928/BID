@@ -3,12 +3,12 @@ import { PARTICIPANT_TYPE } from '@/constants/liveType';
 import { getSession } from '@/service/live/api';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
+import addCommaToPrice from '@/utils/addCommaToPrice';
 import { Device, OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SaleBuyer from './Sale/SaleBuyer';
 import SaleSeller from './Sale/SaleSeller';
-import addCommaToPrice from '@/utils/addCommaToPrice';
 
 // 경매 라이브 페이지
 const SaleLivePage = () => {
@@ -166,13 +166,9 @@ const SaleLivePage = () => {
   }, [currentVideoDevice, session, mainStreamManager, onMike, onCamera]);
 
   const leaveSession = useCallback(() => {
-    if (session) {
-      session.disconnect();
-    }
+    if (!session || !publisher) return;
 
-    if (session && publisher) {
-      session.unpublish(publisher);
-    }
+    session.unpublish(publisher);
 
     if (publisher && publisher.stream && publisher.stream.getMediaStream()) {
       const stream = publisher.stream.getMediaStream();
@@ -180,11 +176,13 @@ const SaleLivePage = () => {
     }
 
     OV.current = new OpenVidu();
+    session.disconnect();
     setSession(null);
     setMyUserName('');
+    setSubscriber(undefined);
     setMainStreamManager(undefined);
     setPublisher(undefined);
-  }, [session]);
+  }, [session, publisher]);
 
   useEffect(() => {
     if (pType === PARTICIPANT_TYPE.BUYER) {
@@ -198,25 +196,23 @@ const SaleLivePage = () => {
 
   if (pType === PARTICIPANT_TYPE.SELLER) {
     return (
-      <>
-        <SaleSeller
-          publisher={publisher}
-          session={session}
-          mainStreamManager={mainStreamManager}
-          leaveSession={leaveSession}
-          handleMainVideoStream={handleMainVideoStream}
-          switchCamera={() => {
-            if (!onCamera) {
-              Toast.error('카메라를 켜주세요.');
-              return;
-            }
-            switchCamera();
-          }}
-          state={state}
-          currentBid={currentBid}
-          sellerJoinSession={sellerJoinSession}
-        />
-      </>
+      <SaleSeller
+        publisher={publisher}
+        session={session}
+        mainStreamManager={mainStreamManager}
+        leaveSession={leaveSession}
+        handleMainVideoStream={handleMainVideoStream}
+        switchCamera={() => {
+          if (!onCamera) {
+            Toast.error('카메라를 켜주세요.');
+            return;
+          }
+          switchCamera();
+        }}
+        state={state}
+        currentBid={currentBid}
+        sellerJoinSession={sellerJoinSession}
+      />
     );
   } else if (pType === PARTICIPANT_TYPE.BUYER) {
     return (

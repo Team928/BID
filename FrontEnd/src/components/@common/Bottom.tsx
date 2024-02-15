@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BsSuitHeart } from 'react-icons/bs';
 import { GoHome } from 'react-icons/go';
 import { PiChatsCircle, PiPencilSimpleLine, PiUser } from 'react-icons/pi';
@@ -55,12 +55,6 @@ const Bottom = () => {
       defaultIcon: <PiUser size={'1.5rem'} color="#545454" />,
     },
   ];
-
-  useEffect(() => {
-    console.log(pathname);
-    console.log(pathname.split('/')[0]);
-    console.log(pathname.split('/')[1]);
-  }, [pathname]);
 
   return (
     <>

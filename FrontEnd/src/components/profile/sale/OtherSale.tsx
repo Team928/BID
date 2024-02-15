@@ -30,7 +30,7 @@ const OtherSale = () => {
               <div className="relative flex justify-center items-center">
                 <img
                   className="w-24 h-24 rounded-md object-cover"
-                  src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
+                  src={`${import.meta.env.VITE_BASE_URL}${item.dealSimpleRes.image}`}
                 ></img>
               </div>
               <div className="flex-1 flex flex-col justify-between">
