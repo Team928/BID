@@ -2,6 +2,7 @@ import Modal from '@/components/@common/Modal';
 import { MODAL_TITLE } from '@/constants/modalTitle';
 import { useState } from 'react';
 import ParrarelModalButtons from './ParrarelModalButtons';
+import addCommaToPrice from '@/utils/addCommaToPrice';
 
 const RequestSalePriceModal = ({
   currentSalePrice,
@@ -32,7 +33,8 @@ const RequestSalePriceModal = ({
           ></input>
         </div>
         <div className="text-center text-sm">
-          현재 나의 판매 희망가 <span className="text-BID_MAIN font-semibold">{currentSalePrice}원</span>
+          현재 나의 판매 희망가{' '}
+          <span className="text-BID_MAIN font-semibold">{addCommaToPrice(currentSalePrice)}원</span>
         </div>
       </div>
       {/* @TODO: 각 호출별 함수 로직 작성 */}
