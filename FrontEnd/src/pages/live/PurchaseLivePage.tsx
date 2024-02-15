@@ -180,7 +180,6 @@ const PurchaseLivePage = () => {
         if (!event.data) return;
 
         const data = JSON.parse(event.data);
-        console.log('매칭 확정할 때 데이터', data);
 
         if (data.userId === sellerInfo.userId) {
           // 매칭 확정 모달 띄우기
@@ -215,9 +214,9 @@ const PurchaseLivePage = () => {
 
       mySession.on('signal:matchSuccess', event => {
         if (!event.data) return;
-        console.log(event.data);
 
         leaveSession();
+
         setTimeout(() => {
           navigate(`/chat/rooms/${id}`, { replace: true });
         }, 2000);
@@ -442,10 +441,6 @@ const PurchaseLivePage = () => {
   useEffect(() => {
     let disp = [publisher, ...subscribers];
 
-    console.log('현재 들어온 사람', disp);
-    console.log('pub ', publisher);
-    console.log('sub ', subscribers);
-
     if (currentPage === 1) {
       if (disp.length > 4) {
         const tempValue = [];
@@ -587,12 +582,10 @@ const PurchaseLivePage = () => {
       offerPrice: matchRequestInfo.finalOfferPrice,
     };
 
-    console.log('ㅎㅎ', matchReq);
     postLiveMatch(matchReq);
-
     endPurchaseLive(id);
-
     leaveSession();
+
     setTimeout(() => {
       navigate(`/chat/rooms/${id}`, { replace: true });
     }, 2000);

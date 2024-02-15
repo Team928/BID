@@ -196,25 +196,23 @@ const SaleLivePage = () => {
 
   if (pType === PARTICIPANT_TYPE.SELLER) {
     return (
-      <>
-        <SaleSeller
-          publisher={publisher}
-          session={session}
-          mainStreamManager={mainStreamManager}
-          leaveSession={leaveSession}
-          handleMainVideoStream={handleMainVideoStream}
-          switchCamera={() => {
-            if (!onCamera) {
-              Toast.error('카메라를 켜주세요.');
-              return;
-            }
-            switchCamera();
-          }}
-          state={state}
-          currentBid={currentBid}
-          sellerJoinSession={sellerJoinSession}
-        />
-      </>
+      <SaleSeller
+        publisher={publisher}
+        session={session}
+        mainStreamManager={mainStreamManager}
+        leaveSession={leaveSession}
+        handleMainVideoStream={handleMainVideoStream}
+        switchCamera={() => {
+          if (!onCamera) {
+            Toast.error('카메라를 켜주세요.');
+            return;
+          }
+          switchCamera();
+        }}
+        state={state}
+        currentBid={currentBid}
+        sellerJoinSession={sellerJoinSession}
+      />
     );
   } else if (pType === PARTICIPANT_TYPE.BUYER) {
     return (
