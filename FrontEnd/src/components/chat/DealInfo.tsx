@@ -44,7 +44,7 @@ const DealInfo = () => {
   };
 
   const goToReview = () => {
-    navigate(`/review`, { state: { dealInfo: chatLogInfo?.data.dealResWithEndPrice, userInfo: chatRoomInfo } });
+    navigate(`/review`, { state: { dealInfo: chatLogInfo?.data.dealResWithEndPrice, userInfo: chatRoomInfo?.data } });
   };
 
   // reviewPosted 상태 확인
@@ -52,6 +52,8 @@ const DealInfo = () => {
 
   console.log('구매확정 여부 : ', isConfirmed);
   console.log('리뷰작성 여부ㅜ: ', reviewPosted);
+
+  console.log(chatRoomInfo)
 
   return (
     <div className="fixed top-0 w-full bg-white border-b border-sm">
