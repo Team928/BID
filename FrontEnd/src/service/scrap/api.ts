@@ -6,7 +6,7 @@ import { APIResponse } from '@/types/model';
 export const getProfileWishSaleReq = async (type: dealType): Promise<APIResponse<ISaleListRes>> => {
   const lookupParam: { page: number; size: number; type: dealType } = {
     page: 0,
-    size: 10,
+    size: 30,
     type: type,
   };
   const { data } = await axiosAuthInstance.get(`members/profiles/wishes`, {
@@ -21,7 +21,7 @@ export const getProfileWishPurchaseReq = async (type: dealType): Promise<APIResp
     params: {
       lookupParam: {
         page: 0,
-        size: 10,
+        size: 30,
         type: type,
       },
     },
