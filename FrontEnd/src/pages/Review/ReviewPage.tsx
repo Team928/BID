@@ -15,11 +15,13 @@ const ReviewPage = () => {
   const navigate = useNavigate();
   const setReviewPosted = useReviewStore(state => state.setReviewPosted);
 
+  console.log(userInfo[0].audienceMemberRes.opponentNick)
+
   const reviewReq: ICreateReviewReq = {
     content: reviewText,
     dealId: dealInfo.dealId,
     score: rating,
-    targetNickname: userInfo.audienceMemberRes.opponentNick,
+    targetNickname: userInfo[0].audienceMemberRes.opponentNick,
   };
 
   console.log(dealInfo)
@@ -50,7 +52,7 @@ const ReviewPage = () => {
       <div className="w-full h-screen">
         <Header info={info} />
         <div className="pt-20">
-          <p className="flex justify-center font-bold text-lg py-3">{userInfo.audienceMemberRes.opponentNick}님과의 거래는 어떠셨나요😄</p>
+          <p className="flex justify-center font-bold text-lg py-3">{userInfo[0].audienceMemberRes.opponentNick}님과의 거래는 어떠셨나요😄</p>
           <p className="flex justify-center font-bold text-BID_MAIN py-2">리뷰를 통해 거래의 후기를 남겨주세요</p>
         </div>
         <div className="px-6 py-4">
