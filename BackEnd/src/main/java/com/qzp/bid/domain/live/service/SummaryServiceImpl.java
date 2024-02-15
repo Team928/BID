@@ -3,7 +3,6 @@ package com.qzp.bid.domain.live.service;
 import static com.qzp.bid.global.result.error.ErrorCode.VIDEOTEXT_ID_NOT_EXIST;
 
 import com.qzp.bid.domain.live.dto.SummaryReq;
-import com.qzp.bid.domain.live.entity.Utterance;
 import com.qzp.bid.domain.live.entity.VideoText;
 import com.qzp.bid.domain.live.repository.VideoTextRepository;
 import com.qzp.bid.global.result.error.exception.BusinessException;
@@ -35,7 +34,8 @@ public class SummaryServiceImpl implements SummaryService {
     public void getSummary(long videoId) {
         VideoText videoText = videoTextRepository.findByVideoId(videoId)
             .orElseThrow(() -> new BusinessException(VIDEOTEXT_ID_NOT_EXIST));
-        String text = videoText.getUtterances().stream().map(Utterance::getMsg)
+        String text = videoText.getUtterances().stream()
+            .map(utterance -> String.valueOf(utterance.getMsg()))
             .collect(Collectors.joining());
         SummaryReq summaryReq = SummaryReq.of(text);
         WebClient webClient = WebClient.builder()

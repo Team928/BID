@@ -17,13 +17,7 @@ public class auctionDealScheduler {
 
     @Scheduled(fixedRate = 60000)
     public void auctionClosing() {
-        try {
-            saleService.saleClosing();
-        } catch (Exception e) {
-            log.warn("스케줄러 실패");
-            log.warn(e.getMessage());
-            e.printStackTrace();
-        }
+        saleService.saleClosing();
     }
 
     @Scheduled(fixedRate = 60000)

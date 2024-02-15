@@ -43,7 +43,6 @@ import com.qzp.bid.global.security.util.AccountUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -80,23 +79,15 @@ public class ChatServiceImpl implements ChatService {
     public void createRoom(LiveResultReq resultReq) {
 
         long dealId = resultReq.getDealId();
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ dealId  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  거래 가져오기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         String dtype = deal.getClass().getSimpleName(); // DTYPE 가져오기
         Member guest = null;
 
         if (dtype.equals("Sale")) {
-            log.info(
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  if문 sale @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             guest = dealRepository.findBidderByDealId(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
-            log.info(
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 게스트 가져오기 완  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         } else if (dtype.equals("Purchase")) {
-            log.info(
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  if문 거래글  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             // Purchase 상태 바꾸기
             Purchase purchase = purchaseRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
@@ -116,22 +107,12 @@ public class ChatServiceImpl implements ChatService {
             guest = dealRepository.findSellerByDealId(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
         }
-        log.info(
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  if문 끝  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         String roomName = deal.getTitle();
         long hostId = deal.getWriter().getId();
         long guestId = guest.getId();
-        log.info(
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + hostId + " " + guestId + " " + roomName
-                + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         ChatRoom chatRoom = ChatRoom.builder().dealId(dealId).roomName(roomName)
             .hostId(hostId).guestId(guestId).build();
-        log.info(
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + chatRoom.toString()
-                + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         chatRoomRepository.save(chatRoom);
-        log.info(
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  챗룸 저장완  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     }
 
 

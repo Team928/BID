@@ -14,17 +14,17 @@ import lombok.Setter;
 @Embeddable
 public class Utterance {
 
-    private int start_at;
-    private int duration;
+    private String start_at;
+    private String duration;
     private String msg;
-    private int spk;
+    private String spk;
 
-    public static Utterance from(Map<String, String> text) {
+    public static Utterance from(Map<String, Object> text) {
         return new Utterance(
-            Integer.parseInt(text.get("start_at")),
-            Integer.parseInt(text.get("duration")),
-            text.get("msg"),
-            Integer.parseInt(text.get("spk"))
+            String.valueOf(text.get("start_at")),
+            String.valueOf(text.get("duration")),
+            String.valueOf(text.get("msg")),
+            String.valueOf(text.get("spk"))
         );
     }
 }

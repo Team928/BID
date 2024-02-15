@@ -82,7 +82,12 @@ public class STTServiceImpl implements STTService {
         Video video = videoRepository.findById(videoId)
             .orElseThrow(() -> new BusinessException(VIDEO_ID_NOT_EXIST));
 
-        File file = new File(video.getPath());
+        List<String> splitUrl = List.of(video.getPath().split("/"));
+
+        String Path =
+            "/app/openvidu/recordings/" + splitUrl.get(5) + File.separator + splitUrl.get(6);
+
+        File file = new File(Path);
 
         MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
         multipartBodyBuilder.part("file", new FileSystemResource(file));
@@ -128,13 +133,13 @@ public class STTServiceImpl implements STTService {
         } catch (InterruptedException e) {
             log.info(e.toString());
         }
-        List<Map<String, String>> utterances = (List<Map<String, String>>) stringObjectMap.get(
+        List<Map<String, Object>> utterances = (List<Map<String, Object>>) stringObjectMap.get(
             "utterances");
         VideoText videoText = new VideoText();
         videoText.setVideo(video);
 
         List<Utterance> texts = videoText.getUtterances();
-        for (Map<String, String> utterance : utterances) {
+        for (Map<String, Object> utterance : utterances) {
             Utterance text = Utterance.from(utterance);
             texts.add(text);
         }

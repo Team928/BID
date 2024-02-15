@@ -227,7 +227,7 @@ public class LiveServiceImpl implements LiveService {
             redisTemplate.opsForHash().get("OpenVidu_recording", dealId));
 
         Recording recording = openVidu.getRecording(recordingId);
-        // 상태 바꾸기 : END
+        // 상태 바꾸기 : AUCTION
         if (deal.getClass().getSimpleName().equals("Sale")) {
             Sale sale = saleRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SALE_ID_NOT_EXIST));
