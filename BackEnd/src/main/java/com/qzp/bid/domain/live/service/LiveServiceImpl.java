@@ -254,8 +254,12 @@ public class LiveServiceImpl implements LiveService {
         videoRepository.save(video);
 
         //STT
-        sttService.transcribeFile(video.getId());
-        summaryService.getSummary(video.getId());
+        try {
+            sttService.transcribeFile(video.getId());
+            summaryService.getSummary(video.getId());
+        } catch (Exception e) {
+            log.info("STT ERROR : " + e);
+        }
 
         // 라이브 종료 = 세션 종료
         redisTemplate.opsForHash().delete("OpenVidu_recording", dealId);
@@ -310,9 +314,6 @@ public class LiveServiceImpl implements LiveService {
     @Override
     @Transactional
     public void EndLive(long dealId) {
-        Deal deal = dealRepository.findById(dealId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.DEAL_ID_NOT_EXIST));
-
         Purchase purchase = purchaseRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
         purchase.setStatus(DealStatus.END);

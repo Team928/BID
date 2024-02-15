@@ -225,36 +225,20 @@ public class SaleServiceImpl implements SaleService {
 
                 continue;
             }
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("!@#!@#!@#  BEFORE CHANGE SALE END :  " + sale.getId());
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
             sale.setStatus(DealStatus.END);
-            log.info("!@#!@#!@# AFTER CHAMGE SALE END" + sale.getId());
+
             Bid highestBid = sale.getHighestBid();
             if (highestBid != null) {
-                log.info("!@#!@#!@# HIGHBID TO STRING :  " + highestBid.getId());
-                log.info("!@#!@#!@# in if success true before" + highestBid.getId());
+
                 highestBid.setSuccess(true);
-                log.info("!@#!@#!@# in if success true after" + highestBid.getId());
+
                 bidRepository.save(highestBid);
                 saleRepository.save(sale);
 
                 sseService.send(SseDto.of(highestBid.getBidder().getId(), sale.getId(), "sale",
                     SseType.SUCCESS_BID, LocalDateTime.now()));
-                log.info("!@#!@#!@#  LAST LOG.INFO");
+
                 chatService.createRoom(LiveResultReq.builder().dealId(sale.getId()).build());
             }
         }

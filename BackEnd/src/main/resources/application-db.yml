@@ -49,4 +49,4 @@ spring:
       password: ENC(BIPTRfDba7N0Mn2hnckGE+QzoR38SJXN)
   web:
     resources:
-      static-locations: ENC(af+isBISwWfLhsxV2HlPBnawsKp0tRZGLZssUj0/ViP+2zk6h0tk3CYNugXmUeG6GPKeCNY8fkQ=)
+      static-locations: ENC(bgr/gmXI2uo5+HxU1n31oRhqfjvG3AZ09Q1ERJSAoPwlrRlO4TtdvenKB3tIk2ikKh9NIA6kU+E=)

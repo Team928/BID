@@ -57,7 +57,7 @@ public class ImageUploader {
             e.printStackTrace();
         }
         File saveFile = savePath.toFile();
-        return new ImageDto("/images/" + saveFile.getName(),
+        return new ImageDto(saveFile.getName(),
             multipartFile.getOriginalFilename());
     }
 

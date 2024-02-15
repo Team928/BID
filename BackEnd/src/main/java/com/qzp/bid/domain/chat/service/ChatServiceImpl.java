@@ -17,7 +17,6 @@ import com.qzp.bid.domain.chat.repository.ChatRepository;
 import com.qzp.bid.domain.chat.repository.ChatRoomRepository;
 import com.qzp.bid.domain.deal.dto.DealResWithEndPrice;
 import com.qzp.bid.domain.deal.entity.Deal;
-import com.qzp.bid.domain.deal.entity.DealStatus;
 import com.qzp.bid.domain.deal.entity.Image;
 import com.qzp.bid.domain.deal.purchase.entity.ApplyForm;
 import com.qzp.bid.domain.deal.purchase.entity.Purchase;
@@ -89,17 +88,12 @@ public class ChatServiceImpl implements ChatService {
         Member guest = null;
 
         if (dtype.equals("Sale")) {
-
             guest = saleRepository.findById(dealId).get().getHighestBid().getBidder();
-
         } else if (dtype.equals("Purchase")) {
 
             // Purchase 상태 바꾸기
             Purchase purchase = purchaseRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
-
-            purchase.setStatus(DealStatus.END);
-            purchaseRepository.save(purchase);
 
             ApplyForm applyForm = applyFormRepository.findById(resultReq.getApplyFormId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_APPLYFORM_FAIL));
@@ -112,10 +106,7 @@ public class ChatServiceImpl implements ChatService {
                 .build();
 
             reverseAuctionResultRepository.save(reverseAuctionResult);
-
-            guest = dealRepository.findSellerByDealId(dealId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
-
+            guest = applyForm.getSeller();
         }
 
         String roomName = deal.getTitle();
@@ -162,7 +153,6 @@ public class ChatServiceImpl implements ChatService {
         ResponseEntity<ResultResponse> res = ResponseEntity.ok(
             ResultResponse.of(ResultCode.CREATE_CHAT_SUCCESS, chat));
         template.convertAndSend("/sub/chats/rooms/" + dealId, res);
-        //TODO 여기에 아마 채팅 갱신하라는 명령이 전달 되어야 할 것 같아요...SSE?
 
     }
 
@@ -266,12 +256,13 @@ public class ChatServiceImpl implements ChatService {
         } else {
             Purchase purchase = purchaseRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+            ReverseAuctionResult reverseAuctionResult = reverseAuctionResultRepository.findByPurchaseId(
+                    purchase.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.INPUT_VALUE_INVALID));
 
-            List<Long> sellerIds = purchase.getApplyForms().stream()
-                .map(applyForm -> applyForm.getSeller().getId())
-                .collect(Collectors.toList());
-
-            ApplyForm applyForm = applyFormRepository.findApplyFormByWinningId(sellerIds);
+            ApplyForm applyForm = applyFormRepository.findById(
+                    (long) reverseAuctionResult.getWinningBid())
+                .orElseThrow(() -> new BusinessException(ErrorCode.INPUT_VALUE_INVALID));
             dealResWithEndPrice.setEndPrice(applyForm.getOfferPrice());
         }
 
