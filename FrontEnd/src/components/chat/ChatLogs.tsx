@@ -32,7 +32,7 @@ const ChatLogs = (props: { chatResList: IChatResList } ) => {
             ) : (
               <>
                 <p className="text-sm text-gray-400 mr-2">{`${formatDateTime(createTime.toString())}`}</p>
-                <p className="bg-BID_MAIN rounded-lg p-3">{message}</p>
+                <p className="bg-BID_MAIN text-white rounded-lg p-3">{message}</p>
               </>
             )}
           </div>
