@@ -178,6 +178,7 @@ const SaleLivePage = () => {
     OV.current = new OpenVidu();
     session.disconnect();
     setSession(null);
+    setMyUserName('');
     setSubscriber(undefined);
     setMainStreamManager(undefined);
     setPublisher(undefined);
