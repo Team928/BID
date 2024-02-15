@@ -6,6 +6,7 @@ import userStore from '@/stores/userStore';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ParrarelModalButtons from './ParrarelModalButtons';
+import addCommaToPrice from '@/utils/addCommaToPrice';
 
 const BuyModal = ({
   successBid,
@@ -49,7 +50,9 @@ const BuyModal = ({
       <div className="w-full h-full px-8">
         <div className="grid grid-cols-2 py-1 place-items-center">
           <div className="col-span-1">현재 최고가</div>
-          <div className="col-span-1 mx-auto font-semibold text-BID_HOVER_MAIN">{currentHighestPrice}원</div>
+          <div className="col-span-1 mx-auto font-semibold text-BID_HOVER_MAIN">
+            {addCommaToPrice(currentHighestPrice)}원
+          </div>
         </div>
         <div className="grid grid-cols-2 py-1 place-items-center">
           <div className="col-span-1">내 포인트</div>

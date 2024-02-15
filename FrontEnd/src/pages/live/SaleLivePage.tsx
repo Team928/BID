@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SaleBuyer from './Sale/SaleBuyer';
 import SaleSeller from './Sale/SaleSeller';
+import addCommaToPrice from '@/utils/addCommaToPrice';
 
 // 경매 라이브 페이지
 const SaleLivePage = () => {
@@ -46,7 +47,7 @@ const SaleLivePage = () => {
       if (!e.data) return;
 
       const receiveData = JSON.parse(e.data);
-      Toast.info(`${receiveData.userName}님이 ${receiveData.bidPrice}원을 입찰했습니다.`);
+      Toast.info(`${receiveData.userName}님이 ${addCommaToPrice(receiveData.bidPrice)}원을 입찰했습니다.`);
 
       setCurrentBid(receiveData.bidPrice);
     });

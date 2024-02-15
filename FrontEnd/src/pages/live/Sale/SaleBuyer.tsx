@@ -3,6 +3,7 @@ import SaleBuyerChat from '@/components/chat/LiveChat/SaleBuyerChat';
 import FullCameraItem from '@/components/live/FullCameraItem';
 import BuyModal from '@/components/live/Modal/BuyModal';
 import userStore from '@/stores/userStore';
+import addCommaToPrice from '@/utils/addCommaToPrice';
 import { Session, Subscriber } from 'openvidu-browser';
 import { useEffect, useState } from 'react';
 import { BsXLg } from 'react-icons/bs';
@@ -81,11 +82,11 @@ const SaleBuyer = ({
           <div className="absolute top-12 px-2 text-white text-xs">
             <div className="mb-3">
               <span className="text-white font-semibold bg-black/10 px-2 py-1 mr-1 rounded-full">경매 시작가</span>
-              {state.startPrice}원
+              {addCommaToPrice(state.startPrice)}원
             </div>
             <div>
               <span className="text-white font-semibold bg-black/10 px-2 py-1 mr-1 rounded-full">현재 최고입찰가</span>{' '}
-              {currentBid}원
+              {addCommaToPrice(currentBid)}원
             </div>
           </div>
           {/* 나머지 얼굴 보이는 부분*/}

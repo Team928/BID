@@ -15,6 +15,7 @@ import useChatStore from '@/stores/useChatStore';
 import useLiveStore from '@/stores/userLiveStore';
 import userStore from '@/stores/userStore';
 import { IMatchReqInfo, ISellerInfo } from '@/types/live';
+import addCommaToPrice from '@/utils/addCommaToPrice';
 import { Device, OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -137,7 +138,7 @@ const PurchaseLivePage = () => {
       const data = JSON.parse(event.data);
       if (data.userId === userId) return;
 
-      Toast.info(`${data.userName}님이 판매 희망가를 ${data.salePrice}원으로 변경했습니다.`);
+      Toast.info(`${data.userName}님이 판매 희망가를 ${addCommaToPrice(data.salePrice)}원으로 변경했습니다.`);
 
       setSellerList(currentSellerList =>
         currentSellerList.map(seller =>

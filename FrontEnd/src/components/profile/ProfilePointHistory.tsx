@@ -1,4 +1,5 @@
 import { useProfile } from '@/hooks/profile/useProfile';
+import addCommaToPrice from '@/utils/addCommaToPrice';
 import { getDate } from '@/utils/getDate';
 
 const ProfilePointHistory = () => {
@@ -22,7 +23,7 @@ const ProfilePointHistory = () => {
                   <p className="font-semibold pt-1">포인트 충전</p>
                 </div>
 
-                <p className="text-base font-bold">+ {item.amount}원</p>
+                <p className="text-base font-bold">+ {addCommaToPrice(item.amount)}원</p>
               </>
             )}
             {item.status === 'RECEIVE' && (
@@ -35,7 +36,7 @@ const ProfilePointHistory = () => {
                   <p className="font-semibold pt-1">물건 판매 완료</p>
                 </div>
 
-                <p className="text-base font-bold">+ {item.amount}원</p>
+                <p className="text-base font-bold">+ {addCommaToPrice(item.amount)}원</p>
               </>
             )}
             {item.status === 'FREE' && (
@@ -48,7 +49,7 @@ const ProfilePointHistory = () => {
                   <p className="font-semibold pt-1">상위 입찰 발생</p>
                 </div>
 
-                <p className="text-base font-bold">+ {item.amount}원</p>
+                <p className="text-base font-bold">+ {addCommaToPrice(item.amount)}원</p>
               </>
             )}
             {item.status === 'HOLD' && (
@@ -61,7 +62,7 @@ const ProfilePointHistory = () => {
                   <p className="font-semibold pt-1">입찰 - 포인트 차감</p>
                 </div>
 
-                <p className="text-base font-bold text-red-600">- {item.amount}원</p>
+                <p className="text-base font-bold text-red-600">- {addCommaToPrice(item.amount)}원</p>
               </>
             )}
             {item.status === 'USE' && (
@@ -74,7 +75,7 @@ const ProfilePointHistory = () => {
                   <p className="font-semibold pt-1">거래 낙찰 완료</p>
                 </div>
 
-                <p className="text-base font-bold">{item.amount}원</p>
+                <p className="text-base font-bold">{addCommaToPrice(item.amount)}원</p>
               </>
             )}
           </div>
