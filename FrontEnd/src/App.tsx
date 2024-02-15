@@ -171,6 +171,7 @@ function App() {
 
     // eventSource 에러 시 할 일
     eventSource.onerror = async event => {
+      console.log(event);
       eventSource.close();
     };
 

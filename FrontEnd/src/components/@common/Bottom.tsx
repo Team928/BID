@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BsSuitHeart } from 'react-icons/bs';
 import { GoHome } from 'react-icons/go';
 import { PiChatsCircle, PiPencilSimpleLine, PiUser } from 'react-icons/pi';

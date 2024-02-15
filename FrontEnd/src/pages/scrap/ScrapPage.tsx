@@ -7,7 +7,6 @@ import WishPurchaseItem from '@/components/scrap/WishPurchaseItem';
 import WishSaleItem from '@/components/scrap/WishSaleItem';
 import { useWish } from '@/hooks/scrap/useWish';
 import useTabStore from '@/stores/auctionTabStore';
-import { useEffect } from 'react';
 
 const ScrapPage = () => {
   const { tab } = useTabStore();
