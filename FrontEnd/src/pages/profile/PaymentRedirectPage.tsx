@@ -12,7 +12,7 @@ const PaymentRedirectPage = () => {
   const { amount, setAmount } = amountStore();
   const { nickname } = userStore();
   const { usePostChargePoint } = useProfile();
-  const { mutate, data } = usePostChargePoint(amount, nickname);
+  const { mutate, data } = usePostChargePoint(Number(amount), nickname);
 
   useEffect(() => {
     console.log('amount' + amount);
@@ -28,7 +28,7 @@ const PaymentRedirectPage = () => {
   useEffect(() => {
     console.log('data' + data);
     if (data && data.status === 200) {
-      setAmount(0);
+      setAmount('');
       setTimeout(() => {
         navigate('/profile');
       }, 500);
