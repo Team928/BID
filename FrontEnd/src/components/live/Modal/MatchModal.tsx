@@ -72,7 +72,7 @@ const MatchModal = ({
         <div className="py-2 text-sm text-gray-700">최종 구매가</div>
         <input
           type="number"
-          value={finalPrice}
+          value={finalPrice || ''}
           onChange={handlePrice}
           placeholder="최종 구매가를 입력해주세요"
           className="w-full px-2 border rounded-md outline-none h-10"

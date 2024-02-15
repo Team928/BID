@@ -8,8 +8,8 @@ import ProfileModal from '@/components/profile/ProfileModal';
 import { useProfile } from '@/hooks/profile/useProfile';
 import userStore from '@/stores/userStore';
 import { useState } from 'react';
-import { IoIosArrowDroprightCircle } from 'react-icons/io';
 import { MdOutlineCreate } from 'react-icons/md';
+import { RiArrowRightSLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
@@ -107,13 +107,13 @@ const ProfilePage = () => {
             >
               <p className="text-gray-500 text-sm leading-7">경매 내역</p>
               <button>
-                <IoIosArrowDroprightCircle size={30} color="#6B54C4" />
+                <RiArrowRightSLine size={30} color="#6B54C4" />
               </button>
             </div>
             <div onClick={() => moveToNavigate('/profile/buy')} className="flex justify-between px-2 py-2.5 border-b">
               <p className="text-gray-500 text-sm leading-7">역경매 내역</p>
               <button>
-                <IoIosArrowDroprightCircle size={30} color="#6B54C4" />
+                <RiArrowRightSLine size={30} color="#6B54C4" />
               </button>
             </div>
             <div
@@ -122,19 +122,19 @@ const ProfilePage = () => {
             >
               <p className="text-gray-500 text-sm leading-7">리뷰 내역</p>
               <button>
-                <IoIosArrowDroprightCircle size={30} color="#6B54C4" />
+                <RiArrowRightSLine size={30} color="#6B54C4" />
               </button>
             </div>
             <div onClick={() => moveToNavigate('/profile/point')} className="flex justify-between px-2 py-2.5 border-b">
               <p className="text-gray-500 text-sm leading-7">포인트 사용 내역</p>
               <button>
-                <IoIosArrowDroprightCircle size={30} color="#6B54C4" />
+                <RiArrowRightSLine size={30} color="#6B54C4" />
               </button>
             </div>
             <div className="flex justify-between px-2 py-2.5 border-b">
               <p className="text-gray-500 text-sm leading-7">로그아웃</p>
               <button onClick={handleLogout}>
-                <IoIosArrowDroprightCircle size={30} color="#6B54C4" />
+                <RiArrowRightSLine size={30} color="#6B54C4" />
               </button>
             </div>
           </div>

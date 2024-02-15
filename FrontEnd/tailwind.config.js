@@ -8,7 +8,7 @@ export default {
         BID_BLACK: '#545454',
         BID_LIGHT_GRAY: '#F4F4F4',
         BID_SUB_GRAY: '#ABABAB',
-        BID_HOVER_MAIN: '#1B7DBF',
+        BID_HOVER_MAIN: '#563EB4',
       },
       translate: {
         mHalf: '-50%',
