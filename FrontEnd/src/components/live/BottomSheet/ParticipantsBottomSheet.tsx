@@ -28,7 +28,7 @@ const ParticipantsBottomSheet = ({
                   </div>
                 </div>
                 <div className="col-span-1">
-                  <img src={info.image} alt="물건 사진" />
+                  <img src={`${import.meta.env.VITE_BASE_URL}static${info.image}`} alt="물건 사진" />
                 </div>
               </div>
               <div className="text-right p-2">

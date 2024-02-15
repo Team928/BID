@@ -123,7 +123,7 @@ const PurchaseDetailPage = () => {
         return (
           <button onClick={() => approachLive()} className="detailLiveRedBtn">
             <MdLiveTv size={'1.5rem'} color="rgb(239 68 68 / var(--tw-border-opacity))" />
-            <p className=" text-red-500">라이브 참가하기</p>
+            <p className=" text-red-500">&nbsp;라이브 참가하기</p>
           </button>
         );
       }
