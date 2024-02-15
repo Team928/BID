@@ -14,7 +14,7 @@ interface IPointChargeProps {
 const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeProps) => {
   const { amount, setAmount } = amountStore();
   const { usePostChargePoint } = useProfile();
-  const { mutate } = usePostChargePoint(amount, userProfileInfo!.nickname);
+  const { mutate } = usePostChargePoint(Number(amount), userProfileInfo!.nickname);
 
   // 아임포트 결제
   const handleChargePoint = () => {
@@ -28,7 +28,7 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       pg: 'kakaopay',
       merchant_uid: `mid_${new Date().getTime()}`,
       name: '포인트 충전',
-      amount: amount,
+      amount: Number(amount),
       buyer_name: userProfileInfo!.nickname,
       buyer_email: userProfileInfo!.email,
       m_redirect_url: 'https://i10d208.p.ssafy.io/payments/complete',
@@ -52,18 +52,18 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
       <Modal width="300px" height="auto" title="포인트 충전" onClose={() => setShowChargeModal(false)}>
         <div className="w-full flex flex-col justify-center items-center px-8 py-2">
           <div className="w-full">
-            <p className="font-bold text-sm">충전금액</p>
+            <p className="font-bold text-xs">충전금액</p>
             <input
               type="text"
               name="amount"
               value={amount}
-              onChange={e => setAmount(Number(e.target.value))}
+              onChange={e => setAmount(e.target.value)}
               placeholder="충전할 금액을 입력해주세요"
               className="w-full outline-none border-b p-2 text-sm"
             ></input>
           </div>
           <div className="w-full pt-5">
-            <p className="font-bold pb-3 text-sm">결제수단</p>
+            <p className="font-bold pb-3 text-xs">결제수단</p>
             <div className="flex flex-col gap-3">
               <div className="flex gap-2 items-center">
                 <input type="radio" name="pay" className="w-4" />
