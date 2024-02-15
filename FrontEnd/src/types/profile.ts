@@ -68,5 +68,5 @@ export interface IUserPointHistoryRes {
 export interface IPointHistoryInfo {
   time: string;
   amount: number;
-  status: 'HOLD' | 'FREE' | 'CHARGE';
+  status: 'HOLD' | 'FREE' | 'CHARGE' | 'RECEIVE' | 'USE';
 }
