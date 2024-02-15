@@ -84,8 +84,16 @@ const PurchaseLivePage = () => {
     const mySession = OV.current.initSession();
     setSession(mySession);
 
+    mySession.on('publisherStartSpeaking', event => {
+      const clientData = JSON.parse(event.connection.data.split('%/%')[0]);
+      if (clientData.nickame === nickname) return;
+      Toast.info(`${clientData.nickName}님이 발언을 시작했습니다.`);
+    });
+
     mySession.on('connectionCreated', event => {
-      console.log(event);
+      const clientData = JSON.parse(event.connection.data.split('%/%')[0]);
+      if (clientData.nickame === nickname) return;
+      Toast.info(`${clientData.nickName}님이 참가했습니다.`);
     });
 
     mySession.on('streamCreated', event => {
@@ -162,12 +170,10 @@ const PurchaseLivePage = () => {
         if (Number(event.data) === sellerInfo.userId) {
           Toast.error('방장에 의해 강퇴당했습니다.');
 
-          if (mySession) {
-            mySession.disconnect();
-          }
+          leaveSession();
 
           setTimeout(() => {
-            navigate('/');
+            navigate('/', { replace: true });
           }, 2000);
         }
       });
@@ -491,6 +497,8 @@ const PurchaseLivePage = () => {
 
   // 강퇴시키기
   const handleResign = (userId: number) => {
+    Toast.success('강퇴시켰습니다.');
+
     session?.signal({
       data: String(userId),
       type: 'resign',
@@ -615,7 +623,7 @@ const PurchaseLivePage = () => {
 
   // 퇴장 함수
   const handleGoOut = async () => {
-    if (window.confirm('역경매 방송을 퇴장하시겠습니까?')) {
+    if (window.confirm('퇴장하시겠습니까?')) {
       leaveSession();
 
       session?.signal({
@@ -624,6 +632,8 @@ const PurchaseLivePage = () => {
       });
 
       if (!id) return;
+
+      // @TODO: 이거 삭제해야함
       endPurchaseLive(id);
       navigate('/', { replace: true });
     }

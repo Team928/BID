@@ -27,12 +27,12 @@ const Accordian = ({
 
   return (
     <div className="w-full h-full px-2">
-      <div className="py-3 flex justify-between border-b-[1px] cursor-pointer" onClick={handleOpen}>
+      <div className="p-3 mx-3 flex justify-between border-b-[1px] cursor-pointer" onClick={handleOpen}>
         <div>{titleContent}</div>
         <div>{isOpen ? <IoIosArrowUp size="25" color="#6C6C6C" /> : <IoIosArrowDown size="25" color="#6C6C6C" />}</div>
       </div>
       {/* content wrapper */}
-      <div ref={wrapperRef} className="h-0 overflow-hidden transition" style={{ transition: 'all 0.3s ease' }}>
+      <div ref={wrapperRef} className="mx-3 h-0 overflow-hidden transition" style={{ transition: 'all 0.3s ease' }}>
         <div ref={contentRef}>{children}</div>
       </div>
     </div>
