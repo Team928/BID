@@ -27,7 +27,7 @@ const BuyHost = () => {
                 src={`${import.meta.env.VITE_BASE_URL}${item.dealSimpleRes.image}`}
               ></img>
             </div>
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <StateButton deals={'purchase'} status={`${item.status}`} />
               </div>

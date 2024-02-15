@@ -32,7 +32,7 @@ const StyledSlider = styled(Slider)`
     padding: 0px 12px;
     background-color: #fff;
     border-radius: 10.5px;
-    z-index: 10;
+    z-index: 5;
     transform: translate(-50%, 0);
 
     li {

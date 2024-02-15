@@ -190,10 +190,10 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
           <div className="pt-4 pb-4 w-full">
             <p className="font-xs text-md">입찰 로그</p>
             <p className="pt-1 text-xs text-BID_SUB_GRAY">현재까지의 입찰 로그를 확인해보세요</p>
-            <div className="px-5">
+            <div className="">
               <div className="flex justify-between gap-3 w-full border-b pt-4 pb-1 text-center text-[12px]">
-                <p className="w-[30%]">입찰자</p>
-                <p className="w-[30%]">입찰가격</p>
+                <p className="w-[20%]">입찰자</p>
+                <p className="w-[40%]">입찰가격</p>
                 <p className="w-[40%]">입찰시간</p>
               </div>
               <div
@@ -205,8 +205,8 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                     {bidList.map(item => {
                       return (
                         <div key={item.id} className="flex justify-between gap-3 text-center py-1 text-xs">
-                          <p className="w-[30%]">{item.bidder}</p>
-                          <p className="w-[30%]">{item.bidPrice}원</p>
+                          <p className="w-[20%]">{item.bidder}</p>
+                          <p className="w-[40%]">{item.bidPrice}원</p>
                           <p className="w-[40%]">{getDate(item.bidTime).fullDate2}</p>
                         </div>
                       );

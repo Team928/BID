@@ -125,8 +125,10 @@ const DetailBottom = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
             </div>
             <div className="w-full flex gap-3 items-center">
               <p className="">내 포인트</p>
-              <p className="text-BID_MAIN">{userProfileInfo?.data.point}</p>
-              <span className="text-BID_SUB_GRAY border-b text-xs">충전하기</span>
+              <p className="text-BID_MAIN">{userProfileInfo?.data.point}원</p>
+              <span onClick={() => setShowChargeModal(true)} className="text-BID_SUB_GRAY border-b text-xs">
+                충전하기
+              </span>
             </div>
             <div className="w-full pt-3">
               <input
