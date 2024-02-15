@@ -20,7 +20,7 @@ export interface IBuyerInfo {
 export interface IMatchReqInfo {
   dealId: string;
   nickname: string;
-  applyFormId: number;
+  formId: number;
   finalOfferPrice: number;
 }
 
@@ -36,7 +36,7 @@ export interface ITimeLine {
 
 export interface IMatchReq {
   dealId: string;
-  applyFormId: number;
+  formId: number;
   offerPrice: number;
 }
 

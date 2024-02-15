@@ -8,7 +8,7 @@ export const useLive = () => {
   const usePostLiveMatch = () => {
     return useMutation({
       mutationKey: ['match'],
-      mutationFn: ({ dealId, applyFormId, offerPrice }: IMatchReq) => matchLive({ dealId, applyFormId, offerPrice }),
+      mutationFn: ({ dealId, formId, offerPrice }: IMatchReq) => matchLive({ dealId, formId, offerPrice }),
     });
   };
 

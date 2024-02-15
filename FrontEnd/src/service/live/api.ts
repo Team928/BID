@@ -14,10 +14,10 @@ export const getSession = async (dealId: string, userId: number): Promise<APIRes
 };
 
 // 역경매 시 최종 매칭
-export const matchLive = async ({ dealId, applyFormId, offerPrice }: IMatchReq): Promise<APIResponse<string>> => {
+export const matchLive = async ({ dealId, formId, offerPrice }: IMatchReq): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.get(
-      `/lives/purchase/results?dealId=${dealId}&applyFormId=${applyFormId}&offerPrice=${offerPrice}`,
+      `/lives/purchase/results?dealId=${dealId}&applyFormId=${formId}&offerPrice=${offerPrice}`,
     );
 
     return data;

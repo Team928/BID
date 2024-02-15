@@ -67,7 +67,7 @@ const PurchaseLivePage = () => {
   const [matchRequestInfo, setMatchRequestInfo] = useState<IMatchReqInfo>({
     dealId: id || '',
     nickname: '',
-    applyFormId: 0,
+    formId: 0,
     finalOfferPrice: 0,
   });
 
@@ -187,7 +187,7 @@ const PurchaseLivePage = () => {
             return {
               ...prev,
               nickname: data.sendUerName,
-              applyFormId: data.applyFormId,
+              formId: data.formId,
               finalOfferPrice: data.price,
             };
           });
@@ -214,6 +214,10 @@ const PurchaseLivePage = () => {
 
       mySession.on('signal:matchSuccess', event => {
         if (!event.data) return;
+
+        const data = JSON.parse(event.data);
+
+        postLiveMatch(data);
 
         leaveSession();
 
@@ -571,19 +575,17 @@ const PurchaseLivePage = () => {
   const sendMatchConfirm = () => {
     if (!id) return;
 
-    session?.signal({
-      data: mySessionId,
-      type: 'matchSuccess',
-    });
-
-    const matchReq = {
+    const sendData = {
       dealId: mySessionId,
-      applyFormId: matchRequestInfo.applyFormId,
+      formId: matchRequestInfo.formId,
       offerPrice: matchRequestInfo.finalOfferPrice,
     };
 
-    postLiveMatch(matchReq);
-    endPurchaseLive(id);
+    session?.signal({
+      data: JSON.stringify(sendData),
+      type: 'matchSuccess',
+    });
+
     leaveSession();
 
     setTimeout(() => {
