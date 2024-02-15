@@ -50,7 +50,7 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
           }}
         >
           <div className=" flex">
-            <div className="w-16 h-16">
+            <div className="w-14 h-14">
               {/* TODO: 프로필 사진으로 변경 */}
               {userInfo?.data.profileImage ? (
               <img

@@ -56,7 +56,8 @@ const DealInfo = () => {
   console.log(chatRoomInfo)
 
   return (
-    <div className="fixed top-0 w-full bg-white border-b border-sm">
+    <>    
+    <div className="top-0 bg-whiteborder-sm items-center">
       <div className="flex gap-4 pt-14 px-4 pb-2 border items-center">
         <div className="w-20 h-20 relative">
           <img src={`${import.meta.env.VITE_BASE_URL}static${src}`} className="w-full h-full rounded-lg object-cover" />
@@ -94,6 +95,8 @@ const DealInfo = () => {
       {/* 모달 영역 */}
       {isModalOpen && <ConfirmModal onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm} />}
     </div>
+    </>
+
   );
 };
 

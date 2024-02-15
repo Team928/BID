@@ -26,13 +26,13 @@ const ChatLogs = (props: { chatResList: IChatResList } ) => {
           <div className="flex items-end">
             {senderId !== userId ? (
               <>
-                <p className="bg-gray-200 rounded-lg p-3">{`${message}`}</p>
-                <p className="text-sm text-gray-400 ml-2">{`${formatDateTime(createTime.toString())}`}</p>
+                <p className="bg-gray-200 text-sm rounded-lg px-3 py-2">{`${message}`}</p>
+                <p className="text-xs text-gray-400 ml-2">{`${formatDateTime(createTime.toString())}`}</p>
               </>
             ) : (
               <>
-                <p className="text-sm text-gray-400 mr-2">{`${formatDateTime(createTime.toString())}`}</p>
-                <p className="bg-BID_MAIN text-white rounded-lg p-3">{message}</p>
+                <p className="text-xs text-gray-400 mr-2">{`${formatDateTime(createTime.toString())}`}</p>
+                <p className="bg-BID_MAIN text-white text-sm rounded-lg px-3 py-2">{message}</p>
               </>
             )}
           </div>

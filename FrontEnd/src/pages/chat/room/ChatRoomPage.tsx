@@ -29,7 +29,6 @@ const ChatRoomPage = () => {
 
   const { dealId } = useParams();
   const { data: chatLogInfo } = useGetChatLogList({ dealId: Number(dealId) });
-
   const accessToken = axiosAuthInstance;
 
   useEffect(() => {
@@ -90,7 +89,7 @@ const ChatRoomPage = () => {
     <div className="w-full h-screen pb-[65px]">
       <Header info={info} />
       <DealInfo />
-      <div className="px-6 pt-40 pb-20">
+      <div className="px-6 pt-[10px] pb-20">
         {/* 이전 대화내용 불러오기 */}
         {chatLogInfo &&
           chatLogInfo.data.chatResList.map((chatLog, index) => <ChatLogs key={index} chatResList={chatLog} />)}
@@ -99,8 +98,8 @@ const ChatRoomPage = () => {
           <ChatLogs key={index} chatResList={chatLog} />
         ))}
       </div>
-      <div>
-        <MessageInput
+      <div className='fixed bottom-0 w-full max-w-[500px]'>
+        <MessageInput 
           message={message}
           setMessage={setMessage}
           sendMessage={message => {

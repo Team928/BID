@@ -17,7 +17,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ message, setMessage, sendMe
     };
 
     return (
-        <div className="bg-white w-full px-6 pb-1 h-20 flex items-center border-t border-[#D9D9D9] fixed bottom-0">
+        <div className="bg-white w-full px-6 pb-1 h-20 flex items-center border-t border-[#D9D9D9]">
             <input
                 type="text"
                 value={message}
