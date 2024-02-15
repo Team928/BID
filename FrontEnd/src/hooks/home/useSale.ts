@@ -4,6 +4,7 @@ import {
   getRecordVideo,
   getSaleDetailReq,
   getSaleListReq,
+  getVideoSTT,
   postDealWishAdd,
   postImmediateBid,
   postLiveReq,
@@ -124,6 +125,13 @@ export const useSale = () => {
     });
   };
 
+  const useGetVideoSTT = (videoId: number) => {
+    return useQuery({
+      queryKey: ['video', 'stt', videoId],
+      queryFn: () => getVideoSTT(videoId),
+    });
+  };
+
   return {
     useGetSaleList,
     useGetListInfinite,
@@ -134,5 +142,6 @@ export const useSale = () => {
     useDeleteDealWish,
     usePostSaleLive,
     useGetRecordVideo,
+    useGetVideoSTT,
   };
 };

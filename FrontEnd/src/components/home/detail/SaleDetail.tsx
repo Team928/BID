@@ -9,7 +9,7 @@ import { changeEngToKr } from '@/utils/changeCategorie';
 import { getDate } from '@/utils/getDate';
 import { getPriceName } from '@/utils/getPriceName';
 import { getTimeDifference } from '@/utils/getTimeDifference';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
@@ -183,7 +183,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
                 <p className="py-1 text-xs text-BID_SUB_GRAY">지난 라이브 녹화 방송을 확인해보세요</p>
               </div>
               <div className="w-full py-2">
-                <VideoPlayer src={video.data[0].path} timeStamp={video.data[0].timeLine} />
+                <VideoPlayer src={video.data[0].path} timeStamp={video.data[0].timeLine} id={video.data[0].id} />
               </div>
             </div>
           )}

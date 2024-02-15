@@ -136,6 +136,8 @@ export const postPurchasesApplyForm = async (info: FormData, purchaseId: number)
 };
 
 interface IRecordVideoRes {
+  id: number;
+  createTime: string;
   dealId: number;
   path: string;
   runTime: string;
@@ -146,7 +148,35 @@ interface IRecordVideoRes {
 export const getRecordVideo = async (dealId: number): Promise<APIResponse<IRecordVideoRes[]>> => {
   try {
     const { data } = await axiosAuthInstance.get(`lives/recording/video/${dealId}`);
-    console.log('video', data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+interface IUtterancesRes {
+  start_at: string;
+  duration: string;
+  msg: string;
+  spk: string;
+}
+
+interface IVideoSTTRes {
+  id: number;
+  videoId: number;
+  utterances: IUtterancesRes[];
+  summary: string;
+}
+
+// STT 및 요약
+export const getVideoSTT = async (videoId: number): Promise<APIResponse<IVideoSTTRes>> => {
+  try {
+    const { data } = await axiosAuthInstance.get(`lives/videotexts`, {
+      params: {
+        videoId: videoId,
+      },
+    });
     return data;
   } catch (err) {
     console.log(err);
