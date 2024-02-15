@@ -167,13 +167,10 @@ function App() {
     const eventSource = new EventSource(import.meta.env.VITE_SSE_URL + userId);
 
     // eventSource Connection 됐을때
-    eventSource.onopen = () => {
-      console.log('연결완');
-    };
+    eventSource.onopen = () => {};
 
     // eventSource 에러 시 할 일
     eventSource.onerror = async event => {
-      console.log(event);
       eventSource.close();
     };
 
@@ -183,7 +180,6 @@ function App() {
       addNotification(data);
       setUnRead();
       Toast.success('알림이 왔습니다 확인해보세요');
-      console.log(data);
     });
     return () => {
       eventSource.close();

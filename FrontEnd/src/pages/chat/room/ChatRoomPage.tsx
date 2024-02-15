@@ -37,18 +37,13 @@ const ChatRoomPage = () => {
     newClient.configure({
       brokerURL: import.meta.env.VITE_CHAT_URL,
       onConnect: () => {
-        console.log('웹소켓 연결 완료');
-
         const headers: StompHeaders = {
           Authorization: 'Bearer ' + accessToken,
         };
         newClient.subscribe(
           `/sub/chats/rooms/${dealId}`,
           message => {
-            console.log('받은 메시지 :', message.body);
-
             const parsedMessage = JSON.parse(message.body);
-            console.log(setChatLogs);
             setChatLogs(prevChatLogs => [...prevChatLogs, parsedMessage.body.data]);
           },
           headers,
@@ -78,7 +73,6 @@ const ChatRoomPage = () => {
         type: 'TALK',
       };
       const jsonMessage = JSON.stringify(newMessage);
-      console.log('보낸 메시지', jsonMessage);
       client.publish({ destination: `/pub/message/${dealId}`, body: jsonMessage });
     } else {
       console.error('웹소켓 연결 노활성화.');
@@ -98,8 +92,8 @@ const ChatRoomPage = () => {
           <ChatLogs key={index} chatResList={chatLog} />
         ))}
       </div>
-      <div className='fixed bottom-0 w-full max-w-[500px]'>
-        <MessageInput 
+      <div className="fixed bottom-0 w-full max-w-[500px]">
+        <MessageInput
           message={message}
           setMessage={setMessage}
           sendMessage={message => {

@@ -16,9 +16,6 @@ const ChatSection = () => {
   // 나중에 prop으로 받아야함
   const dealId = 1;
 
-  console.log(chatLogs);
-  console.log(client);
-
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // sub : /sub/chats/lives/{dealId}
@@ -30,8 +27,6 @@ const ChatSection = () => {
     newClient.configure({
       brokerURL: import.meta.env.VITE_CHAT_URL,
       onConnect: () => {
-        console.log('웹소켓 연결 완료');
-
         // '/sub/chat/room/1'로 구독
         const headers: StompHeaders = {
           Authorization: 'Bearer ' + accessToken,
@@ -39,8 +34,6 @@ const ChatSection = () => {
         newClient.subscribe(
           `/sub/chats/lives/${dealId}`,
           message => {
-            console.log('받은 메시지 :', message.body);
-
             const parsedMessage = JSON.parse(message.body);
             addChatLog(parsedMessage.body.data);
 
@@ -57,7 +50,6 @@ const ChatSection = () => {
 
       onDisconnect: () => {
         clearChatLogs();
-        console.log('웹소켓 연결 종료');
       },
     });
 
@@ -78,7 +70,6 @@ const ChatSection = () => {
         type: 'TALK',
       };
       const jsonMessage = JSON.stringify(newMessage);
-      console.log('보낸 메시지', jsonMessage);
       client.publish({ destination: `/pub/message/lives/${dealId}`, body: jsonMessage });
       setMessage(''); // 메시지를 보낸 후에 입력란 초기화
     } else {

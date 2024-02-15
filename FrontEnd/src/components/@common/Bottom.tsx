@@ -56,12 +56,6 @@ const Bottom = () => {
     },
   ];
 
-  useEffect(() => {
-    console.log(pathname);
-    console.log(pathname.split('/')[0]);
-    console.log(pathname.split('/')[1]);
-  }, [pathname]);
-
   return (
     <>
       {isModalOpen && <SelectWriteModal closeModal={toggleModal} />}

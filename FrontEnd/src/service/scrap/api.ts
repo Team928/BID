@@ -12,7 +12,7 @@ export const getProfileWishSaleReq = async (type: dealType): Promise<APIResponse
   const { data } = await axiosAuthInstance.get(`members/profiles/wishes`, {
     params: lookupParam,
   });
-  console.log(data);
+
   return data;
 };
 
@@ -26,6 +26,6 @@ export const getProfileWishPurchaseReq = async (type: dealType): Promise<APIResp
       },
     },
   });
-  console.log(data);
+
   return data;
 };

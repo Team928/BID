@@ -11,8 +11,6 @@ const SaleSellerChat = () => {
   const { addChatLog, chatLogs, clearChatLogs } = useChatStore(state => state);
   const { id: dealId } = useParams();
 
-  console.log(client);
-
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -23,14 +23,6 @@ const ScrapPage = () => {
   const { data: saleList } = useGetWishSaleList(tab);
   const { data: purchaseList } = useGetWishPurchaseList(tab);
 
-  useEffect(() => {
-    console.log(saleList);
-  }, [saleList]);
-
-  useEffect(() => {
-    console.log(purchaseList);
-  }, [purchaseList]);
-
   return (
     <>
       <div className="w-full h-screen pb-[65px]">

@@ -88,7 +88,6 @@ const SaleWritePage = () => {
   // 판매글 등록
   const handleWriteClick = () => {
     if (!confirmWrite(values)) {
-      console.log('빈 값이 존재합니다');
       return;
     }
 
@@ -105,7 +104,6 @@ const SaleWritePage = () => {
       startPrice: values.startPrice,
       endTime: endTime,
     };
-    console.log(req);
     const formData = new FormData();
     const json = JSON.stringify(req);
     const blob = new Blob([json], { type: 'application/json' });

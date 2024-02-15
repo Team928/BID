@@ -22,13 +22,13 @@ export const getSaleListReq = async ({
       keyword: keyword,
     },
   });
-  console.log(data);
+
   return data;
 };
 
 export const getSaleDetailReq = async (saleId: number): Promise<APIResponse<ISaleDetailRes>> => {
   const { data } = await axiosAuthInstance.get(`deals/sales/${saleId}`);
-  console.log(data);
+
   return data;
 };
 
@@ -52,13 +52,13 @@ export const getPurchaseListReq = async ({
       keyword: keyword,
     },
   });
-  console.log(data);
+
   return data;
 };
 
 export const getPurchaseDetailReq = async (purchaseId: number): Promise<APIResponse<IPurchaseDetailRes>> => {
   const { data } = await axiosAuthInstance.get(`deals/purchases/${purchaseId}`);
-  console.log(data);
+
   return data;
 };
 
@@ -68,7 +68,7 @@ export const postSaleBid = async (saleId: number, bidPrice: string): Promise<API
     const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/bids`, {
       bidPrice: bidPrice,
     });
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -80,7 +80,7 @@ export const postSaleBid = async (saleId: number, bidPrice: string): Promise<API
 export const postImmediateBid = async (saleId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/immediate`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -91,7 +91,7 @@ export const postImmediateBid = async (saleId: number): Promise<APIResponse<stri
 export const postLiveReq = async (saleId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.post(`deals/sales/${saleId}/livereqs`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -103,7 +103,7 @@ export const postLiveReq = async (saleId: number): Promise<APIResponse<string>> 
 export const postDealWishAdd = async (dealId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.post(`deals/${dealId}/wishes`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -115,7 +115,7 @@ export const postDealWishAdd = async (dealId: number): Promise<APIResponse<strin
 export const deleteDealWish = async (dealId: number): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.delete(`deals/${dealId}/wishes`);
-    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -131,7 +131,7 @@ export const postPurchasesApplyForm = async (info: FormData, purchaseId: number)
       'Content-Type': 'multipart/form-data',
     },
   });
-  console.log(data);
+
   return data;
 };
 

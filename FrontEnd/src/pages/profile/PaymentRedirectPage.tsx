@@ -15,18 +15,12 @@ const PaymentRedirectPage = () => {
   const { mutate, data } = usePostChargePoint(Number(amount), nickname);
 
   useEffect(() => {
-    console.log('amount' + amount);
-  }, [amount]);
-
-  useEffect(() => {
     if (impSuccess === 'true') {
-      console.log('impSuccess' + impSuccess);
       mutate();
     }
   }, []);
 
   useEffect(() => {
-    console.log('data' + data);
     if (data && data.status === 200) {
       setAmount('');
       setTimeout(() => {

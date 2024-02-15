@@ -66,8 +66,6 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   for (let i = 0; i < dealRes.images.length; i++) {
     images.push(`${import.meta.env.VITE_BASE_URL}static${dealRes.images[i]}`);
   }
-  console.log(images);
-  console.log(images.length);
 
   return (
     <>

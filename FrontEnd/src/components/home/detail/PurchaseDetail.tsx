@@ -17,7 +17,6 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
 
   // 작성자로 사용자 정보 조회
   const getMemberInfo = () => {
-    console.log(dealRes.writer);
     navigate(`/profile/${dealRes.writer}`);
   };
 
@@ -36,8 +35,6 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
   for (let i = 0; i < dealRes.images.length; i++) {
     images.push(`${import.meta.env.VITE_BASE_URL}static${dealRes.images[i]}`);
   }
-  console.log(images);
-  console.log(images.length);
 
   return (
     <>

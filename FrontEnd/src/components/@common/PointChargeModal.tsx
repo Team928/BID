@@ -19,7 +19,6 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
   // 아임포트 결제
   const handleChargePoint = () => {
     window.IMP?.init('imp58677553'); // 발급받은 가맹점 식별코드
-    console.log(amount);
     if (!amount) {
       Toast.error('결제 금액을 확인해주세요');
       return;
@@ -37,11 +36,8 @@ const PointChargeModal = ({ setShowChargeModal, userProfileInfo }: IPointChargeP
     const callback = (response: RequestPayResponse) => {
       const { success } = response;
       if (success) {
-        console.log(response);
         mutate();
         setShowChargeModal(false);
-      } else {
-        console.log(response);
       }
     };
     window.IMP?.request_pay(data, callback);
