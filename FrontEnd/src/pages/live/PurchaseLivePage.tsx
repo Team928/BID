@@ -31,7 +31,7 @@ const PurchaseLivePage = () => {
   const { pType, onMike, onCamera, setOnCamera, setOnMike } = useLiveStore();
   const { userId, nickname } = userStore();
   const { usePostLiveMatch, useEndPurchaseLive } = useLive();
-  const { mutate } = usePostLiveMatch();
+  const { mutate: postLiveMatch } = usePostLiveMatch();
   const { mutate: endPurchaseLive } = useEndPurchaseLive();
   const { clearChatLogs } = useChatStore(state => state);
 
@@ -85,18 +85,6 @@ const PurchaseLivePage = () => {
     const mySession = OV.current.initSession();
     setSession(mySession);
 
-    mySession.on('publisherStartSpeaking', event => {
-      const clientData = JSON.parse(event.connection.data.split('%/%')[0]);
-      if (clientData.nickame === nickname) return;
-      Toast.info(`${clientData.nickName}님이 발언을 시작했습니다.`);
-    });
-
-    mySession.on('connectionCreated', event => {
-      const clientData = JSON.parse(event.connection.data.split('%/%')[0]);
-      if (clientData.nickame === nickname) return;
-      Toast.info(`${clientData.nickName}님이 참가했습니다.`);
-    });
-
     mySession.on('streamCreated', event => {
       const clientData = JSON.parse(event.stream.connection.data.split('%/%')[0]);
 
@@ -127,7 +115,7 @@ const PurchaseLivePage = () => {
     mySession.on('streamDestroyed', event => {
       deleteSubscriber(event.stream.streamManager);
 
-      const exit = JSON.parse(event.stream.connection.data);
+      const exit = JSON.parse(event.stream.connection.data.split('%/%')[0]);
       setSellerList(sellerList => sellerList.filter(seller => seller.userId !== exit.userId));
     });
 
@@ -154,18 +142,12 @@ const PurchaseLivePage = () => {
       });
     });
 
-    mySession.on('signal:joinSession', event => {
-      if (event.data === nickname) return;
-      Toast.info(`${event.data}님이 참가했습니다.`);
-    });
-
     mySession.on('signal:leaveSession', event => {
       if (event.data === nickname) return;
       Toast.info(`${event.data}님이 퇴장했습니다.`);
     });
 
     // ----------------- 판매자 -----------------
-
     if (pType === PARTICIPANT_TYPE.SELLER) {
       mySession.on('signal:resign', event => {
         if (Number(event.data) === sellerInfo.userId) {
@@ -198,6 +180,8 @@ const PurchaseLivePage = () => {
         if (!event.data) return;
 
         const data = JSON.parse(event.data);
+        console.log('매칭 확정할 때 데이터', data);
+
         if (data.userId === sellerInfo.userId) {
           // 매칭 확정 모달 띄우기
           setMatchRequestInfo(prev => {
@@ -215,7 +199,6 @@ const PurchaseLivePage = () => {
     }
 
     // ----------------- 구매자 -----------------
-
     if (pType === PARTICIPANT_TYPE.BUYER) {
       mySession.on('signal:requestSpeak', event => {
         if (!event.data) return;
@@ -244,10 +227,9 @@ const PurchaseLivePage = () => {
 
   // leaveSession
   const leaveSession = useCallback(() => {
-    if (session && publisher) {
-      session.disconnect();
-      session.unpublish(publisher);
-    }
+    if (!session || !publisher) return;
+
+    session.unpublish(publisher);
 
     if (publisher && publisher.stream && publisher.stream.getMediaStream()) {
       const stream = publisher.stream.getMediaStream();
@@ -255,13 +237,14 @@ const PurchaseLivePage = () => {
     }
 
     OV.current = new OpenVidu();
+    session.disconnect();
     setSession(undefined);
     setSubscribers([]);
     setMySessionId('');
     setMainStreamManager(undefined);
     setPublisher(undefined);
     clearChatLogs();
-  }, [session]);
+  }, [session, publisher]);
 
   useEffect(() => {
     if (sellerForm) {
@@ -391,11 +374,6 @@ const PurchaseLivePage = () => {
   useEffect(() => {
     joinSession();
 
-    session?.signal({
-      data: nickname,
-      type: 'joinSession',
-    });
-
     return () => leaveSession();
   }, []);
 
@@ -463,6 +441,10 @@ const PurchaseLivePage = () => {
 
   useEffect(() => {
     let disp = [publisher, ...subscribers];
+
+    console.log('현재 들어온 사람', disp);
+    console.log('pub ', publisher);
+    console.log('sub ', subscribers);
 
     if (currentPage === 1) {
       if (disp.length > 4) {
@@ -605,7 +587,9 @@ const PurchaseLivePage = () => {
       offerPrice: matchRequestInfo.finalOfferPrice,
     };
 
-    mutate(matchReq);
+    console.log('ㅎㅎ', matchReq);
+    postLiveMatch(matchReq);
+
     endPurchaseLive(id);
 
     leaveSession();
@@ -625,17 +609,20 @@ const PurchaseLivePage = () => {
   // 퇴장 함수
   const handleGoOut = async () => {
     if (window.confirm('퇴장하시겠습니까?')) {
-      leaveSession();
-
       session?.signal({
         data: nickname,
         type: 'leaveSession',
       });
 
+      leaveSession();
+
       if (!id) return;
 
-      // @TODO: 이거 삭제해야함
-      endPurchaseLive(id);
+      // 판매자일때
+      if (pType === PARTICIPANT_TYPE.BUYER) {
+        endPurchaseLive(id);
+      }
+
       navigate('/', { replace: true });
     }
   };
