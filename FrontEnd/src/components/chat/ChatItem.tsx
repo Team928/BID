@@ -62,13 +62,13 @@ const ChatItem = (props: { item: IChatRoomListRes }) => {
               )}
             </div>
             <div className="flex flex-col justify-center gap-1 px-5">
-              <p className="font-bold">{chatRoomRes.roomName}</p>
-              <p>{lastMessage}</p>
+              <p className="text-sm font-bold">{chatRoomRes.roomName}</p>
+              <p className="text-sm">{lastMessage}</p>
             </div>
           </div>
           <div className="flex items-center mx-2">
             {unReadCount > 0 ? (
-              <span className="bg-orange-500 rounded-full h-6 w-6 flex items-center justify-center text-white font-semibold">
+              <span className="bg-orange-500 text-sm rounded-full h-5 w-5 flex items-center justify-center text-white font-semibold">
                 {unReadCount}
               </span>
             ) : null}

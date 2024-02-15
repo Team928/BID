@@ -25,6 +25,8 @@ const ReviewPage = () => {
   };
 
   console.log(dealInfo)
+  console.log(dealInfo?.images[0])
+  const src = dealInfo?.images[0]
 
   const { mutate } = usePostReview(reviewReq);
   const info: IHeaderInfo = {
@@ -58,7 +60,9 @@ const ReviewPage = () => {
         <div className="px-6 py-4">
           {/* 거래글 정보 */}
           <div className="flex gap-4 p-4 items-center">
-            <div className="w-24 h-24 bg-BID_LIGHT_GRAY rounded-2xl relative"></div>
+            <div className="w-24 h-24 bg-BID_LIGHT_GRAY rounded-2xl relative">
+            <img src={`${import.meta.env.VITE_BASE_URL}static${src}`} className="w-full h-full rounded-lg object-cover" />
+            </div>
             <div className="flex-1 flex flex-col justify-around">
               <p className="text-sm font-bold">{dealInfo.title}</p>
               <p className="text-xs text-BID_GRAY py-2">{dealInfo.content}</p>
