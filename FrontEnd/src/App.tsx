@@ -33,6 +33,7 @@ import useNotifyStore from './stores/useNotifyStore';
 import userStore from './stores/userStore';
 import { useEffect } from 'react';
 import Toast from './components/@common/Toast';
+import notifyReadStore from './stores/notifyReadStore';
 
 const router = createBrowserRouter([
   {
@@ -160,7 +161,7 @@ const router = createBrowserRouter([
 function App() {
   const { addNotification } = useNotifyStore();
   const { userId } = userStore();
-
+  const { setUnRead } = notifyReadStore();
   useEffect(() => {
     // eventSource 객체 생성
     const eventSource = new EventSource(import.meta.env.VITE_SSE_URL + userId);
@@ -180,6 +181,7 @@ function App() {
       const data = JSON.parse(event.data);
 
       addNotification(data);
+      setUnRead();
       Toast.success('알림이 왔습니다 확인해보세요');
       console.log(data);
     });

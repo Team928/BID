@@ -4,13 +4,14 @@ import Header, { IHeaderInfo } from '@/components/@common/Header';
 import ChatItem from '@/components/chat/ChatItem';
 import { useChatRoom } from '@/hooks/chat/useChat';
 import userStore from '@/stores/userStore';
+import NOTIFY from '@/assets/icon/notify.png';
 
 const ChatPage = () => {
   const info: IHeaderInfo = {
     left: null,
     center: '채팅',
     right_1: null,
-    right_2: null,
+    right_2: <img src={NOTIFY} />,
   };
 
   const { useGetChatRoomList } = useChatRoom();
