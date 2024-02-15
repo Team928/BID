@@ -12,11 +12,13 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @DiscriminatorValue("sale")
 public class Sale extends Deal {

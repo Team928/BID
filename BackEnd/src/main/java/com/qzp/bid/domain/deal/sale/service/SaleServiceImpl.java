@@ -36,6 +36,7 @@ import com.qzp.bid.global.result.error.ErrorCode;
 import com.qzp.bid.global.result.error.exception.BusinessException;
 import com.qzp.bid.global.security.util.AccountUtil;
 import com.qzp.bid.global.util.ImageUploader;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +68,7 @@ public class SaleServiceImpl implements SaleService {
     private final MemberRepository memberRepository;
     private final SseService sseService;
     private final ChatService chatService;
+    private final EntityManager entityManager;
 
     public void createSale(SaleReq saleReq, List<MultipartFile> photos) {
         Member member = accountUtil.getLoginMember()
@@ -209,24 +211,50 @@ public class SaleServiceImpl implements SaleService {
         if (sales.isEmpty()) {
             return;
         }
+
         for (Sale sale : sales.get()) {
+
             if (sale.getStartTime().plusMinutes(CLOSE_TIME).isBefore(LocalDateTime.now())) {
                 if (sale.getStatus().equals(DealStatus.BEFORE)) {
+
                     sale.setStatus(DealStatus.END);
                     continue;
                 }
             }
             if (sale.getEndTime().isAfter(LocalDateTime.now())) {
+
                 continue;
             }
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("!@#!@#!@#  BEFORE CHANGE SALE END :  " + sale.getId());
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             sale.setStatus(DealStatus.END);
+            log.info("!@#!@#!@# AFTER CHAMGE SALE END" + sale.getId());
             Bid highestBid = sale.getHighestBid();
             if (highestBid != null) {
+                log.info("!@#!@#!@# HIGHBID TO STRING :  " + highestBid.getId());
+                log.info("!@#!@#!@# in if success true before" + highestBid.getId());
                 highestBid.setSuccess(true);
+                log.info("!@#!@#!@# in if success true after" + highestBid.getId());
+                bidRepository.save(highestBid);
+                saleRepository.save(sale);
 
                 sseService.send(SseDto.of(highestBid.getBidder().getId(), sale.getId(), "sale",
                     SseType.SUCCESS_BID, LocalDateTime.now()));
-
+                log.info("!@#!@#!@#  LAST LOG.INFO");
                 chatService.createRoom(LiveResultReq.builder().dealId(sale.getId()).build());
             }
         }

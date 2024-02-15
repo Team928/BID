@@ -74,45 +74,59 @@ public class ChatServiceImpl implements ChatService {
     private final ApplyFormRepository applyFormRepository;
     private final ReverseAuctionResultRepository reverseAuctionResultRepository;
 
+
     @Override
     @Transactional
     public void createRoom(LiveResultReq resultReq) {
 
         long dealId = resultReq.getDealId();
+
         Deal deal = dealRepository.findById(dealId)
             .orElseThrow(() -> new BusinessException(ErrorCode.GET_SALE_FAIL));
+
         String dtype = deal.getClass().getSimpleName(); // DTYPE 가져오기
+
         Member guest = null;
 
         if (dtype.equals("Sale")) {
-            guest = dealRepository.findBidderByDealId(dealId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+
+            guest = saleRepository.findById(dealId).get().getHighestBid().getBidder();
+
         } else if (dtype.equals("Purchase")) {
+
             // Purchase 상태 바꾸기
             Purchase purchase = purchaseRepository.findById(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_PURCHASE_FAIL));
+
             purchase.setStatus(DealStatus.END);
             purchaseRepository.save(purchase);
 
             ApplyForm applyForm = applyFormRepository.findById(resultReq.getApplyFormId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.GET_APPLYFORM_FAIL));
+
             // 역 경매결과 생성 저장
             ReverseAuctionResult reverseAuctionResult = ReverseAuctionResult.builder()
                 .winningBid((int) resultReq.getApplyFormId())
                 .purchaseId(dealId)
                 .sellerId(applyForm.getSeller().getId())
                 .build();
+
             reverseAuctionResultRepository.save(reverseAuctionResult);
 
             guest = dealRepository.findSellerByDealId(dealId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_ID_NOT_EXIST));
+
         }
+
         String roomName = deal.getTitle();
         long hostId = deal.getWriter().getId();
         long guestId = guest.getId();
+
         ChatRoom chatRoom = ChatRoom.builder().dealId(dealId).roomName(roomName)
             .hostId(hostId).guestId(guestId).build();
+
         chatRoomRepository.save(chatRoom);
+
     }
 
 
