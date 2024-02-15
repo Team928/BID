@@ -9,7 +9,7 @@ import { changeEngToKr } from '@/utils/changeCategorie';
 import { getDate } from '@/utils/getDate';
 import { getPriceName } from '@/utils/getPriceName';
 import { getTimeDifference } from '@/utils/getTimeDifference';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { MdLiveTv } from 'react-icons/md';
 import { PiUser } from 'react-icons/pi';
