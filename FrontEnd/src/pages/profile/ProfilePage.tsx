@@ -35,6 +35,7 @@ const ProfilePage = () => {
   const { logoutUser } = userStore();
   const handleLogout = () => {
     logoutUser();
+    localStorage.clear();
     navigate('/login');
   };
 
