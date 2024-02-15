@@ -51,13 +51,13 @@ const ProfilePage = () => {
       <div className="h-[calc(100vh-4rem)] overflow-y-scroll">
         <Header info={info} />
         {/* 내 프로필 섹션 */}
-        <div className="pt-12">
+        <div className="pt-14">
           <div className="flex gap-4 px-8 items-center">
-            <div className="w-20 h-20 rounded-xl relative">
+            <div className="w-20 h-20 rounded-full relative">
               {userProfileInfo?.data.profileImage ? (
                 <img
                   src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
-                  className="w-full h-full rounded-2xl object-cover"
+                  className="w-full h-full rounded-full object-cover"
                 />
               ) : (
                 <img src={userImage} className="w-full h-full object-cover" />
