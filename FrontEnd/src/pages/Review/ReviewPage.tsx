@@ -59,10 +59,7 @@ const ReviewPage = () => {
           {/* 거래글 정보 */}
           <div className="flex gap-4 p-4 items-center">
             <div className="w-24 h-24 bg-BID_LIGHT_GRAY rounded-2xl relative">
-              <img
-                src={`${import.meta.env.VITE_BASE_URL}static${src}`}
-                className="w-full h-full rounded-lg object-cover"
-              />
+              <img src={`${import.meta.env.VITE_BASE_URL}${src}`} className="w-full h-full rounded-lg object-cover" />
             </div>
             <div className="flex-1 flex flex-col justify-around">
               <p className="text-sm font-bold">{dealInfo.title}</p>

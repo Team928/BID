@@ -11,7 +11,7 @@ const WishPurchaseItem = (props: { item: IPurchaseSimpleRes }) => {
   return (
     <div onClick={() => navigate(`/buy/detail/${id}`)} className="px-BID_P py-1 flex gap-4">
       <div className="relative flex justify-center items-center">
-        <img className="w-24 h-24 rounded-md object-cover" src={`${import.meta.env.VITE_BASE_URL}static${image}`}></img>
+        <img className="w-24 h-24 rounded-md object-cover" src={`${import.meta.env.VITE_BASE_URL}${image}`}></img>
         <HiHeart size={'1.6rem'} color="#FF0000" className="absolute bottom-1 right-1" />
       </div>
       <div className="flex-1 flex flex-col justify-between py-1">

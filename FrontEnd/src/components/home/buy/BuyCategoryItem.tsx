@@ -10,7 +10,7 @@ const BuyCategoryItem = (props: { item: IPurchaseSimpleRes }) => {
   return (
     <div onClick={() => navigate(`/buy/detail/${id}`)} className="flex gap-4 cursor-pointer">
       <div className="w-28 h-28 relative">
-        <img src={`${import.meta.env.VITE_BASE_URL}static${image}`} className="w-full h-full rounded-lg object-cover" />
+        <img src={`${import.meta.env.VITE_BASE_URL}${image}`} className="w-full h-full rounded-lg object-cover" />
       </div>
       <div className="flex-1 flex flex-col justify-around">
         <p className="font-semibold truncate whitespace-normal line-clamp-2">{title}</p>

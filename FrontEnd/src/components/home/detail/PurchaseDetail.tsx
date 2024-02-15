@@ -33,7 +33,7 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
   const images = [];
 
   for (let i = 0; i < dealRes.images.length; i++) {
-    images.push(`${import.meta.env.VITE_BASE_URL}static${dealRes.images[i]}`);
+    images.push(`${import.meta.env.VITE_BASE_URL}${dealRes.images[i]}`);
   }
 
   return (
@@ -43,7 +43,7 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
         <div className="relative w-full h-72">
           {images.length === 1 ? (
             <img
-              src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images}`}
+              src={`${import.meta.env.VITE_BASE_URL}${dealRes.images}`}
               className="object-cover w-full h-full"
               alt={`Slide 0`}
             />
@@ -115,7 +115,7 @@ const PurchaseDetail = (props: { info: IPurchaseDetailRes }) => {
                           </div>
                           <div className="basis-1/4 w-24 h-24">
                             <img
-                              src={`${import.meta.env.VITE_BASE_URL}static${info.image}`}
+                              src={`${import.meta.env.VITE_BASE_URL}${info.image}`}
                               alt="물건 사진"
                               className="w-full h-full object-cover"
                             />

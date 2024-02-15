@@ -56,7 +56,7 @@ const ProfilePage = () => {
             <div className="w-20 h-20 rounded-full relative">
               {userProfileInfo?.data.profileImage ? (
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}static${userProfileInfo?.data.profileImage}`}
+                  src={`${import.meta.env.VITE_BASE_URL}${userProfileInfo?.data.profileImage}`}
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (

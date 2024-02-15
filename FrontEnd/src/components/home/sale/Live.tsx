@@ -38,10 +38,7 @@ const Live = () => {
                 }}
               >
                 <div className="relative">
-                  <img
-                    className="w-44 h-32"
-                    src={`${import.meta.env.VITE_BASE_URL}static${item.dealSimpleRes.image}`}
-                  />
+                  <img className="w-44 h-32" src={`${import.meta.env.VITE_BASE_URL}${item.dealSimpleRes.image}`} />
                   <div className="absolute top-2 left-2 text-center bg-[#FF0000] pr-[0.4rem] pl-1 rounded-sm">
                     <p className="text-white text-xs font-bold italic">LIVE</p>
                   </div>

@@ -64,7 +64,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
   const images = [];
 
   for (let i = 0; i < dealRes.images.length; i++) {
-    images.push(`${import.meta.env.VITE_BASE_URL}static${dealRes.images[i]}`);
+    images.push(`${import.meta.env.VITE_BASE_URL}${dealRes.images[i]}`);
   }
 
   return (
@@ -101,7 +101,7 @@ const SaleDetail = (props: { info: ISaleDetailRes; isSeller: boolean }) => {
         <div className="relative w-full h-72">
           {images.length === 1 ? (
             <img
-              src={`${import.meta.env.VITE_BASE_URL}static${dealRes.images}`}
+              src={`${import.meta.env.VITE_BASE_URL}${dealRes.images}`}
               className="object-cover w-full h-full"
               alt={`Slide 0`}
             />
