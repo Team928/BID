@@ -67,7 +67,6 @@ export const checkTimeStamp = async ({ step, dealId }: ITimeStampReq): Promise<A
 export const endPurchaseLive = async (dealId: string): Promise<APIResponse<string>> => {
   try {
     const { data } = await axiosAuthInstance.get(`lives/end/purchase/${dealId}`);
-
     return data;
   } catch (err) {
     console.log(err);

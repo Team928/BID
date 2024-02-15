@@ -32,7 +32,7 @@ const PurchaseLivePage = () => {
   const { userId, nickname } = userStore();
   const { usePostLiveMatch, useEndPurchaseLive } = useLive();
   const { mutate: postLiveMatch } = usePostLiveMatch();
-  const { mutate: endPurchaseLive } = useEndPurchaseLive();
+  const { mutate: endPurchase } = useEndPurchaseLive();
   const { clearChatLogs } = useChatStore(state => state);
 
   // 오픈 비두
@@ -218,6 +218,13 @@ const PurchaseLivePage = () => {
         const data = JSON.parse(event.data);
 
         postLiveMatch(data);
+
+        if (!id) return;
+
+        // 판매자일때
+        if (pType === PARTICIPANT_TYPE.BUYER) {
+          endPurchase(id);
+        }
 
         leaveSession();
 
@@ -609,15 +616,14 @@ const PurchaseLivePage = () => {
         type: 'leaveSession',
       });
 
-      leaveSession();
-
       if (!id) return;
 
       // 판매자일때
       if (pType === PARTICIPANT_TYPE.BUYER) {
-        endPurchaseLive(id);
+        endPurchase(id);
       }
 
+      leaveSession();
       navigate('/', { replace: true });
     }
   };
