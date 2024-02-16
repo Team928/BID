@@ -6,6 +6,7 @@ import com.qzp.bid.domain.chat.entity.Chat;
 import com.qzp.bid.domain.chat.service.ChatService;
 import com.qzp.bid.global.result.ResultCode;
 import com.qzp.bid.global.result.ResultResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -47,19 +48,23 @@ public class ChatController {
 
 
     @GetMapping("/rooms")
+    @Operation(summary = "채팅방 목록 조회")
     public ResponseEntity<ResultResponse> findChatRooms(
         @RequestParam(name = "userId") Long userId) {
         List<ChatRoomList> chatRooms = chatService.findChatRooms(userId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATROOMS_SUCCESS, chatRooms));
     }
 
+
     @GetMapping("/rooms/{dealId}")
+    @Operation(summary = "채팅 내역 조회")
     public ResponseEntity<ResultResponse> findChats(@PathVariable(name = "dealId") Long dealId) {
         ChatList chats = chatService.findChats(dealId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_CHATS_SUCCESS, chats));
     }
 
     @DeleteMapping("/rooms/{dealId}")
+    @Operation(summary = "채팅방 나가기")
     public ResponseEntity<ResultResponse> exitChatRooms(
         @PathVariable(name = "dealId") Long dealId) {
         chatService.exitChatRooms(dealId);
@@ -68,6 +73,7 @@ public class ChatController {
 
     //거래 확정 버튼 누르기
     @GetMapping("/confirmed/{dealId}")
+    @Operation(summary = "거래 확정하기")
     public ResponseEntity<ResultResponse> dealConfirmed(
         @PathVariable(name = "dealId") Long dealId) {
         chatService.dealConfirmed(dealId);

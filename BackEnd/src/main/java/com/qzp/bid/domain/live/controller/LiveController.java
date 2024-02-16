@@ -36,6 +36,7 @@ public class LiveController {
 
 
     @GetMapping("/create/rooms") // 방만들기 & 방참가
+    @Operation(summary = "라이브방 생성, 참가")
     public ResponseEntity<ResultResponse> JoinLiveRoom(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
         LiveRoomRes liveRoom = liveService.JoinLiveRoom(liveRoomReq);
@@ -43,6 +44,7 @@ public class LiveController {
     }
 
     @GetMapping("/purchase/results") // 역경매 판매자 선택하기 + 채팅방 개설
+    @Operation(summary = "역경매 판매자 선택")
     public ResponseEntity<ResultResponse> ChoicePurchaseResult(LiveResultReq resultReq) {
         chatService.createRoom(resultReq);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CHOICE_RESULT_SUCCESS));
@@ -50,6 +52,7 @@ public class LiveController {
     }
 
     @GetMapping("/start/recording")
+    @Operation(summary = "경매 녹화 시작하기")
     public ResponseEntity<ResultResponse> StartRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
         Recording recording = liveService.StartRecording(liveRoomReq);
@@ -57,6 +60,7 @@ public class LiveController {
     }
 
     @GetMapping("/end/recording")
+    @Operation(summary = "경매 녹화 종료하기")
     public ResponseEntity<ResultResponse> EndRecording(LiveRoomReq liveRoomReq)
         throws OpenViduJavaClientException, OpenViduHttpException {
         Recording recording = liveService.EndRecording(liveRoomReq);
@@ -64,12 +68,14 @@ public class LiveController {
     }
 
     @GetMapping("/check/recording")
+    @Operation(summary = "경매 가이드 타임라인 설정")
     public ResponseEntity<ResultResponse> CheckRecording(LiveRecordingRes liveRecordingRes) {
         liveService.CheckRecording(liveRecordingRes);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.RECORDING_CHECK_SUCCESS));
     }
 
     @GetMapping("/end/purchase/{dealId}")
+    @Operation(summary = "역경매 종료하기")
     public ResponseEntity<ResultResponse> EndPurchaseLive(
         @PathVariable(name = "dealId") long dealId) {
         liveService.EndLive(dealId);
@@ -77,6 +83,7 @@ public class LiveController {
     }
 
     @GetMapping("/recording/video/{dealId}")
+    @Operation(summary = "녹화 비디오 검색")
     public ResponseEntity<ResultResponse> RecordingVideoGet(
         @PathVariable(name = "dealId") long dealId) {
         List<Video> records = liveService.GetLiveRecord(dealId);
