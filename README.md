@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="./assets/logo_bid.png" alt="SSAFY MATE" width="150px" height="80px" />
+  <img src="./assets/logo_bid.png" alt="SSAFY MATE" width="165px" height="80px" />
   <br />
   <h2>쉽고 합리적 거래를 위한 개인경매 서비스, BID</h2>
   <a href="https://i10d208.p.ssafy.io/">
@@ -52,7 +52,7 @@
 BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재 상태를 미리 확인할 수 있습니다. <br/>
 또한 경매 및 역경매를 통해 판매자와 구매자 모두 합리적인 가격에 거래 가능합니다. <br/>
 
-[<h3>BID 바로 가기</h3>](https://i10d208.p.ssafy.io/)
+<a href="https://i10d208.p.ssafy.io/"><h3>BID 바로 가기</h3></a>
 
 <br/>
 
@@ -65,19 +65,19 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://www.tcpschool.com/html/html5_intro_intro" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/html5-original-wordmark.svg" alt="React" width="50px" height="50" /></a>
+      <a href="https://www.tcpschool.com/html/html5_intro_intro" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/html5-original-wordmark.svg" alt="React" width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://www.w3schools.com/css/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/css3-original-wordmark.svg" alt="CSS3"  width="50px" height="50" /></a>
+      <a href="https://www.w3schools.com/css/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/css3-original-wordmark.svg" alt="CSS3"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://reactjs.org/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/react-original-wordmark.svg" alt="HTML5"  width="50px" height="50" /></a>  
+      <a href="https://reactjs.org/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/react-original-wordmark.svg" alt="HTML5"  width="65px" height="50" /></a>  
     </td>
     <td>
-      <a href="https://www.typescriptlang.org/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/typescript-original.svg" alt="TypeScript"  width="50px" height="50" /></a>  
+      <a href="https://www.typescriptlang.org/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/typescript-original.svg" alt="TypeScript"  width="65px" height="50" /></a>  
     </td>
     <td>
-      <a href="https://www.tailwindcss.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/tailwindcss.svg" alt="Tailwind CSS"  width="50px" height="50" /></a>
+      <a href="https://www.tailwindcss.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/tailwindcss.svg" alt="Tailwind CSS"  width="65px" height="50" /></a>
     </td>
   </tr>
   <tr align='center'>
@@ -92,19 +92,19 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://tanstack.com/query/latest/docs/framework/react/overview" target="_blank"><img style="margin: 10px" src="./assets/react_query.png" alt="react query" width="50px"  height="50" /></a>
+      <a href="https://tanstack.com/query/latest/docs/framework/react/overview" target="_blank"><img style="margin: 10px" src="./assets/react_query.png" alt="react query" width="65px"  height="50" /></a>
     </td>
     <td>
-      <a href="https://openvidu.io/" target="_blank"><img style="margin: 10px" src="./assets/openvidu.png" alt="openvidu"  width="50px" height="50" /></a>
+      <a href="https://openvidu.io/" target="_blank"><img style="margin: 10px" src="./assets/openvidu.png" alt="openvidu"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://stomp-js.github.io/" target="_blank"><img style="margin: 10px" src="./assets/websocket.png" alt="stomp"  width="50px" height="50" /></a> 
+      <a href="https://stomp-js.github.io/" target="_blank"><img style="margin: 10px" src="./assets/websocket.png" alt="stomp"  width="65px" height="50" /></a> 
     </td>
     <td>
-      <a href="https://axios-http.com/kr/docs/intro" target="_blank"><img style="margin: 10px" src="./assets/axios.png" alt="axios"  width="50px" height="50" /></a>
+      <a href="https://axios-http.com/kr/docs/intro" target="_blank"><img style="margin: 10px" src="./assets/axios.png" alt="axios"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://zustand-demo.pmnd.rs/" target="_blank"><img style="margin: 10px" src="./assets/zustand.png" alt="zustand"  width="50px" height="50" /></a>
+      <a href="https://zustand-demo.pmnd.rs/" target="_blank"><img style="margin: 10px" src="./assets/zustand.png" alt="zustand"  width="65px" height="50" /></a>
     </td>
   </tr>
   <tr align='center'>
@@ -119,13 +119,13 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://eslint.org/" target="_blank"><img style="margin: 10px" src="./assets/eslint.png" alt="eslint"  width="50px" height="50" /></a>
+      <a href="https://eslint.org/" target="_blank"><img style="margin: 10px" src="./assets/eslint.png" alt="eslint"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://prettier.io/" target="_blank"><img style="margin: 10px" src="./assets/prettier.png" alt="prettier"  width="50px" height="50" /></a>
+      <a href="https://prettier.io/" target="_blank"><img style="margin: 10px" src="./assets/prettier.png" alt="prettier"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://vitejs.dev/" target="_blank"><img style="margin: 10px" src="./assets/vite.png" alt="vite"  width="50px" height="50" /></a>
+      <a href="https://vitejs.dev/" target="_blank"><img style="margin: 10px" src="./assets/vite.png" alt="vite"  width="65px" height="50" /></a>
     </td>
   </tr>
   <tr align='center'>
@@ -142,19 +142,19 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://www.java.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/java-original-wordmark.svg" alt="Java"  width="50px" height="50" /></a> 
+      <a href="https://www.java.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/java-original-wordmark.svg" alt="Java"  width="65px" height="50" /></a> 
     </td>
     <td>
-      <a href="https://docs.spring.io/spring-framework/docs/3.0.x/reference/expressions.html#:~:text=The%20Spring%20Expression%20Language%20(SpEL,and%20basic%20string%20templating%20functionality." target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/springio-icon.svg" alt="Spring"  width="50px" height="50" /></a>   
+      <a href="https://docs.spring.io/spring-framework/docs/3.0.x/reference/expressions.html#:~:text=The%20Spring%20Expression%20Language%20(SpEL,and%20basic%20string%20templating%20functionality." target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/springio-icon.svg" alt="Spring"  width="65px" height="50" /></a>   
     </td>
     <td>
-      <a href="https://hibernate.org/" target="_blank"><img style="margin: 10px" src="./assets/hibernate.png" alt="hibernate"  width="50px" height="50" /></a>  
+      <a href="https://hibernate.org/" target="_blank"><img style="margin: 10px" src="./assets/hibernate.png" alt="hibernate"  width="65px" height="50" /></a>  
     </td>
     <td>
-      <a href="https://mariadb.org/" target="_blank"><img style="margin: 10px" src="./assets/mariaDB.png" alt="mariadb"  width="50px" height="50" /></a>  
+      <a href="https://mariadb.org/" target="_blank"><img style="margin: 10px" src="./assets/mariaDB.png" alt="mariadb"  width="65px" height="50" /></a>  
     </td>
     <td>
-      <a href="https://www.mongodb.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/mongodb-original-wordmark.svg" alt="MongoDB"  width="50px" height="50" /></a>
+      <a href="https://www.mongodb.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/mongodb-original-wordmark.svg" alt="MongoDB"  width="65px" height="50" /></a>
     </td>
   </tr>
   <tr align='center'>
@@ -169,19 +169,19 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://redis.io/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/redis-original-wordmark.svg" alt="Redis"  width="50px" height="50" /></a>
+      <a href="https://redis.io/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/redis-original-wordmark.svg" alt="Redis"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://swagger.io/" target="_blank"><img style="margin: 10px" src="./assets/swagger.png" alt="swagger"  width="50px" height="50" /></a>
+      <a href="https://swagger.io/" target="_blank"><img style="margin: 10px" src="./assets/swagger.png" alt="swagger"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="http://www.jasypt.org/" target="_blank"><img style="margin: 10px" src="./assets/jwt.png" alt="jasypt"  width="50px" height="50" /></a>
+      <a href="http://www.jasypt.org/" target="_blank"><img style="margin: 10px" src="./assets/jwt.png" alt="jasypt"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://spring.io/projects/spring-security" target="_blank"><img style="margin: 10px" src="./assets/security.png" alt="security"  width="50px" height="50" /></a>
+      <a href="https://spring.io/projects/spring-security" target="_blank"><img style="margin: 10px" src="./assets/security.png" alt="security"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://openvidu.io/" target="_blank"><img style="margin: 10px" src="./assets/openvidu.png" alt="openvidu"  width="50px" height="50" /></a>
+      <a href="https://openvidu.io/" target="_blank"><img style="margin: 10px" src="./assets/openvidu.png" alt="openvidu"  width="65px" height="50" /></a>
     </td>
   </tr>
   <tr align='center'>
@@ -196,7 +196,7 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://stomp-js.github.io/" target="_blank"><img style="margin: 10px" src="./assets/websocket.png" alt="Stomp js"  width="50px" height="50" /></a>
+      <a href="https://stomp-js.github.io/" target="_blank"><img style="margin: 10px" src="./assets/websocket.png" alt="Stomp js"  width="65px" height="50" /></a>
     </td>
   </tr>
   <tr align='center'>
@@ -211,16 +211,16 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://aws.amazon.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/amazonwebservices-original-wordmark.svg" alt="AWS"  width="50px" height="50" /></a> 
+      <a href="https://aws.amazon.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/amazonwebservices-original-wordmark.svg" alt="AWS"  width="65px" height="50" /></a> 
     </td>
     <td>
-      <a href="https://www.docker.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/docker-original-wordmark.svg" alt="Docker"  width="50px" height="50" /></a> 
+      <a href="https://www.docker.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/docker-original-wordmark.svg" alt="Docker"  width="65px" height="50" /></a> 
     </td>
     <td>
-      <a href="https://www.nginx.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/nginx-original.svg" alt="Nginx" width="50px"  height="50" /></a>  
+      <a href="https://www.nginx.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/nginx-original.svg" alt="Nginx" width="65px"  height="50" /></a>  
     </td>
     <td>
-      <a href="https://www.jenkins.io/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/jenkins-icon.svg" alt="Jenkins"  width="50px" height="50" /></a>  
+      <a href="https://www.jenkins.io/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/jenkins-icon.svg" alt="Jenkins"  width="65px" height="50" /></a>  
     </td>
   </tr>
   <tr align='center'>
@@ -238,19 +238,19 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 <table>
   <tr>
     <td>
-      <a href="https://www.notion.so/" target="_blank"><img style="margin: 10px" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="notion" width="50px" height="50" /></a>
+      <a href="https://www.notion.so/" target="_blank"><img style="margin: 10px" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="notion" width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://about.gitlab.com/" target="_blank"><img style="margin: 10px" src="./assets/gitlab.png" alt="gitlab"  width="50px" height="50" /></a>
+      <a href="https://about.gitlab.com/" target="_blank"><img style="margin: 10px" src="./assets/gitlab.png" alt="gitlab"  width="65px" height="50" /></a>
     </td>
     <td>
-      <a href="https://www.atlassian.com/ko/software/jira" target="_blank"><img style="margin: 10px" src="./assets/jira.png" alt="jira"  width="50px" height="50" /></a>  
+      <a href="https://www.atlassian.com/ko/software/jira" target="_blank"><img style="margin: 10px" src="./assets/jira.png" alt="jira"  width="65px" height="50" /></a>  
     </td>
     <td>
-      <a href="https://www.gerritcodereview.com/" target="_blank"><img style="margin: 10px" src="./assets/gerrit.png" alt="gerrit" width="50px"  height="50" /></a>
+      <a href="https://www.gerritcodereview.com/" target="_blank"><img style="margin: 10px" src="./assets/gerrit.png" alt="gerrit" width="65px"  height="50" /></a>
     </td>
     <td>
-      <a href="https://mattermost.com/" target="_blank"><img style="margin: 10px" src="./assets/mattermost.png" alt="Tailwind CSS"  width="50px" height="50" /></a>
+      <a href="https://mattermost.com/" target="_blank"><img style="margin: 10px" src="./assets/mattermost.png" alt="Tailwind CSS"  width="65px" height="50" /></a>
     </td>
   </tr>
   <tr align='center'>
@@ -719,12 +719,8 @@ back : feature/[지라 스토리 번호]/be
 
 ## 📃 산출물
 
-[<h4>1. 기능 명세서</h4>](https://www.notion.so/lshhh/92e8590eae1742ea9fadf92e32f39d7b)
-
-[<h4>2. 와이어 프레임</h4>](https://www.figma.com/file/knk5KBreUoQ7YTtvf88BXt/BID?type=design&node-id=0-1&mode=design&t=vqXVjKXRCAtTBTYO-0)
-
-[<h4>3. API 명세서</h4>](https://www.notion.so/lshhh/API-b08caca38dda480fb1fd2d91fdbed208)
-
-[<h4>4. ERD</h4>](https://www.notion.so/lshhh/ERD-7280bea5d7cd44748c19ec8c3706efc5)
-
-[<h4>5. 포팅메뉴얼</h4>](https://github.com/Team928/BID/blob/main/exec/D208_%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC.pdf.pdf)
+<a href="https://www.notion.so/lshhh/92e8590eae1742ea9fadf92e32f39d7b"><h4>1. 기능 명세서</h4></a>
+<a href="https://www.figma.com/file/knk5KBreUoQ7YTtvf88BXt/BID?type=design&node-id=0-1&mode=design&t=vqXVjKXRCAtTBTYO-0"><h4>2. 와이어 프레임</h4></a>
+<a href="https://www.notion.so/lshhh/API-b08caca38dda480fb1fd2d91fdbed208"><h4>3. API 명세서</h4></a>
+<a href="https://www.notion.so/lshhh/ERD-7280bea5d7cd44748c19ec8c3706efc5"><h4>4. ERD</h4></a>
+<a href="https://github.com/Team928/BID/blob/main/exec/D208_%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC.pdf.pdf"><h4>5. 포팅메뉴얼</h4></a>
