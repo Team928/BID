@@ -292,6 +292,12 @@ BID를 사용하여 실시간 라이브를 통해 희망 거래 물건의 현재
 
 <div id="5"></div>
 
+<img src="./assets/biddb.png" alt="ERD" width="1000px" />
+
+<br/>
+
+<div id="5"></div>
+
 ## 🖥️ 서비스 화면
 
 <table style="border: 2px; text-align:center;">
